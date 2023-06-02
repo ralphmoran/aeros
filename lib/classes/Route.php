@@ -2,6 +2,8 @@
 
 namespace Classes;
 
+use Interfaces\MiddlewareInterface;
+
 class Route extends Router
 {
     /** @var string */
@@ -68,7 +70,7 @@ class Route extends Router
      */
     public function isMiddleware(string $middleware): bool
     {
-        return class_exists($middleware) && in_array(Interfaces\MiddlewareInterface::class, class_implements($middleware));
+        return class_exists($middleware) && in_array(MiddlewareInterface::class, class_implements($middleware));
     }
 
     /**
