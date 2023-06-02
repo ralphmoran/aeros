@@ -61,14 +61,14 @@ class Route extends Router
     }
 
     /**
-     * Checks if $middlaware is valid Middleware class
+     * Checks if $middleware is a valid Middleware class
      *
      * @param string $middleware
-     * @return boolean
+     * @return bool
      */
     public function isMiddleware(string $middleware): bool
     {
-        return class_exists($middleware);
+        return class_exists($middleware) && in_array(Interfaces\MiddlewareInterface::class, class_implements($middleware));
     }
 
     /**

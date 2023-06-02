@@ -10,7 +10,7 @@
 
 use Classes\Route;
 
-Route::get("aeros:/", "AppController")
+Route::get("/", "AppController")
     ->withMiddleware([
         Middlewares\BanBotsMiddleware::class,
         Middlewares\CorsMiddleware::class,
