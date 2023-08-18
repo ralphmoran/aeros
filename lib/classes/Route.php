@@ -24,6 +24,9 @@ class Route extends Router
     /** @var array */
     private $middlewares = [];
 
+    /** @var string */
+    protected $content = null;
+
     /**
      * Constructor
      *
@@ -56,7 +59,6 @@ class Route extends Router
                     $this->middlewares[] = $middleware;
                 }
             }
-            
         }
 
         return $this;
@@ -83,6 +85,66 @@ class Route extends Router
         return $this->middlewares;
     }
 
+    /**
+     * Determines the type of handler should be called: closure|callable or Controller
+     *
+     * @return Route
+     */
+    public function handler(): Route
+    {
+        if (is_callable($this->handler)) {
+            $this->content = ($this->handler)();
+        }
+        
+        // Controller name
+        if (is_string($this->handler)) {
+            $this->callController($this->handler);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the already processed content that corresponds to the request.
+     *
+     * @return void
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Makes the controller call and assign the controller result to the content property.
+     *
+     * @param string $controller
+     * @throws \Exception
+     * @return void
+     */
+    private function callController(string $controller)
+    {
+        [$controllerName, $method] = strpos($controller, '@') === false
+                                            ? [$controller, 'index']
+                                            : explode('@', $controller);
+
+        $controllerName = "Controllers\\$controllerName";
+
+        if (! class_exists($controllerName) || get_parent_class($controllerName) != 'Classes\\ControllerBase') {
+            throw new \Exception(
+                    sprintf('ERROR[Controller] There was a problem trying to validate controller \'%s\.', $controllerName)
+                );
+        }
+
+        $method = empty($method) ? 'index' : $method;
+
+        if (! method_exists($controllerName, $method)) {
+            throw new \Exception(
+                    sprintf('ERROR[Controller] Method \'%s\'::\'%s\' does not exist.', $controllerName, $method)
+                );
+        }
+
+        $this->content = ($controllerName::getInstance())->$method();
+    }
 
 
 
@@ -146,23 +208,6 @@ class Route extends Router
 
     //     } catch (\Exception $e) {
     //         printf($e->getMessage());
-    //     }
-    // }
-
-    /**
-     * Banns undesired bots
-     *
-     * @return void
-     */
-    // public static function bann_bots() // Middleware
-    // {
-    //     if (array_key_exists('HTTP_USER_AGENT', $_SERVER) && isset($_SERVER['HTTP_USER_AGENT'])) {
-    //         if (preg_match('/^(Googlebot|Expanse|\'Cloud)/i', $_SERVER['HTTP_USER_AGENT'])) {
-    //             http_response_code(301);
-    //             header("HTTP/1.1 301 Moved Permanently");
-    //             header("Location: https://myaero.app/");
-    //             exit;
-    //         }
     //     }
     // }
 
@@ -366,26 +411,8 @@ class Route extends Router
     //     }
     // }
 
-    /**
-     * Returns 404 - Not found view.
-     *
-     * @return void
-     */
-    // private static function invalid_route()
-    // {
-    //     http_response_code(404);
 
-    //     print(view('common.errors.codes', [
-    //                                         'code'    => '404 - Not found',
-    //                                         'details' => sprintf('ERROR[Route] Route <strong>"%s:%s:%s"</strong> does not exist.', 
-    //                                                                 self::$subdomain, 
-    //                                                                 $_SERVER['REQUEST_METHOD'], 
-    //                                                                 rtrim($_SERVER['PHP_SELF'])
-    //                                                             )
-    //                                     ]
-    //                                 )
-    //                             );
-    // }
+    
 
     /**
      * Returns a 400 - Bad request view.

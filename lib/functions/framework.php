@@ -129,10 +129,23 @@ if (! function_exists('dd')) {
 	function dd(...$args) 
 	{
 		die(
-			response([
-				'dd'    => $args,
-				'trace' => debug_backtrace(),
-			])
+			response(
+				array_map(
+					function ($point) {
+						$index = (isset($point['class']) ? $point['class'] . '::' : '')
+							. $point['function'] . ' => ' 
+							. str_replace(env('APP_ROOT_DIR'), '', $point['file']) 
+							. ':L#' . $point['line'];
+
+						if (empty($point['args'])) {
+							return $index;
+						}
+		
+						return [$index => $point['args']];
+					}, 
+					debug_backtrace()
+				)
+			)
 		);
 	}
 }
@@ -271,14 +284,14 @@ if (! function_exists('sendemail')) {
 	}
 }
 
-if (! function_exists('is_internal')) {
+if (! function_exists('isInternal')) {
 
 	/**
 	 * Validates if the current user is internal.
 	 *
 	 * @return boolean
 	 */
-	function is_internal(): bool
+	function isInternal(): bool
 	{
 		// Only on Staging or PROD
 		if (in_array(env('APP_ENV'), ['staging', 'production'])) {

@@ -12,6 +12,7 @@
 */
 
 return [
+    'HttpServiceProvider' => Providers\HttpServiceProvider::class,
     'RouteServiceProvider' => Providers\RouteServiceProvider::class,
     'DatabaseServiceProvider' => Providers\DatabaseServiceProvider::class,
     'EmailServiceProvider' => Providers\EmailServiceProvider::class,

@@ -10,9 +10,6 @@ class SanitizerMiddleware implements MiddlewareInterface
 {
     public function __invoke(Request $request, Response $response)
     {
-        echo __CLASS__ . '<br />';
-
-        die;
-        return $response;
+        // echo __CLASS__ . '<br />';
     }
 }

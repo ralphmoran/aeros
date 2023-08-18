@@ -7,10 +7,10 @@ use Exception;
 final class Request
 {
     /** @var string $url */
-    private $url;
+    public $url;
 
     /** @var string $method */
-    private $method = 'GET';
+    public $method = 'GET';
 
     /** @var string|array $only $*/
     private $only = [];
@@ -19,14 +19,21 @@ final class Request
     private $except = [];
     
     /** @var array $headers */
-    private $headers = [
-        "Content-Type:application/json",
-        "Accept: */*",
-        "Accept-Encoding: gzip, deflate, br"
+    public $headers = [
+        "Content-Type:application/json"
     ];
 
     /** @var array $payload */
-    private $payload = [];
+    public $payload = [];
+
+    /** @var array $cookies */
+    public $cookies = [];
+
+    /** @var array $queryParams */
+    public $queryParams = [];
+
+    /** @var array $requestParams */
+    public $requestParams = [];
 
     /** @var array $curlOptions */
     private $curlOptions = [];
@@ -41,8 +48,21 @@ final class Request
         'FILES'
     ];
 
-    /** @var int $payload */
+    /** @var int $api */
     private static $api = 0;
+
+    /**
+     * Initializes request params
+     */
+    public function __construct()
+    {
+        $this->url = $_SERVER['PHP_SELF'];
+        $this->payload = file_get_contents('php://input');
+        $this->headers = getallheaders();
+        $this->cookies = $_COOKIE;
+        $this->queryParams = $_GET;
+        $this->requestParams = $_POST;
+    }
 
     /**
      * Sets the target URL
@@ -194,6 +214,7 @@ final class Request
      * @return boolean|array
      * 
      * @throws ValueError
+     * @return bool|array
      */
     private function validateOpts(): bool|array
     {

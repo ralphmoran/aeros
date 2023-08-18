@@ -40,6 +40,25 @@ final class Response
     /** @var string PDF */
     const PDF  = 'pdf';
 
+    /** @var int $status */
+    private $status = 200;
+
+    /** @var array $headers */
+    public $headers = [
+        "Content-Type:application/json"
+    ];
+
+    private $cookies;
+    private $data;
+
+    /**
+     * Initializes Response
+     */
+    public function __construct()
+    {
+        
+    }
+
     /**
      * Outputs a special data type and sets the required headers.
      *

@@ -1,4 +1,5 @@
 <?php
+
 namespace Providers;
 
 use Classes\ServiceProvider;

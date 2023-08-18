@@ -34,7 +34,7 @@ class Router
         if (in_array($requestedMethod, self::$methods)) {
             return app()->router->addRoute(
                 strtoupper($requestedMethod), 
-                new Route($args[0], $args[1])
+                new Route($args[0], $args[1]) // (URI, handler)
             );
         }
 
@@ -100,7 +100,7 @@ class Router
      * @param string $uri
      * @return array
      */
-    public function getURIParts(string $uri) : array
+    public function getUriParts(string $uri) : array
     {
         $uriParts = array_values(
             array_filter(
@@ -124,7 +124,7 @@ class Router
      */
     public function match($method, $uri)
     {
-        $uriParts = $this->getURIParts($uri);
+        $uriParts = $this->getUriParts($uri);
 
         foreach ($this->getRoutes(strtoupper($method)) as $route) {
 
@@ -151,7 +151,7 @@ class Router
             }
 
             return [
-                'obj' => $route,
+                'route' => $route,
                 'params' => $params
             ];
         }
@@ -167,9 +167,9 @@ class Router
      */
     public function dispatch(): mixed
     {
-        $route = $this->match($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+        $routeInstance = $this->match($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
 
-        if (! $route) {
+        if (! $routeInstance) {
             throw new \Exception(
                 sprintf(
                     "ERROR[route] Route '%s:%s' does not exist.",
@@ -179,21 +179,11 @@ class Router
             );
         }
 
-        foreach ($route['obj']->getMiddlewares() as $middleware) {
-            if (! in_array(MiddlewareInterface::class, class_implements($middleware))) {
-                throw new \Exception(
-                    sprintf(
-                        "ERROR[middleware] Middleware '%s' does not exist or is invalid.",
-                        $middleware
-                    )
-                );
-            }
+        // Call middleware(s) for this route
+        self::runMiddlewares($routeInstance['route']->getMiddlewares());
 
-            (new $middleware())(app()->request, app()->response);
-        }
-
-        return $route['obj']
-                ->handler(app()->request, app()->response)
+        return $routeInstance['route']
+                ->handler()
                 ->getContent();
     }
 
@@ -216,5 +206,29 @@ class Router
         }
 
         return $this->routes;
+    }
+
+    /**
+     * Runs statically middlewares
+     *
+     * @param array $middlewares
+     * @return void
+     */
+    public static function runMiddlewares(array $middlewares)
+    {
+        // Call middleware(s) for this route
+        foreach ($middlewares as $middleware) {
+            if (! in_array(MiddlewareInterface::class, class_implements($middleware))) {
+                throw new \Exception(
+                    sprintf(
+                        "ERROR[middleware] Middleware '%s' does not exist or is invalid.",
+                        $middleware
+                    )
+                );
+            }
+
+            // Pass request and reponse instances to the middleware to be processed
+            (new $middleware())(app()->request, app()->response);
+        }
     }
 }

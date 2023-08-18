@@ -2,7 +2,6 @@
 
 namespace Classes;
 
-use Aws\Api\Service;
 use Classes\ServiceContainer;
 
 class App extends ServiceContainer
