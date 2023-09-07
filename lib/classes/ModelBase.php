@@ -4,7 +4,7 @@ namespace Classes;
 
 use Interfaces\DBHandlerInterface;
 
-class ModelBase extends Singleton
+class ModelBase extends Kernel
 {
     /** @var boolean */
     protected $succeeded = false;

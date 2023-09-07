@@ -2,7 +2,7 @@
 
 namespace Classes;
 
-class ControllerBase extends Singleton
+class ControllerBase extends Kernel
 {
 
 }

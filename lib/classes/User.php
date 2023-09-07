@@ -2,7 +2,7 @@
 
 namespace Classes;
 
-class User extends Singleton
+class User extends Kernel
 {
     use \Traits\Authentication;
 }

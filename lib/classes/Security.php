@@ -2,7 +2,7 @@
 
 namespace Classes;
 
-class Security extends Singleton
+class Security extends Kernel
 {
     /**
      * Creates a hidden input with a token. This token helps to validate if a 

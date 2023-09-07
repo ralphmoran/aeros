@@ -7,7 +7,7 @@ use SendGrid\Mail\Mail;
 // https://github.com/sendgrid/sendgrid-php/blob/main/USE_CASES.md#send-an-email-to-a-single-recipient
 // https://github.com/sendgrid/sendgrid-php/blob/main/lib/mail/Mail.php
 
-final class Email extends Singleton
+final class Email extends Kernel
 {
 	private $email;
 	private $sendgrid;

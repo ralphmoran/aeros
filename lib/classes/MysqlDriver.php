@@ -5,7 +5,7 @@ namespace Classes;
 use Traits\MagicMethods;
 use Interfaces\DBHandlerInterface;
 
-class MySQLDriver extends Singleton implements DBHandlerInterface
+class MySQLDriver extends Kernel implements DBHandlerInterface
 {
     use MagicMethods;
 
