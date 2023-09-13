@@ -28,6 +28,7 @@ $app->singleton('response', Classes\Response::class);
 $app->singleton('request', Classes\Request::class);
 $app->singleton('redirect', Classes\Redirect::class);
 $app->singleton('cache', Classes\Cache::class);
+$app->singleton('event', Classes\EventDispatcher::class);
 
 /*
 |----------------------------------------------

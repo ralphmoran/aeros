@@ -126,17 +126,6 @@ class ServiceContainer extends Kernel
     }
 
     /**
-     * Checks magically if a service or a definition is registered.
-     *
-     * @param string $name
-     * @return boolean
-     */
-    // public function __isset($name) : bool
-    // {
-    //     return array_key_exists($name, $this->services);
-    // }
-
-    /**
      * Returns the array of registered services.
      *
      * @return array

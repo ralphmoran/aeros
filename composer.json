@@ -13,7 +13,8 @@
             "controllers",
             "models",
             "middlewares",
-            "providers"
+            "providers",
+            "events"
         ]
     },
     "require": {
