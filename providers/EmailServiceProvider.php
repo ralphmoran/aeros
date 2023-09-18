@@ -10,9 +10,9 @@ class EmailServiceProvider extends ServiceProvider
     {
         // Add event listener for email notification
         app()->event
-            ->addEventListener('email.notify', new \Events\EmailNotifier())
-            ->addEventListener('email.reminder', new \Events\EmailReminder())
-            ->addEventListener('email.followup', new \Events\EmailFollowup());
+            ->addEventListener('email.notify', new \Events\EmailNotifierEvent())
+            ->addEventListener('email.reminder', new \Events\EmailReminderEvent())
+            ->addEventListener('email.followup', new \Events\EmailFollowupEvent());
 
         // Setup email connection
         // ...
