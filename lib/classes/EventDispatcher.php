@@ -33,6 +33,10 @@ class EventDispatcher
         if (isset($this->events[$eventName])) {
             foreach ($this->events[$eventName] as $observer) {
                 $observer->update($eventData);
+
+                if (env('APP_DEBUG')) {
+                    $observer->log("Event `{$eventName}` triggered at " . date('Y-m-d H:i:s'));
+                }
             }
         }
     }

@@ -1,0 +1,3 @@
+Event `email.notify` triggered at 2023-09-17 22:58:36 in /var/www/html/controllers/AppController.php::12
+Event `email.reminder` triggered at 2023-09-17 22:58:36 in /var/www/html/controllers/AppController.php::17
+Event `email.followup` triggered at 2023-09-17 22:58:36 in /var/www/html/controllers/AppController.php::22

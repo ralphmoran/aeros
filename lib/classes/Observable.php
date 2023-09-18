@@ -7,12 +7,16 @@ abstract class Observable
     /**
      * Generic method for all observers.
      *
-     * @param string $message
+     * @param mixed $message
      * @return void
      */
-    public function log(string $message)
+    public function log(mixed $message)
     {
-        sprintf("Log: %s (%s::%s)", $message, __CLASS__, __LINE__);
+        error_log(
+            sprintf("%s in %s::%s" . PHP_EOL, $message, debug_backtrace()[1]['file'], debug_backtrace()[1]['line']), 
+            3, 
+            app()->rootDir . '/logs/error.log'
+        );
     }
 
     /**
