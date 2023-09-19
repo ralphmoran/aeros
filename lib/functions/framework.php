@@ -9,7 +9,7 @@ if (! function_exists('app')) {
 	 * 
 	 * @throws \Exception
 	 */
-	function app() : Classes\App
+	function app(): Classes\App
 	{
 		if (class_exists('Classes\App')) {
 			return require env('APP_ROOT_DIR') . '/config/app.php';
@@ -28,7 +28,7 @@ if (! function_exists('scan')) {
 	 * 
 	 * @throws \Exception
 	 */
-	function scan(string $path, $extensions = ['php']) : array
+	function scan(string $path, $extensions = ['php']): array
 	{
 		if (empty($path)) {
 			throw new \Exception("ERROR[dir] 'path' should not be empty.");
@@ -150,56 +150,17 @@ if (! function_exists('dd')) {
 	}
 }
 
-if (! function_exists('get_myme_types')) {
-
-	/**
-	 * Generates an array of myme types.
-	 *
-	 * @return array
-	 */
-	function get_myme_types() : array 
-	{
-		if (empty($_SESSION['APACHE_MIME_TYPES'])) {
-
-			$myme_types = [];
-
-			if (file_exists(env('APP_ROOT_DIR') . '/mime.types.txt')) {
-				env('APACHE_MIME_TYPES_URL', env('APP_ROOT_DIR') . '/mime.types.txt');
-			}
-
-			$mime_types = @file_get_contents(env('APACHE_MIME_TYPES_URL'));
-
-			foreach (explode("\n", $mime_types) as $myme_type) {
-				if (isset($myme_type[0]) 
-				&& $myme_type[0] !=='#' 
-				&& preg_match_all('#([^\s]+)#', $myme_type, $matches) 
-				&& isset($matches[1]) 
-				&& ($num_matches = count($matches[1])) > 1) 
-				{
-					for ($i=1; $i<$num_matches; $i++) {
-						$myme_types[$matches[1][$i]] = $matches[1][0];
-					}
-				}
-			}
-
-			return $_SESSION['APACHE_MIME_TYPES'] = $myme_types;
-		}
-
-		return $_SESSION['APACHE_MIME_TYPES'];
-	}
-}
-
 if (! function_exists('cache')) {
 
 	/**
 	 * cache() function is a Predis wrapper.
 	 *
-	 * @return Predis\Client
+	 * @return Classes\Cache
 	 */
-	function cache() : Predis\Client 
+	function cache(): Classes\Cache
 	{
 		if (class_exists('Classes\Cache')) {
-			return app()->cache->get_client();
+			return app()->cache;
 		}
 	}
 }

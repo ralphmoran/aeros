@@ -76,9 +76,9 @@ final class Response
         };
 
         header_remove();
-        header("Content-type: " . get_myme_types()[$type]);
+        header("Content-type: " . json_decode(cache()->get('mime.types'), true)[$type]);
         http_response_code($code);
-        
+
         if ($type == 'json') {
 
             if (! is_array($data)) {

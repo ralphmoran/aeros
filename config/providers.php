@@ -12,6 +12,7 @@
 */
 
 return [
+    'MimeTypesServiceProvider' => Providers\MimeTypesServiceProvider::class,
     'HttpServiceProvider' => Providers\HttpServiceProvider::class,
     'RouteServiceProvider' => Providers\RouteServiceProvider::class,
     'DatabaseServiceProvider' => Providers\DatabaseServiceProvider::class,

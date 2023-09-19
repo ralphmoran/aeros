@@ -2,9 +2,7 @@
 
 namespace Classes;
 
-use Predis\Client as PredisClient;
-
-class Cache
+class Cache extends \Predis\Client
 {
     /** @var PredisClient */
     private $client = null;
@@ -13,7 +11,7 @@ class Cache
      * Setting up the client.
      */
     public function __construct() {
-        $this->client = new PredisClient(
+        parent::__construct(
             'tcp://' . env('REDIS_HOST') . ':' . env('REDIS_PORT'), 
             [
                 'parameters' => [
@@ -21,15 +19,5 @@ class Cache
                 ]
             ]
         );
-    }
-
-    /**
-     * Returns Predis client object.
-     *
-     * @return PredisClient
-     */
-    public function get_client()
-    {
-        return $this->client;
     }
 }
