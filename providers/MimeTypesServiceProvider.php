@@ -16,6 +16,7 @@ class MimeTypesServiceProvider extends ServiceProvider
             $content = @file_get_contents(env('APACHE_MIME_TYPES_URL'));
 
             if ($content !== false) {
+
                 foreach(explode("\n", $content) as $line) {
                     if (strpos($line = trim($line), '#') === 0) {
                         continue;
@@ -23,10 +24,10 @@ class MimeTypesServiceProvider extends ServiceProvider
 
                     $parts = preg_split('/\s+/', $line);
 
-                    $key = array_shift($parts);
                     $value = array_shift($parts);
+                    $key = array_shift($parts);
 
-                    $mime_types[$value] = $key;
+                    $mime_types[$key] = $value;
                 }
             }
 

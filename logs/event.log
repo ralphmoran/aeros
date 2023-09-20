@@ -1,0 +1,6 @@
+[2023-09-19 20:48:47] Event `email.notify` triggered in Classes\EventDispatcher::39
+[2023-09-19 20:48:47] Event `email.reminder` triggered in Classes\EventDispatcher::39
+[2023-09-19 20:48:47] Event `email.followup` triggered in Classes\EventDispatcher::39
+[2023-09-19 20:51:06] Event `email.notify` triggered in Classes\EventDispatcher::39
+[2023-09-19 20:51:06] Event `email.reminder` triggered in Classes\EventDispatcher::39
+[2023-09-19 20:51:06] Event `email.followup` triggered in Classes\EventDispatcher::39

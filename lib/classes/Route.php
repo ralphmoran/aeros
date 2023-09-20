@@ -95,7 +95,7 @@ class Route extends Router
         if (is_callable($this->handler)) {
             $this->content = ($this->handler)();
         }
-        
+
         // Controller name
         if (is_string($this->handler)) {
             $this->callController($this->handler);
