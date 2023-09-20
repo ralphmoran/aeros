@@ -66,6 +66,7 @@ class ServiceContainer extends Kernel
 
         // Class name
         if (is_string($service)) {
+
             if (! class_exists($service)) {
                 throw new \Exception("ERROR[service]'{$service}' was not found.");
 
@@ -77,7 +78,6 @@ class ServiceContainer extends Kernel
             return;
         }
 
-        // TODO: Callable object (__invoke) or function
         $this->services[$name] = $service;
     }
 
