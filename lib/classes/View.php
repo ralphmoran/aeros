@@ -16,7 +16,7 @@ final class View
         array $vars = [], 
         string $subfolder = ''
     ) {
-        $base_path        = getcwd() . '/views';
+        $base_path        = __DIR__ . '/../../views';
         $parsed_view_path = '/' . implode('/', explode('.', $view)) . '.php';
         $view_path        = $base_path . (! empty($subfolder) ? '/' . $subfolder : '') . $parsed_view_path;
 
