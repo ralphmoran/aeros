@@ -7,8 +7,6 @@ use Interfaces\DBHandlerInterface;
 
 class MySQLDriver extends Kernel implements DBHandlerInterface
 {
-    use MagicMethods;
-
     /** @var MySQLi object */
     private $conn;
 

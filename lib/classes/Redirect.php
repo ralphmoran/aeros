@@ -4,6 +4,14 @@ namespace Classes;
 
 class Redirect
 {
+    /**
+     * Redirects a request to anothe URL.
+     *
+     * @param string $redirect
+     * @param array $arguments
+     * @param string $request_method
+     * @return void
+     */
     public function goto(string $redirect, array $arguments = [], string $request_method = 'GET')
     {
         // Add flash variables to session

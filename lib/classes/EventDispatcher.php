@@ -31,7 +31,9 @@ class EventDispatcher
     public function trigger(string $eventName, mixed $eventData)
     {
         if (isset($this->events[$eventName])) {
+
             foreach ($this->events[$eventName] as $observer) {
+
                 $observer->update($eventData);
 
                 if (env('APP_DEBUG')) {

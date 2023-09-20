@@ -4,17 +4,17 @@ namespace Traits;
 
 trait Authentication
 {
-    public function is_auth()
+    public function isAuth()
     {
         
     }
 
-    public function is_admin()
+    public function isAdmin()
     {
         
     }
 
-    public function is_super()
+    public function isSuper()
     {
         
     }

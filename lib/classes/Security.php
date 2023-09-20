@@ -13,9 +13,9 @@ class Security extends Kernel
     public function csrf(): string
     {
         return component('inputs.hidden', [
-            'id' => 'csrf_token',
-            'name' => 'csrf_token',
-            'value' => $_SESSION['token'],
+                'id' => 'csrf_token',
+                'name' => 'csrf_token',
+                'value' => $_SESSION['token'],
             ], 
             true
         );
