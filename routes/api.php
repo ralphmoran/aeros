@@ -9,7 +9,6 @@
 */
 
 use Classes\Route;
-use Middlewares\SanitizerMiddleware;
 
 // Route::post("admin:/{category}/{id}", "CategoryController@dynamicCategoryById");
 
