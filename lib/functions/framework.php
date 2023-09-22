@@ -239,7 +239,7 @@ if (! function_exists('sendemail')) {
 	 * @return void
 	 */
 	function sendemail(...$settings) {
-		return Classes\Email::getInstance()
+		return app()->email
 			->compose($settings)
 			->send();
 	}
@@ -357,14 +357,12 @@ if (! function_exists('db')) {
 	/**
 	 * Wrapper for DB conection and all its handlers.
 	 * 
-	 * This function replaces: $this->db() method from Classes\ModelBase
-	 * 
 	 * @param $driver $name
 	 * @return Interfaces\DBHandlerInterface
 	 */
 	function db(string $driver = 'mysqli'): Interfaces\DBHandlerInterface 
 	{
-		return Classes\ModelBase::getInstance()->db($driver);
+		return app()->db->connect($driver);
 	}
 }
 
@@ -377,6 +375,6 @@ if (! function_exists('csrf')) {
 	 */
 	function csrf(): string
 	{
-		return Classes\Security::getInstance()->csrf();
+		return app()->security->csrf();
 	}
 }

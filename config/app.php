@@ -19,7 +19,8 @@ $app = Classes\App::getInstance()
 |
 */
 
-$app->singleton('db', Classes\DB::class);
+$app->singleton('db', Classes\Db::class);
+$app->singleton('security', Classes\Security::class);
 $app->singleton('email', Classes\Email::class);
 $app->singleton('router', Classes\Router::class);
 $app->singleton('view', Classes\View::class);
