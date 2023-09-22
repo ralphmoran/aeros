@@ -6,16 +6,16 @@
             "lib/functions/all.php",
             "config/session.php"
         ],
-        "classmap": [
-            "lib/classes",
-            "lib/interfaces",
-            "lib/traits",
-            "controllers",
-            "models",
-            "middlewares",
-            "providers",
-            "events"
-        ]
+        "psr-4": {
+            "Classes\\": "lib/classes",
+            "Interfaces\\": "lib/interfaces",
+            "Traits\\": "lib/traits",
+            "Controllers\\": "controllers",
+            "Models\\": "models",
+            "Middlewares\\": "middlewares",
+            "Providers\\": "providers",
+            "Events\\": "events"
+        }
     },
     "require": {
         "vlucas/phpdotenv": "^5.4",
