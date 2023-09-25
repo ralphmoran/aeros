@@ -23,6 +23,6 @@ class AppController extends ControllerBase
 
         // more logic...
 
-        return view('index');
+        return view('app');
     }
 }
