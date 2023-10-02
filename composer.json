@@ -14,7 +14,10 @@
             "Models\\": "models",
             "Middlewares\\": "middlewares",
             "Providers\\": "providers",
-            "Events\\": "events"
+            "Events\\": "events",
+            "Crons\\": "queues/crons",
+            "Jobs\\": "queues/jobs",
+            "Workers\\": "queues/workers"
         }
     },
     "require": {
@@ -36,8 +39,12 @@
     "license": "Property",
     "minimum-stability": "alpha",
     "scripts": {
-        "uitest": "php ./run-tests.php",
-        "uimaker": "php ./vendor/rafael.moran/uitest/uimaker"
+        "app-worker-start": "sudo supervisorctl start app-worker-script:*",
+        "app-worker-stop": "sudo supervisorctl stop app-worker-script:*",
+        "app-worker-status": "sudo supervisorctl status app-worker-script:*",
+        "app-worker-start-dev": "vagrant ssh -c 'sudo supervisorctl start app-worker-script:*'",
+        "app-worker-stop-dev": "vagrant ssh -c 'sudo supervisorctl stop app-worker-script:*'",
+        "app-worker-status-dev": "vagrant ssh -c 'sudo supervisorctl status app-worker-script:*'"
     },
     "config": {
         "allow-plugins": {

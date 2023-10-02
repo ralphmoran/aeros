@@ -378,3 +378,17 @@ if (! function_exists('csrf')) {
 		return app()->security->csrf();
 	}
 }
+
+if (! function_exists('worker')) {
+
+	/**
+	 * Returns the main app worker.
+	 *
+	 * @return Classes\Worker
+	 */
+	function worker(): Classes\Worker {
+		if (class_exists('Classes\Worker')) {
+			return app()->worker;
+		}
+	}
+}

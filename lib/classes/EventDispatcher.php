@@ -28,7 +28,7 @@ class EventDispatcher
      * @param mixed $eventData
      * @return void
      */
-    public function trigger(string $eventName, mixed $eventData)
+    public function emit(string $eventName, mixed $eventData)
     {
         if (isset($this->events[$eventName])) {
 

@@ -28,9 +28,12 @@ $app->singleton('component', Classes\Component::class);
 $app->singleton('response', Classes\Response::class);
 $app->singleton('request', Classes\Request::class);
 $app->singleton('redirect', Classes\Redirect::class);
-$app->singleton('cache', Classes\Cache::class);
 $app->singleton('event', Classes\EventDispatcher::class);
 $app->singleton('logger', Classes\Logger::class);
+
+# App worker - Queues and Jobs
+$app->singleton('cache', Classes\Cache::class);
+$app->singleton('worker', Workers\AppWorker::class);
 
 /*
 |----------------------------------------------
