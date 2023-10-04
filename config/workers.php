@@ -12,19 +12,12 @@
 return [
     /*
     |----------------------------------------------
-    | Main worker for the application
-    |
-    */
-
-    'AppWorker' => Workers\AppWorker::class,
-
-    /*
-    |----------------------------------------------
     | Add your workers here
     |
     */
 
     'ExampleWorker' => Workers\ExampleWorker::class,
+    'AnotherWorker' => Workers\AnotherWorker::class,
 
     // ...
 ];

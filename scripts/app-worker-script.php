@@ -7,7 +7,7 @@
 |
 | This worker will be executed in the CLI by Supervisor.
 |
-| By default, Supervisor will create 3 instances of it. 
+| By default, Supervisord will create 10 instances of the app worker. 
 |
 */
 

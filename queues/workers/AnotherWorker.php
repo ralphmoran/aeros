@@ -8,7 +8,7 @@ use Classes\Worker;
  * This is an example of how a worker can be ran by Supervisor
  */
 
-class ExampleWorker extends Worker
+class AnotherWorker extends Worker
 {
     public function handle()
     {

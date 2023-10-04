@@ -6,8 +6,6 @@ use Classes\Worker;
 
 /**
  * This is the main worker for the application.
- * 
- * WARNING: DO NOT TOUCH or EDIT
  */
 
 class AppWorker extends Worker
@@ -16,6 +14,21 @@ class AppWorker extends Worker
     {
         // Add logic to handle Jobs from Cache (Redis)
         // cache(); OR app()->cache;
-        echo '[' . getmypid() . '] Bringing next available Job...' . __FILE__ . PHP_EOL;
+        $workers = require_once app()->rootDir . '/config/workers.php';
+
+        if (is_array($workers) && ! empty($workers)) {
+
+            foreach ($workers as $worker) {
+
+                if (! class_exists($worker) || get_parent_class($worker) != 'Classes\\Worker') {
+                    throw new \Exception(
+                            sprintf('ERROR[Worker] There was a problem trying to validate worker \'%s\.', $worker)
+                        );
+                }
+
+                // Run the worker handle method
+                (new $worker)->handle();
+            }
+        }
     }
 }
