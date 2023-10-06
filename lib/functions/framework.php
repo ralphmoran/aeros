@@ -387,7 +387,7 @@ if (! function_exists('worker')) {
 	 * @return Classes\Worker
 	 */
 	function worker(): Classes\Worker {
-		if (class_exists('Classes\Worker')) {
+		if (class_exists('Workers\AppWorker')) {
 			return app()->worker;
 		}
 	}

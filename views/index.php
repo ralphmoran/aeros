@@ -1,5 +1,5 @@
 <?php view('common.header')?>
 
-Hi there!
+(IndexController) Hi there!
 
 <?php view('common.footer')?>

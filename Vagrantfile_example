@@ -1,0 +1,182 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "generic/ubuntu2004"
+  config.vm.box_version = "3.1.0"
+
+  config.vm.define "aeros" do |aeros|
+      aeros.vm.hostname = "aeros"
+  end
+
+  config.vm.network "private_network", ip: "192.168.56.11"
+
+  # Mount synced folder: from local folder to Apache server
+  if Vagrant::Util::Platform.windows? then
+    config.vm.synced_folder ".", "/var/www/html"
+  else
+    config.vm.synced_folder ".", "/var/www/html", type: "nfs"
+  end
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 2048
+    vb.cpus = 2
+  end
+  
+  # Configure Aeros Admin V1.0 VM (Ubuntu)
+  config.vm.provision "shell", inline: <<-SHELL
+
+    # Set time zone to Los Angeles
+    sudo timedatectl set-timezone America/Los_Angeles
+
+    # No interactive
+    export DEBIAN_FRONTEND=noninteractive
+
+    # Update Packages
+    apt-get update
+
+    # Upgrade Packages
+    apt-get upgrade
+
+    # Apache
+    apt-get install -y apache2
+
+    # Enable Apache Mods
+    sudo a2enmod rewrite
+    sudo a2enmod headers
+
+    # Add Onrej PPA Repo
+    apt-get install software-properties-common
+    apt-add-repository ppa:ondrej/php
+    apt-get update
+
+    # Install PHP
+    apt-get install -y php8.0
+
+    # PHP Apache Mod
+    apt-get install -y libapache2-mod-php8.0
+
+    # PHP Mods
+    sudo apt-get install -y php8.0-{bcmath,bz2,intl,gd,mbstring,mysql,zip,common,xml}
+    sudo apt-get install wget
+    sudo apt-get install php8.0-curl
+
+    # Enable short_open_tag for PHP (not recommended, the PHP team will deprecate it soon)
+    sudo sed -i "s/^short_open_tag = Off/short_open_tag = On/" /etc/php/8.0/apache2/php.ini
+
+    # Install composer
+    wget -O composer-setup.php https://getcomposer.org/installer
+    sudo php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+
+    # Set MySQL Pass
+    debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
+    debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
+
+    #==============================================
+    # Install MySQL
+    apt-get install -y mysql-server
+
+      # Accept connection from MySQL GUIs
+      sudo sed -i "s/^bind-address/#bind-address/" /etc/mysql/my.cnf
+      echo "[mysqld]" | sudo tee -a /etc/mysql/my.cnf
+      echo "bind-address=0.0.0.0" | sudo tee -a /etc/mysql/my.cnf
+      echo "default-time-zone='+00:00'" | sudo tee -a /etc/mysql/my.cnf
+
+      # Create client database
+      mysql -u root -proot
+
+      # Grant root access
+      MYSQL_PWD=root mysql -u root -e "CREATE USER 'root'@'%' IDENTIFIED BY 'root'; GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION; FLUSH PRIVILEGES; SET GLOBAL max_connect_errors=10000;"
+
+      # Disabling STRICT MODE
+      echo 'sql_mode=' | sudo tee -a /etc/mysql/my.cnf
+
+      # Start MySQL server
+      sudo service mysql restart
+
+    #==============================================
+    # PHP-MYSQL lib
+    apt-get install -y php8.0-mysql
+
+    #==============================================
+    # Subdomains setup
+    echo '<VirtualHost *:80>
+
+    ServerName _ 
+  
+    DocumentRoot /var/www/html/public
+  
+    <Directory /var/www/html/public>
+      Options Indexes FollowSymLinks
+      AllowOverride All
+      Require all granted
+    </Directory>
+  
+    RewriteEngine On
+    RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+  
+    <FilesMatch "\.(php|html|htm|js|css)$">
+      FileETag None
+      <IfModule mod_headers.c>
+        Header unset ETag 
+        Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate" 
+        Header set Pragma "no-cache"
+        Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+      </IfModule>
+    </FilesMatch>
+  
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d 
+    RewriteRule ^(.*)$ /index.php/$1 [L]
+    
+  </VirtualHost>' > /etc/apache2/sites-available/aeros.conf
+
+    # Disabling default configuration
+    cd /etc/apache2/sites-available/
+    sudo a2dissite 000-default.conf
+
+    # Enabling aeros configuration
+    cd /etc/apache2/sites-available/
+    sudo a2ensite aeros.conf
+
+    #==============================================
+    # Installing Redis
+    sudo apt-get install -y redis-server
+
+    sudo sed -i "s/^supervised no/supervised systemd/" /etc/redis/redis.conf
+    sudo sed -i "s/^# bind 127.0.0.1 ::1/bind 127.0.0.1 ::1/" /etc/redis/redis.conf
+    sudo sed -i "s/^# requirepass foobared/requirepass testing_aeros/" /etc/redis/redis.conf
+
+    sudo systemctl restart redis
+
+    #==============================================
+    # Installing Beanstalkd
+    sudo apt-get install beanstalkd
+
+    #==============================================
+    # Installing Supervisor (handles multiple worker pools/instantces on background)
+    sudo apt-get install supervisor
+
+    echo '[program:app-worker-script]
+    process_name=%(program_name)s_%(process_num)02d
+    command=/usr/bin/php /var/www/html/scripts/app-worker-script.php
+    autostart=true
+    autorestart=true
+    user=root
+    numprocs=10
+    redirect_stderr=true
+    stdout_logfile=/var/www/html/logs/app-worker.log' > /etc/supervisor/conf.d/app-worker-script.conf
+
+    #==============================================
+    # Restart Apache
+    sudo service apache2 restart
+
+  SHELL
+
+  #==============================================
+  # config.trigger.after :up do |trigger|
+  #   trigger.name = "Setting up Aero Adming V1.0..."
+  #   trigger.run = {inline: "curl http://192.168.56.11/create-local-db"}
+  # end
+end

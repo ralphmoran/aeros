@@ -8,6 +8,10 @@
 */
 
 if (PHP_SAPI !== 'cli') {
+
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+
     // Get TLD
     $domainParts = explode('.', $_SERVER['HTTP_HOST']);
     $rootDomain = $domainParts[1] . '.' . $domainParts[2];

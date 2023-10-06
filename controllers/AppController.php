@@ -23,6 +23,13 @@ class AppController extends ControllerBase
 
         // more logic...
 
+        // app()->worker->create('great-worker');
+
         return view('app');
+    }
+
+    public function login()
+    {
+        echo 'Pasa';
     }
 }

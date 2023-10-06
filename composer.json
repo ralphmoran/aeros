@@ -21,6 +21,7 @@
         }
     },
     "require": {
+        "php": "^8.0",
         "vlucas/phpdotenv": "^5.4",
         "aws/aws-sdk-php": "^3.211",
         "firebase/php-jwt": "^6.1",
@@ -39,12 +40,11 @@
     "license": "Property",
     "minimum-stability": "alpha",
     "scripts": {
-        "app-worker-start": "sudo supervisorctl start app-worker-script:*",
-        "app-worker-stop": "sudo supervisorctl stop app-worker-script:*",
-        "app-worker-status": "sudo supervisorctl status app-worker-script:*",
-        "app-worker-start-dev": "vagrant ssh -c 'sudo supervisorctl start app-worker-script:*'",
-        "app-worker-stop-dev": "vagrant ssh -c 'sudo supervisorctl stop app-worker-script:*'",
-        "app-worker-status-dev": "vagrant ssh -c 'sudo supervisorctl status app-worker-script:*'"
+        "update-workers": "vagrant ssh -c 'sudo cp -r /var/www/html/scripts/supervisor/*.conf /etc/supervisor/conf.d/'",
+        "start-workers": "vagrant ssh -c 'sudo supervisorctl start all'",
+        "stop-workers": "vagrant ssh -c 'sudo supervisorctl stop all'",
+        "status-workers": "vagrant ssh -c 'sudo supervisorctl status'",
+        "refresh-workers": "vagrant ssh -c 'sudo supervisorctl stop all && sudo supervisorctl reread && sudo supervisorctl update && sudo supervisorctl start all'"
     },
     "config": {
         "allow-plugins": {

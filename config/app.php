@@ -30,6 +30,8 @@ $app->singleton('request', Classes\Request::class);
 $app->singleton('redirect', Classes\Redirect::class);
 $app->singleton('event', Classes\EventDispatcher::class);
 $app->singleton('logger', Classes\Logger::class);
+$app->singleton('file', Classes\File::class);
+$app->singleton('console', Classes\Console::class);
 
 # App worker - Queues and Jobs
 $app->singleton('cache', Classes\Cache::class);

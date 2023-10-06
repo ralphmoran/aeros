@@ -10,7 +10,10 @@
 
 use Classes\Route;
 
-Route::get("/", "AppController");
+Route::get("/", "IndexController");
+
+Route::get("admin:/", "AppController");
+Route::get("admin:/login", "AppController@login");
 
 // -- Example #1: Route with a closure|callback
 

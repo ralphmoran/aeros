@@ -17,7 +17,7 @@ return [
     */
 
     'ExampleWorker' => Workers\ExampleWorker::class,
-    'AnotherWorker' => Workers\AnotherWorker::class,
+    'NewWorker' => Workers\NewWorker::class,
 
     // ...
 ];
