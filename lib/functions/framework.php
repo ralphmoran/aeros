@@ -401,7 +401,7 @@ if (! function_exists('encryptor')) {
 	 * @return Classes\Encryptor
 	 */
 	function encryptor(): Classes\Encryptor {
-		if (class_exists('Workers\Encryptor')) {
+		if (class_exists('Classes\Encryptor')) {
 			return app()->encryptor;
 		}
 	}
