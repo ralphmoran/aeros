@@ -13,8 +13,8 @@ class Encryptor
     /** @var string */
     private $iv_length;
 
-    public function __construct($key){
-        $this->key = $key;
+    public function __construct() {
+        $this->key = env('APP_KEY');
         $this->ciphering = "AES-256-CBC";
         $this->iv_length = openssl_cipher_iv_length($this->ciphering);
     }
