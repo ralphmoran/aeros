@@ -1,5 +1,9 @@
 <?php
-class IdEncryptor{
+
+namespace Classes;
+
+class Encryptor 
+{
     /** @var string */
     private $key;
     
@@ -80,89 +84,88 @@ class IdEncryptor{
  |------------------------------------
  */
 
-/**
- * Encrypts permanently a value.
- *
- * @param int $number
- * @param int $borrowerid
- * @return string
- */
-function encrypt_perm($number, $borrowerid)
-{
-    $clean = filter_var(
-        preg_replace('/[^0-9]/', '', $number), 
-        FILTER_SANITIZE_NUMBER_INT
-    );
+// /**
+//  * Encrypts permanently a value.
+//  *
+//  * @param int $number
+//  * @param int $borrowerid
+//  * @return string
+//  */
+// function encrypt_perm($number, $borrowerid)
+// {
+//     $clean = filter_var(
+//         preg_replace('/[^0-9]/', '', $number), 
+//         FILTER_SANITIZE_NUMBER_INT
+//     );
 
-    return (openssl_encrypt($clean, "AES-128-ECB", env('PERM_KEY') . $borrowerid) ? openssl_encrypt($clean, "AES-128-ECB", env('PERM_KEY') . $borrowerid) : '');
-}
+//     return (openssl_encrypt($clean, "AES-128-ECB", env('PERM_KEY') . $borrowerid) ? openssl_encrypt($clean, "AES-128-ECB", env('PERM_KEY') . $borrowerid) : '');
+// }
 
-/**
- * Decrypts a value.
- *
- * @param string $encrypted
- * @param int $borrowerid
- * @return string
- */
-function decrypt_perm($encrypted, $borrowerid)
-{
-    return openssl_decrypt(
-        $encrypted, 
-        "AES-128-ECB", 
-        env('PERM_KEY') . $borrowerid
-    );
-}
+// /**
+//  * Decrypts a value.
+//  *
+//  * @param string $encrypted
+//  * @param int $borrowerid
+//  * @return string
+//  */
+// function decrypt_perm($encrypted, $borrowerid)
+// {
+//     return openssl_decrypt(
+//         $encrypted, 
+//         "AES-128-ECB", 
+//         env('PERM_KEY') . $borrowerid
+//     );
+// }
 
-/**
- * Encrypts DOB.
- *
- * @param string $dob
- * @param int $borrowerid
- * @return string
- */
-function encrypt_dob($dob, $borrowerid)
-{
-    date_default_timezone_set('UTC');
+// /**
+//  * Encrypts DOB.
+//  *
+//  * @param string $dob
+//  * @param int $borrowerid
+//  * @return string
+//  */
+// function encrypt_dob($dob, $borrowerid)
+// {
+//     date_default_timezone_set('UTC');
 
-    if(!empty($dob)){
-        $unix_dob = DateTime::createFromFormat('m/d/Y', $dob);
+//     if(!empty($dob)){
+//         $unix_dob = DateTime::createFromFormat('m/d/Y', $dob);
 
-        return (openssl_encrypt(
-            $unix_dob->getTimestamp(),
-            "AES-128-ECB",
-            env('PERM_KEY') . $borrowerid
-        )
-            ? openssl_encrypt(
-                $unix_dob->getTimestamp(),
-                "AES-128-ECB",
-                env('PERM_KEY') . $borrowerid
-            )
-            : '');
-    }
+//         return (openssl_encrypt(
+//             $unix_dob->getTimestamp(),
+//             "AES-128-ECB",
+//             env('PERM_KEY') . $borrowerid
+//         )
+//             ? openssl_encrypt(
+//                 $unix_dob->getTimestamp(),
+//                 "AES-128-ECB",
+//                 env('PERM_KEY') . $borrowerid
+//             )
+//             : '');
+//     }
 
-    return '';    
-}
+//     return '';    
+// }
 
-/**
- * Decrypts DOB.
- *
- * @param string $encrypted
- * @param int $borrowerid
- * @return string
- */
-function decrypt_dob($encrypted, $borrowerid)
-{
-    date_default_timezone_set('UTC');
+// /**
+//  * Decrypts DOB.
+//  *
+//  * @param string $encrypted
+//  * @param int $borrowerid
+//  * @return string
+//  */
+// function decrypt_dob($encrypted, $borrowerid)
+// {
+//     date_default_timezone_set('UTC');
 
-    if (!empty($encrypted)) {
-        $unix_dob = openssl_decrypt(
-            $encrypted,
-            "AES-128-ECB",
-            env('PERM_KEY') . $borrowerid
-        );
+//     if (!empty($encrypted)) {
+//         $unix_dob = openssl_decrypt(
+//             $encrypted,
+//             "AES-128-ECB",
+//             env('PERM_KEY') . $borrowerid
+//         );
 
-        return date('m/d/Y', $unix_dob);
-    }
-    return '';
-}
-?>
+//         return date('m/d/Y', $unix_dob);
+//     }
+//     return '';
+// }

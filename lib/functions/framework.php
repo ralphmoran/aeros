@@ -392,3 +392,17 @@ if (! function_exists('worker')) {
 		}
 	}
 }
+
+if (! function_exists('encryptor')) {
+
+	/**
+	 * Returns the global encryptor.
+	 *
+	 * @return Classes\Encryptor
+	 */
+	function encryptor(): Classes\Encryptor {
+		if (class_exists('Workers\Encryptor')) {
+			return app()->encryptor;
+		}
+	}
+}

@@ -32,6 +32,7 @@ $app->singleton('event', Classes\EventDispatcher::class);
 $app->singleton('logger', Classes\Logger::class);
 $app->singleton('file', Classes\File::class);
 $app->singleton('console', Classes\Console::class);
+$app->singleton('encryptor', Classes\Encryptor::class);
 
 # App worker - Queues and Jobs
 $app->singleton('cache', Classes\Cache::class);
