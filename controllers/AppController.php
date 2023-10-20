@@ -32,4 +32,9 @@ class AppController extends ControllerBase
     {
         echo 'Pasa';
     }
+    
+    public function profile(int $userid, string $profile)
+    {
+        echo 'Profile';
+    }
 }

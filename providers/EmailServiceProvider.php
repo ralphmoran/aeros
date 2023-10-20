@@ -6,7 +6,7 @@ use Classes\ServiceProvider;
 
 class EmailServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         // Add event listener for email notification
         app()->event
@@ -16,5 +16,10 @@ class EmailServiceProvider extends ServiceProvider
 
         // Setup email connection
         // ...
+    }
+
+    public function boot(): void
+    {
+        
     }
 }

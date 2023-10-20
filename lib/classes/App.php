@@ -8,7 +8,7 @@ class App extends ServiceContainer
 {
     public function __construct(
         /** @var string */
-        public string $rootDir = ''
+        public string $basedir = ''
     ) { }
 
     /**
@@ -38,7 +38,7 @@ class App extends ServiceContainer
      */
     public function setBaseDir(string $dir): ServiceContainer
     {
-        $this->rootDir = $dir;
+        $this->basedir = $dir;
 
         return $this;
     }

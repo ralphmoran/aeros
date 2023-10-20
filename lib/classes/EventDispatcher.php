@@ -39,7 +39,7 @@ class EventDispatcher
                 if (env('APP_DEBUG')) {
                     app()->logger->log(
                         "Event `{$eventName}` triggered in " . __CLASS__ . '::' . __LINE__,
-                        app()->rootDir . '/logs/event.log'
+                        app()->basedir . '/logs/event.log'
                     );
                 }
             }

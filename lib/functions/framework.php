@@ -406,3 +406,31 @@ if (! function_exists('encryptor')) {
 		}
 	}
 }
+
+if (! function_exists('session')) {
+
+	/**
+	 * Returns the global session object.
+	 *
+	 * @return Classes\Session
+	 */
+	function session(): Classes\Session {
+		if (class_exists('Classes\Session')) {
+			return app()->session;
+		}
+	}
+}
+
+if (! function_exists('config')) {
+
+	/**
+	 * Returns values or objects from config files.
+	 *
+	 * @return mixed
+	 */
+	function config(string $from, mixed $default = null): mixed {
+		if (class_exists('Classes\Config')) {
+			return app()->config->getFrom($from, $default);
+		}
+	}
+}

@@ -11,14 +11,14 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-while (true) {
+// while (true) {
     // Bring main worker
     app()->worker->handle() . PHP_EOL;
 
     echo '################################' . PHP_EOL;
 
     usleep(800);
-}
+// }
 
 // Make sure you exit the application with 1
 exit(1);

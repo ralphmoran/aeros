@@ -12,9 +12,9 @@ class HttpServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $middlewares = include app()->rootDir . '/config/middlewares.php';
+        $middlewares = include app()->basedir . '/config/middlewares.php';
 
         // For security reasons, there are middlewares that need to run ALWAYS
         if (empty($middlewares)) {
@@ -22,5 +22,10 @@ class HttpServiceProvider extends ServiceProvider
         }
 
         Router::runMiddlewares($middlewares);
+    }
+
+    public function boot(): void
+    {
+        
     }
 }

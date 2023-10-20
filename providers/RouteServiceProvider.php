@@ -11,9 +11,9 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $path = app()->rootDir . '/routes';
+        $path = app()->basedir . '/routes';
         
         $routes = scan($path);
 
@@ -24,5 +24,10 @@ class RouteServiceProvider extends ServiceProvider
         foreach ($routes as $file) {
             require $path . '/' . $file;
         }
+    }
+
+    public function boot(): void
+    {
+        
     }
 }

@@ -18,4 +18,14 @@ class Session extends Kernel
     {
         
     }
+
+    public function put()
+    {
+        
+    }
+
+    public function get()
+    {
+        
+    }
 }

@@ -12,7 +12,7 @@ class Cache extends \Predis\Client
      */
     public function __construct() {
         parent::__construct(
-            'tcp://' . env('REDIS_HOST') . ':' . env('REDIS_PORT'), 
+            env('REDIS_PROTOCOL') . '://' . env('REDIS_HOST') . ':' . env('REDIS_PORT'), 
             [
                 'parameters' => [
                     'password' => env('REDIS_PASSWORD'),

@@ -59,104 +59,12 @@ class Router
             return;
         }
 
-        $this->routes[$method][] = $route;
+        $this->parseRoute($route);
+
+        // Implement Trie-based approach.
+        $this->routes[$method][$route->subdomain][] = $route;
 
         return $route;
-    }
-
-    /**
-     * Destructs a route.
-     *
-     * @param Route $route
-     * @return array
-     */
-    public function parseRoute(Route $route) : array
-    {
-        $route->path = preg_replace(
-            '/{([^}]+)}/', 
-            ':$1',
-            preg_replace("/(:\/)/", '@/', $route->path)
-        );
-
-        $tokens = explode('/', $route->path);
-        $params = [];
-
-        foreach ($tokens as $index => $token) {
-            if (strpos($token, ':') !== false) {
-                $params[substr($token, 1)] = $index;
-            }
-        }
-
-        return [
-            'path'    => $route->path,
-            'handler' => $route->handler,
-            'params'  => $params
-        ];
-    }
-
-    /**
-     * Parses a URI and return its parts and the subdomain if there is any.
-     *
-     * @param string $uri
-     * @return array
-     */
-    public function getUriParts(string $uri) : array
-    {
-        $uriParts = array_values(
-            array_filter(
-                explode('/', $uri)
-            )
-        );
-
-        if (substr_count($_SERVER['SERVER_NAME'], '.') == 2) {
-            array_unshift($uriParts, explode('.', $_SERVER['SERVER_NAME'])[0] . '@');
-        }
-
-        return $uriParts;
-    }
-
-    /**
-     * Confirms if the URI and the REQUEST_METHOD matches any saved route.
-     *
-     * @param string $method
-     * @param string $uri
-     * @return bool|array
-     */
-    public function match($method, $uri)
-    {
-        $uriParts = $this->getUriParts($uri);
-
-        foreach ($this->getRoutes(strtoupper($method)) as $route) {
-
-            $parsedRoute = $this->parseRoute($route);
-
-            $tokens      = array_filter(
-                                explode('/', $route->path)
-                            );
-
-            if (count($tokens) !== count($uriParts)) {
-                continue;
-            }
-
-            $params = [];
-
-            foreach ($parsedRoute['params'] as $name => $index) {
-                $params[$name] = $uriParts[$index];
-            }
-
-            foreach ($tokens as $i => $token) {
-                if (strpos($token, ':') === false && $token !== $uriParts[$i]) {
-                    return false;
-                }
-            }
-
-            return [
-                'route' => $route,
-                'params' => $params
-            ];
-        }
-
-        return false;
     }
 
     /**
@@ -167,12 +75,12 @@ class Router
      */
     public function dispatch(): mixed
     {
-        $routeInstance = $this->match($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+        $route = $this->match($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
 
-        if (! $routeInstance) {
+        if (! $route) {
             throw new \Exception(
                 sprintf(
-                    "ERROR[route] Route '%s:%s' does not exist.",
+                    "ERROR[route] Route '%s:%s' does not match any registered route.",
                     $_SERVER['REQUEST_METHOD'],
                     $_SERVER['REQUEST_URI']
                 )
@@ -180,11 +88,144 @@ class Router
         }
 
         // Call middleware(s) for this route
-        self::runMiddlewares($routeInstance['route']->getMiddlewares());
+        self::runMiddlewares($route->getMiddlewares());
 
-        return $routeInstance['route']
+        return $route
                 ->handler()
                 ->getContent();
+    }
+
+    /**
+     * Confirms if the URI and the REQUEST_METHOD matches any registred route.
+     *
+     * @param string $method
+     * @param string $uri
+     * @return bool|Route
+     */
+    public function match($method, $uri): bool|Route
+    {
+        // Returns URI parts and subdomain if there is any
+        $currentUriParts = $this->getUriParts($uri);
+
+        foreach ($this->getRoutes(strtoupper($method), $currentUriParts['subdomain']) as $route) {
+
+            // URI parts are not equal: `/user/login` and `/user`, skip
+            if (count($route->uriParts) !== count($currentUriParts['parts'])) {
+                continue;
+            }
+
+            // Checks if all URI parts from current route match the current URI
+            foreach ($route->uriParts as $index => $token) {
+
+                if (strpos($token, ':') !== false) {
+                    continue;
+                }
+
+                if (strcmp($token, $currentUriParts['parts'][$index]) != 0) {
+                    return false;
+                }
+            }
+
+            // Assings values to params for current route: 
+            // Example: `admin.domain.com/2233/internal` to `admin:/:userid/:profile`
+            // $params = ['userid'=>223, 'profile'='internal']
+            $params = [];
+
+            foreach ($route->params as $name => $index) {
+                $params[$name] = $currentUriParts['parts'][$index-1];
+            }
+
+            $route->params = $params;
+
+            return $route;
+        }
+
+        return false;
+    }
+
+    /**
+     * Parses a URI and return its parts and the subdomain if there is any.
+     *
+     * @param string $uri
+     * @return array
+     */
+    public function getUriParts(string $uri) : array
+    {
+        $uriParts = [
+            'parts' => array_values(
+                array_filter(
+                    explode('/', $uri)
+                )
+            ),
+            'subdomain' => '*'
+        ];
+
+        // If no URI parts... add default index '/'
+        if (empty($uriParts['parts'])) {
+            $uriParts['parts'][] = '/';
+        }
+
+        if (substr_count($_SERVER['SERVER_NAME'], '.') == 2) {
+            $uriParts['subdomain'] = explode('.', $_SERVER['SERVER_NAME'])[0];
+        }
+
+        return $uriParts;
+    }
+
+    /**
+     * Destructs a route. It returns the URI parts and the subdomain if there is any.
+     * 
+     * Subdomain will be appended with '@'. : `admin.domain.com/login` will be [`admin@`, `loging`]
+     *
+     * @param Route $route
+     * @return void
+     */
+    public function parseRoute(Route $route): void
+    {
+        // Replaces `{userid}` for `:userid`
+        $route->path = preg_replace(
+            '/{([^}]+)}/', 
+            ':$1',
+            // and `:/` for `@/`
+            preg_replace("/(:\/)/", '@/', $route->path)
+        );
+
+        $tokens = explode('/', $route->path);
+
+        $subdomain = '*';
+        $uriParts  = [];
+        $params    = [];
+
+        // Go over all tokens from route path
+        foreach ($tokens as $index => $token) {
+
+            // Gets the subdomain if there is any, otherwise, sets the subdomain to '*'
+            if (strpos($token, '@') !== false) {
+                $subdomain = preg_replace('/@$/', '', $token) ?: '*';
+            }
+            
+            // Determines the position of the token from the route to assign values from URI request
+            // From `admin@/:userid/:profile` => `admin.domain.com/2233/internal`. URI: '/2233/internal'
+            //      => ['userid': 0 and 'profile': 1]
+            if (strpos($token, ':') !== false) {
+                $params[$token] = $index;
+                $uriParts[] = $token;
+            }
+
+            // Gets all URI parts
+            if (strpos($token, ':') === false && strpos($token, '@') === false) {
+                $uriParts[] = $token;
+            }
+        }
+
+        // If no URI parts... add default index '/'
+        if (empty($uriParts = array_filter($uriParts))) {
+            $uriParts = ['/'];
+        }
+
+        $route->subdomain = $subdomain;
+        $route->uriParts  = $uriParts;
+        $route->params    = $params;
     }
 
     /**
@@ -193,7 +234,7 @@ class Router
      * @param string $method
      * @return array
      */
-    public function getRoutes(string $method = '') : array
+    public function getRoutes(string $method = '', string $subdomain = '*') : array
     {
         $method = strtoupper($method);
 
@@ -201,8 +242,12 @@ class Router
             throw new \Exception("ERROR[route] Method '{$method}' is not registered.");
         }
 
+        if (! empty($method) && ! array_key_exists($subdomain, $this->routes[$method])) {
+            throw new \Exception("ERROR[route] Subdomain '{$subdomain}' is not registered.");
+        }
+
         if (! empty($method) && array_key_exists($method, $this->routes)) {
-            return $this->routes[$method];
+            return $this->routes[$method][$subdomain];
         }
 
         return $this->routes;

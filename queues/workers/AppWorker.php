@@ -77,7 +77,7 @@ class AppWorker extends Worker
 
         // Add logic to handle Jobs from Cache (Redis)
         // cache(); OR app()->cache;
-        // $workers = require_once app()->rootDir . '/config/workers.php';
+        // $workers = require_once app()->basedir . '/config/workers.php';
 
         // if (is_array($workers) && ! empty($workers)) {
 

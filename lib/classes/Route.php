@@ -21,6 +21,15 @@ class Route extends Router
     /** @var string */
     const PATCH = 'patch';
 
+    /** @var string */
+    public $subdomain = null;
+
+    /** @var array */
+    public $uriParts = [];
+
+    /** @var array */
+    public $params = [];
+
     /** @var array */
     private $middlewares = [];
 
@@ -131,18 +140,34 @@ class Route extends Router
 
         if (! class_exists($controllerName) || get_parent_class($controllerName) != 'Classes\\ControllerBase') {
             throw new \Exception(
-                    sprintf('ERROR[Controller] There was a problem trying to validate controller \'%s\.', $controllerName)
-                );
+                sprintf('ERROR[Controller] There was a problem trying to validate controller \'%s\.', $controllerName)
+            );
         }
 
         $method = empty($method) ? 'index' : $method;
 
         if (! method_exists($controllerName, $method)) {
             throw new \Exception(
-                    sprintf('ERROR[Controller] Method \'%s\'::\'%s\' does not exist.', $controllerName, $method)
-                );
+                sprintf('ERROR[Controller] Method \'%s\'::\'%s\' does not exist.', $controllerName, $method)
+            );
         }
 
-        $this->content = ($controllerName::getInstance())->$method();
+        // Dynamically assign parameters to controller method
+        $reflectionMethod = new \ReflectionMethod($controllerName::getInstance(), $method);
+
+        $arguments = [];
+
+        foreach ($reflectionMethod->getParameters() as $param) {
+
+            if (! array_key_exists(':' . $param->name, $this->params)) {
+                throw new \Exception(
+                    sprintf('ERROR[Route] Parameter \'%s\' does not exist in route \'%s\'.', $param->name, $this->path)
+                );
+            }
+
+            $arguments[] = $this->params[':' . $param->name];
+        }
+
+        $this->content = $reflectionMethod->invokeArgs($controllerName::getInstance(), $arguments);
     }
 }

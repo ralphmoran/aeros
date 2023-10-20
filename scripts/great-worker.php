@@ -16,7 +16,7 @@
  * All workers, in order to run indefinitely, need to run an infinite loop and 
  * put it asleep less than a second.
  */
-while (true) {
+// while (true) {
 
     /**
      * It's a good practice to call the related worker for this script:
@@ -29,7 +29,7 @@ while (true) {
 
     // 600 miliseconds (optional)
     usleep(600); 
-}
+// }
 
 // Make sure you exit the application with 1
 exit(1);

@@ -10,4 +10,9 @@ class IndexController extends ControllerBase
     {
         return view('index');
     }
+
+    public function list(int $userid)
+    {
+        return view('index', ['userid' => $userid]);
+    }
 }

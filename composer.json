@@ -3,8 +3,7 @@
     "type": "project",
     "autoload":{
         "files":[
-            "lib/functions/all.php",
-            "config/session.php"
+            "lib/functions/all.php"
         ],
         "psr-4": {
             "Classes\\": "lib/classes",

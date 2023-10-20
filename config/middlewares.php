@@ -12,6 +12,7 @@
 */
 
 return [
+    // 'SessionMiddleware' => Middlewares\SessionMiddleware::class,
     'CorsMiddleware' => Middlewares\CorsMiddleware::class,
     'BanBotsMiddleware' => Middlewares\BanBotsMiddleware::class,
     'SanitizerMiddleware' => Middlewares\SanitizerMiddleware::class,

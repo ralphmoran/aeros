@@ -6,7 +6,7 @@ use Classes\ServiceProvider;
 
 class MimeTypesServiceProvider extends ServiceProvider
 {
-    public function register()
+    public function register(): void
     {
         // Register the MIME types on Cache
         if (! cache()->exists('mime.types')) {
@@ -33,5 +33,10 @@ class MimeTypesServiceProvider extends ServiceProvider
 
             cache()->set('mime.types', json_encode(array_filter($mime_types)));
         }
+    }
+
+    public function boot(): void
+    {
+        
     }
 }
