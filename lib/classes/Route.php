@@ -133,8 +133,8 @@ class Route extends Router
     private function callController(string $controller)
     {
         [$controllerName, $method] = strpos($controller, '@') === false
-                                            ? [$controller, 'index']
-                                            : explode('@', $controller);
+                                    ? [$controller, 'index']
+                                    : explode('@', $controller);
 
         $controllerName = "Controllers\\$controllerName";
 
@@ -143,8 +143,6 @@ class Route extends Router
                 sprintf('ERROR[Controller] There was a problem trying to validate controller \'%s\.', $controllerName)
             );
         }
-
-        $method = empty($method) ? 'index' : $method;
 
         if (! method_exists($controllerName, $method)) {
             throw new \Exception(

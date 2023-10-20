@@ -5,6 +5,16 @@ namespace Classes;
 use Classes\Route;
 use Interfaces\MiddlewareInterface;
 
+/**
+ * Router class manages static calls to HTTP methods, parses the registered routes and
+ * parses the current requested URI.
+ * 
+ * @method static Classes\Route get(string $route, callable|string $handler)
+ * @method static Classes\Route post(string $route, callable|string $handler)
+ * @method static Classes\Route put(string $route, callable|string $handler)
+ * @method static Classes\Route path(string $route, callable|string $handler)
+ * @method static Classes\Route delete(string $route, callable|string $handler)
+ */
 class Router
 {
     /** @var array */
@@ -18,8 +28,6 @@ class Router
         'patch',
         'delete',
     ];
-
-    public function __construct() {}
 
     /**
      * Registers a new Route based on the static call of the requested method.
