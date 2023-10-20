@@ -122,6 +122,13 @@ class Router
                 continue;
             }
 
+            // In case it is URI index: '/'
+            if (count($route->uriParts) == 1 && ! empty(array_diff($route->uriParts, $currentUriParts['parts']))) {
+                continue;
+            }
+
+            $processNextRoute = true;
+
             // Checks if all URI parts from current route match the current URI
             foreach ($route->uriParts as $index => $token) {
 
@@ -130,8 +137,13 @@ class Router
                 }
 
                 if (strcmp($token, $currentUriParts['parts'][$index]) != 0) {
-                    return false;
+                    $processNextRoute = false;
+                    break;
                 }
+            }
+
+            if (! $processNextRoute) {
+                continue;
             }
 
             // Assings values to params for current route: 

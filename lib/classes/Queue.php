@@ -21,7 +21,7 @@ class Queue
      */
     public function push(Job|Pipeline $payload, string $queueName = '_gxjobs'): bool
     {
-        $queueName .= env('APP_NAME');
+        $queueName = env('APP_NAME') . $queueName;
 
         // Validate if $payload is a Job or a Pipeline
 

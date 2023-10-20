@@ -15,4 +15,14 @@ class IndexController extends ControllerBase
     {
         return view('index', ['userid' => $userid]);
     }
+
+    public function showProfile()
+    {
+        return 'Profile';
+    }
+
+    public function anotherProfile()
+    {
+        return 'Another Profile';
+    }
 }
