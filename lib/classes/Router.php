@@ -85,6 +85,8 @@ class Router
     {
         $route = $this->match($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
 
+        // dd($_SERVER);
+
         if (! $route) {
             throw new \Exception(
                 sprintf(
@@ -127,7 +129,7 @@ class Router
                 continue;
             }
 
-            $processNextRoute = true;
+            $processNextRoute = false;
 
             // Checks if all URI parts from current route match the current URI
             foreach ($route->uriParts as $index => $token) {
@@ -137,12 +139,12 @@ class Router
                 }
 
                 if (strcmp($token, $currentUriParts['parts'][$index]) != 0) {
-                    $processNextRoute = false;
+                    $processNextRoute = true;
                     break;
                 }
             }
 
-            if (! $processNextRoute) {
+            if ($processNextRoute) {
                 continue;
             }
 
@@ -202,7 +204,7 @@ class Router
      */
     public function parseRoute(Route $route): void
     {
-        // Replaces `{userid}` for `:userid`
+        // Replaces `{token}` for `:token`
         $route->path = preg_replace(
             '/{([^}]+)}/', 
             ':$1',
