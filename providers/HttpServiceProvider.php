@@ -14,7 +14,7 @@ class HttpServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $middlewares = include app()->basedir . '/config/middlewares.php';
+        $middlewares = config('middlewares');
 
         // For security reasons, there are middlewares that need to run ALWAYS
         if (empty($middlewares)) {

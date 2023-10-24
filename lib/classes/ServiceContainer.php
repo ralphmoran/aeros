@@ -42,7 +42,7 @@ class ServiceContainer extends Kernel
             return $this->providers;
         }
 
-        $providers = include app()->basedir . '/config/providers.php';
+        $providers = config('providers');
 
         if (empty($providers)) {
             throw new \Exception('ERROR[provider] No providers were found.');
