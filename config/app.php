@@ -38,6 +38,7 @@ $app->singleton('cookie', Classes\Cookie::class);
 $app->singleton('config', Classes\Config::class);
 
 # App worker - Queues and Jobs
+$app->singleton('queue', Classes\Queue::class);
 $app->singleton('cache', Classes\Cache::class);
 $app->singleton('worker', Workers\AppWorker::class);
 

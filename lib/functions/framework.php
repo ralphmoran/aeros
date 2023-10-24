@@ -134,8 +134,8 @@ if (! function_exists('dd')) {
 					function ($point) {
 						$index = (isset($point['class']) ? $point['class'] . '::' : '')
 							. $point['function'] . ' => ' 
-							. str_replace(env('APP_ROOT_DIR'), '', $point['file']) 
-							. ':L#' . $point['line'];
+							. str_replace(env('APP_ROOT_DIR'), '', (isset($point['file']) ? $point['file'] : '')) 
+							. ':L#' . (isset($point['line']) ? $point['line'] : '');
 
 						if (empty($point['args'])) {
 							return $index;

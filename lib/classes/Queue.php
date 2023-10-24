@@ -2,6 +2,8 @@
 
 namespace Classes;
 
+use Interfaces\JobInterface;
+
 /**
  * Asynchronouns in real-time execution.
  * 
@@ -12,40 +14,40 @@ namespace Classes;
 
 class Queue
 {
+    /** @var string */
+    const DEFAULT_PIPELINE = 'gx_pipelines';
+
     /**
-     * Adds a Job or a pipeline to the queue system.
+     * Adds a Job or an array of Job objects to a pipeline in the queue system.
      *
-     * @param Job|Pipeline $payload
-     * @param string $queueName
+     * @param array $jobs Array of Job objects. Example: ['job1' => Interfaces\JobInterface]
+     * @param string $pipelineName
      * @return boolean
      */
-    public function push(Job|Pipeline $payload, string $queueName = '_gxjobs'): bool
+    public function push(array $jobs, string $pipelineName = null): bool
     {
-        $queueName = env('APP_NAME') . $queueName;
+        if (is_null($pipelineName)) {
+            $pipelineName = $this::DEFAULT_PIPELINE;
+        }
 
-        // Validate if $payload is a Job or a Pipeline
+        $pipelineName = env('APP_NAME') . '_' . $pipelineName;
 
-            // If Job:
-                // If '$queueName' is empty, add job to pipeline named "_gxjobs"
-                // If '$queueName' is given, search for the pipeline, 
-                    // If exists, add job to that pipeline
-                    // If not, add job to new pipeline
+        // Adds jobs to a pipeline
+        cache()->pipeline(function ($pipe) use ($jobs, $pipelineName) 
+        {
+            foreach ($jobs as $jobName => $jobClass) {
 
-            // If Pipeline:
-                // If '$queueName' is empty, add pipeline to generic pipeline named "_gxpipeline"
-                // If '$queueName' is given, search for the pipeline, 
-                    // If exists, add all jobs to that pipeline
-                    // If not, add all jobs to new pipeline
+                $pipe->lpush("{$pipelineName}:{$jobName}", serialize($jobClass));
 
-        // Check if $queueName is already in cache, if so, 
-        cache()->set($queueName, $payload);
-        cache()->exists($queueName);
+                $message = sprintf('Added new job to pipeline "%s": %s', $pipelineName, serialize($jobClass));
 
-        $message = 'Added new job|pipeline: ' . $queueName . ' (' . json_encode($payload) . ')';
+                // app()->event
+                //     ->addEventListener($pipelineName, new \Events\QueueEvent($message))
+                //     ->emit($pipelineName);
 
-        app()->event
-            ->addEventListener($queueName, new \Events\QueueEvent($message))
-            ->emit($queueName, $message);
+                app()->logger->log($message, app()->basedir . '/logs/event.log');
+            }
+        });
 
         return true;
     }
@@ -53,17 +55,80 @@ class Queue
     /**
      * Removes a Job from the given pipeline from queue system.
      *
-     * @param string $queueName
-     * @return Job|Pipeline
+     * @param string $pipelineName Example: "pipeline1:job1"
+     * @return JobInterface
+     * @throws Exception
      */
-    public function pop(string $queueName): Job|Pipeline
+    public function pop(string $jobName): JobInterface
     {
-        app()->event
-            ->emit(
-                $queueName, 
-                cache()->get($queueName)
-            );
+        if (strpos($jobName, ':') === false) {
+            $jobName = env('APP_NAME') . '_' . $this::DEFAULT_PIPELINE . ':' . $jobName;
+        }
 
-        return new \Classes\Job();
+        if (! cache()->exists($jobName)) {
+            throw new \Exception("ERROR[Queue] Job '{$jobName}' is not registered.");
+        }
+
+        // Get the first job
+        $jobObject = cache()->lrange($jobName, 0, 0)[0];
+
+        // Initiate commit, remove first job, and execute command
+        cache()->multi();
+        cache()->ltrim($jobName, 1, -1);
+        cache()->exec();
+
+        // Emit event
+        app()->event
+            ->emit($jobName, $jobObject);
+
+        return unserialize($jobObject);
+    }
+
+    /**
+     * Processes and execute all jobs from a pipeline.
+     *
+     * @param string $pipelineName
+     * @return bool
+     * @throws Exception
+     */
+    public function processPipeline(string $pipelineName = ''): bool
+    {
+        // Get the pipeline name
+        $pipelineName = $pipelineName ?: env('APP_NAME') . '_' . $this::DEFAULT_PIPELINE;
+
+        // Get all jobs from the pipeline and remove each
+        foreach (cache()->keys("{$pipelineName}:*") as $pipelineNameAndJobName) {
+            $this->pop($pipelineNameAndJobName)->doWork();
+        }
+
+        // Cnofirm that all all elements from the pipeline were removed
+        // $this->flush($pipelineName);
+
+        return true;
+    }
+
+    /**
+     * Removes/deletes all elements from the pipeline.
+     *
+     * @param string $pipelineName
+     * @return void
+     */
+    public function flush(string $pipelineName = '*')
+    {
+        cache()->multi();
+
+        $iterator = null;
+
+        while ($iterator = cache()->scan($iterator, "{$pipelineName}*")) {
+
+            foreach ($iterator as $key) {
+                cache()->pipeline(function($pipe) use ($key) {
+                    $pipe->del($key);
+                });
+            }
+        
+        }
+        
+        cache()->exec();
     }
 }
