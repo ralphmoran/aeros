@@ -11,7 +11,7 @@ abstract class ServiceProvider
     abstract public function register(): void;
 
     /**
-     * This method is called after all service providers is registered.
+     * This method is called after all service providers are registered.
      *
      * @return void
      */
