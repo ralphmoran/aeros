@@ -19,7 +19,8 @@ class App extends ServiceContainer
     public function run()
     {
         try {
-            $this->bootServiceProviders();
+            $this->registerServiceProviders()
+                ->bootServiceProviders();
 
             printf('%s', $this->router->dispatch());
 

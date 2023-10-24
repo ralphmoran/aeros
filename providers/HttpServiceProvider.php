@@ -24,8 +24,13 @@ class HttpServiceProvider extends ServiceProvider
         Router::runMiddlewares($middlewares);
     }
 
+    /**
+     * Boots other logic after this provider is registered.
+     *
+     * @return void
+     */
     public function boot(): void
     {
-        
+
     }
 }

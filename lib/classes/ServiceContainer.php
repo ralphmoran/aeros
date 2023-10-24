@@ -13,22 +13,35 @@ class ServiceContainer extends Kernel
     protected $providers = [];
 
     /**
-     * Boots any service provider.
+     * Registers service providers.
      * 
-     * @return void
+     * @return Classes\ServiceContainer
      */
-    public function bootServiceProviders()
+    public function registerServiceProviders(): ServiceContainer
     {
         foreach ($this->getProviders() as $providerWithNamespace) {
-
-            if (! class_exists($providerWithNamespace) || ! is_subclass_of($providerWithNamespace, ServiceProvider::class)) {
-                throw new \Exception(
-                    sprintf('ERROR[provider] Provider "%s" were not found or invalid.', $providerWithNamespace)
-                );
+            if ($this->isValidProvider($providerWithNamespace)) {
+                (new $providerWithNamespace)->register();
             }
-
-            (new $providerWithNamespace)->register();
         }
+
+        return $this;
+    }
+
+    /**
+     * Boots all already registered service providers.
+     *
+     * @return Classes\ServiceContainer
+     */
+    public function bootServiceProviders(): ServiceContainer
+    {
+        foreach ($this->getProviders() as $providerWithNamespace) {
+            if ($this->isValidProvider($providerWithNamespace)) {
+                (new $providerWithNamespace)->boot();
+            }
+        }
+
+        return $this;
     }
 
     /**
@@ -133,5 +146,22 @@ class ServiceContainer extends Kernel
     public function getServices() : array
     {
         return $this->services;
+    }
+
+    /**
+     * Validates if a service provider.
+     *
+     * @param string $providerWithNamespace
+     * @return boolean
+     */
+    private function isValidProvider(string $providerWithNamespace): bool
+    {
+        if (! class_exists($providerWithNamespace) || ! is_subclass_of($providerWithNamespace, ServiceProvider::class)) {
+            throw new \Exception(
+                sprintf('ERROR[provider] Provider "%s" were not found or invalid.', $providerWithNamespace)
+            );
+        }
+
+        return true;
     }
 }
