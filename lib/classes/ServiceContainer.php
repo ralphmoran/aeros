@@ -17,7 +17,7 @@ class ServiceContainer extends Kernel
      * 
      * @return Classes\ServiceContainer
      */
-    public function registerServiceProviders(): ServiceContainer
+    public function registerProviders(): ServiceContainer
     {
         foreach ($this->getProviders() as $providerWithNamespace) {
             if ($this->isValidProvider($providerWithNamespace)) {
@@ -33,7 +33,7 @@ class ServiceContainer extends Kernel
      *
      * @return Classes\ServiceContainer
      */
-    public function bootServiceProviders(): ServiceContainer
+    public function bootProviders(): ServiceContainer
     {
         foreach ($this->getProviders() as $providerWithNamespace) {
             if ($this->isValidProvider($providerWithNamespace)) {
