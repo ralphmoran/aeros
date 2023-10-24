@@ -120,15 +120,13 @@ class Queue
         $iterator = null;
 
         while ($iterator = cache()->scan($iterator, "{$pipelineName}*")) {
-
             foreach ($iterator as $key) {
                 cache()->pipeline(function($pipe) use ($key) {
                     $pipe->del($key);
                 });
             }
-        
         }
-        
+
         cache()->exec();
     }
 }
