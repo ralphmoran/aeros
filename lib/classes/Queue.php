@@ -71,11 +71,7 @@ class Queue
     public function pop(string $pipelineName = '*'): JobInterface|bool
     {
         // Return and remove a job from the pipeline, if there is any
-        if ($this->setState($pipelineName, Queue::LOCK_STATE)) {
-            return unserialize(cache()->lpop($pipelineName));
-        }
-
-        return false;
+        return unserialize(cache()->lpop($pipelineName));
     }
 
     /**
@@ -92,7 +88,7 @@ class Queue
 
         // Locks pipeline, this is "in progress" state, 
         // this will avoid other workers take over it
-        // if ($this->setState($pipelineName, Queue::LOCK_STATE)) {
+        if ($this->setState($pipelineName, Queue::LOCK_STATE)) {
 
             // Get all jobs from the pipeline and remove each
             while (true) {
@@ -107,7 +103,7 @@ class Queue
             }
 
             return true;
-        // }
+        }
 
         return null;
     }
