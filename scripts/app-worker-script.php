@@ -7,18 +7,22 @@
 |
 | This worker will be executed in the background by Supervisor.
 |
+| It will take care of running and processing all the registered pipelines and jobs.
+|
 */
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-// while (true) {
-    // Bring main worker
-    app()->worker->handle() . PHP_EOL;
+while (true) {
 
-    echo '################################' . PHP_EOL;
+    try {
+        // It takes care of all the registered pipelines and processing their jobs
+        app()->worker->handle();
 
-    usleep(800);
-// }
+        sleep(1);
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
 
-// Make sure you exit the application with 1
 exit(1);

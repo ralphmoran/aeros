@@ -340,7 +340,7 @@ if (! function_exists('sanitizeWith')) {
 			return false;
 		}
 
-		$policies = require env('APP_ROOT_DIR') . '/config/security.php';
+		$policies = config('security');
 
 		foreach ($categories as $category) {
 			if (array_key_exists($category, $policies)) {
@@ -431,6 +431,34 @@ if (! function_exists('config')) {
 	function config(string $from, mixed $default = null): mixed {
 		if (class_exists('Classes\Config')) {
 			return app()->config->getFrom($from, $default);
+		}
+	}
+}
+
+if (! function_exists('logger')) {
+
+	/**
+	 * Appends a message into log file.
+	 *
+	 * @return bool
+	 */
+	function logger(string $message, string $logFile): bool {
+		if (class_exists('Classes\Logger')) {
+			return app()->logger->log($message, $logFile);
+		}
+	}
+}
+
+if (! function_exists('queue')) {
+
+	/**
+	 * Returns the queue instance.
+	 *
+	 * @return Classes\Queue
+	 */
+	function queue(): Classes\Queue {
+		if (class_exists('Classes\Queue')) {
+			return app()->queue;
 		}
 	}
 }

@@ -17,116 +17,147 @@ class Queue
     /** @var string */
     const DEFAULT_PIPELINE = 'gx_pipelines';
 
+    /** @var string */
+    const LOCK_STATE = 'lock';
+
+    /** @var string */
+    const COMPLETE_STATE = 'completed';
+
+    /** @var string */
+    const FAILED_STATE = 'failed';
+
+    /** @var string */
+    const REQUEUED_STATE = 'requeued';
+
+    protected ?string $lockKey = null;
+
     /**
-     * Adds a Job or an array of Job objects to a pipeline in the queue system.
+     * Adds a Job or an array of jobs to a pipeline tail in the queue system.
      *
-     * @param array $jobs Array of Job objects. Example: ['job1' => Interfaces\JobInterface]
+     * @param array $jobs Array of Jobs
      * @param string $pipelineName
      * @return boolean
      */
-    public function push(array $jobs, string $pipelineName = null): bool
+    public function push(array $jobs, string $pipelineName = '*'): bool
     {
-        if (is_null($pipelineName)) {
-            $pipelineName = $this::DEFAULT_PIPELINE;
-        }
-
-        $pipelineName = env('APP_NAME') . '_' . $pipelineName;
+        $this->parsePipelineName($pipelineName);
 
         // Adds jobs to a pipeline
-        cache()->pipeline(function ($pipe) use ($jobs, $pipelineName) 
-        {
-            foreach ($jobs as $jobName => $jobClass) {
+        foreach ($jobs as $jobObj) {
 
-                $pipe->lpush("{$pipelineName}:{$jobName}", serialize($jobClass));
+            if (class_exists($jobObj) && in_array('Interfaces\\JobInterface', class_implements($jobObj))) {
 
-                $message = sprintf('Added new job to pipeline "%s": %s', $pipelineName, serialize($jobClass));
+                $jobObj = serialize(new $jobObj);
 
-                // app()->event
-                //     ->addEventListener($pipelineName, new \Events\QueueEvent($message))
-                //     ->emit($pipelineName);
+                cache()->rpush($pipelineName, $jobObj);
 
-                app()->logger->log($message, app()->basedir . '/logs/event.log');
+                logger(
+                    sprintf('Added new job to pipeline "%s": %s', $pipelineName, $jobObj), 
+                    app()->basedir . '/logs/event.log'
+                );
             }
-        });
+        }
 
         return true;
     }
 
     /**
-     * Removes a Job from the given pipeline from queue system.
+     * Executes and removes a Job from the pipeline's head.
      *
-     * @param string $pipelineName Example: "pipeline1:job1"
-     * @return JobInterface
+     * @param string $pipelineName Example: "pipeline1"
+     * @return JobInterface|bool
      * @throws Exception
      */
-    public function pop(string $jobName): JobInterface
+    public function pop(string $pipelineName = '*'): JobInterface|bool
     {
-        if (strpos($jobName, ':') === false) {
-            $jobName = env('APP_NAME') . '_' . $this::DEFAULT_PIPELINE . ':' . $jobName;
+        // Return and remove a job from the pipeline, if there is any
+        if ($this->setState($pipelineName, Queue::LOCK_STATE)) {
+            return unserialize(cache()->lpop($pipelineName));
         }
 
-        if (! cache()->exists($jobName)) {
-            throw new \Exception("ERROR[Queue] Job '{$jobName}' is not registered.");
-        }
-
-        // Get the first job
-        $jobObject = cache()->lrange($jobName, 0, 0)[0];
-
-        // Initiate commit, remove first job, and execute command
-        cache()->multi();
-        cache()->ltrim($jobName, 1, -1);
-        cache()->exec();
-
-        // Emit event
-        app()->event
-            ->emit($jobName, $jobObject);
-
-        return unserialize($jobObject);
+        return false;
     }
 
     /**
      * Processes and execute all jobs from a pipeline.
      *
-     * @param string $pipelineName
-     * @return bool
+     * @param string $pipelineName <''> Empty or no value it will process the default pipeline
+     *                              <'all'|'*'> it will process all pipelines
+     * @return ?bool
      * @throws Exception
      */
-    public function processPipeline(string $pipelineName = ''): bool
+    public function processPipeline(string $pipelineName = '*'): ?bool
     {
-        // Get the pipeline name
-        $pipelineName = $pipelineName ?: env('APP_NAME') . '_' . $this::DEFAULT_PIPELINE;
+        $this->parsePipelineName($pipelineName);
 
-        // Get all jobs from the pipeline and remove each
-        foreach (cache()->keys("{$pipelineName}:*") as $pipelineNameAndJobName) {
-            $this->pop($pipelineNameAndJobName)->doWork();
-        }
+        // Locks pipeline, this is "in progress" state, 
+        // this will avoid other workers take over it
+        // if ($this->setState($pipelineName, Queue::LOCK_STATE)) {
 
-        // Cnofirm that all all elements from the pipeline were removed
-        // $this->flush($pipelineName);
+            // Get all jobs from the pipeline and remove each
+            while (true) {
 
-        return true;
+                if (! $job = $this->pop($pipelineName)) {
+                    break;
+                }
+
+                $this->delState($pipelineName, Queue::LOCK_STATE);
+
+                $job->doWork();
+            }
+
+            return true;
+        // }
+
+        return null;
     }
 
     /**
-     * Removes/deletes all elements from the pipeline.
+     * Parses pipeline name.
      *
      * @param string $pipelineName
      * @return void
      */
-    public function flush(string $pipelineName = '*')
+    protected function parsePipelineName(string &$pipelineName): void
     {
-        cache()->multi();
+        // Set pipeline name
+        $pipelineName = ($pipelineName == 'all' || $pipelineName == '*') 
+                        ? env('APP_NAME') . '_' . $this::DEFAULT_PIPELINE 
+                        : env('APP_NAME') . '_' . $pipelineName;
+    }
 
-        $iterator = null;
-
-        while ($iterator = cache()->scan($iterator, "{$pipelineName}*")) {
-            foreach ($iterator as $key) {
-                cache()->pipeline(function($pipe) use ($key) {
-                    $pipe->del($key);
-                });
-            }
+    /**
+     * Sets the job state, this could be "Lock" a pipeline to prevent other workers 
+     * to process it, "completed", "failed", or "requeued".
+     *
+     * @param string $pipelineName
+     * @param string $state 
+     * @param integer $lockTime
+     * @return mixed
+     */
+    protected function setState(string $pipelineName, string $state = Queue::LOCK_STATE, int $lockTime = 10): mixed
+    {
+        switch ($state) {
+            case Queue::LOCK_STATE:
+                return cache()->set($state . ":{$pipelineName}", 1, 'ex', $lockTime, 'nx');
+                break;
+            case Queue::COMPLETE_STATE:
+            case Queue::FAILED_STATE:
+            case Queue::REQUEUED_STATE:
+                return cache()->set($state . ":{$pipelineName}", 1);
+                break;
         }
+    }
 
-        cache()->exec();
+    /**
+     * Removes states from the pipeline|job.
+     *
+     * @param string $pipelinName
+     * @param string $state
+     * @return mixed
+     */
+    protected function delState(string $pipelineName, string $state = Queue::LOCK_STATE): mixed
+    {
+        return cache()->del($state . ":{$pipelineName}");
     }
 }

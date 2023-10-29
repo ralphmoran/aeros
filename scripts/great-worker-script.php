@@ -18,12 +18,6 @@
  */
 // while (true) {
 
-    /**
-     * It's a good practice to call the related worker for this script:
-     * 
-     *  Example: app()->worker('EmailWorker')->handle();
-     */
-
     // Add here the logic you need to run in the background.
     echo '[' . date('Y-m-d H:i:s') . '][' . getmypid() . '] From: '. __FILE__ . PHP_EOL;
 

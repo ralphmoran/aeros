@@ -13,6 +13,10 @@ class Logger
      */
     public function log(string $msg, string $logFile): bool
     {
+        if (! file_exists($logFile)) {
+            throw new \Exception("ERROR[File] Log file '{$logFile}' does not exist.");
+        }
+
         return error_log(
             sprintf('[' . date('Y-m-d H:i:s') . '] %s' . PHP_EOL, $msg), 
             3, 

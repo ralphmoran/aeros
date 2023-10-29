@@ -41,7 +41,12 @@ class Config
             return $default;
         }
 
-        $configContent = include($configFile);
+        $configContent = require $configFile;
+
+        // Config content is an object
+        if (is_object($configContent)) {
+            return $configContent;
+        }
 
         // Return entire array from config file
         // if there is no more requests

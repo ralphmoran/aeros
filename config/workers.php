@@ -16,8 +16,7 @@ return [
     |
     */
 
-    'ExampleWorker' => Workers\ExampleWorker::class,
-    'NewWorker' => Workers\NewWorker::class,
+    'GreatWorker' => Workers\GreatWorker::class,
 
     // ...
 ];

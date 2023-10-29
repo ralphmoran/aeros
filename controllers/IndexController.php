@@ -8,18 +8,29 @@ class IndexController extends ControllerBase
 {
     public function index()
     {
-        app()->queue->push([
-            'CleanupJob'         => new \Jobs\CleanupJob(),
-            'SendEmailsJob'      => new \Jobs\SendEmailsJob(),
-            'DatabaseCleanupJob' => new \Jobs\DatabaseCleanupJob(),
-            'WebhookCallsJob'    => new \Jobs\WebhookCallsJob(),
-            'ProcessImagesJob'   => new \Jobs\ProcessImagesJob(),
+        // Note: All pipelines are prepended with "env('APP_NAME') . '_'" string
+
+        queue()->push([
+            \Jobs\CleanupJob::class,
+            \Jobs\SendEmailsJob::class,
+            \Jobs\DatabaseCleanupJob::class,
+            \Jobs\WebhookCallsJob::class,
+            \Jobs\ProcessImagesJob::class,
         ]);
 
-        // It processes the defualt pipeline
-        app()->queue->processPipeline();
+        // Using a specific pipeline name
+        queue()->push(
+            [
+                \Jobs\CleanupJob::class,
+                \Jobs\SendEmailsJob::class,
+                \Jobs\DatabaseCleanupJob::class,
+                \Jobs\WebhookCallsJob::class,
+                \Jobs\ProcessImagesJob::class,
+            ],
+            'custom_pipeline'
+        );
 
-        
+        queue()->processPipeline('custom_pipeline');
 
         return view('index');
     }
