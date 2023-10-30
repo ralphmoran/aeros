@@ -2,16 +2,17 @@
 
 namespace Jobs;
 
-use Interfaces\JobInterface;
+use Classes\Job;
 
-class SendEmailsJob implements JobInterface
+class SendEmailsJob extends Job
 {
-    public function doWork()
+    public function doWork(): bool
     {
-        app()->logger
-            ->log(
-                'Doing work for: ' . __CLASS__, 
-                app()->basedir . '/logs/jobs.log'
-            );
+        logger(
+            'Doing work for: ' . __CLASS__, 
+            app()->basedir . '/logs/jobs.log'
+        );
+
+        return true;
     }
 }

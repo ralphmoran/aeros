@@ -31,11 +31,10 @@ class QueueEvent extends Observable
      */
     public function update($eventData): Observable
     {
-        app()->logger
-            ->log(
-                $this->data, 
-                app()->basedir . '/logs/event.log'
-            );
+        logger(
+            $this->data, 
+            app()->basedir . '/logs/event.log'
+        );
 
         return $this;
     }

@@ -31,7 +31,8 @@
         "sentry/sdk": "^3.2",
         "robmorgan/phinx": "^0.13.4",
         "fzaninotto/faker": "^1.5",
-        "pda/pheanstalk": "^4.0"
+        "pda/pheanstalk": "^4.0",
+        "ramsey/uuid": "^4.7"
     },
     "require-dev": {
         "robmorgan/phinx": "^0.13.4"
@@ -39,11 +40,21 @@
     "license": "Property",
     "minimum-stability": "alpha",
     "scripts": {
-        "update-workers": "vagrant ssh -c 'sudo cp -r /var/www/html/scripts/supervisor/*.conf /etc/supervisor/conf.d/'",
-        "start-workers": "vagrant ssh -c 'sudo supervisorctl start all'",
-        "stop-workers": "vagrant ssh -c 'sudo supervisorctl stop all'",
-        "status-workers": "vagrant ssh -c 'sudo supervisorctl status'",
-        "refresh-workers": "vagrant ssh -c 'sudo supervisorctl stop all && sudo supervisorctl reread && sudo supervisorctl update && sudo supervisorctl start all'"
+        "v-worker-update": "vagrant ssh -c 'sudo cp -r /var/www/html/scripts/supervisor/*.conf /etc/supervisor/conf.d/'",
+        "v-worker-start": "vagrant ssh -c 'sudo supervisorctl start all'",
+        "v-worker-stop": "vagrant ssh -c 'sudo supervisorctl stop all'",
+        "v-worker-status": "vagrant ssh -c 'sudo supervisorctl status'",
+        "v-worker-refresh": "vagrant ssh -c 'sudo supervisorctl stop all && sudo supervisorctl reread && sudo supervisorctl update && sudo supervisorctl start all'",
+        
+        "worker-update": "sudo cp -r /var/www/html/scripts/supervisor/*.conf /etc/supervisor/conf.d/",
+        "worker-start": "sudo supervisorctl start all",
+        "worker-stop": "sudo supervisorctl stop all",
+        "worker-status": "sudo supervisorctl status",
+        "worker-refresh": [
+            "@worker-stop", 
+            "sudo supervisorctl reread", 
+            "sudo supervisorctl update", 
+            "@worker-start"]
     },
     "config": {
         "allow-plugins": {

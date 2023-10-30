@@ -16,10 +16,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 while (true) {
 
     try {
-        // It takes care of all the registered pipelines and processing their jobs
+        // It takes care of all the registered pipelines and processing their jobs.
         app()->worker->handle();
-
-        sleep(1);
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();
     }

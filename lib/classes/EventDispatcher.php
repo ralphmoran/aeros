@@ -37,7 +37,7 @@ class EventDispatcher
                 $observer->update($eventData);
 
                 if (env('APP_DEBUG')) {
-                    app()->logger->log(
+                    logger(
                         "Event `{$eventName}` triggered in " . __CLASS__ . '::' . __LINE__,
                         app()->basedir . '/logs/event.log'
                     );

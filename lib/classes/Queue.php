@@ -2,15 +2,7 @@
 
 namespace Classes;
 
-use Interfaces\JobInterface;
-
-/**
- * Asynchronouns in real-time execution.
- * 
- * - Jobs are pushed to a named queue for instant execution by workers.
- * - Allows handling time-consuming tasks without blocking the application.
- * - Workloads can scale by adding more queue workers.
- */
+use Classes\Job;
 
 class Queue
 {
@@ -18,18 +10,13 @@ class Queue
     const DEFAULT_PIPELINE = 'gx_pipelines';
 
     /** @var string */
-    const LOCK_STATE = 'lock';
+    const LOCKED_STATE = 'locked';
 
     /** @var string */
-    const COMPLETE_STATE = 'completed';
+    const COMPLETED_STATE = 'completed';
 
     /** @var string */
     const FAILED_STATE = 'failed';
-
-    /** @var string */
-    const REQUEUED_STATE = 'requeued';
-
-    protected ?string $lockKey = null;
 
     /**
      * Adds a Job or an array of jobs to a pipeline tail in the queue system.
@@ -45,16 +32,11 @@ class Queue
         // Adds jobs to a pipeline
         foreach ($jobs as $jobObj) {
 
-            if (class_exists($jobObj) && in_array('Interfaces\\JobInterface', class_implements($jobObj))) {
+            if (class_exists($jobObj) && is_subclass_of($jobObj, 'Classes\\Job')) {
 
                 $jobObj = serialize(new $jobObj);
 
                 cache()->rpush($pipelineName, $jobObj);
-
-                logger(
-                    sprintf('Added new job to pipeline "%s": %s', $pipelineName, $jobObj), 
-                    app()->basedir . '/logs/event.log'
-                );
             }
         }
 
@@ -65,10 +47,10 @@ class Queue
      * Executes and removes a Job from the pipeline's head.
      *
      * @param string $pipelineName Example: "pipeline1"
-     * @return JobInterface|bool
+     * @return Job|bool
      * @throws Exception
      */
-    public function pop(string $pipelineName = '*'): JobInterface|bool
+    public function pop(string $pipelineName = '*'): Job|bool
     {
         // Return and remove a job from the pipeline, if there is any
         return unserialize(cache()->lpop($pipelineName));
@@ -88,7 +70,7 @@ class Queue
 
         // Locks pipeline, this is "in progress" state, 
         // this will avoid other workers take over it
-        if ($this->setState($pipelineName, Queue::LOCK_STATE)) {
+        if ($this->setState($pipelineName, Queue::LOCKED_STATE)) {
 
             // Get all jobs from the pipeline and remove each
             while (true) {
@@ -97,10 +79,27 @@ class Queue
                     break;
                 }
 
-                $this->delState($pipelineName, Queue::LOCK_STATE);
+                // Lock current job (in progress)
+                if ($this->setState($job->uuid, Queue::LOCKED_STATE)) {
 
-                $job->doWork();
+                    // If succeed...
+                    if ($jobStatus = $job->doWork()) {
+                        $this->setState("{$pipelineName}:job:{$job->uuid}", Queue::COMPLETED_STATE);
+                    }
+
+                    // If failed: put job back into the pipeline, delete lock state 
+                    // and makes it available for worker
+                    if (! $jobStatus) {
+                        cache()->rpush($pipelineName, $job);
+                        $this->setState("{$pipelineName}:job:{$job->uuid}", Queue::FAILED_STATE);
+                    }
+
+                    // Delete lock state from job. Applies to both states
+                    $this->delState($job->uuid, Queue::LOCKED_STATE);
+                }
             }
+
+            $this->delState($pipelineName, Queue::LOCKED_STATE);
 
             return true;
         }
@@ -109,12 +108,53 @@ class Queue
     }
 
     /**
+     * Gets a list of job UUIDs and their timestamps.
+     *
+     * @param string $pipelineName
+     * @param string $state
+     * @return array
+     */
+    public function getJobStatus( string $state = Queue::COMPLETED_STATE, string $pipelineName = '*'): array
+    {
+        $this->parsePipelineName($pipelineName);
+
+        $jobStatus  = [];
+
+        foreach (cache()->keys($state . ":{$pipelineName}:*") as $job) {
+            $jobStatus[] = [
+                'uuid' => $job, 
+                'timestamp' => cache()->get($job)
+            ];
+        }
+
+        return $jobStatus;
+    }
+
+    /**
+     * Deletes all job statuses from the cache based on a pipeline name and state.
+     *
+     * @param string $state
+     * @param string $pipelineName
+     * @return integer
+     */
+    public function clearJobStatus(string $state = '*', string $pipelineName = '*'): int
+    {
+        $this->parsePipelineName($pipelineName);
+
+        foreach ($jobs = cache()->keys($state . ":{$pipelineName}:*") as $job) {
+            cache()->del($job);
+        }
+
+        return count($jobs);
+    }
+
+    /**
      * Parses pipeline name.
      *
      * @param string $pipelineName
      * @return void
      */
-    protected function parsePipelineName(string &$pipelineName): void
+    private function parsePipelineName(string &$pipelineName): void
     {
         // Set pipeline name
         $pipelineName = ($pipelineName == 'all' || $pipelineName == '*') 
@@ -131,16 +171,15 @@ class Queue
      * @param integer $lockTime
      * @return mixed
      */
-    protected function setState(string $pipelineName, string $state = Queue::LOCK_STATE, int $lockTime = 10): mixed
+    private function setState(string $pipelineName, string $state = Queue::LOCKED_STATE, int $lockTime = 10): mixed
     {
         switch ($state) {
-            case Queue::LOCK_STATE:
-                return cache()->set($state . ":{$pipelineName}", 1, 'ex', $lockTime, 'nx');
+            case Queue::LOCKED_STATE:
+                return cache()->set($state . ":{$pipelineName}", time(), 'ex', $lockTime, 'nx');
                 break;
-            case Queue::COMPLETE_STATE:
+            case Queue::COMPLETED_STATE:
             case Queue::FAILED_STATE:
-            case Queue::REQUEUED_STATE:
-                return cache()->set($state . ":{$pipelineName}", 1);
+                return cache()->set($state . ":{$pipelineName}", time());
                 break;
         }
     }
@@ -152,7 +191,7 @@ class Queue
      * @param string $state
      * @return mixed
      */
-    protected function delState(string $pipelineName, string $state = Queue::LOCK_STATE): mixed
+    private function delState(string $pipelineName, string $state = Queue::LOCKED_STATE): mixed
     {
         return cache()->del($state . ":{$pipelineName}");
     }

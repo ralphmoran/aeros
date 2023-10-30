@@ -19,11 +19,8 @@ while (true) {
     try {
         // Your logic goes here
         //...
-
-        // Optional
-        // sleep(1); 
-    } catch (Exception) {
-        
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
     }
 }
 
