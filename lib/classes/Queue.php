@@ -32,7 +32,7 @@ class Queue
         // Adds jobs to a pipeline
         foreach ($jobs as $jobObj) {
 
-            if (class_exists($jobObj) && is_subclass_of($jobObj, 'Classes\\Job')) {
+            if (class_exists($jobObj) && is_subclass_of($jobObj, Job::class)) {
 
                 $jobObj = serialize(new $jobObj);
 

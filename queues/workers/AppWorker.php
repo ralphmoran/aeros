@@ -16,7 +16,6 @@ class AppWorker extends Worker
      */
     public function handle()
     {
-        // It processes all pipelines based on: "env('APP_NAME') . '_' . Classes\Queue::DEFAULT_PIPELINE"
         app()->queue->processPipeline();
     }
 
@@ -75,43 +74,33 @@ class AppWorker extends Worker
      * @param string $workerName
      * @return void
      */
-    public function call(string $workerName)
+    public function call(string $worker)
     {
-        $workers = config('workers');
+        $this->isWorkerValid($worker);
 
-        if (is_array($workers) && ! empty($workers)) {
-
-            foreach ($workers as $worker) {
-
-                if (! class_exists($worker) || get_parent_class($worker) != 'Classes\\Worker') {
-                    throw new \Exception(
-                            sprintf('ERROR[Worker] There was a problem trying to validate worker \'%s\.', $worker)
-                        );
-                }
-
-                // Run the worker handle method
-                (new $worker)->handle();
-            }
-        }
+        (new $worker)->handle();
     }
-    
+
     /**
      * Calls all the registered workers in ./config/workers.php.
      *
      * @return void
      */
-    public function callAll()
+    public function callAll(array $workers = [])
     {
-        $workers = config('workers');
+        $workers = ! empty($workers) ? $workers : config('workers');
 
         if (is_array($workers) && ! empty($workers)) {
 
             foreach ($workers as $worker) {
 
-                if (! class_exists($worker) || get_parent_class($worker) != 'Classes\\Worker') {
+                if (! $this->isWorkerValid($worker)) {
+
                     throw new \Exception(
-                            sprintf('ERROR[Worker] There was a problem trying to validate worker \'%s\.', $worker)
-                        );
+                        sprintf('ERROR[Worker] There was a problem trying to validate worker \'%s\.', $worker)
+                    );
+
+                    continue;
                 }
 
                 // Run the worker handle method
@@ -120,8 +109,14 @@ class AppWorker extends Worker
         }
     }
 
-    private function isValidWorker()
+    /**
+     * Checks if a worker is valid.
+     *
+     * @param string $worker
+     * @return boolean
+     */
+    private function isWorkerValid(string $worker): bool
     {
-        
+        return (! class_exists($worker) || get_parent_class($worker) != Worker::class);
     }
 }
