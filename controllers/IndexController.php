@@ -50,6 +50,9 @@ class IndexController extends ControllerBase
 
         // queue()->processPipeline('custom_pipeline');
 
+        // Make a GET request
+        // request()->get(['https://reqres.in/api/users/2')->send();
+
         return view('index');
     }
 

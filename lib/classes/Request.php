@@ -4,6 +4,15 @@ namespace Classes;
 
 use Exception;
 
+/**
+ * Request class handles incoming requests and makes outgoing requests.
+ * 
+ * @method public get(array $options)
+ * @method public post(array $options)
+ * @method public put(array $options)
+ * @method public path(array $options)
+ * @method public delete(array $options)
+ */
 final class Request
 {
     /** @var string $url */
@@ -211,10 +220,8 @@ final class Request
     /**
      * Validate cURL options and sets basic curlOptions.
      *
-     * @return boolean|array
-     * 
-     * @throws ValueError
      * @return bool|array
+     * @throws ValueError
      */
     private function validateOpts(): bool|array
     {
@@ -270,8 +277,8 @@ final class Request
      * 
      * The result will be in JSON format.
      *
-     * @throws Exception|ValueError
      * @return string|boolean
+     * @throws Exception|ValueError
      */
     public function send(): string|bool
     {
@@ -298,8 +305,8 @@ final class Request
      *
      * @param string $verb
      * @param array $url
-     * @throws BadMethodCallException
      * @return Request
+     * @throws BadMethodCallException
      */
     public function __call($verb, $args): Request
     {
@@ -337,11 +344,11 @@ final class Request
     /**
      * Custom proxy to validate token and serve CORS.
      *
-     * @param (string) $post_token
-     * @param (int) $api = if it's an API call
-     * @return void
+     * @param string $post_token
+     * @param int $api = if it's an API call
+     * @return bool
      */
-    public static function authorized($post_token = 0, $api = 1)
+    public static function authorized($post_token = 0, $api = 1): bool
     {
         self::$api = $api;
         $usertoken = null;
@@ -353,7 +360,7 @@ final class Request
 
         if (! is_null($usertoken)) {
             if (! User::getInstance()->token_decode($usertoken)) {
-                self::forbidden();
+                return self::forbidden();
             }
         }
 
@@ -362,7 +369,7 @@ final class Request
 
         if (! is_null($usertoken) && empty($_GET['token'])) {
             if (! User::getInstance()->token_decode($usertoken)) {
-                self::forbidden();
+                return self::forbidden();
             }
         }
 
@@ -370,7 +377,7 @@ final class Request
         $headers = getallheaders();
 
         if (empty($headers['Authorization']) && empty($headers['authorization'])) {
-            self::forbidden();
+            return self::forbidden();
         }
 
         $authorization = (! empty($headers['Authorization']))
@@ -378,7 +385,7 @@ final class Request
             : $headers['authorization'];
 
         if (! User::getInstance()->validate_token($authorization, env("TOKEN"))) {
-            self::forbidden();
+            return self::forbidden();
         }
 
         return true;
@@ -387,9 +394,9 @@ final class Request
     /**
      * Validates if $api is not empty, if so, returns false, otherwise sends a 403 code.
      *
-     * @return void
+     * @return bool
      */
-    private static function forbidden()
+    private static function forbidden(): bool
     {
         if (empty(self::$api)) {
             return false;

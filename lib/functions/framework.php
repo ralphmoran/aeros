@@ -87,7 +87,8 @@ if (! function_exists('response')) {
 if (! function_exists('request')) {
 
 	/**
-	 * Makes HTML requests with cURL PHP built-in function.
+	 * Makes HTML requests with cURL PHP built-in function, also, grabs values, params, from
+	 * a specific HTTP method.
 	 *
 	 * @param mixed $opts
 	 * @param array $keys
