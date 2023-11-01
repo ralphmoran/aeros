@@ -2,7 +2,7 @@
 
 namespace Classes;
 
-class Security extends Kernel
+class Security
 {
     /**
      * Creates a hidden input with a token. This token helps to validate if a 

@@ -150,8 +150,11 @@ class Route extends Router
             );
         }
 
+        //  Getting the controller instance
+        $controller = new $controllerName;
+
         // Dynamically assign parameters to controller method
-        $reflectionMethod = new \ReflectionMethod($controllerName::getInstance(), $method);
+        $reflectionMethod = new \ReflectionMethod($controller, $method);
 
         $arguments = [];
 
@@ -166,6 +169,6 @@ class Route extends Router
             $arguments[] = $this->params[':' . $param->name];
         }
 
-        $this->content = $reflectionMethod->invokeArgs($controllerName::getInstance(), $arguments);
+        $this->content = $reflectionMethod->invokeArgs($controller, $arguments);
     }
 }

@@ -2,10 +2,9 @@
 
 namespace Classes;
 
-use Traits\MagicMethods;
 use Interfaces\DBHandlerInterface;
 
-class MySQLDriver extends Kernel implements DBHandlerInterface
+class MySQLDriver implements DBHandlerInterface
 {
     /** @var MySQLi object */
     private $conn;

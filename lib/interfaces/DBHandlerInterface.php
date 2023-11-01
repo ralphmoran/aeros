@@ -21,5 +21,4 @@ interface DBHandlerInterface
     public function escape(string $string);
     public function close();
     public function get_last_insert_id();
-    public static function getInstance();
 }

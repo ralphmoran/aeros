@@ -2,7 +2,7 @@
 
 namespace Classes;
 
-class ControllerBase extends Kernel
+class ControllerBase
 {
 
 }

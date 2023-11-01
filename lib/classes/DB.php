@@ -15,8 +15,8 @@ class Db extends Kernel
     public function connect(string $db_driver = ''): DBHandlerInterface
     {
         return match ($db_driver) {
-                'mysqli' => \Classes\MySQLDriver::getInstance(),
-                default => \Classes\MySQLDriver::getInstance(),
+                'mysqli' => new \Classes\MySQLDriver(),
+                default => new \Classes\MySQLDriver(),
             };
     }
 }

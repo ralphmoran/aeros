@@ -2,7 +2,7 @@
 
 namespace Classes;
 
-class Session extends Kernel
+class Session
 {
     public function renovate()
     {
