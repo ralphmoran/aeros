@@ -4,6 +4,9 @@ namespace Classes;
 
 class Config
 {
+    /** @var array */
+    private array $requestedKeys = [];
+
     /**
      * Returns an item/value from config files.
      * 
@@ -27,6 +30,11 @@ class Config
      */
     public function getFrom(string $from, mixed $default = null): mixed
     {
+        // Return value if $from was requested before
+        if (in_array($from, $this->requestedKeys)) {
+            return $this->requestedKeys[$from];
+        }
+
         // Explode string to get config parts
         $configParts = array_filter(
             explode('.', $from),
@@ -45,21 +53,40 @@ class Config
 
         // Config content is an object
         if (is_object($configContent)) {
-            return $configContent;
+            return $this->storeRequestedKey($from, $configContent, $default);
         }
 
         // Return entire array from config file
         // if there is no more requests
         if (count($configParts) == 1) {
-            return $configContent ?: $default;
+            return $this->storeRequestedKey($from, $configContent, $default);
         }
 
+        // Remove first element, this could be the config file name
         array_shift($configParts);
 
+        // Walk through all other parts to get the last key value
         foreach ($configParts as $index) {
             $configContent = $configContent[$index];
         }
 
-        return $configContent ?: $default;
+        return $this->storeRequestedKey($from, $configContent, $default);
+    }
+
+    /**
+     * Stores requested key in the store.
+     *
+     * @param mixed $from
+     * @param mixed $configContent
+     * @param mixed $default
+     * @return mixed
+     */
+    private function storeRequestedKey($from, $configContent, $default): mixed
+    {
+        $configContent = $configContent ?: $default;
+
+        $this->requestedKeys[$from] = $configContent;
+
+        return $configContent;
     }
 }

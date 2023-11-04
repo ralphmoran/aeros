@@ -3,7 +3,6 @@
 namespace Controllers;
 
 use Classes\ControllerBase;
-use Classes\Queue;
 
 class IndexController extends ControllerBase
 {

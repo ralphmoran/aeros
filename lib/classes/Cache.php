@@ -4,9 +4,6 @@ namespace Classes;
 
 class Cache extends \Predis\Client
 {
-    /** @var PredisClient */
-    private $client = null;
-
     /**
      * Setting up the client.
      */

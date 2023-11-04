@@ -20,7 +20,7 @@ class ServiceContainer extends Kernel
     public function registerProviders(): ServiceContainer
     {
         foreach ($this->getProviders() as $providerWithNamespace) {
-            if ($this->isValidProvider($providerWithNamespace)) {
+            if ($this->isProvider($providerWithNamespace)) {
                 (new $providerWithNamespace)->register();
             }
         }
@@ -36,7 +36,7 @@ class ServiceContainer extends Kernel
     public function bootProviders(): ServiceContainer
     {
         foreach ($this->getProviders() as $providerWithNamespace) {
-            if ($this->isValidProvider($providerWithNamespace)) {
+            if ($this->isProvider($providerWithNamespace)) {
                 (new $providerWithNamespace)->boot();
             }
         }
@@ -77,7 +77,7 @@ class ServiceContainer extends Kernel
             return;
         }
 
-        // Class name
+        // Alias of this service
         if (is_string($service)) {
 
             if (! class_exists($service)) {
@@ -154,7 +154,7 @@ class ServiceContainer extends Kernel
      * @param string $providerWithNamespace
      * @return boolean
      */
-    private function isValidProvider(string $providerWithNamespace): bool
+    private function isProvider(string $providerWithNamespace): bool
     {
         if (! class_exists($providerWithNamespace) || ! is_subclass_of($providerWithNamespace, ServiceProvider::class)) {
             throw new \Exception(

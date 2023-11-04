@@ -51,8 +51,8 @@ $app->singleton('worker', Workers\AppWorker::class);
 |
 */
 
-// $app->register('logger', SomeClassWithInvoke::class);
-// $app->register('logger', AnotherClassWithInvoke::class);
+// $app->register('some', SomeClassWithInvoke::class);
+// $app->register('another', AnotherClassWithInvoke::class);
 
 /*
 |----------------------------------------------

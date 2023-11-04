@@ -44,7 +44,7 @@ class MySQLDriver implements DBHandlerInterface
     {
         if ($type == $this::RO) {
             $this->conn = new \mysqli(
-                env('RO_DB_SERVER'),
+                env('RO_DB_HOST'),
                 env('RO_DB_USERNAME'),
                 env('RO_DB_PASSWORD'),
                 env('RO_DB_DATABASE'),
@@ -54,7 +54,7 @@ class MySQLDriver implements DBHandlerInterface
 
         if ($type == $this::CUD) {
             $this->conn = new \mysqli(
-                env('DB_SERVER'),
+                env('DB_HOST'),
                 env('DB_USERNAME'),
                 env('DB_PASSWORD'),
                 env('DB_DATABASE'),

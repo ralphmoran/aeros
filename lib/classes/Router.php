@@ -85,8 +85,6 @@ class Router
     {
         $route = $this->match($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
 
-        // dd($_SERVER);
-
         if (! $route) {
             throw new \Exception(
                 sprintf(
