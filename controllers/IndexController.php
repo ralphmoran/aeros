@@ -52,6 +52,8 @@ class IndexController extends ControllerBase
         // Make a GET request
         // request()->get(['https://reqres.in/api/users/2')->send();
 
+        db('sqlite');
+
         return view('index');
     }
 

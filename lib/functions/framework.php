@@ -359,9 +359,9 @@ if (! function_exists('db')) {
 	 * Wrapper for DB conection and all its handlers.
 	 * 
 	 * @param $driver $name
-	 * @return Interfaces\DBHandlerInterface
+	 * @return \PDO
 	 */
-	function db(string $driver = 'mysqli'): Interfaces\DBHandlerInterface 
+	function db(string $driver = 'mysql'): \PDO 
 	{
 		return app()->db->connect($driver);
 	}

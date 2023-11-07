@@ -2,11 +2,11 @@
 
 namespace Classes;
 
-use Interfaces\DBHandlerInterface;
+use Interfaces\DbInterface;
 
-class MySQLDriver implements DBHandlerInterface
+class MySQLDriver implements DbInterface
 {
-    /** @var MySQLi object */
+    /** @var MySQL object */
     private $conn;
 
     /** @var resultset $rs */
@@ -179,7 +179,7 @@ class MySQLDriver implements DBHandlerInterface
     }
 
     /**
-     * Moves the MySQLi pointer to the next result if many queries were executed.
+     * Moves the MySQL pointer to the next result if many queries were executed.
      *
      * @return void
      */

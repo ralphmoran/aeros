@@ -3,6 +3,8 @@
 /*
 |----------------------------------------------
 | Set up your cache system here
+|
+| This config file is to store valatile data
 |----------------------------------------------
 |
 */
@@ -25,11 +27,21 @@ return [
             'protocol' => env("REDIS_PROTOCOL"),
             'port'     => env("REDIS_PORT")
         ],
+        
+        /*
+         * Memcache connection
+         */
+        'memcache' => [
+            'server'   => env("MEMCACHE_HOST"),
+            'password' => env("MEMCACHE_PASSWORD"),
+            'protocol' => env("MEMCACHE_PROTOCOL"),
+            'port'     => env("MEMCACHE_PORT")
+        ],
 
         /*
-         * MySQLi connection
+         * MySQL connection
          */
-        'mysqli' => [
+        'mysql' => [
             'server'   => env("DB_HOST"),
             'username' => env("DB_USERNAME"),
             'password' => env("DB_PASSWORD"),

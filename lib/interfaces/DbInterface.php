@@ -3,12 +3,12 @@
 namespace Interfaces;
 
 /**
- * @property DBHandlerInterface $db
+ * @property DbInterface $db
  * @property string $error
  * @property int $errorno
  * @property array $errors
  */
-interface DBHandlerInterface
+interface DbInterface
 {
     public function connect();
     public function query(string $q);

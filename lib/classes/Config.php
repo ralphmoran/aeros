@@ -14,12 +14,12 @@ class Config
      * 
      * Example: 
      * 
-     *      "db.mysqli.server" 
+     *      "db.mysql.server" 
      * 
      *      Ends up being: "prod001"
      *      From "./config/db.php": 
      *          [
-     *              "mysqli" => [
+     *              "mysql" => [
      *                 "server" => "prod001" // <== Returned value: "prod001"
      *              ]
      *          ]
