@@ -24,7 +24,7 @@ return [
          * where files are going to be stored
          */
         'local' => [
-            'path' => app()->basedir,
+            'path' => app()->basedir . '/docs',
         ],
 
         /*

@@ -16,17 +16,6 @@ return [
     ],
 
     'drivers' => [
-        /*
-         * Redis connection.
-         * 
-         * Note: Make sure you have installed Redis server.
-         */
-        'redis' => [
-            'server'   => env("REDIS_HOST"),
-            'password' => env("REDIS_PASSWORD"),
-            'protocol' => env("REDIS_PROTOCOL"),
-            'port'     => env("REDIS_PORT")
-        ],
 
         /*
          * MySQL connection.
@@ -68,7 +57,87 @@ return [
      * 
      * List all the required drivers you want to use for your cluster.
      */
-    'cluster' => [
+    'clusters' => [
+        'west-001' => [
+            'server-n001' => [
+                'server'   => 'server',
+                'username' => 'username',
+                'password' => 'password',
+                'database' => 'database',
+                'port'     => 'port'
+            ],
+            'server-w002' => [
+                'server'   => 'server',
+                'username' => 'username',
+                'password' => 'password',
+                'database' => 'database',
+                'port'     => 'port'
+            ],
+            'server-w003' => [
+                'server'   => 'server',
+                'username' => 'username',
+                'password' => 'password',
+                'database' => 'database',
+                'port'     => 'port'
+            ],
+        ],
 
+        'north-001' => [
+            'server-n001' => [
+                'server'   => 'server',
+                'username' => 'username',
+                'password' => 'password',
+                'database' => 'database',
+                'port'     => 'port'
+            ],
+            'server-n002' => [
+                'server'   => 'server',
+                'username' => 'username',
+                'password' => 'password',
+                'database' => 'database',
+                'port'     => 'port'
+            ],
+            'server-n003' => [
+                'server'   => 'server',
+                'username' => 'username',
+                'password' => 'password',
+                'database' => 'database',
+                'port'     => 'port'
+            ],
+            'server-n004' => [
+                'server'   => 'server',
+                'username' => 'username',
+                'password' => 'password',
+                'database' => 'database',
+                'port'     => 'port'
+            ],
+        ],
+
+        'east-001' => [
+            'server-e001' => [
+                'server'   => 'server',
+                'username' => 'username',
+                'password' => 'password',
+                'database' => 'database',
+                'port'     => 'port'
+            ],
+            'server-e002' => [
+                'server'   => 'server',
+                'username' => 'username',
+                'password' => 'password',
+                'database' => 'database',
+                'port'     => 'port'
+            ],
+        ],
+
+        'south-001' => [
+            'server-s001' => [
+                'server'   => 'server',
+                'username' => 'username',
+                'password' => 'password',
+                'database' => 'database',
+                'port'     => 'port'
+            ],
+        ],
     ],
 ];

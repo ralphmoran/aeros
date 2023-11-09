@@ -14,7 +14,7 @@ return [
      * By default, this is the driver to be used
      */
     'default' => [
-        'redis' //=> config('cache.drivers.redis'),
+        'redis'
     ],
 
     'drivers' => [
@@ -53,7 +53,33 @@ return [
     /*
      * Build your own cluster setup
      */
-    'cluster' => [
-
+    'clusters' => [
+        'cluster-001' => [            
+            'server-001' => [
+                'server'   => 'server',
+                'username' => 'username',
+                'password' => 'password',
+                'database' => 'database',
+                'port'     => 'port'
+            ],
+        ],
+        'cluster-002' => [            
+            'server-002' => [
+                'server'   => 'server',
+                'username' => 'username',
+                'password' => 'password',
+                'database' => 'database',
+                'port'     => 'port'
+            ],
+        ],
+        'cluster-003' => [            
+            'server-003' => [
+                'server'   => 'server',
+                'username' => 'username',
+                'password' => 'password',
+                'database' => 'database',
+                'port'     => 'port'
+            ],
+        ],
     ],
 ];
