@@ -5,15 +5,14 @@ if (! function_exists('app')) {
 	/**
 	 * Bootstraps the application.
 	 *
-	 * @return Classes\App
+	 * @return Classes\ServiceContainer
 	 * 
 	 * @throws \Exception
 	 */
-	function app(): Classes\App
+	function app(): Classes\ServiceContainer
 	{
-		if (class_exists('Classes\App')) {
-			return require env('APP_ROOT_DIR') . '/config/app.php';
-		}
+		return Classes\ServiceContainer::getInstance()
+			->setBaseDir(env('APP_ROOT_DIR') ?? dirname(__DIR__));
 	}
 }
 

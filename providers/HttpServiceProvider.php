@@ -2,7 +2,6 @@
 
 namespace Providers;
 
-use Classes\Router;
 use Classes\ServiceProvider;
 
 class HttpServiceProvider extends ServiceProvider
@@ -14,14 +13,14 @@ class HttpServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $middlewares = config('middlewares');
+        $middlewares = config('app.middlewares.app');
 
         // For security reasons, there are middlewares that need to run ALWAYS
         if (empty($middlewares)) {
-            throw new \Exception('ERROR[provider] No middlewares were found.');
+            throw new \Exception('ERROR[middleware] No middlewares were found.');
         }
 
-        Router::runMiddlewares($middlewares);
+        \Classes\Router::runMiddlewares($middlewares);
     }
 
     /**

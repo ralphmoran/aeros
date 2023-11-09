@@ -6,11 +6,71 @@ use Classes\Kernel;
 
 class ServiceContainer extends Kernel
 {
+    /** @var string */
+    public string $basedir = '';
+
     /** @var array */
     protected $services = [];
 
     /** @var array */
     protected $providers = [];
+
+    /** @var boolean */
+    protected $isAppBooted = false;
+
+    /**
+     * Runs the application.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        try {
+            $this->bootApplication()
+                ->registerProviders()
+                ->bootProviders();
+
+            printf('%s', $this->router->dispatch());
+
+        } catch (\Exception $e) {
+            printf('Caught exception: %s',  $e->getMessage());
+        }
+
+        exit;
+    }
+
+    /**
+     * Sets the APP basedir
+     *
+     * @param string $dir
+     * @return ServiceContainer
+     */
+    public function setBaseDir(string $dir): ServiceContainer
+    {
+        $this->basedir = $dir;
+
+        return $this;
+    }
+
+    /**
+     * Boots main App.
+     * 
+     * Add here any setup that is required to take place before anything else.
+     *
+     * @return Classes\ServiceContainer
+     */
+    public function bootApplication(): ServiceContainer
+    {
+        if ($this->isAppBooted) {
+            return $this;
+        }
+
+        (new \Providers\AppServiceProvider)->register();
+
+        $this->isAppBooted = true;
+
+        return $this;
+    }
 
     /**
      * Registers service providers.
@@ -55,7 +115,7 @@ class ServiceContainer extends Kernel
             return $this->providers;
         }
 
-        $providers = config('providers');
+        $providers = config('app.providers');
 
         if (empty($providers)) {
             throw new \Exception('ERROR[provider] No providers were found.');
@@ -81,7 +141,7 @@ class ServiceContainer extends Kernel
         if (is_string($service)) {
 
             if (! class_exists($service)) {
-                throw new \Exception("ERROR[service]'{$service}' was not found.");
+                throw new \Exception("ERROR[service] '{$service}' was not found.");
 
                 return;
             }

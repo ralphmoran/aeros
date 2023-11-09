@@ -2,63 +2,55 @@
 
 /*
 |----------------------------------------------
-| Make service container
+| Application setup
 |----------------------------------------------
 |
-| All requests land here for future evaluation.
-|
-*/
-
-$app = Classes\App::getInstance()
-    ->setBaseDir(env('APP_ROOT_DIR') ?? dirname(__DIR__));
-
-/*
-|----------------------------------------------
-| Singleton core objects: DB, Router, etc
-|----------------------------------------------
+| All regarding your application setup goes here.
 |
 */
 
-$app->singleton('db', Classes\Db::class);
-$app->singleton('security', Classes\Security::class);
-$app->singleton('email', Classes\Email::class);
-$app->singleton('router', Classes\Router::class);
-$app->singleton('view', Classes\View::class);
-$app->singleton('component', Classes\Component::class);
-$app->singleton('response', Classes\Response::class);
-$app->singleton('request', Classes\Request::class);
-$app->singleton('redirect', Classes\Redirect::class);
-$app->singleton('event', Classes\EventDispatcher::class);
-$app->singleton('logger', Classes\Logger::class);
-$app->singleton('file', Classes\File::class);
-$app->singleton('console', Classes\Console::class);
-$app->singleton('encryptor', Classes\Encryptor::class);
-$app->singleton('session', Classes\Session::class);
-$app->singleton('cookie', Classes\Cookie::class);
-$app->singleton('config', Classes\Config::class);
+return [
+    
 
-# App worker - Queues and Jobs
-$app->singleton('queue', Classes\Queue::class);
-$app->singleton('cache', Classes\Cache::class);
-$app->singleton('worker', Workers\AppWorker::class);
+    'providers' => [
 
-/*
-|----------------------------------------------
-| Register callables
-|----------------------------------------------
-|
-| All callables must be a class with __invoke method defined.
-|
-*/
+        // Main service providers: DO NOT TOUCH
+        'SessionServiceProvider' => Providers\SessionServiceProvider::class,
+        'MimeTypesServiceProvider' => Providers\MimeTypesServiceProvider::class,
+        'HttpServiceProvider' => Providers\HttpServiceProvider::class,
+        'RouteServiceProvider' => Providers\RouteServiceProvider::class,
 
-// $app->register('some', SomeClassWithInvoke::class);
-// $app->register('another', AnotherClassWithInvoke::class);
+        // Other service providers
+        'DatabaseServiceProvider' => Providers\DatabaseServiceProvider::class,
+        'EmailServiceProvider' => Providers\EmailServiceProvider::class,
+    ],
 
-/*
-|----------------------------------------------
-| Return main app
-|----------------------------------------------
-|
-*/
+    'middlewares' => [
 
-return $app;
+        /*
+        |----------------------------------------------
+        | Group of middlewares. These can be applied by 
+        | just calling the group name.
+        */ 
+
+        // Run over any request
+        'app' => [
+            'SessionMiddleware' => Middlewares\SessionMiddleware::class,
+            'CorsMiddleware' => Middlewares\CorsMiddleware::class,
+            'BanBotsMiddleware' => Middlewares\BanBotsMiddleware::class,
+            'SanitizerMiddleware' => Middlewares\SanitizerMiddleware::class,
+        ],
+
+        'web' => [
+
+        ],
+
+        'api' => [
+
+        ],
+        
+        'auth' => [
+
+        ],
+    ],
+];

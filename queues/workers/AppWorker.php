@@ -63,7 +63,7 @@ class AppWorker extends Worker
         );
 
         // Create log file for new worker
-        app()->file->create(env('LOGS_DIR'). '/' . $scriptName . '.log');
+        app()->file->create(env('LOGS_DIR') . '/' . $scriptName . '.log');
 
         return $this;
     }
@@ -76,7 +76,13 @@ class AppWorker extends Worker
      */
     public function call(string $worker)
     {
-        $this->isWorkerValid($worker);
+        if (! $this->isWorkerValid($worker)) {
+
+            throw new \Exception(
+                sprintf('ERROR[Worker] There was a problem validating worker \'%s\.', $worker)
+            );
+
+        }
 
         (new $worker)->handle();
     }
@@ -97,7 +103,7 @@ class AppWorker extends Worker
                 if (! $this->isWorkerValid($worker)) {
 
                     throw new \Exception(
-                        sprintf('ERROR[Worker] There was a problem trying to validate worker \'%s\.', $worker)
+                        sprintf('ERROR[Worker] There was a problem validating worker \'%s\.', $worker)
                     );
 
                     continue;

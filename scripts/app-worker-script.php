@@ -17,7 +17,7 @@ while (true) {
 
     try {
         // It takes care of all the registered pipelines and processing their jobs.
-        app()->worker->handle();
+        app()->bootApplication()->worker->handle();
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();
     }
