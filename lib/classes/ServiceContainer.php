@@ -32,8 +32,12 @@ class ServiceContainer extends Kernel
 
             printf('%s', $this->router->dispatch());
 
+        } catch (\TypeError $e) {
+            printf('Caught TypeError: %s', $e->getMessage());
+        } catch (\BadMethodCallException $e) {
+            printf('Caught BadMethodCallException: %s', $e->getMessage());
         } catch (\Exception $e) {
-            printf('Caught exception: %s',  $e->getMessage());
+            printf('Caught Exception: %s', $e->getMessage());
         }
 
         exit;

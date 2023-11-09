@@ -52,6 +52,8 @@ class IndexController extends ControllerBase
         // Make a GET request
         // request()->get(['https://reqres.in/api/users/2')->send();
 
+        // app()->event->emit('email.notify', ['ralph@myaero.app']);
+
         return view('index');
     }
 
