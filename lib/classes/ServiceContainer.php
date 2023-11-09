@@ -38,6 +38,10 @@ class ServiceContainer extends Kernel
             printf('Caught BadMethodCallException: %s', $e->getMessage());
         } catch (\Exception $e) {
             printf('Caught Exception: %s', $e->getMessage());
+        } catch (\RuntimeException $e) {
+            printf('Caught RuntimeException: %s', $e->getMessage());
+        } catch (\PDOException $e) {
+            printf('Caught PDOException: %s', $e->getMessage());
         }
 
         exit;

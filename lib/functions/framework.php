@@ -360,7 +360,7 @@ if (! function_exists('db')) {
 	 * @param $driver $name
 	 * @return \PDO
 	 */
-	function db(string $driver = 'mysql'): \PDO 
+	function db(string $driver = ''): \PDO 
 	{
 		return app()->db->connect($driver);
 	}
