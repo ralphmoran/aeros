@@ -16,7 +16,7 @@ class ServiceContainer extends Kernel
     protected $providers = [];
 
     /** @var boolean */
-    protected $isAppBooted = false;
+    public $isAppBooted = false;
 
     /**
      * Runs the application.
