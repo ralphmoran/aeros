@@ -2,69 +2,137 @@
 
 namespace Classes;
 
-/**
- * See https://www.php.net/manual/en/class.pdo.php
- * 
- * @method \PDO __construct — Creates a PDO instance representing a connection 
- *                            to a database
- * @method bool beginTransaction() — Initiates a transaction
- * @method bool commit() — Commits a transaction
- * @method ?string errorCode() — Fetch the SQLSTATE associated with the last 
- *                              operation on the database handle
- * @method array errorInfo() — Fetch extended error information associated with 
- *                              the last operation on the database handle
- * @method int|false exec() — Execute an SQL statement and return the number of 
- *                              affected rows
- * @method mixed getAttribute() — Retrieve a database connection attribute
- * @method static array getAvailableDrivers() — Return an array of available PDO 
- *                              drivers
- * @method bool inTransaction() — Checks if inside a transaction
- * @method string|false lastInsertId() — Returns the ID of the last inserted row 
- *                              or sequence value
- * @method PDOStatement|false prepare() — Prepares a statement for execution and 
- *                              returns a statement object
- * @method PDOStatement|false query() — Prepares and executes an SQL statement 
- *                              without placeholders
- * @method string|false quote() — Quotes a string for use in a query
- * @method bool rollBack() — Rolls back a transaction
- * @method bool setAttribute() — Set an attribute
- */
-
 class Db
 {
-    /** @var string */
-    private $driver = '';
+    /** @var array */
+    private $activeDBConnections = [];
 
-    /** @var \PDO */
-    private $dbObject = null;
+    /** @var string|null */
+    private $dbConnectionAlias = null;
+    
+    /** @var string|null */
+    private $driver = null;
+
+    /** @var PDO|null */
+    private $reflectionPDO = null;
+
+    /** @var PDOStatement */
+    private $stm = null;
+
+    /** @var array */
+    private $nulledMethods = [
+        'beginTransaction',
+        'commit',
+    ];
 
     /**
      * Generic method to handle diffrent DB drivers.
      *
-     * @param string $driver
-     * @return \PDO
+     * @param ?string $driver `sqlite` or `sqlite:db_alias`
+     * @return Db
      */
-    public function connect(string $driver = ''): \PDO
+    public function connect(string $driver = null): Db
     {
         $dbSetup = config('db');
 
-        $this->driver = $driver = $driver ?: $dbSetup['default'];
+        // Driver comes with an alias
+        if (strpos($driver, ':') !== false) {
+            $driverParts =  array_filter(explode(':', $driver), function ($alias) {
+                    return ! empty($alias) ? $alias : null;
+                }
+            );
 
-        switch ($driver) {
+            $this->driver = $driver = $driverParts[0];
+            $this->dbConnectionAlias = $driverParts[1];
+        }
+
+        $this->driver = $driver ?? $dbSetup['default'][0];
+
+        // Return PDO object by alias, if exists
+        if (array_key_exists($this->dbConnectionAlias, $this->activeDBConnections)) {
+            return $this->activeDBConnections[$this->dbConnectionAlias];
+        }
+
+        // Return PDO object by driver, if exists
+        if (array_key_exists($driver, $this->activeDBConnections)) {
+            return $this->activeDBConnections[$driver];
+        }
+
+        switch ($this->driver) {
             case 'postgres':
-                return $this->dbObject = $this->gePostgresPDO();
+                $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver] = $this->gePostgresPDO();
                 break;
             case 'sqlite':
-                return $this->dbObject = $this->getSqlitePDO();
+                $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver] = $this->getSqlitePDO();
                 break;
             case 'mysql':
-                return $this->dbObject = $this->getMysqlPDO();
+                $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver] = $this->getMysqlPDO();
                 break;
             default:
                 throw new \PDOException(
-                    sprintf('ERROR[PDOException] DB Driver "%s" not found or invalid.', $driver)
+                    sprintf(
+                        'ERROR[PDOException] DB Driver "%s:%s" not found or invalid.', 
+                        $this->driver,
+                        $this->dbConnectionAlias
+                    )
                 );
         }
+
+        return $this;
+    }
+
+    /**
+     * Makes mathod calls to PDO connection.
+     *
+     * @param string $method
+     * @param array $arguments
+     * @return void
+     * @throws \BadMethodCallException
+     */
+    public function __call($method, $arguments)
+    {
+
+        // https://www.php.net/manual/en/pdo.prepare.php
+
+
+
+        // There are some PDO methods that are not supported due to the global try-catch
+        if (in_array($method, $this->nulledMethods)) {
+            return $this;
+        }
+
+        if (is_null($this->reflectionPDO)) {
+            $this->reflectionPDO = new \ReflectionClass('PDO');
+        }
+
+        // Validates if method exists
+        if ($this->reflectionPDO->hasMethod($method)) {
+            $reflectionMethod = $this->reflectionPDO->getMethod($method);
+
+            // Call it when there are no parameters
+            if (! $reflectionMethod->getNumberOfParameters()) {
+                $reflectionMethod->invoke(
+                    $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver]
+                );
+
+                return $this;
+            }
+
+            // Call it with parameters
+            $reflectionMethod->invokeArgs(
+                $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver], 
+                $arguments
+            );
+
+            return $this;
+        }
+
+        throw new \BadMethodCallException(
+            sprintf(
+                'ERROR[BadMethodCallException] Method "%s" does not exist.', 
+                $method
+            )
+        );
     }
 
     /**
@@ -93,7 +161,18 @@ class Db
     {
         $dbSetup = config('db.drivers.sqlite');
 
-        return new \PDO("sqlite:" . $dbSetup['server'] . "/" . $dbSetup['database'] . ".sql");
+        if (strtolower(pathinfo($dbSetup['database'])['extension']) !== 'sql') {
+            throw new \InvalidArgumentException(
+                sprintf('ERROR[InvalidArgumentException] Database file name "%s" is not valid.', $dbSetup['database'])
+            );
+        }
+
+        return new \PDO("sqlite:" . $dbSetup['server'] . "/" . $dbSetup['database'], null, null, [
+            \PDO::ATTR_PERSISTENT => true,
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+            \PDO::ATTR_TIMEOUT => 1,
+        ]);
     }
 
     /**

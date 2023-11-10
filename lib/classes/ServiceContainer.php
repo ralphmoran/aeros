@@ -42,6 +42,8 @@ class ServiceContainer extends Kernel
             printf('Caught RuntimeException: %s', $e->getMessage());
         } catch (\PDOException $e) {
             printf('Caught PDOException: %s', $e->getMessage());
+        } catch (\InvalidArgumentException $e) {
+            printf('Caught InvalidArgumentException: %s', $e->getMessage());
         }
 
         exit;

@@ -54,6 +54,12 @@ class IndexController extends ControllerBase
 
         // app()->event->emit('email.notify', ['ralph@myaero.app']);
 
+        // db()->exec('CREATE TABLE IF NOT EXISTS projects (
+        //         project_id   INTEGER PRIMARY KEY,
+        //         project_name TEXT NOT NULL)')
+            db()->prepare('INSERT INTO projects (project_id, project_name) VALUES(?, ?)')
+            ->execute([2, 'Rafael']);
+
         return view('index');
     }
 

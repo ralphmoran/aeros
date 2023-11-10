@@ -357,10 +357,10 @@ if (! function_exists('db')) {
 	/**
 	 * Wrapper for DB conection and all its handlers.
 	 * 
-	 * @param $driver $name
-	 * @return \PDO
+	 * @param ?string $driver - `sqlite` or `sqlite:db_alias`
+	 * @return Classes\Db
 	 */
-	function db(string $driver = ''): \PDO 
+	function db(string $driver = null): Classes\Db 
 	{
 		return app()->db->connect($driver);
 	}

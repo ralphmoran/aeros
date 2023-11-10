@@ -48,7 +48,7 @@ return [
          */
         'sqlite' => [
             'server'   => app()->basedir . '/db',
-            'database' => 'database'
+            'database' => 'new-database.sql'
         ],
     ],
 
