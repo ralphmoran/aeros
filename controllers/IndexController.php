@@ -57,8 +57,17 @@ class IndexController extends ControllerBase
         // db()->exec('CREATE TABLE IF NOT EXISTS projects (
         //         project_id   INTEGER PRIMARY KEY,
         //         project_name TEXT NOT NULL)')
-            db()->prepare('INSERT INTO projects (project_id, project_name) VALUES(?, ?)')
-            ->execute([2, 'Rafael']);
+
+        // Inserting rows
+        // db()->prepare('INSERT INTO projects (project_id, project_name) VALUES(?, ?)')
+        //     ->execute([
+        //         mt_rand(1, 1000), 
+        //         'Rafael'
+        //     ]);
+
+        // Fetching data
+        // https://www.php.net/manual/en/pdostatement.fetchall.php
+        // db()->query('SELECT * FROM projects')->fetchAll();
 
         return view('index');
     }

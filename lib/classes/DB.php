@@ -2,6 +2,9 @@
 
 namespace Classes;
 
+// https://www.php.net/manual/en/class.pdo.php
+// https://www.php.net/manual/en/class.pdostatement.php 
+
 class Db
 {
     /** @var array */
@@ -23,6 +26,11 @@ class Db
     private $nulledMethods = [
         'beginTransaction',
         'commit',
+    ];
+    
+    /** @var array */
+    private $stmPDOMethods = [
+        'execute',
     ];
 
     /**
@@ -94,8 +102,6 @@ class Db
 
         // https://www.php.net/manual/en/pdo.prepare.php
 
-
-
         // There are some PDO methods that are not supported due to the global try-catch
         if (in_array($method, $this->nulledMethods)) {
             return $this;
@@ -107,22 +113,32 @@ class Db
 
         // Validates if method exists
         if ($this->reflectionPDO->hasMethod($method)) {
+
             $reflectionMethod = $this->reflectionPDO->getMethod($method);
 
             // Call it when there are no parameters
             if (! $reflectionMethod->getNumberOfParameters()) {
-                $reflectionMethod->invoke(
+
+                $this->stm = $reflectionMethod->invoke(
                     $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver]
                 );
+
+                if ($this->stm instanceof \PDOStatement) {
+                    return $this->stm;
+                }
 
                 return $this;
             }
 
             // Call it with parameters
-            $reflectionMethod->invokeArgs(
+            $this->stm = $reflectionMethod->invokeArgs(
                 $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver], 
                 $arguments
             );
+
+            if ($this->stm instanceof \PDOStatement) {
+                return $this->stm;
+            }
 
             return $this;
         }
