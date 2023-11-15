@@ -10,10 +10,20 @@
 */
 
 return [
-    
+
+    /*
+    |----------------------------------------------
+    | Views setup.
+    */
+
     'views' => [
         'basepath' => app()->basedir . '/views'
     ],
+
+    /*
+    |----------------------------------------------
+    | Group of providers.
+    */
 
     'providers' => [
 
@@ -28,13 +38,13 @@ return [
         'EmailServiceProvider' => Providers\EmailServiceProvider::class,
     ],
 
-    'middlewares' => [
+    /*
+    |----------------------------------------------
+    | Group of middlewares. These can be applied by 
+    | just calling the group name.
+    */
 
-        /*
-        |----------------------------------------------
-        | Group of middlewares. These can be applied by 
-        | just calling the group name.
-        */ 
+    'middlewares' => [
 
         // Run over any request
         'app' => [
@@ -51,7 +61,7 @@ return [
         'api' => [
 
         ],
-        
+
         'auth' => [
 
         ],

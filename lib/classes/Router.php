@@ -17,6 +17,9 @@ use Interfaces\MiddlewareInterface;
  */
 class Router
 {
+    /** @var ?array */
+    private static $groupMiddlewares = null;
+
     /** @var array */
     private $routes = [];
 
@@ -68,6 +71,16 @@ class Router
         }
 
         $this->parseRoute($route);
+
+        // Run APP middlewares on all routes and requests
+        if (! empty($appMiddlewares = array_values(config('app.middlewares.app')))) {
+            $route->withMiddleware($appMiddlewares);
+        }
+
+        // Asign group middlewares to this route
+        if (! is_null($this::$groupMiddlewares)) {
+            $route->withMiddleware($this::$groupMiddlewares);
+        }
 
         // Implement Trie-based approach.
         $this->routes[$method][$route->subdomain][] = $route;
@@ -295,5 +308,36 @@ class Router
             // Pass request and reponse instances to the middleware to be processed
             (new $middleware())(app()->request, app()->response);
         }
+    }
+
+    /**
+     * Groups routes to run a list of middlewares on them.
+     *
+     * @param string|array $middlewares
+     * @param callable $callable
+     * @return void
+     */
+    public static function group(string|array $middlewares, callable $callback)
+    {
+        // Parses $middlewares as string: 'auth,web,api'
+        if (is_string($middlewares)) {
+            $middlewares = array_filter(explode(',', $middlewares));
+
+            $appMiddlewares = config('app.middlewares');
+
+            $middlewares = array_reduce($middlewares, function ($carry, $key) use ($appMiddlewares) {
+                    return array_merge($carry, $appMiddlewares[$key] ?? []);
+                }, 
+                []
+            );
+        }
+
+        self::$groupMiddlewares = array_values($middlewares);
+
+        // Make the call to $callable
+        call_user_func($callback);
+
+        // Clear group middleware variable
+        self::$groupMiddlewares = null;
     }
 }

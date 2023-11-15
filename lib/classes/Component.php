@@ -17,14 +17,12 @@ final class Component
         array $data, 
         bool $return = false)
     {
+        // Makes the view and returns the content to be embeded
         if ($return) {
-
             ob_start();
-
             app()->view->make($component, $data, 'components');
 
             return ob_get_clean();
-
         }
 
         return app()->view->make($component, $data, 'components');

@@ -45,7 +45,8 @@ class Db
     /**
      * Generic method to handle diffrent DB drivers.
      *
-     * @param ?string $driver `sqlite` or `sqlite:db_alias`
+     * @param ?string $driver `sqlite` or `sqlite:db_alias`, if it's null, the driver
+     *                          will be get from config('db.default') field.
      * @return Db
      */
     public function connect(string $driver = null): Db

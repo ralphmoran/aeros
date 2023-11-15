@@ -10,8 +10,13 @@
 
 use Classes\Route;
 
+// Group middlewares: All routes within the calback are going 
+// to receive middlewares from 'auth' group (see config('app.middlewares.auth'))
+Route::group('auth', function () {
+    Route::get(":/profile", "IndexController@showProfile");
+});
+
 Route::get(":/", "IndexController");
-Route::get(":/profile", "IndexController@showProfile");
 Route::get(":/list/{userid}/profile", "IndexController@list");
 Route::get(":/another/{roleid}/profile/{anotherid}", "IndexController@anotherProfile");
 
