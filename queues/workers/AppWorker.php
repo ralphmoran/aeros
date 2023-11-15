@@ -77,11 +77,9 @@ class AppWorker extends Worker
     public function call(string $worker)
     {
         if (! $this->isWorkerValid($worker)) {
-
             throw new \Exception(
                 sprintf('ERROR[Worker] There was a problem validating worker \'%s\.', $worker)
             );
-
         }
 
         (new $worker)->handle();
@@ -97,20 +95,8 @@ class AppWorker extends Worker
         $workers = ! empty($workers) ? $workers : config('workers');
 
         if (is_array($workers) && ! empty($workers)) {
-
             foreach ($workers as $worker) {
-
-                if (! $this->isWorkerValid($worker)) {
-
-                    throw new \Exception(
-                        sprintf('ERROR[Worker] There was a problem validating worker \'%s\.', $worker)
-                    );
-
-                    continue;
-                }
-
-                // Run the worker handle method
-                (new $worker)->handle();
+                $this->call($worker);
             }
         }
     }

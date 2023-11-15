@@ -11,6 +11,9 @@
 
 return [
     
+    'views' => [
+        'basepath' => app()->basedir . '/views'
+    ],
 
     'providers' => [
 

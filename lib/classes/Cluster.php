@@ -65,5 +65,29 @@ available resources.
 
 final class Cluster
 {
+   public static $instance = null;
 
+   public static function __callStatic($method, $arguments)
+   {
+      dd($method, $arguments, static::$instance);
+
+      if (is_null(static::$instance)) {
+         static::$instance = new static();
+      }
+
+      return static::$instance;
+   }
+
+   public function _connect()
+   {
+      echo __METHOD__ . PHP_EOL;
+      return $this;
+   }
+
+   public function get()
+   {
+      echo __METHOD__ . PHP_EOL;
+
+      return $this;
+   }
 }

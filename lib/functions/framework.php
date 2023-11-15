@@ -53,13 +53,14 @@ if (! function_exists('view')) {
 	 * View function is a wrapper for the View class which renders/makes and returns
 	 * HTML content to the browser.
 	 *
-	 * @param string $view_name
+	 * @param string $view
 	 * @param array $values
+	 * @param string $subfolder
 	 */
-	function view(string $view_name, array $values = [])
+	function view(string $view, array $values = [], string $subfolder = '')
 	{
 		if (class_exists('Classes\View')) {
-			return app()->view->make($view_name, $values);
+			return app()->view->make($view, $values, $subfolder);
 		}
 	}
 }

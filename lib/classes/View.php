@@ -16,22 +16,18 @@ final class View
         array $vars = [], 
         string $subfolder = ''
     ) {
-        $base_path        = __DIR__ . '/../../views';
-        $parsed_view_path = '/' . implode('/', explode('.', $view)) . '.php';
-        $view_path        = $base_path . (! empty($subfolder) ? '/' . $subfolder : '') . $parsed_view_path;
+        // Resolve view: absolute path and filename
+        $resolved_view = $this->resolveView($view, $subfolder);
 
         // Check if the view template exists
-        if (! file_exists($view_path)) {
-
+        if (! file_exists($resolved_view)) {
             http_response_code(400);
 
             return view('common.errors.codes', [
-                                                'code'    => '404 - Not found',
-                                                'message' => 'File does not exist: ' . $view_path
-                                            ]);
+                'code'    => '404 - Not found',
+                'message' => 'File does not exist: ' . $resolved_view
+            ]);
         }
-
-        clearstatcache();
 
         // $flash_vars array comes from any redirect action if $arguments were passed
         if (! empty($_SESSION['flash_vars'])) {
@@ -45,6 +41,21 @@ final class View
             extract($vars);
         }
 
-        include $view_path;
+        include $resolved_view;
+    }
+
+    /**
+     * Resolves the final path and filename for the requested view.
+     *
+     * @param string $view
+     * @param string $subfolder
+     * @param string $extension
+     * @return string
+     */
+    private function resolveView(string $view, string $subfolder = '', string $extension = 'php'): string
+    {
+        return config('app.views.basepath') 
+            . (! empty($subfolder) ? '/' . $subfolder : '') // Subfolder: components
+            . '/' . implode('/', explode('.', $view)) . '.' . $extension; // Form base path if there are sub-sections
     }
 }

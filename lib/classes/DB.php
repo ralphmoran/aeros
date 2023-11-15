@@ -2,8 +2,11 @@
 
 namespace Classes;
 
+// https://phpdelusions.net/pdo
 // https://www.php.net/manual/en/class.pdo.php
 // https://www.php.net/manual/en/class.pdostatement.php 
+// https://stackoverflow.com/questions/27902831/sqlite3-sqlstatehy000-general-error-5-database-is-locked
+// https://www.sqlite.org/lockingv3.html#how_to_corrupt
 
 class Db
 {
@@ -18,8 +21,11 @@ class Db
 
     /** @var PDO|null */
     private $reflectionPDO = null;
+    
+    /** @var PDOStatement|null */
+    private $reflectionPDOStatement = null;
 
-    /** @var PDOStatement */
+    /** @var PDOStatement|null */
     private $stm = null;
 
     /** @var array */
@@ -27,10 +33,13 @@ class Db
         'beginTransaction',
         'commit',
     ];
-    
+
     /** @var array */
-    private $stmPDOMethods = [
-        'execute',
+    private $connFlags = [
+        \PDO::ATTR_PERSISTENT => true,
+        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+        \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+        \PDO::ATTR_TIMEOUT => 1,
     ];
 
     /**
@@ -90,68 +99,6 @@ class Db
     }
 
     /**
-     * Makes mathod calls to PDO connection.
-     *
-     * @param string $method
-     * @param array $arguments
-     * @return void
-     * @throws \BadMethodCallException
-     */
-    public function __call($method, $arguments)
-    {
-
-        // https://www.php.net/manual/en/pdo.prepare.php
-
-        // There are some PDO methods that are not supported due to the global try-catch
-        if (in_array($method, $this->nulledMethods)) {
-            return $this;
-        }
-
-        if (is_null($this->reflectionPDO)) {
-            $this->reflectionPDO = new \ReflectionClass('PDO');
-        }
-
-        // Validates if method exists
-        if ($this->reflectionPDO->hasMethod($method)) {
-
-            $reflectionMethod = $this->reflectionPDO->getMethod($method);
-
-            // Call it when there are no parameters
-            if (! $reflectionMethod->getNumberOfParameters()) {
-
-                $this->stm = $reflectionMethod->invoke(
-                    $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver]
-                );
-
-                if ($this->stm instanceof \PDOStatement) {
-                    return $this->stm;
-                }
-
-                return $this;
-            }
-
-            // Call it with parameters
-            $this->stm = $reflectionMethod->invokeArgs(
-                $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver], 
-                $arguments
-            );
-
-            if ($this->stm instanceof \PDOStatement) {
-                return $this->stm;
-            }
-
-            return $this;
-        }
-
-        throw new \BadMethodCallException(
-            sprintf(
-                'ERROR[BadMethodCallException] Method "%s" does not exist.', 
-                $method
-            )
-        );
-    }
-
-    /**
      * Connects to PostgreSQL database.
      *
      * @return \PDO
@@ -164,7 +111,7 @@ class Db
             "pgsql:host=" . $dbSetup['server'] . ";dbname=" . $dbSetup['database'], 
             $dbSetup['username'], 
             $dbSetup['password'], 
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+            $this->connFlags
         );
     }
 
@@ -183,12 +130,12 @@ class Db
             );
         }
 
-        return new \PDO("sqlite:" . $dbSetup['server'] . "/" . $dbSetup['database'], null, null, [
-            \PDO::ATTR_PERSISTENT => true,
-            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-            \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-            \PDO::ATTR_TIMEOUT => 1,
-        ]);
+        return new \PDO(
+            "sqlite:" . $dbSetup['server'] . "/" . $dbSetup['database'], 
+            null, 
+            null, 
+            $this->connFlags
+        );
     }
 
     /**
@@ -204,7 +151,94 @@ class Db
             "mysql:host=" . $dbSetup['server'] . ";dbname=" . $dbSetup['database'] . ';charset=UTF8', 
             $dbSetup['username'], 
             $dbSetup['password'], 
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+            $this->connFlags
         );
+    }
+
+    /**
+     * Makes mathod calls to PDO connection.
+     *
+     * @param string $method
+     * @param array $arguments
+     * @return void
+     * @throws \BadMethodCallException
+     */
+    public function __call($method, $arguments)
+    {
+        // There are some PDO methods that are not supported due to the global try-catch
+        if (in_array($method, $this->nulledMethods)) {
+            return $this;
+        }
+
+        // PDO result
+        if (is_null($this->reflectionPDO)) {
+            $this->reflectionPDO = new \ReflectionClass('PDO');
+        }
+
+        $result = $this->processReflection(
+            $this->reflectionPDO, 
+            $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver], 
+            $method, 
+            $arguments
+        );
+
+        if (! is_null($result)) {
+            if ($result instanceof \PDOStatement) {
+                $this->stm = $result;
+            }
+
+            return $this;
+        }
+
+        // PDOStatement result
+        if (is_null($this->reflectionPDOStatement)) {
+            $this->reflectionPDOStatement = new \ReflectionClass('PDOStatement');
+        }
+
+        if (! is_null($result = $this->processReflection($this->reflectionPDOStatement, $this->stm, $method, $arguments))) {
+            if ($result instanceof \PDOStatement) {
+                $this->stm = $result;
+            }
+
+            return $this->stm;
+        }
+
+        throw new \BadMethodCallException(
+            sprintf(
+                'ERROR[BadMethodCallException] Method "%s" does not exist.', 
+                $method
+            )
+        );
+    }
+
+    /**
+     * Processes a reflection object and executes the requested method.
+     *
+     * @param object $reflection
+     * @param object $object
+     * @param string $method
+     * @param array $arguments
+     * @return mixed
+     */
+    private function processReflection($reflection, $object, $method, $arguments): mixed
+    {
+        if ($reflection->hasMethod($method)) {
+
+            $reflectionMethod = $reflection->getMethod($method);
+
+            // Call it when there are no parameters
+            if (! $reflectionMethod->getNumberOfParameters()) {
+                $result = $reflectionMethod->invoke($object);
+            }
+
+            // Call it with parameters
+            if ($reflectionMethod->getNumberOfParameters()) {
+                $result = $reflectionMethod->invokeArgs($object, $arguments);
+            }
+
+            return $result;
+        }
+
+        return null;
     }
 }

@@ -54,9 +54,10 @@ class IndexController extends ControllerBase
 
         // app()->event->emit('email.notify', ['ralph@myaero.app']);
 
+        // Create projects table
         // db()->exec('CREATE TABLE IF NOT EXISTS projects (
         //         project_id   INTEGER PRIMARY KEY,
-        //         project_name TEXT NOT NULL)')
+        //         project_name TEXT NOT NULL)');
 
         // Inserting rows
         // db()->prepare('INSERT INTO projects (project_id, project_name) VALUES(?, ?)')
@@ -66,8 +67,15 @@ class IndexController extends ControllerBase
         //     ]);
 
         // Fetching data
-        // https://www.php.net/manual/en/pdostatement.fetchall.php
-        // db()->query('SELECT * FROM projects')->fetchAll();
+        // db()->prepare("SELECT * FROM projects WHERE project_id = :id")
+        //     ->execute([
+        //         'id' => 439
+        //     ])
+        //     ->fetchAll();
+
+        // dd(db()->prepare("SELECT * FROM projects WHERE project_id = ?")
+        //     ->execute([439])
+        //     ->fetchAll());
 
         return view('index');
     }
