@@ -32,18 +32,17 @@ class ServiceContainer extends Kernel
 
             printf('%s', $this->router->dispatch());
 
-        } catch (\TypeError $e) {
-            printf('Caught TypeError: %s', $e->getMessage());
-        } catch (\BadMethodCallException $e) {
-            printf('Caught BadMethodCallException: %s', $e->getMessage());
-        } catch (\Exception $e) {
-            printf('Caught Exception: %s', $e->getMessage());
-        } catch (\RuntimeException $e) {
-            printf('Caught RuntimeException: %s', $e->getMessage());
-        } catch (\PDOException $e) {
-            printf('Caught PDOException: %s', $e->getMessage());
-        } catch (\InvalidArgumentException $e) {
-            printf('Caught InvalidArgumentException: %s', $e->getMessage());
+        } catch (\Throwable $e) {
+
+            // view('common.errors.codes', ['code' => $e->getCode()]);
+
+            printf(
+                'Caught %s: %s. %s:%d.', 
+                get_class($e),
+                $e->getMessage(),
+                $e->getFile(),
+                $e->getLine()
+            );
         }
 
         exit;

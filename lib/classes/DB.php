@@ -8,6 +8,11 @@ namespace Classes;
 // https://stackoverflow.com/questions/27902831/sqlite3-sqlstatehy000-general-error-5-database-is-locked
 // https://www.sqlite.org/lockingv3.html#how_to_corrupt
 
+/**
+ * Wrapper class for PDO library.
+ * 
+ * 
+ */
 class Db
 {
     /** @var array */
@@ -29,12 +34,6 @@ class Db
     private $stm = null;
 
     /** @var array */
-    private $nulledMethods = [
-        'beginTransaction',
-        'commit',
-    ];
-
-    /** @var array */
     private $connFlags = [
         \PDO::ATTR_PERSISTENT => true,
         \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
@@ -47,9 +46,9 @@ class Db
      *
      * @param ?string $driver `sqlite` or `sqlite:db_alias`, if it's null, the driver
      *                          will be get from config('db.default') field.
-     * @return Db
+     * @return Db|\PDO
      */
-    public function connect(string $driver = null): Db
+    public function connect(string $driver = null): Db|\PDO
     {
         $dbSetup = config('db');
 
@@ -68,17 +67,17 @@ class Db
 
         // Return PDO object by alias, if exists
         if (array_key_exists($this->dbConnectionAlias, $this->activeDBConnections)) {
-            return $this->activeDBConnections[$this->dbConnectionAlias];
+            return $this;
         }
 
         // Return PDO object by driver, if exists
-        if (array_key_exists($driver, $this->activeDBConnections)) {
-            return $this->activeDBConnections[$driver];
+        if (array_key_exists($this->driver, $this->activeDBConnections)) {
+            return $this;
         }
 
         switch ($this->driver) {
             case 'postgres':
-                $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver] = $this->gePostgresPDO();
+                $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver] = $this->getPostgresPDO();
                 break;
             case 'sqlite':
                 $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver] = $this->getSqlitePDO();
@@ -100,11 +99,77 @@ class Db
     }
 
     /**
+     * Returns the last inserted id
+     *
+     * @return int|bool
+     */
+    public function lastInsertId(): int|bool
+    {
+        return $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver]->lastInsertId();
+    }
+
+    /**
+     * Makes mathod calls to PDO connection.
+     *
+     * @param string $method
+     * @param array $arguments
+     * @return void
+     * @throws \BadMethodCallException
+     */
+    public function __call($method, $arguments)
+    {
+        // PDO is null
+        if (is_null($this->reflectionPDO)) {
+            $this->reflectionPDO = new \ReflectionClass('PDO');
+        }
+
+        // Process PDO
+        $result = $this->processReflection(
+            $this->reflectionPDO, 
+            $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver], 
+            $method, 
+            $arguments
+        );
+
+        if (! is_null($result)) {
+            if ($result instanceof \PDOStatement) {
+                $this->stm = $result;
+            }
+
+            return $this;
+        }
+
+        // PDOStatement is null
+        if (is_null($this->reflectionPDOStatement)) {
+            $this->reflectionPDOStatement = new \ReflectionClass('PDOStatement');
+        }
+
+        // Process PDOStatement
+        $result = $this->processReflection(
+            $this->reflectionPDOStatement, 
+            $this->stm, 
+            $method, 
+            $arguments
+        );
+
+        if (! is_null($result)) {
+            return $this->stm;
+        }
+
+        throw new \BadMethodCallException(
+            sprintf(
+                'ERROR[BadMethodCallException] Method "%s" does not exist.', 
+                $method
+            )
+        );
+    }
+
+    /**
      * Connects to PostgreSQL database.
      *
      * @return \PDO
      */
-    private function gePostgresPDO(): \PDO
+    private function getPostgresPDO(): \PDO
     {
         $dbSetup = config('db.drivers.postgres');
 
@@ -153,62 +218,6 @@ class Db
             $dbSetup['username'], 
             $dbSetup['password'], 
             $this->connFlags
-        );
-    }
-
-    /**
-     * Makes mathod calls to PDO connection.
-     *
-     * @param string $method
-     * @param array $arguments
-     * @return void
-     * @throws \BadMethodCallException
-     */
-    public function __call($method, $arguments)
-    {
-        // There are some PDO methods that are not supported due to the global try-catch
-        if (in_array($method, $this->nulledMethods)) {
-            return $this;
-        }
-
-        // PDO result
-        if (is_null($this->reflectionPDO)) {
-            $this->reflectionPDO = new \ReflectionClass('PDO');
-        }
-
-        $result = $this->processReflection(
-            $this->reflectionPDO, 
-            $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver], 
-            $method, 
-            $arguments
-        );
-
-        if (! is_null($result)) {
-            if ($result instanceof \PDOStatement) {
-                $this->stm = $result;
-            }
-
-            return $this;
-        }
-
-        // PDOStatement result
-        if (is_null($this->reflectionPDOStatement)) {
-            $this->reflectionPDOStatement = new \ReflectionClass('PDOStatement');
-        }
-
-        if (! is_null($result = $this->processReflection($this->reflectionPDOStatement, $this->stm, $method, $arguments))) {
-            if ($result instanceof \PDOStatement) {
-                $this->stm = $result;
-            }
-
-            return $this->stm;
-        }
-
-        throw new \BadMethodCallException(
-            sprintf(
-                'ERROR[BadMethodCallException] Method "%s" does not exist.', 
-                $method
-            )
         );
     }
 

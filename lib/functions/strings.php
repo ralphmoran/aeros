@@ -25,3 +25,31 @@ if (! function_exists('str_find')) {
 		return false;
 	}
 }
+
+if (! function_exists('pluralize')) {
+
+	/**
+	 * Pluralizes a word.
+	 *
+	 * @param string $word
+	 * @return string
+	 */
+	function pluralize(string $word): string
+	{
+		return implode('', (new \Symfony\Component\String\Inflector\EnglishInflector())->pluralize($word));
+	}
+}
+
+if (! function_exists('singularize')) {
+
+	/**
+	 * Singularizes a word.
+	 *
+	 * @param string $word
+	 * @return string
+	 */
+	function singularize(string $word): string
+	{
+		return implode('', (new \Symfony\Component\String\Inflector\EnglishInflector())->singularize($word));
+	}
+}

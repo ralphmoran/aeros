@@ -15,7 +15,6 @@ return [
     |----------------------------------------------
     | Views setup.
     */
-
     'views' => [
         'basepath' => app()->basedir . '/views'
     ],
@@ -24,7 +23,6 @@ return [
     |----------------------------------------------
     | Group of providers.
     */
-
     'providers' => [
 
         // Main service providers: DO NOT TOUCH
@@ -43,7 +41,6 @@ return [
     | Group of middlewares. These can be applied by 
     | just calling the group name.
     */
-
     'middlewares' => [
 
         // Run over any request
@@ -66,4 +63,16 @@ return [
 
         ],
     ],
+
+    /*
+    |----------------------------------------------
+    | User roles. It can be listed and implemented.
+    */
+    'users' => [
+        'roles' => [
+            'super' => Roles\SuperRole::class,
+            'admin' => Roles\AdminRole::class,
+            'guest' => Roles\GuestRole::class,
+        ]
+    ]
 ];

@@ -16,7 +16,8 @@
             "Events\\": "events",
             "Crons\\": "queues/crons",
             "Jobs\\": "queues/jobs",
-            "Workers\\": "queues/workers"
+            "Workers\\": "queues/workers",
+            "Roles\\": "auth/roles"
         }
     },
     "require": {

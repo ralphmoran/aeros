@@ -131,20 +131,31 @@ if (! function_exists('dd')) {
 	{
 		die(
 			response(
-				array_map(
-					function ($point) {
-						$index = (isset($point['class']) ? $point['class'] . '::' : '')
-							. $point['function'] . ' => ' 
-							. str_replace(env('APP_ROOT_DIR'), '', (isset($point['file']) ? $point['file'] : '')) 
-							. ':L#' . (isset($point['line']) ? $point['line'] : '');
+				array_values(
+					array_filter(
+						array_map(
+							function ($point) {
+								if (! isset($point['file'])) {
+									return null;
+								}
 
-						if (empty($point['args'])) {
-							return $index;
-						}
-		
-						return [$index => $point['args']];
-					}, 
-					debug_backtrace()
+								$key = $point['function'] . ' => ' . ($point['file'] ?? '') . '#L:' . ($point['line'] ?? '');
+
+								unset($point['function'], $point['file'], $point['line']);
+
+								if (isset($point['args'])) {
+									foreach ($point['args'] as &$value) {
+										$value = is_object($value) ? $value : $value;
+									}
+								}
+
+								$index = [$key => $point];
+
+								return $index;
+							},
+							debug_backtrace()
+						)
+					)
 				)
 			)
 		);
@@ -163,32 +174,6 @@ if (! function_exists('cache')) {
 		if (class_exists('Classes\Cache')) {
 			return app()->cache;
 		}
-	}
-}
-
-if (! function_exists('str_find')) {
-
-	/**
-	 * Searches for a string within another string based on a list and returns
-	 * true if one of the items from the list was found.
-	 *
-	 * @param string $haystack
-	 * @param array $needles
-	 * @return boolean
-	 */
-	function str_find(string $haystack, array $needles): bool 
-	{
-		if (empty($needles)) {
-			return false;
-		}
-
-		foreach ($needles as $needle) {
-			if (strpos($haystack, $needle) === 0) {
-				return true;
-			} 
-		}
-
-		return false;
 	}
 }
 
@@ -361,7 +346,7 @@ if (! function_exists('db')) {
 	 * @param ?string $driver - `sqlite` or `sqlite:db_alias`
 	 * @return Classes\Db
 	 */
-	function db(string $driver = null): Classes\Db 
+	function db(string $driver = null): Classes\Db
 	{
 		return app()->db->connect($driver);
 	}
