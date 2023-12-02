@@ -59,13 +59,17 @@ class Route extends Router
     public function withMiddleware(string|array $middlewares): Route
     {
         if (is_string($middlewares) && $this->isMiddleware($middlewares)) {
-            $this->middlewares[] = $middlewares;
+            if (! in_array($middlewares, $this->middlewares)) {
+                $this->middlewares[] = $middlewares;
+            }
         }
 
         if (is_array($middlewares)) {
             foreach ($middlewares as $middleware) {
                 if ($this->isMiddleware($middleware)) {
-                    $this->middlewares[] = $middleware;
+                    if (! in_array($middleware, $this->middlewares)) {
+                        $this->middlewares[] = $middleware;
+                    }
                 }
             }
         }
