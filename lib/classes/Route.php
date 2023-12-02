@@ -66,10 +66,8 @@ class Route extends Router
 
         if (is_array($middlewares)) {
             foreach ($middlewares as $middleware) {
-                if ($this->isMiddleware($middleware)) {
-                    if (! in_array($middleware, $this->middlewares)) {
-                        $this->middlewares[] = $middleware;
-                    }
+                if (! in_array($middleware, $this->middlewares) && $this->isMiddleware($middleware)) {
+                    $this->middlewares[] = $middleware;
                 }
             }
         }
