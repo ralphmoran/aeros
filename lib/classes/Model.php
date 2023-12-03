@@ -62,20 +62,47 @@ abstract class Model implements JsonSerializable
     }
 
     /**
-     * Sets new values as pending on commit event for INSERT action.
+     * Inserts multiple records at once.
      *
-     * @param array $newValues
+     * @param array $records
      * @return Model
      * @throws \InvalidArgumentException
      */
-    private function createMany(array $newValues): mixed
+    private function createMany(array $records): mixed
     {
         if (! $this->instantiated) {
-            $this->crudAction = Model::INSERT;
 
-            $this->setPendingValuesForCommit($newValues);
+            $lastInderIds = [];
+            $keys = array_keys($records[0]);
+            $cols = implode(',', $keys);
 
-            return $this->commit();
+            $placeholders = rtrim(
+                implode('', 
+                    array_map(
+                        fn ($k): string => ':' . $k . ', ', 
+                        $keys
+                    )
+                ), 
+                ', '
+            );
+
+            $stm = db()->prepare("INSERT INTO {$this->getTableNameFromModel()} ({$cols}) VALUES ({$placeholders})");
+
+            db()->beginTransaction();
+            
+            foreach ($records as $record) {
+                $stm->execute($record);
+                $lastInderIds[] = $stm->lastInsertId();
+            }
+
+            db()->commit();
+
+            $filters = array_map(
+                fn ($id): array => ['id', '=', $id, 'OR'],
+                $lastInderIds
+            );
+
+            return Model::find($filters);
         }
     }
 
@@ -426,30 +453,27 @@ abstract class Model implements JsonSerializable
                 // {key} {operator} {value} {logical operator}
                 if (count($keys) == 4) {
                     $operator = $keys[3];
-                    // $placeholders .= implode(' ', $keys) . ' ';
                     $placeholders .= "{$keys[0]} {$keys[1]} ? {$keys[3]} ";
-                    $boundValues[$keys[0]] = $keys[2];
+                    $boundValues[] = $keys[2];
                 }
 
                 // {key} {operator} {value} AND
                 if (count($keys) == 3) {
-                    // $placeholders .= implode(' ', $keys) . ' AND ';
                     $placeholders .= "{$keys[0]} {$keys[1]} ? AND ";
-                    $boundValues[$keys[0]] = $keys[2];
+                    $boundValues[] = $keys[2];
                 }
 
                 // {key} = {value} AND
                 if (count($keys) == 2) {
-                    // $placeholders .= implode(' = ', $keys) . ' AND ';
                     $placeholders .= "{$keys[0]} = ? AND ";
-                    $boundValues[$keys[0]] = $keys[1];
+                    $boundValues[] = $keys[1];
                 }
             }
 
             $placeholders = rtrim($placeholders, " AND {$operator}");
 
             $founds = db()->prepare("SELECT {$columns} FROM {$this->getTableNameFromModel()} WHERE {$placeholders}")
-                ->execute(array_values($boundValues))
+                ->execute($boundValues)
                 ->fetchAll(\PDO::FETCH_ASSOC);
 
             // All found records will be casted as the current model type and

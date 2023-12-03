@@ -108,40 +108,46 @@ class IndexController extends ControllerBase
         //       as primary key and auto-increment properties
 
         // Multiple inserts
-        $users = [
-            [
-                'username' => 'username' . rand(1, 10),
-                'fname' => 'fname',
-                'lname' => 'lname',
-            ],
-            [
-                'username' => 'username' . rand(1, 10),
-                'fname' => 'fname',
-                'lname' => 'lname',
-            ],
-            [
-                'username' => 'username' . rand(1, 10),
-                'fname' => 'fname',
-                'lname' => 'lname',
-            ],
-            [
-                'username' => 'username' . rand(1, 10),
-                'fname' => 'fname',
-                'lname' => 'lname',
-            ],
-        ];
+        // $users = [
+        //     [
+        //         'username' => 'username' . rand(1, 10),
+        //         'fname' => 'fname',
+        //         'lname' => 'lname',
+        //     ],
+        //     [
+        //         'username' => 'username' . rand(1, 10),
+        //         'fname' => 'fname',
+        //         'lname' => 'lname',
+        //     ],
+        //     [
+        //         'username' => 'username' . rand(1, 10),
+        //         'fname' => 'fname',
+        //         'lname' => 'lname',
+        //     ],
+        //     [
+        //         'username' => 'username' . rand(1, 10),
+        //         'fname' => 'fname',
+        //         'lname' => 'lname',
+        //     ],
+        // ];
 
-        $stm = db()->prepare("INSERT INTO users (username, fname, lname) VALUES (:username, :fname, :lname)");
+        // $stm = db()->prepare("INSERT INTO users (username, fname, lname) VALUES (:username, :fname, :lname)");
 
-        db()->beginTransaction();
+        // db()->beginTransaction();
         
-        foreach ($users as $user) {
-            $stm->execute($user);
-        }
+        // foreach ($users as $user) {
+        //     $stm->execute($user);
+        //     // $stm->lastInsertId(); // It gives you the last inserted ID
+        // }
         
-        db()->commit();
+        // db()->commit();
 
-        // dd('All good');
+        //******************************************/
+        // Or, use User::createMany($users) instead. 
+        // It will return a list of recent inserted records as User objects
+        // $newUsers = User::createMany($users);
+
+        // dd($newUsers);
 
         //******************************************/
         // Create a new User model
@@ -160,9 +166,9 @@ class IndexController extends ControllerBase
         $user = User::find(4);
 
         //******************************************/
-        // Get a list of users
+        // Get a list of users. Pay attention to this format, it will return an array of user objects.
         // $user = User::find([
-        //     ['id', '>', 2, 'OR'],
+        //     ['id', '=', 1, 'OR'],
         //     // ['username', '<>', 'Rafael'],
         // ]);
 
