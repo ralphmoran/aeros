@@ -111,23 +111,23 @@ class IndexController extends ControllerBase
         // $users = [
         //     [
         //         'username' => 'username' . rand(1, 10),
-        //         'fname' => 'fname',
-        //         'lname' => 'lname',
+        //         'fname' => 'fname' . rand(1, 10),
+        //         'lname' => 'lname' . rand(1, 10),
         //     ],
         //     [
         //         'username' => 'username' . rand(1, 10),
-        //         'fname' => 'fname',
-        //         'lname' => 'lname',
+        //         'fname' => 'fname' . rand(1, 10),
+        //         'lname' => 'lname' . rand(1, 10),
         //     ],
         //     [
         //         'username' => 'username' . rand(1, 10),
-        //         'fname' => 'fname',
-        //         'lname' => 'lname',
+        //         'fname' => 'fname' . rand(1, 10),
+        //         'lname' => 'lname' . rand(1, 10),
         //     ],
         //     [
         //         'username' => 'username' . rand(1, 10),
-        //         'fname' => 'fname',
-        //         'lname' => 'lname',
+        //         'fname' => 'fname' . rand(1, 10),
+        //         'lname' => 'lname' . rand(1, 10),
         //     ],
         // ];
 
@@ -184,11 +184,11 @@ class IndexController extends ControllerBase
 
         //******************************************/
         // Update many properties at once
-        $user->update([
-            'username' => 'Last update',
-            'fname' => 'Last update',
-            'lname' => 'Last update',
-        ])->commit();
+        // $user->update([
+        //     'username' => 'Last update',
+        //     'fname' => 'Last update',
+        //     'lname' => 'Last update',
+        // ])->commit();
 
         dd($user);
 
