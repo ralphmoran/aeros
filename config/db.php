@@ -31,6 +31,19 @@ return [
         ],
 
         /*
+         * MSSQL connection.
+         * 
+         * Note: Make sure you have installed MSSQL driver.
+         */
+        'mssql' => [
+            'server'   => 'host',
+            'username' => 'username',
+            'password' => 'password',
+            'database' => 'database',
+            'port'     => '1433'
+        ],
+
+        /*
          * PostgreSQL connection.
          * 
          * Note: Make sure you have installed PostgreSQL driver.

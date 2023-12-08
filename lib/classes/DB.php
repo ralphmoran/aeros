@@ -91,6 +91,9 @@ class Db
             case 'mysql':
                 $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver] = $this->getMysqlPDO();
                 break;
+            case 'mssql':
+                $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver] = $this->getMssqlPDO();
+                break;
             default:
                 throw new \PDOException(
                     sprintf(
@@ -184,7 +187,7 @@ class Db
         $dbSetup = config('db.drivers.postgres');
 
         return new \PDO(
-            "pgsql:host=" . $dbSetup['server'] . ";dbname=" . $dbSetup['database'], 
+            "pgsql:host=" . $dbSetup['server'] . ":" . $dbSetup['port'] .  ";dbname=" . $dbSetup['database'], 
             $dbSetup['username'], 
             $dbSetup['password'], 
             $this->connFlags
@@ -224,7 +227,24 @@ class Db
         $dbSetup = config('db.drivers.mysql');
 
         return new \PDO(
-            "mysql:host=" . $dbSetup['server'] . ";dbname=" . $dbSetup['database'] . ';charset=UTF8', 
+            "mysql:host=" . $dbSetup['server'] . ":" . $dbSetup['port'] . ";dbname=" . $dbSetup['database'] . ';charset=UTF8', 
+            $dbSetup['username'], 
+            $dbSetup['password'], 
+            $this->connFlags
+        );
+    }
+    
+    /**
+     * Connects to MSSQL database.
+     *
+     * @return \PDO
+     */
+    private function getMssqlPDO(): \PDO
+    {
+        $dbSetup = config('db.drivers.mssql');
+
+        return new \PDO(
+            "sqlsrv:host=" . $dbSetup['server'] . ":" . $dbSetup['port'] . ";dbname=" . $dbSetup['database'],
             $dbSetup['username'], 
             $dbSetup['password'], 
             $this->connFlags
