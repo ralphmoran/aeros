@@ -184,6 +184,10 @@ class Router
      */
     public function getUriParts(string $uri) : array
     {
+        // Remove query string.
+        // Still these GET variables cab be caught with request('get') function
+        $uri = str_replace('?' . $_SERVER['QUERY_STRING'], '', $uri);
+
         $uriParts = [
             'parts' => array_values(
                 array_filter(
@@ -334,7 +338,8 @@ class Router
 
         self::$groupMiddlewares = array_values($middlewares);
 
-        // Make the call to $callable
+        // Make the call to $callable.
+        // This will register all routes that are in the callable body.
         call_user_func($callback);
 
         // Clear group middleware variable

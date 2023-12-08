@@ -348,62 +348,62 @@ final class Request
      * @param int $api = if it's an API call
      * @return bool
      */
-    public static function authorized($post_token = 0, $api = 1): bool
-    {
-        self::$api = $api;
-        $usertoken = null;
+    // public static function authorized($post_token = 0, $api = 1): bool
+    // {
+    //     self::$api = $api;
+    //     $usertoken = null;
 
-        // Token from GET
-        $usertoken = array_key_exists('token', $_GET) && ! empty($_GET['token']) 
-            ? $_GET['token'] 
-            : null;
+    //     // Token from GET
+    //     $usertoken = array_key_exists('token', $_GET) && ! empty($_GET['token']) 
+    //         ? $_GET['token'] 
+    //         : null;
 
-        if (! is_null($usertoken)) {
-            if (! User::getInstance()->token_decode($usertoken)) {
-                return self::forbidden();
-            }
-        }
+    //     if (! is_null($usertoken)) {
+    //         if (! User::getInstance()->token_decode($usertoken)) {
+    //             return self::forbidden();
+    //         }
+    //     }
 
-        // Token from argument
-        $usertoken = (! empty($post_token)) ? $post_token : null;
+    //     // Token from argument
+    //     $usertoken = (! empty($post_token)) ? $post_token : null;
 
-        if (! is_null($usertoken) && empty($_GET['token'])) {
-            if (! User::getInstance()->token_decode($usertoken)) {
-                return self::forbidden();
-            }
-        }
+    //     if (! is_null($usertoken) && empty($_GET['token'])) {
+    //         if (! User::getInstance()->token_decode($usertoken)) {
+    //             return self::forbidden();
+    //         }
+    //     }
 
-        // Validate token from headers
-        $headers = getallheaders();
+    //     // Validate token from headers
+    //     $headers = getallheaders();
 
-        if (empty($headers['Authorization']) && empty($headers['authorization'])) {
-            return self::forbidden();
-        }
+    //     if (empty($headers['Authorization']) && empty($headers['authorization'])) {
+    //         return self::forbidden();
+    //     }
 
-        $authorization = (! empty($headers['Authorization']))
-            ? $headers['Authorization']
-            : $headers['authorization'];
+    //     $authorization = (! empty($headers['Authorization']))
+    //         ? $headers['Authorization']
+    //         : $headers['authorization'];
 
-        if (! User::getInstance()->validate_token($authorization, env("TOKEN"))) {
-            return self::forbidden();
-        }
+    //     if (! User::getInstance()->validate_token($authorization, env("TOKEN"))) {
+    //         return self::forbidden();
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 
     /**
      * Validates if $api is not empty, if so, returns false, otherwise sends a 403 code.
      *
      * @return bool
      */
-    private static function forbidden(): bool
-    {
-        if (empty(self::$api)) {
-            return false;
-        }
+    // private static function forbidden(): bool
+    // {
+    //     if (empty(self::$api)) {
+    //         return false;
+    //     }
 
-        response('Forbidden', 403);
+    //     response('Forbidden', 403);
 
-        die();
-    }
+    //     die();
+    // }
 }

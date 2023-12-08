@@ -97,9 +97,7 @@ class IndexController extends ControllerBase
         //******************************************/
         // Bring multiple records with placeholders (associative array)
         // dd(db()->prepare("SELECT * FROM users WHERE id = ?")
-        //     ->execute([
-        //         1
-        //     ])
+        //     ->execute([1])
         //     ->fetchAll()
         // );
 
@@ -198,7 +196,8 @@ class IndexController extends ControllerBase
         //     'fname' => 'Last update',
         //     'lname' => 'Last update',
         // ])->commit();
-        
+
+        // Update many properties on many records at once
         // $stm = User::update([
         //         'username' => '@@@username111',
         //         'fname' => '@@@fname111',
