@@ -164,7 +164,7 @@ class Queue
 
     /**
      * Sets the job state, this could be "Lock" a pipeline to prevent other workers 
-     * to process it, "completed", "failed", or "requeued".
+     * to process it, "completed" or "failed".
      *
      * @param string $pipelineName
      * @param string $state 

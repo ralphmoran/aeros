@@ -41,6 +41,12 @@ class Db
         \PDO::ATTR_TIMEOUT => 1,
     ];
 
+    private $finalMethods = [
+        'getColumnMeta',
+        'columnCount',
+        'rowCount',
+    ];
+
     /**
      * Generic method to handle diffrent DB drivers.
      *
@@ -153,6 +159,10 @@ class Db
         );
 
         if (! is_null($result)) {
+            if (in_array($method, $this->finalMethods)) {
+                return $result;
+            }
+
             return $this->stm;
         }
 

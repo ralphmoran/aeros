@@ -67,11 +67,11 @@ class IndexController extends ControllerBase
 
         //******************************************/
         // Create projects table. You must use "exec" method for these type of queries
-        $stm = db()->exec('CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-                username TEXT NOT NULL,
-                fname TEXT NOT NULL,
-                lname TEXT NOT NULL)');
+        // $stm = db()->exec('CREATE TABLE IF NOT EXISTS users (
+        //         id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+        //         username TEXT NOT NULL,
+        //         fname TEXT NOT NULL,
+        //         lname TEXT NOT NULL)');
 
         // dd(get_class($stm));
 
@@ -147,7 +147,7 @@ class IndexController extends ControllerBase
         // It will return a list of recent inserted records as User objects
         // $newUsers = User::createMany($users);
 
-        // dd($newUsers);
+        // dd('Create action', $newUsers);
 
         //******************************************/
         // Create a new User model
@@ -163,7 +163,7 @@ class IndexController extends ControllerBase
 
         //******************************************/
         // Find only one user
-        $user = User::find(4);
+        $user = User::find(1);
 
         //******************************************/
         // Get a list of users. Pay attention to this format, it will return an array of user objects.
@@ -176,11 +176,20 @@ class IndexController extends ControllerBase
         // Delete a user
         // $user->delete()->commit();
 
+        // Delete many at once
+        // User::delete([
+        //     ['id', '>=', 2],
+        //     ['id', '<=', 4],
+        // ])->commit();
+
+        // dd('Delete action');
+
         //******************************************/
         // Update one property
-        $user->username = 'Here was Natalia - ' . rand(1, 99);
+        // $user->username = 'Here was Natalia - ' . rand(1, 99);
+        // $user->another = 'aa'; // "another" property does not exist in the users table
         // $user->lname = 'Guarded' . rand(1, 99); // It throws an error. This column is guarded
-        $user->save();
+        // $user->save();
 
         //******************************************/
         // Update many properties at once
@@ -189,6 +198,19 @@ class IndexController extends ControllerBase
         //     'fname' => 'Last update',
         //     'lname' => 'Last update',
         // ])->commit();
+        
+        // $stm = User::update([
+        //         'username' => '@@@username111',
+        //         'fname' => '@@@fname111',
+        //         'lname' => '@@@lname111',
+        //     ],
+        //     [
+        //         ['id', '>=', 3],
+        //         ['id', '<=', 5],
+        //     ]
+        // )->commit();
+
+        // dd('Update many', $stm);
 
         dd($user);
 

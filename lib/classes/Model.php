@@ -114,22 +114,18 @@ abstract class Model implements JsonSerializable
      * @return Model
      * @throws \InvalidArgumentException
      */
-    public function update(array $updatedValues = [], array $where = []): Model
+    private function update(array $updatedValues = [], array $where = []): Model
     {
-        // Update only one record
-        if ($this->instantiated) {
-            $this->crudAction = Model::UPDATE;
-            $this->where = $where ?: [];
+        $this->crudAction = Model::UPDATE;
+        $this->setPendingValuesForCommit($updatedValues);
 
-            $this->setPendingValuesForCommit($updatedValues);
-
-            return $this;
-        }
-
-        // TODO: Update one or more records
+        // Update one or more records
         if (! $this->instantiated) {
-
+            $this->setPropertiesFromModel();
+            $this->where = $where ?: [];
         }
+
+        return $this;
     }
 
     /**
@@ -138,20 +134,16 @@ abstract class Model implements JsonSerializable
      * @param array $where
      * @return mixed
      */
-    public function delete(array $where = []): mixed
+    private function delete(array $where = []): mixed
     {
-        // Delete only one record
-        if ($this->instantiated) {
-            $this->crudAction = Model::DELETE;
-            $this->where = $where;
+        $this->crudAction = Model::DELETE;
 
-            return $this;
-        }
-
-        // TODO: Delete one or more records by $where filter
+        // Delete one or more records by $where filter
         if (! $this->instantiated) {
-
+            $this->where = $where ?: [];
         }
+
+        return $this;
     }
 
     /**
@@ -159,247 +151,12 @@ abstract class Model implements JsonSerializable
      *
      * @return mixed
      */
-    public function save(): mixed
+    private function save(): mixed
     {
         if ($this->instantiated) {
             $this->crudAction = Model::UPDATE;
 
             return $this->commit();
-        }
-    }
-
-    /**
-     * Commits pending Create-Update-Delete transactions.
-     *
-     * @return mixed
-     */
-    public function commit(): mixed
-    {
-        switch ($this->crudAction) {
-            case Model::INSERT:
-
-                if (! $this->instantiated) {
-
-                    $placeholders = '';
-                    $boundValues = [];
-
-                    // Remove primary key, it's not required on INSERT
-                    unset($this->onCommit[$this->primary]);
-
-                    $cols = implode(', ', array_keys($this->onCommit));
-
-                    $placeholders = rtrim(
-                        implode('', 
-                            array_map(
-                                fn ($k): string => ':' . $k . ', ', 
-                                array_keys($this->onCommit)
-                            )
-                        ), 
-                        ', '
-                    );
-
-                    $lastInsertId = db()->prepare("INSERT INTO {$this->getTableNameFromModel()} ({$cols}) VALUES ({$placeholders})")
-                        ->execute($this->onCommit);
-
-                    // On success, bring all data from this new model
-                    if ($lastInsertId) {
-                        return Model::find(db()->lastInsertId());
-                    }
-
-                    return $lastInsertId;
-                }
-
-                break;
-            case Model::UPDATE:
-
-                $placeholders = '';
-                $boundValues = [];
-
-                if ($this->instantiated && empty($this->where)) {
-                    $placeholders = "{$this->primary} = :{$this->primary}";
-                    $boundValues = $this->onCommit + [$this->primary => $this->properties[$this->primary]];
-                }
-
-                if (! $this->instantiated && ! empty($this->where)) {
-                    $this->processWhereToCommit($placeholders, $boundValues);
-                }
-
-                $cols = rtrim(
-                    implode('', 
-                        array_map(
-                            fn ($colname): string => $colname . " = :{$colname}, ", 
-                            array_keys($this->onCommit)
-                        )
-                    ), 
-                    ', '
-                );
-
-                $statement = db()
-                    ->prepare("UPDATE {$this->getTableNameFromModel()} SET {$cols} WHERE {$placeholders}")
-                    ->execute($boundValues);
-
-                if ($statement) {
-
-                    // Update properties
-                    foreach ($this->onCommit as $property => $value) {
-                        $this->properties[$property] = $value;
-                    }
-
-                    $this->onCommit = [];
-                    $this->crudAction = Model::SELECT;
-                }
-
-                return $statement;
-
-                break;
-            case Model::DELETE:
-
-                $placeholders = '';
-                $boundValues = [];
-
-                // Used by the Model instance, e.eg.: Models\User
-                if ($this->instantiated && empty($this->where)) {
-                    $placeholders = "{$this->primary} = :{$this->primary}";
-                    $boundValues = [$this->primary => $this->properties[$this->primary]];
-                }
-
-                // It's used directly by Model children
-                if (! $this->instantiated && ! empty($this->where)) {
-                    $this->processWhereToCommit($placeholders, $boundValues);
-                }
-
-                return db()->prepare("DELETE FROM {$this->getTableNameFromModel()} WHERE {$placeholders}")
-                    ->execute($boundValues);
-
-                break;
-
-            // Reset global flags
-            $this->where = [];
-
-            return false;
-        }
-    }
-
-    /**
-     * Sets the value of the property instantiated to $state.
-     *
-     * @param boolean $state
-     * @return void
-     */
-    public function setIntantiation(bool $state)
-    {
-        $this->instantiated = $state;
-    }
-
-    /**
-     * Builds up WHERE cluase.
-     *
-     * @param string $placeholders
-     * @param array $boundValues
-     * @return void
-     * @throws InvalidArgumentException
-     */
-    private function processWhereToCommit(string &$placeholders, array &$boundValues)
-    {
-        foreach ($this->where as $constrain) {
-            if (array_key_exists($constrain[0], $this->onCommit)) {
-
-                // Bad format for constrain
-                if (count($constrain) > 3) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'ERROR[model.property] Too many arguments. 3 or 2 areguments are required for column "%s"', 
-                            $constrain[0]
-                        )
-                    );
-                }
-
-                // It's a constraint with key + operator + value
-                if (count($constrain) == 3) {
-                    $placeholders .= "{$constrain[0]} {$constrain[1]} :{$constrain[0]} ";
-                    $boundValues[$constrain[0]] = $constrain[2];
-
-                    continue;
-                }
-
-                // It's a constrain with only key + value. Default operator is "=" (equals)
-                if (count($constrain) > 1) {
-                    $placeholders .= "{$constrain[0]} = :{$constrain[0]} ";
-                    $boundValues[$constrain[0]] = $constrain[1];
-
-                    continue;
-                }
-
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'ERROR[model.property] Missing value for column "%s"', 
-                        $constrain[0]
-                    )
-                );
-            }
-
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'ERROR[model.property] Column "%s" does not exist in table "%s"', 
-                    $this->getTableNameFromModel(),
-                    $constrain[0]
-                )
-            );
-        }
-    }
-
-    /**
-     * Stores pending values for further commit on CRUD actions.
-     *
-     * @param array $newValues
-     * @return void
-     */
-    private function setPendingValuesForCommit(array $newValues)
-    {
-        if (in_array($this->primary, array_keys($newValues))) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'ERROR[model.property] Primary key "%s" cannot be updated', 
-                    $this->primary
-                )
-            );
-        }
-
-        // Only for model objects
-        if ($this->instantiated) {
-
-            // Not mapped properties
-            $unknowns = implode(', ', array_values(
-                array_diff(
-                    array_keys($newValues), 
-                    array_keys($this->properties)
-                )
-            ));
-
-            if ($unknowns) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'ERROR[model.property] Properties "%s" are not mapped to any column', 
-                        $unknowns
-                    )
-                );
-            }
-        }
-
-        // Set values for commit
-        foreach ($this->getFillableColumns() as $col) {
-            if (array_key_exists($col, $newValues)) {
-                $this->onCommit[$col] = $newValues[$col];
-
-                continue;
-            }
-
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'ERROR[model.property] Value for property "%s" is missing', 
-                    $col
-                )
-            );
         }
     }
 
@@ -492,6 +249,266 @@ abstract class Model implements JsonSerializable
     }
 
     /**
+     * Commits pending Insert-Update-Delete transactions.
+     *
+     * @return mixed
+     */
+    public function commit(): mixed
+    {
+        switch ($this->crudAction) {
+            case Model::INSERT:
+
+                if (! $this->instantiated) {
+
+                    $placeholders = '';
+                    $boundValues = [];
+
+                    // Remove primary key, it's not required on INSERT
+                    unset($this->onCommit[$this->primary]);
+
+                    $cols = implode(', ', array_keys($this->onCommit));
+
+                    $placeholders = rtrim(
+                        implode('', 
+                            array_map(
+                                fn ($k): string => ':' . $k . ', ', 
+                                array_keys($this->onCommit)
+                            )
+                        ), 
+                        ', '
+                    );
+
+                    $lastInsertId = db()->prepare("INSERT INTO {$this->getTableNameFromModel()} ({$cols}) VALUES ({$placeholders})")
+                        ->execute($this->onCommit);
+
+                    // On success, bring all data from this new model
+                    if ($lastInsertId) {
+                        return Model::find(db()->lastInsertId());
+                    }
+
+                    return $lastInsertId;
+                }
+
+                break;
+
+            case Model::UPDATE:
+
+                $placeholders = '';
+                $boundValues = [];
+
+                // Independet object
+                if ($this->instantiated && empty($this->where)) {
+                    $placeholders = "{$this->primary} = :{$this->primary}";
+                    $boundValues = $this->onCommit + [$this->primary => $this->properties[$this->primary]];
+
+                    $cols = rtrim(
+                        implode('', 
+                            array_map(
+                                fn ($colname): string => $colname . " = :{$colname}, ", 
+                                array_keys($this->onCommit)
+                            )
+                        ), 
+                        ', '
+                    );
+                }
+
+                // General use
+                if (! $this->instantiated && ! empty($this->where)) {
+                    $this->parseWhere($this->where, $placeholders, $boundValues);
+                    $boundValues = array_merge(array_values($this->onCommit), array_values($boundValues));
+
+                    $cols = implode(' = ?, ', array_keys($this->onCommit)) . ' = ?';
+                }
+
+                $statement = db()
+                    ->prepare("UPDATE {$this->getTableNameFromModel()} SET {$cols} WHERE {$placeholders}")
+                    ->execute($boundValues);
+
+                if ($statement) {
+
+                    // Update properties
+                    foreach ($this->onCommit as $property => $value) {
+                        $this->properties[$property] = $value;
+                    }
+
+                    $this->onCommit = [];
+                    $this->crudAction = Model::SELECT;
+                }
+
+                return $statement;
+
+                break;
+
+            case Model::DELETE:
+
+                $placeholders = '';
+                $boundValues = [];
+
+                // Used by the Model instance, e.eg.: Models\User
+                if ($this->instantiated && empty($this->where)) {
+                    $placeholders = "{$this->primary} = :{$this->primary}";
+                    $boundValues = [$this->primary => $this->properties[$this->primary]];
+                }
+
+                // It's used directly by Model children
+                if (! $this->instantiated && ! empty($this->where)) {
+                    $this->parseWhere($this->where, $placeholders, $boundValues);
+                }
+
+                return db()->prepare("DELETE FROM {$this->getTableNameFromModel()} WHERE {$placeholders}")
+                    ->execute($boundValues);
+
+                break;
+
+            // Reset global flags
+            $this->where = [];
+
+            return false;
+        }
+    }
+
+    /**
+     * Sets the value of the property instantiated to $state.
+     *
+     * @param boolean $state
+     * @return void
+     */
+    public function setIntantiation(bool $state)
+    {
+        $this->instantiated = $state;
+    }
+
+    /**
+     * Stores pending values for further commit on CRUD actions.
+     *
+     * @param array $newValues
+     * @return void
+     */
+    private function setPendingValuesForCommit(array $newValues)
+    {
+        if (in_array($this->primary, array_keys($newValues))) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'ERROR[model.property] Primary key "%s" cannot be updated', 
+                    $this->primary
+                )
+            );
+        }
+
+        // Only for model objects
+        if ($this->instantiated) {
+
+            // Not mapped properties
+            $unknowns = implode(', ', array_values(
+                array_diff(
+                    array_keys($newValues), 
+                    array_keys($this->properties)
+                )
+            ));
+
+            if ($unknowns) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'ERROR[model.property] Properties "%s" are not mapped to any column', 
+                        $unknowns
+                    )
+                );
+            }
+        }
+
+        // Set values for commit
+        foreach ($this->getFillableColumns() as $col) {
+            if (array_key_exists($col, $newValues)) {
+                $this->onCommit[$col] = $newValues[$col];
+
+                continue;
+            }
+
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'ERROR[model.property] Value for property "%s" is missing', 
+                    $col
+                )
+            );
+        }
+    }
+
+    /**
+     * Brings all columns from current model/table and set them as properties.
+     *
+     * @return void
+     */
+    private function setPropertiesFromModel() 
+    {
+        $stm = db()->query("SELECT * FROM {$this->getTableNameFromModel()}");
+
+        foreach (range(0, $stm->columnCount() -1) as $colIndex) {
+            $this->properties[$stm->getColumnMeta($colIndex)['name']] = null;
+        }
+    }
+
+    /**
+     * Parses the $where clause and sets new values for the placeholders and bound values.
+     *
+     * @param array $where
+     * @param string $placeholders
+     * @param array $boundValues
+     * @return void
+     * @throws InvalidArgumentException
+     */
+    private function parseWhere(array $where, string &$placeholders, array &$boundValues)
+    {
+        $operator = '';
+
+        foreach ($where as $keys) {
+
+            // Bad format for constrain
+            if (count($keys) > 4) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'ERROR[model.property] Too many arguments. 3 or 2 areguments are required for column "%s"', 
+                        $keys[0]
+                    )
+                );
+            }
+
+            // {key} {operator} {value} {logical operator}
+            if (count($keys) == 4) {
+                $operator = $keys[3];
+                $placeholders .= "{$keys[0]} {$keys[1]} ? {$keys[3]} ";
+                $boundValues[] = $keys[2];
+
+                continue;
+            }
+
+            // {key} {operator} {value} AND
+            if (count($keys) == 3) {
+                $placeholders .= "{$keys[0]} {$keys[1]} ? AND ";
+                $boundValues[] = $keys[2];
+
+                continue;
+            }
+
+            // {key} = {value} AND
+            if (count($keys) == 2) {
+                $placeholders .= "{$keys[0]} = ? AND ";
+                $boundValues[] = $keys[1];
+
+                continue;
+            }
+
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'ERROR[model.property] Missing value for column "%s"', 
+                    $keys[0]
+                )
+            );
+        }
+
+        $placeholders = rtrim($placeholders, " AND {$operator}");
+    }
+
+    /**
      * Transforms a record into a new model.
      *
      * @param array $record
@@ -560,20 +577,6 @@ abstract class Model implements JsonSerializable
         $tmpfillable = $this->fillable ?: array_keys($this->properties);
 
         return array_values(array_diff($tmpfillable, [$this->primary]));
-    }
-
-    /**
-     * Makes the calls to a private|protected method with arguments.
-     *
-     * @param string $method
-     * @param mixed $arguments
-     * @return mixed
-     */
-    public static function __callStatic(string $method, $arguments)
-    {
-        $class = get_called_class();
-
-        return (new $class())->$method(...$arguments);
     }
 
     /**
@@ -667,5 +670,31 @@ abstract class Model implements JsonSerializable
         }
 
         return $this->properties[$property];
+    }
+
+    /**
+     * Makes the calls to a private|protected methods with arguments.
+     *
+     * @param string $method
+     * @param mixed $arguments
+     * @return mixed
+     */
+    public static function __callStatic(string $method, $arguments)
+    {
+        $class = get_called_class();
+
+        return (new $class())->$method(...$arguments);
+    }
+
+    /**
+     * Calls unreachable methods.
+     *
+     * @param string $method
+     * @param mixed $arguments
+     * @return void
+     */
+    public function __call(string $method, $arguments)
+    {
+        return call_user_func_array([$this, $method], $arguments);
     }
 }
