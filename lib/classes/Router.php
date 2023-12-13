@@ -30,6 +30,9 @@ class Router
         'put',
         'patch',
         'delete',
+        // 'head',
+        // 'connect',
+        // 'trace',
     ];
 
     /**

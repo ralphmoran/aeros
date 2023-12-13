@@ -291,22 +291,57 @@ if (! function_exists('env')) {
 if (! function_exists('setCookieWith')) {
 
 	/**
-	 * Sets/mames properly a cookie with value and params.
+	 * Creates a cookie with mixed values (callables are not supported).
 	 *
 	 * @param string $key
-	 * @param mixed $value
-	 * @param array $params
+	 * @param mixed $value Callable type is not supported
+	 * @param integer|array $params
+	 * @param string $path
+	 * @param string $domain
+	 * @param boolean $secure
+	 * @param boolean $httponly
 	 * @return boolean
 	 */
-	function setCookieWith(string $key, $value, array $params): bool
+	function setCookieWith(
+		string $key, 
+		mixed $value, 
+		int|array $params, 
+		string $path = '/', 
+		string $domain = '', 
+		bool $secure = false, 
+		bool $httponly = false): bool
 	{
-		$status = setcookie($key, $value, $params);
-		
+		// Cast $value
+		if (! is_string($value)) {
+			$value = serialize($value);
+		}
+
+		$status = setcookie($key, $value, $params, $path, $domain, $secure, $httponly);
+
 		if ($status) {
 			$_COOKIE[$key] = $value;
+			$_SESSION[$key] = $value;
 		}
 
 		return $status;
+	}
+}
+
+if (! function_exists('cookie')) {
+
+	/**
+	 * Returns the main cookie or a specific one.
+	 *
+	 * @param string $key
+	 * @return mixed
+	 */
+	function cookie(string $key = null): mixed
+	{
+		if (! is_null($key)) {
+			return app()->cookie->get($key);
+		}
+
+		return app()->cookie;
 	}
 }
 

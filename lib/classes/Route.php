@@ -21,6 +21,15 @@ class Route extends Router
     /** @var string */
     const PATCH = 'patch';
 
+    // /** @var string */
+    // const HEAD = 'head';
+
+    // /** @var string */
+    // const CONNECT = 'connect';
+
+    // /** @var string */
+    // const TRACE = 'trace';
+
     /** @var string */
     public $subdomain = null;
 
