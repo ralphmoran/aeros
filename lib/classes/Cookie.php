@@ -45,7 +45,6 @@ class Cookie
      */
     public function clear(string $cookie = null)
     {
-        
         if (is_null($cookie)) {
             session_unset();
             session_destroy();

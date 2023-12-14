@@ -161,7 +161,7 @@ class IndexController extends ControllerBase
 
         //******************************************/
         // Find only one user
-        $user = User::find(1);
+        // $user = User::find(1);
 
         //******************************************/
         // Get a list of users. Pay attention to this format, it will return an array of user objects.
@@ -211,7 +211,7 @@ class IndexController extends ControllerBase
 
         // dd('Update many', $stm);
 
-        dd($user);
+        // dd($user);
 
         dd(SuperRole::value());
 
@@ -225,7 +225,7 @@ class IndexController extends ControllerBase
 
     public function showProfile()
     {
-        return 'Profile';
+        return view('pictures');
     }
 
     public function anotherProfile()
