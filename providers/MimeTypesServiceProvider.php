@@ -17,7 +17,7 @@ class MimeTypesServiceProvider extends ServiceProvider
 
             if ($content !== false) {
 
-                foreach(explode("\n", $content) as $line) {
+                foreach (explode("\n", $content) as $line) {
                     if (strpos($line = trim($line), '#') === 0) {
                         continue;
                     }

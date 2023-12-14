@@ -320,7 +320,37 @@ if (! function_exists('setCookieWith')) {
 
 		if ($status) {
 			$_COOKIE[$key] = $value;
-			$_SESSION[$key] = $value;
+			$_REQUEST[$key] = $value;
+		}
+
+		return $status;
+	}
+}
+
+if (! function_exists('deleteCookie')) {
+
+	/**
+	 * Deletes a cookie by $key.
+	 *
+	 * @param string $key
+	 * @return boolean
+	 */
+	function deleteCookie(string $key, bool $clear = false): bool
+	{
+		$status = setCookieWith($key, '', time() - 60);
+
+		if ($status) {
+			if (isset($_COOKIE[$key])) {
+				unset($_COOKIE[$key]);
+			}
+
+			if (isset($_REQUEST[$key])) {
+				unset($_REQUEST[$key]);
+			}
+
+			if ($clear) {
+				cookie()->clear();
+			}
 		}
 
 		return $status;

@@ -12,9 +12,15 @@ class Cookie
 	 * @param int|array $params
 	 * @return boolean
 	 */
-    public function set(string $key, $value, int|array $params): bool
+    public function set(string $key, 
+        mixed $value, 
+        int|array $params, 
+        string $path = '/', 
+        string $domain = '', 
+        bool $secure = false, 
+        bool $httponly = false): bool
     {
-        return setCookieWith($key, $value, $params);
+        return setCookieWith($key, $value, $params, $path, $domain, $secure, $httponly);
     }
 
     /**
@@ -30,5 +36,22 @@ class Cookie
         }
 
         return null;
+    }
+
+    /**
+     * Regenerates the whole session cookie.
+     *
+     * @return void
+     */
+    public function clear(string $cookie = null)
+    {
+        
+        if (is_null($cookie)) {
+            session_unset();
+            session_destroy();
+            session_write_close();
+            setcookie(session_name(), '', 0, '/');
+            session_regenerate_id(true);
+        }
     }
 }

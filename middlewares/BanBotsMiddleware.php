@@ -20,7 +20,7 @@ class BanBotsMiddleware implements MiddlewareInterface
             if (preg_match('/^(Googlebot|Expanse|\'Cloud)/i', $_SERVER['HTTP_USER_AGENT'])) {
                 http_response_code(301);
                 header("HTTP/1.1 301 Moved Permanently");
-                header("Location: " . env('DOMAIN'));
+                header("Location: " . env('HTTP_URL'));
                 exit;
             }
         }
