@@ -30,7 +30,12 @@ class AssetController extends ControllerBase
     private function getContent(string $file)
     {
         $file = env('APP_ROOT_DIR') . '/public/assets/' . $file;
-        $content = file_get_contents($file);
+
+        $content = file_get_contents($file, false, stream_context_create([
+            'http' => [
+                'method' => 'HEAD',
+            ],
+        ]));
 
         if ($content) {
             $parts = pathinfo($file);
