@@ -10,8 +10,6 @@
 
 use Classes\Route;
 
-Route::get(':/assets/{path}/{resource}', 'AssetController');
-
 // Group middlewares: All routes within the calback are going 
 // to receive middlewares from 'auth' group (see config('app.middlewares.auth'))
 Route::group('auth', function () {
