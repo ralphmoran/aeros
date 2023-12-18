@@ -12,7 +12,7 @@ if (! function_exists('app')) {
 	function app(): Classes\ServiceContainer
 	{
 		return Classes\ServiceContainer::getInstance()
-			->setBaseDir(env('APP_ROOT_DIR') ?? dirname(__DIR__));
+			->setBaseDir(env('APP_ROOT_DIR') ?? dirname(dirname(__DIR__)));
 	}
 }
 

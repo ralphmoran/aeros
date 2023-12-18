@@ -25,15 +25,23 @@ return [
     */
     'providers' => [
 
-        // Main service providers: DO NOT TOUCH
-        'SessionServiceProvider' => Providers\SessionServiceProvider::class,
-        'MimeTypesServiceProvider' => Providers\MimeTypesServiceProvider::class,
-        'HttpServiceProvider' => Providers\HttpServiceProvider::class,
-        'RouteServiceProvider' => Providers\RouteServiceProvider::class,
+        // Providers that run only on web servers.
+        'web' => [
+            // Main service providers: DO NOT TOUCH
+            'SessionServiceProvider' => Providers\SessionServiceProvider::class,
+            'MimeTypesServiceProvider' => Providers\MimeTypesServiceProvider::class,
+            'HttpServiceProvider' => Providers\HttpServiceProvider::class,
+            'RouteServiceProvider' => Providers\RouteServiceProvider::class,
 
-        // Other service providers
-        'DatabaseServiceProvider' => Providers\DatabaseServiceProvider::class,
-        'EmailServiceProvider' => Providers\EmailServiceProvider::class,
+            // Other service providers
+            'DatabaseServiceProvider' => Providers\DatabaseServiceProvider::class,
+            'EmailServiceProvider' => Providers\EmailServiceProvider::class,
+        ],
+
+        // Other service providers that run on CLI
+        'cli' => [
+            'RouteServiceProvider' => Providers\RouteServiceProvider::class,
+        ],
     ],
 
     /*

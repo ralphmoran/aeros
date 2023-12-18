@@ -2,6 +2,7 @@
 
 namespace Classes;
 
+use Cake\Core\ServiceConfig;
 use Classes\Kernel;
 
 class ServiceContainer extends Kernel
@@ -26,12 +27,7 @@ class ServiceContainer extends Kernel
     public function run()
     {
         try {
-            $this->bootApplication()
-                ->registerProviders()
-                ->bootProviders();
-
-            printf('%s', $this->router->dispatch());
-
+            printf('%s', $this->bootstrap()->router->dispatch());
         } catch (\Throwable $e) {
 
             // view('common.errors.codes', ['code' => $e->getCode()]);
@@ -46,6 +42,18 @@ class ServiceContainer extends Kernel
         }
 
         exit;
+    }
+
+    /**
+     * Bootstraps application.
+     *
+     * @return ServiceContainer
+     */
+    public function bootstrap(): ServiceContainer
+    {
+        return $this->bootApplication()
+                ->registerProviders()
+                ->bootProviders();
     }
 
     /**
@@ -124,7 +132,7 @@ class ServiceContainer extends Kernel
             return $this->providers;
         }
 
-        $providers = config('app.providers');
+        $providers = (PHP_SAPI === 'cli') ? config('app.providers.cli') : config('app.providers.web');
 
         if (empty($providers)) {
             throw new \Exception('ERROR[provider] No providers were found.');

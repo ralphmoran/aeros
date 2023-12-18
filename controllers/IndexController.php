@@ -63,6 +63,8 @@ class IndexController extends ControllerBase
         // Make a GET request
         // request()->get(['https://reqres.in/api/users/2')->send();
 
+        //******************************************/
+        // Emits or triggers an event by name and value
         // app()->event->emit('email.notify', ['ralph@myaero.app']);
 
         //******************************************/
@@ -161,7 +163,7 @@ class IndexController extends ControllerBase
 
         //******************************************/
         // Find only one user
-        // $user = User::find(1);
+        $user = User::find(1);
 
         //******************************************/
         // Get a list of users. Pay attention to this format, it will return an array of user objects.
@@ -211,7 +213,7 @@ class IndexController extends ControllerBase
 
         // dd('Update many', $stm);
 
-        // dd($user);
+        dd($user);
 
         dd(SuperRole::value());
 

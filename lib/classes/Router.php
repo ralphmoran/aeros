@@ -188,7 +188,7 @@ class Router
     public function getUriParts(string $uri) : array
     {
         // Remove query string.
-        // Still these GET variables cab be caught with request('get') function
+        // Still these GET variables can be caught with request('get') function
         $uri = str_replace('?' . $_SERVER['QUERY_STRING'], '', $uri);
 
         $uriParts = [

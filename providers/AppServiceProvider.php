@@ -26,7 +26,6 @@ class AppServiceProvider extends ServiceProvider
         app()->singleton('event', \Classes\Event::class);
         app()->singleton('logger', \Classes\Logger::class);
         app()->singleton('file', \Classes\File::class);
-        app()->singleton('console', \Classes\Console::class);
         app()->singleton('encryptor', \Classes\Encryptor::class);
         app()->singleton('session', \Classes\Session::class);
         app()->singleton('cookie', \Classes\Cookie::class);
@@ -34,6 +33,12 @@ class AppServiceProvider extends ServiceProvider
         app()->singleton('queue', \Classes\Queue::class);
         app()->singleton('cache', \Classes\Cache::class);
         app()->singleton('worker', \Workers\AppWorker::class);
+
+        // Register objects only for CLI
+        if (PHP_SAPI === 'cli') {
+            app()->singleton('console', \Symfony\Component\Console\Application::class);
+            app()->singleton('aeros', \Classes\Aeros::class);
+        }
 
         // Callables
         // $app->singleton('some', SomeClassWithInvoke::class);
