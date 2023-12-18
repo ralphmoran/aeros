@@ -19,7 +19,7 @@ class TestCommand extends Command
      * ```php
      * $ php aeros test:one routeName --clear|-c
      * ```
-     *
+     * @link https://symfony.com/doc/current/components/console.html
      * @return void
      */
     protected function configure()
