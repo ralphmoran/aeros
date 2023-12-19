@@ -41,21 +41,21 @@ class AppWorker extends Worker
         // Create worker class
         app()->file->createFromTemplate(
             env('WORKERS_DIR') . '/' . $workerName . '.php', 
-            env('WORKERS_DIR') . '/TemplateWorker.template', 
+            app()->baseurl . '/templates/TemplateWorker.template', 
             ['worker-name' => $workerName]
         );
 
         // Create worker script file
         app()->file->createFromTemplate(
             env('SCRIPTS_DIR') . '/' . $scriptName . '.php', 
-            env('SCRIPTS_DIR') . '/template-worker-script.template', 
+            app()->baseurl . '/templates/template-worker-script.template', 
             ['worker-name' => $workerName,]
         );
 
         // Create config worker file
         app()->file->createFromTemplate(
             env('WORKERS_CONF_DIR') . '/' . $scriptName . '.conf', 
-            env('WORKERS_CONF_DIR') . '/conf.template', 
+            app()->baseurl . '/templates/conf.template', 
             [
                 'script-name' => $scriptName,
                 'process-num' => $proccessNum,

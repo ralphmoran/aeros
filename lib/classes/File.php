@@ -39,7 +39,7 @@ class File
     }
 
     /**
-     * Creates a new file froma template with the given tokens.
+     * Creates a new file from a template with the given tokens.
      *
      * @param string $filename
      * @param string $template
