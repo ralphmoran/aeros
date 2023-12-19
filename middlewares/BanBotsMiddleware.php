@@ -16,7 +16,7 @@ class BanBotsMiddleware implements MiddlewareInterface
 
         // Some logic ...
 
-        if (array_key_exists('HTTP_USER_AGENT', $_SERVER) && isset($_SERVER['HTTP_USER_AGENT'])) {
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
             if (preg_match('/^(Googlebot|Expanse|\'Cloud)/i', $_SERVER['HTTP_USER_AGENT'])) {
                 http_response_code(301);
                 header("HTTP/1.1 301 Moved Permanently");

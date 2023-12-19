@@ -171,7 +171,7 @@ class Route extends Router
 
         foreach ($reflectionMethod->getParameters() as $param) {
 
-            if (! array_key_exists(':' . $param->name, $this->params)) {
+            if (! isset($this->params[':' . $param->name])) {
                 throw new \Exception(
                     sprintf('ERROR[Route] Parameter \'%s\' does not exist in route \'%s\'.', $param->name, $this->path)
                 );

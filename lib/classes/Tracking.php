@@ -28,7 +28,7 @@ final class Tracking
             foreach ($query_params as $param) {
                 [$key, $value] = explode("=", $param);
 
-                if (array_key_exists($key, $authortized_utms)) {
+                if (isset($authortized_utms[$key])) {
                     $authortized_utms[$key] = $value;
                 }
             }

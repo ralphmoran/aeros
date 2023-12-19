@@ -162,7 +162,7 @@ final class Request
     {
         $onlyKeys = [];
 
-        if (array_key_exists('only', $keys) && ! empty($keys['only'])) {
+        if (isset($keys['only'])) {
             $this->only($keys['only']);
 
             $onlyKeys = array_intersect_key($content, array_flip($this->only));
@@ -170,7 +170,7 @@ final class Request
 
         $exceptKeys = [];
 
-        if (array_key_exists('except', $keys) && ! empty($keys['except'])) {
+        if (isset($keys['except'])) {
             $this->except($keys['except']);
 
             $exceptKeys = array_diff_key($content, array_flip($this->except));
@@ -226,7 +226,7 @@ final class Request
     private function validateOpts(): bool|array
     {
         if (empty($this->url)) {
-            if (! array_key_exists('url', $this->curlOptions)) {
+            if (! isset($this->curlOptions['url'])) {
                 throw new \ValueError("URL is empty or does not exist.");
                 return false;
             }
@@ -234,17 +234,17 @@ final class Request
             $this->url($this->curlOptions['url']);
         }
 
-        if (array_key_exists('method', $this->curlOptions)) {
+        if (isset($this->curlOptions['method'])) {
             $this->method(strtoupper($this->curlOptions['method']));
         }
 
-        if (array_key_exists('headers', $this->curlOptions)) {
+        if (isset($this->curlOptions['headers'])) {
             $this->headers(
                 array_merge($this->headers, $this->curlOptions['headers'])
             );
         }
 
-        if (empty($this->payload) && array_key_exists('payload', $this->curlOptions)) {
+        if (empty($this->payload) && isset($this->curlOptions['payload'])) {
             $this->payload($this->curlOptions['payload']);
         }
 
@@ -316,7 +316,7 @@ final class Request
             unset($args[0]);
         }
 
-        if (in_array(strtoupper($verb), $this->verbs) && array_key_exists('url', $args) && ! empty($args['url'])) {
+        if (in_array(strtoupper($verb), $this->verbs) && isset($args['url'])) {
 
             $this->method($verb)
                 ->url(implode('', [$args['url']]));
@@ -325,14 +325,14 @@ final class Request
         }
 
         // Return from the request, ONLY the keys listed in "$args['only']"
-        if (array_key_exists('only', $args) && ! empty($args['only'])) {
+        if (isset($args['only'])) {
             $this->only($args['only']);
 
             return $this;
         }
 
         // Return from the request, all the keys EXCEPT the keys listed in "$args['except']"
-        if (array_key_exists('except', $args) && ! empty($args['except'])) {
+        if (isset($args['except'])) {
             $this->except($args['except']);
 
             return $this;

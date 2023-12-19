@@ -72,12 +72,12 @@ class Db
         $this->driver = $driver ?? $dbSetup['default'][0];
 
         // Return PDO object by alias, if exists
-        if (array_key_exists($this->dbConnectionAlias, $this->activeDBConnections)) {
+        if (isset($this->activeDBConnections[$this->dbConnectionAlias])) {
             return $this;
         }
 
         // Return PDO object by driver, if exists
-        if (array_key_exists($this->driver, $this->activeDBConnections)) {
+        if (isset($this->activeDBConnections[$this->driver])) {
             return $this;
         }
 

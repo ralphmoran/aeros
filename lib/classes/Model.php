@@ -418,7 +418,7 @@ abstract class Model implements JsonSerializable
 
         // Set values for commit
         foreach ($this->getFillableColumns() as $col) {
-            if (array_key_exists($col, $newValues)) {
+            if (isset($newValues[$col])) {
                 $this->onCommit[$col] = $newValues[$col];
 
                 continue;

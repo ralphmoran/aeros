@@ -69,7 +69,7 @@ class Router
      */
     public function addRoute(string $method, Route $route)
     {
-        if (array_key_exists($method, $this->routes) && in_array($route, $this->routes[$method])) {
+        if (isset($this->routes[$method]) && in_array($route, $this->routes[$method])) {
             return;
         }
 
@@ -278,15 +278,15 @@ class Router
     {
         $method = strtoupper($method);
 
-        if (! empty($method) && ! array_key_exists($method, $this->routes)) {
+        if (! isset($this->routes[$method])) {
             throw new \Exception("ERROR[route] Method '{$method}' is not registered.");
         }
 
-        if (! empty($method) && ! array_key_exists($subdomain, $this->routes[$method])) {
+        if (! isset($this->routes[$method][$subdomain])) {
             throw new \Exception("ERROR[route] Subdomain '{$subdomain}' is not registered.");
         }
 
-        if (! empty($method) && array_key_exists($method, $this->routes)) {
+        if (isset($this->routes[$method])) {
             return $this->routes[$method][$subdomain];
         }
 

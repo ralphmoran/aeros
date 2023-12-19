@@ -150,7 +150,7 @@ class ServiceContainer extends Kernel
      */
     public function register(string $name, $service)
     {
-        if (array_key_exists($name, $this->services)) {
+        if (isset($this->services[$name])) {
             return;
         }
 
@@ -197,7 +197,7 @@ class ServiceContainer extends Kernel
      */
     public function get($name)
     {
-        if (! array_key_exists($name, $this->services)) {
+        if (! isset($this->services[$name])) {
             throw new \Exception("Service '$name' is not registered.");
         }
 

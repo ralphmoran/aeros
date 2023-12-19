@@ -22,8 +22,12 @@ class Redirect
         // By default, all redirects are GET requests
         $_SERVER['REQUEST_METHOD'] = $request_method;
 
-        if (array_key_exists("forward", $_GET) && ! empty($_GET["forward"])) {
-            $redirect = str_replace(["$", "!", "https://"], ["&", "?", env('HTTP_PROTOCOL')], $_GET["forward"]);
+        if (isset($_GET["forward"])) {
+            $redirect = str_replace(
+                ["$", "!", "https://"], 
+                ["&", "?", env('HTTP_PROTOCOL')], 
+                $_GET["forward"]
+            );
         }
 
         # TODO: Use htmlspecialchars() to protect from XSS

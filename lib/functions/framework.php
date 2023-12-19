@@ -244,8 +244,7 @@ if (! function_exists('isInternal')) {
 		if (in_array(env('APP_ENV'), ['staging', 'production'])) {
 
 			// In our VPN
-			if (
-				array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)
+			if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])
 				&& in_array($_SERVER['HTTP_X_FORWARDED_FOR'], ['146.70.143.83', '146.70.143.91'])
 			) {
 				return true;
@@ -394,7 +393,7 @@ if (! function_exists('sanitizeWith')) {
 		$policies = config('security');
 
 		foreach ($categories as $category) {
-			if (array_key_exists($category, $policies)) {
+			if (isset($policies[$category])) {
 				$vector = str_replace($policies[$category], $replacement, $vector);
 			}
 		}

@@ -15,7 +15,7 @@ class CorsMiddleware implements MiddlewareInterface
         // $response = $response->withHeader('Access-Control-Allow-Headers', 'Content-Type, Origin, Authorization');
         // $response = $response->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
 
-        header("Access-Control-Allow-Origin: " . (array_key_exists('HTTP_ORIGIN', $_SERVER) 
+        header("Access-Control-Allow-Origin: " . (isset($_SERVER['HTTP_ORIGIN']) 
                                             ? $_SERVER['HTTP_ORIGIN'] 
                                             : $_SERVER['HTTP_HOST'])
                                         );
