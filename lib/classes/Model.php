@@ -237,6 +237,10 @@ abstract class Model implements JsonSerializable
             // stored and returned in an array.
             if ($founds) {
 
+                if (count($founds) == 1) {
+                    return $this->transformRecordToModel($founds[0], get_class($this));
+                }
+
                 foreach ($founds as $index => $record) {
                     $founds[$index] = $this->transformRecordToModel($record, get_class($this));
                 }
@@ -292,6 +296,11 @@ abstract class Model implements JsonSerializable
                 break;
 
             case Model::UPDATE:
+
+                // If there is nothing to commit, return null
+                if (empty($this->onCommit)) {
+                    return null;
+                }
 
                 $placeholders = '';
                 $boundValues = [];

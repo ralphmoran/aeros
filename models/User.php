@@ -2,8 +2,8 @@
 
 namespace Models;
 
-use Classes\Role;
 use Classes\Model;
+use Models\Role;
 use Traits\Authentication;
 
 class User extends Model
@@ -16,58 +16,85 @@ class User extends Model
     /** @var array */
     private array $roles = [];
 
-    protected $fillable = ['username', 'fname'];
+    /** @var array */
+    protected $fillable = ['username', 'fname', 'role'];
 
+    /** @var array */
     protected $guarded = ['lname'];
-
-    public function __construct()
-    {
-        // Get user role value from persistent DB
-        // Assing user value to user instance
-    }
 
     /**
      * Assigns a role to a user.
      *
-     * @param Role|int|string $role
-     * @return void
+     * @param Role|integer $role
+     * @return bool
      */
-    public function addRole(Role|int|string $role)
+    public function addRole(Role|int $role): bool
     {
-        if (is_int($role)) {
+        if (is_int($role) && $this->roleExists($role) && ! $this->hasRole($role)) {
             $this->role |= $role;
+
+            return true;
         }
 
-        if (is_string($role)) {
+        if (($role instanceof Role) && $this->roleExists($role->role) && ! $this->hasRole($role)) {
+            $this->role |= intval($role->role);
 
+            return true;
         }
 
-        if ($role instanceof Role) {
-
-        }
-
-        $this->role |= $role;
+        return false;
     }
 
     /**
      * Checks if a user has a specific role.
      *
-     * @param Role|int $role
+     * @param Role|integer $role
      * @return boolean
      */
     public function hasRole(Role|int $role): bool
     {
-        return ($this->role & $role) === $role;
+        if (is_int($role) && $this->roleExists($role)) {
+            return ($this->role & $role) === $role;
+        }
+
+        if (($role instanceof Role) && $this->roleExists($role->role)) {
+            return ($this->role & intval($role->role)) === intval($role->role);
+        }
+
+        return false;
     }
 
     /**
      * Remove a role from a user.
      *
-     * @param Role|int $role
-     * @return void
+     * @param Role|integer $role
+     * @return bool
      */
-    public function removeRole(Role|int $role)
+    public function removeRole(Role|int $role): bool
     {
-        $this->role &= ~$role;
+        if (is_int($role) && $this->roleExists($role) && $this->hasRole($role)) {
+            $this->role &= ~$role;
+
+            return true;
+        }
+
+        if (($role instanceof Role) && $this->roleExists($role->role) && $this->hasRole(intval($role->role))) {
+            $this->role &= ~intval($role->role);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if a role exists.
+     *
+     * @param integer $role
+     * @return boolean
+     */
+    public function roleExists(int $role): bool
+    {
+        return Role::find([['role', '=', $role]]) ? true : false;
     }
 }

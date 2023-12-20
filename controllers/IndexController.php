@@ -2,8 +2,9 @@
 
 namespace Controllers;
 
-use Roles\SuperRole;
 use Models\User;
+use Models\Role;
+use Roles\SuperRole;
 use Classes\ControllerBase;
 
 class IndexController extends ControllerBase
@@ -69,11 +70,12 @@ class IndexController extends ControllerBase
 
         //******************************************/
         // Create projects table. You must use "exec" method for these type of queries
-        // $stm = db()->exec('CREATE TABLE IF NOT EXISTS users (
-        //         id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-        //         username TEXT NOT NULL,
-        //         fname TEXT NOT NULL,
-        //         lname TEXT NOT NULL)');
+        $stm = db()->exec('CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+                username TEXT NOT NULL,
+                fname TEXT NOT NULL,
+                lname TEXT NOT NULL,
+                role INT NOT NULL)');
 
         // dd(get_class($stm));
 
@@ -156,14 +158,15 @@ class IndexController extends ControllerBase
         //     'date' => 'New user', // It does not exist. It will be ignored
         //     'username' => 'username',
         //     'fname' => 'fname',
-        //     'lname' => 'lname', // If this column is guarde, it will be ignored
+        //     'lname' => 'lname', // If this column is guarded, it will be ignored
+        //     'role' => 0, // If this column is guarded, it will be ignored
         // ]);
 
         // dd($newUser);
 
         //******************************************/
         // Find only one user
-        $user = User::find(1);
+        // $user = User::find(1);
 
         //******************************************/
         // Get a list of users. Pay attention to this format, it will return an array of user objects.
@@ -213,9 +216,35 @@ class IndexController extends ControllerBase
 
         // dd('Update many', $stm);
 
-        dd($user);
+        // dd($user);
 
-        dd(SuperRole::value());
+        //******************************************/
+        // Add roles
+        // $stm = db()->exec('CREATE TABLE IF NOT EXISTS roles (
+        //         id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+        //         role INT NOT NULL,
+        //         title TEXT NOT NULL,
+        //         description TEXT NOT NULL)');
+
+        // $role = \Classes\Role::create([
+        //     'role' => 8,
+        //     'title' => 'Guest',
+        //     'description' => 'Guest user',
+        // ]);
+
+        $user = User::find(1);
+        $super = Role::find(1);
+        $guest = Role::find([
+            ['role', '=', 16]
+        ]);
+
+        $user->addRole($super);
+        $user->addRole($guest);
+        $user->removeRole($guest);
+
+        $user->save();
+
+        dd($user);
 
         return view('index');
     }
