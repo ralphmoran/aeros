@@ -30,8 +30,7 @@ class Redirect
             );
         }
 
-        # TODO: Use htmlspecialchars() to protect from XSS
-        header("location: {$redirect}");
+        header('location: ' . htmlspecialchars($redirect, ENT_QUOTES, 'UTF-8'));
 
         // Redirects are happening fast, so we need to prevent the next event
         die;
