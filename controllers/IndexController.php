@@ -232,19 +232,19 @@ class IndexController extends ControllerBase
         //     'description' => 'Guest user',
         // ]);
 
-        $user = User::find(1);
-        $super = Role::find(1);
-        $guest = Role::find([
-            ['role', '=', 16]
-        ]);
+        // $user = User::find(1);
+        // $super = Role::find(1);
+        // $guest = Role::find([
+        //     ['role', '=', 16]
+        // ]);
 
-        $user->addRole($super);
-        $user->addRole($guest);
-        $user->removeRole($guest);
+        // $user->addRole($super);
+        // $user->addRole($guest);
+        // $user->removeRole($guest);
 
-        $user->save();
+        // $user->save();
 
-        dd($user);
+        // dd($user);
 
         return view('index');
     }
