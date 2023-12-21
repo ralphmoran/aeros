@@ -12,10 +12,9 @@ final class Aeros
     public function registerCommands()
     {
         $path = dirname(dirname(__DIR__)) . '/commands';
-        $commands = scan($path);
 
         // Load all command classes from ./commands folder
-        foreach ($commands as $command) {
+        foreach (scan($path) as $command) {
 
             require $path . '/' . $command;
 
