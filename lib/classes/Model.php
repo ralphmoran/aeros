@@ -663,7 +663,7 @@ abstract class Model implements JsonSerializable
      */
     public function __get(string $property): mixed
     {
-        if (! in_array($property, array_keys($this->properties))) {
+        if (! isset($this->$property) && ! in_array($property, array_keys($this->properties))) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'ERROR[model.property] Property "%s" is not mapped to any column on "%s" table', 
@@ -676,6 +676,10 @@ abstract class Model implements JsonSerializable
         // Check if the property was previously updated, if so, return it
         if (in_array($property, array_keys($this->onCommit))) {
             return $this->onCommit[$property];
+        }
+
+        if (isset($this->$property) && ! in_array($property, array_keys($this->properties))) {
+            $this->properties[$property] = $this->$property;
         }
 
         return $this->properties[$property];

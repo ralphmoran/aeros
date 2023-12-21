@@ -240,7 +240,7 @@ class IndexController extends ControllerBase
 
         // $user->addRole($super);
         // $user->addRole($guest);
-        // $user->removeRole($guest);
+        // $user->removeRole($super);
 
         // $user->save();
 

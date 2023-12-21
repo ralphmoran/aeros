@@ -30,16 +30,20 @@ class User extends Model
      */
     public function addRole(Role|int $role): bool
     {
-        if (is_int($role) && $this->roleExists($role) && ! $this->hasRole($role)) {
-            $this->role |= $role;
+        if (! $this->hasRole($role)) {
 
-            return true;
-        }
+            if (is_int($role)) {
+                $this->role |= $role;
 
-        if (($role instanceof Role) && $this->roleExists($role->role) && ! $this->hasRole($role)) {
-            $this->role |= intval($role->role);
+                return true;
+            }
 
-            return true;
+            if ($role instanceof Role) {
+                $this->role |= intval($role->role);
+
+                return true;
+            }
+
         }
 
         return false;
@@ -53,12 +57,16 @@ class User extends Model
      */
     public function hasRole(Role|int $role): bool
     {
-        if (is_int($role) && $this->roleExists($role)) {
-            return ($this->role & $role) === $role;
-        }
+        if ($this->roleExists($role)) { 
 
-        if (($role instanceof Role) && $this->roleExists($role->role)) {
-            return ($this->role & intval($role->role)) === intval($role->role);
+            if (is_int($role)) {
+                return ($this->role & $role) === $role;
+            }
+
+            if ($role instanceof Role) {
+                return ($this->role & intval($role->role)) === intval($role->role);
+            }
+
         }
 
         return false;
@@ -72,16 +80,20 @@ class User extends Model
      */
     public function removeRole(Role|int $role): bool
     {
-        if (is_int($role) && $this->roleExists($role) && $this->hasRole($role)) {
-            $this->role &= ~$role;
+        if ($this->hasRole($role)) {
 
-            return true;
-        }
+            if (is_int($role)) {
+                $this->role &= ~$role;
 
-        if (($role instanceof Role) && $this->roleExists($role->role) && $this->hasRole(intval($role->role))) {
-            $this->role &= ~intval($role->role);
+                return true;
+            }
 
-            return true;
+            if ($role instanceof Role) {
+                $this->role &= ~intval($role->role);
+
+                return true;
+            }
+
         }
 
         return false;
@@ -91,10 +103,12 @@ class User extends Model
      * Checks if a role exists.
      *
      * @param integer $role
-     * @return boolean
+     * @return Role|boolean
      */
-    public function roleExists(int $role): bool
+    public function roleExists(Role|int $role): bool
     {
-        return Role::find([['role', '=', $role]]) ? true : false;
+        $roleValue = is_int($role) ? $role : $role->role;
+
+        return Role::find([['role', '=', $roleValue]]) ? true : false;
     }
 }
