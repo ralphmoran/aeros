@@ -1,12 +1,12 @@
 # Aeros - The Lighter MVC framework
 
-[![GitHub release](https://img.shields.io/github/release/username/repo-name.svg)](https://github.com/username/repo-name/releases)
-[![GitHub tag](https://img.shields.io/github/tag/username/repo-name.svg)](https://github.com/username/repo-name/tags)
-[![GitHub downloads](https://img.shields.io/github/downloads/username/repo-name/total.svg)](https://github.com/username/repo-name/releases)
-[![GitHub language count](https://img.shields.io/github/languages/count/username/repo-name.svg)](https://github.com/username/repo-name)
+[![GitHub release](https://img.shields.io/github/release/ralphmoran/aeros.svg)](https://github.com/ralphmoran/aeros/releases)
+[![GitHub tag](https://img.shields.io/github/tag/ralphmoran/aeros.svg)](https://github.com/ralphmoran/aeros/tags)
+[![GitHub downloads](https://img.shields.io/github/downloads/ralphmoran/aeros/total.svg)](https://github.com/ralphmoran/aeros/releases)
+[![GitHub language count](https://img.shields.io/github/languages/count/ralphmoran/aeros.svg)](https://github.com/ralphmoran/aeros)
 
-[![GitHub stars](https://img.shields.io/github/stars/username/repo-name.svg?style=social)](https://github.com/username/repo-name/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/username/repo-name.svg?style=social)](https://github.com/username/repo-name/network/members)
+[![GitHub stars](https://img.shields.io/github/stars/ralphmoran/aeros.svg?style=social)](https://github.com/ralphmoran/aeros/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/ralphmoran/aeros.svg?style=social)](https://github.com/ralphmoran/aeros/network/members)
 
 Working on it
 
