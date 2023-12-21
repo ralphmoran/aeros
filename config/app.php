@@ -78,9 +78,9 @@ return [
     */
     'users' => [
         'roles' => [
-            'super' => Roles\SuperRole::class,
-            'admin' => Roles\AdminRole::class,
-            'guest' => Roles\GuestRole::class,
+            // 'super' => Roles\SuperRole::class,
+            // 'admin' => Roles\AdminRole::class,
+            // 'guest' => Roles\GuestRole::class,
         ]
     ]
 ];

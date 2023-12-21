@@ -82,6 +82,8 @@ class ServiceContainer extends Kernel
             return $this;
         }
 
+        #TODO: Double check whether it's properly booted
+
         (new \Providers\AppServiceProvider)->register();
 
         $this->isAppBooted = true;
@@ -96,6 +98,7 @@ class ServiceContainer extends Kernel
      */
     public function registerProviders(): ServiceContainer
     {
+        #TODO: Improve performance by caching providers
         foreach ($this->getProviders() as $providerWithNamespace) {
             if ($this->isProvider($providerWithNamespace)) {
                 (new $providerWithNamespace)->register();
@@ -112,6 +115,7 @@ class ServiceContainer extends Kernel
      */
     public function bootProviders(): ServiceContainer
     {
+        #TODO: Botting providers needs to run always on any web request
         foreach ($this->getProviders() as $providerWithNamespace) {
             if ($this->isProvider($providerWithNamespace)) {
                 (new $providerWithNamespace)->boot();
