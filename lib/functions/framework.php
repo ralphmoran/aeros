@@ -423,9 +423,11 @@ if (! function_exists('logger')) {
 	/**
 	 * Appends a message into log file.
 	 *
-	 * @return bool
+	 * @param mixed $message
+	 * @param string $logFile
+	 * @return boolean
 	 */
-	function logger(string $message, string $logFile): bool {
+	function logger(mixed $message, string $logFile): bool {
 		if (class_exists('Classes\Logger')) {
 			return app()->logger->log($message, $logFile);
 		}
@@ -442,6 +444,21 @@ if (! function_exists('queue')) {
 	function queue(): Classes\Queue {
 		if (class_exists('Classes\Queue')) {
 			return app()->queue;
+		}
+	}
+}
+
+if (! function_exists('cron')) {
+
+	/**
+	 * Returns an instance of Cron. 
+	 * This is a wrapper for Scheduler class.
+	 *
+	 * @return Classes\Cron
+	 */
+	function cron(): Classes\Cron {
+		if (class_exists('Classes\Cron')) {
+			return app()->cron;
 		}
 	}
 }

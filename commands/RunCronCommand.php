@@ -8,16 +8,16 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class {{classname}}Command extends Command
+class RunCronCommand extends Command
 {
     /** @var string Command name */
-    protected static $defaultName = '{{name}}';
+    protected static $defaultName = 'run:cron';
 
     /**
      * Sets descriptions, options or arguments.
      * 
      * ```php
-     * $ php aeros {{name}}
+     * $ php aeros run:cron
      * ```
      * @link https://symfony.com/doc/current/components/console.html
      * @return void
@@ -25,14 +25,14 @@ class {{classname}}Command extends Command
     protected function configure()
     {
         // Adding command description. 
-        // This text will be displayed when: `$ php {{name}} --help`
-        $this->setDescription('Aeros REPL - "{{name}}" command.');
+        // This text will be displayed when: `$ php run:cron --help`
+        $this->setDescription('It makes possible to run scheduled scripts, like warmups, DB clean ups, etc.');
         
         // Adding arguments
         // InputArgument::REQUIRED
         // InputArgument::OPTIONAL
         // InputArgument::IS_ARRAY
-        // $this->addArgument('name', InputArgument::REQUIRED, 'Command name (required)');
+        $this->addArgument('name', InputArgument::OPTIONAL, 'Runs the "name" script.');
 
         // Adding options
         // InputOption::VALUE_NONE = 1; // Do not accept input for the option (e.g. --yell).
@@ -40,7 +40,7 @@ class {{classname}}Command extends Command
         // InputOption::VALUE_OPTIONAL = 4; // e.g. --yell or --yell=loud
         // InputOption::VALUE_IS_ARRAY = 8; // The option accepts multiple values (e.g. --dir=/foo --dir=/bar).
         // InputOption::VALUE_NEGATABLE = 16; // The option may have either positive or negative value (e.g. --ansi or --no-ansi).
-        // $this->addOption('clear', 'c', InputOption::VALUE_NONE, 'Option "clear" with alias "c"');
+        $this->addOption('all', 'a', InputOption::VALUE_NONE, 'Runs all scheduled scripts.');
     }
 
     /**
@@ -52,17 +52,15 @@ class {{classname}}Command extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // if ($name = $input->getArgument('name')) {
-        //     $output->writeln(sprintf("Command name: %s", $name));
-        // }
+        // Runs specific scheduled script
+        if ($name = $input->getArgument('name')) {
+            // $output->writeln(sprintf("Command name: %s", $name));
+        }
 
-        // if ($clear = $input->getOption('clear')) {
-        //     $output->writeln(sprintf("Option 'clear': %s", $clear));
-        // }
-
-        //
-        // Add logic here
-        //
+        // Runs all
+        if ($all = $input->getOption('all')) {
+            // $output->writeln(sprintf("Option 'clear': %s", $clear));
+        }
 
         // Success if it's the case. 
         // Other statuses: Command::FAILURE and Command::INVALID

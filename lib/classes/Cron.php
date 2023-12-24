@@ -9,9 +9,11 @@ namespace Classes;
  * - Timer-based execution rather on-demand job queueing.
  * - One instance runs at a time.
  * - Periodic batch of jobs.
+ * 
+ * - https://packagist.org/packages/peppeocchi/php-cron-scheduler
  */
 
-class Cron
+abstract class Cron
 {
-
+    abstract public function run();
 }

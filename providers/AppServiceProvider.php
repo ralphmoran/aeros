@@ -33,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
         app()->singleton('queue', \Classes\Queue::class);
         app()->singleton('cache', \Classes\Cache::class);
         app()->singleton('worker', \Workers\AppWorker::class);
+        app()->singleton('scheduler', \GO\Scheduler::class);
 
         // Register objects only for CLI
         if (PHP_SAPI === 'cli') {

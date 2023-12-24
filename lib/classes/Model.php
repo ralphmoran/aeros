@@ -469,6 +469,8 @@ abstract class Model implements JsonSerializable
     {
         $operator = '';
 
+        # TODO: Add logic for 'IN' operator. Multiple values as an array
+        # TODO: Add logic for these operators: https://chat.openai.com/c/b14d635f-85e7-402c-bf80-9f2262d1a373
         foreach ($where as $keys) {
 
             // Bad format for constrain
