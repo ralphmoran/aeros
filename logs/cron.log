@@ -1,6 +1,2 @@
-[2023-12-24 15:13:02] Starting Crons\EveryMinuteCron at 0.55000500 1703459582
-[2023-12-24 15:13:02] a:1:{i:0;s:77:"vagrant     4448  0.0  0.0   8900   660 ?        S    15:13   0:00 grep httpd";}
-[2023-12-24 15:14:01] Starting Crons\EveryMinuteCron at 0.93523700 1703459641
-[2023-12-24 15:14:01] a:1:{i:0;s:77:"vagrant     4462  0.0  0.0   8900   732 ?        S    15:14   0:00 grep httpd";}
-[2023-12-24 15:15:02] Starting Crons\EveryMinuteCron at 0.51362500 1703459702
-[2023-12-24 15:15:02] a:1:{i:0;s:77:"vagrant     4479  0.0  0.0   8900   724 ?        S    15:15   0:00 grep httpd";}
+[2023-12-26 10:11:01] Starting Crons\EveryMinuteCron at 0.69393100 1703614261
+[2023-12-26 10:11:01] a:1:{i:0;s:77:"vagrant     2441  0.0  0.0   8900   740 ?        S    10:11   0:00 grep httpd";}
