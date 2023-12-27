@@ -1,24 +1,23 @@
 {
-    "name": "aero-admin/v1.0",
+    "name": "aeros/v1.1.1",
     "type": "project",
     "autoload":{
         "files":[
-            "lib/functions/all.php"
+            "Lib/Functions/all.php"
         ],
         "psr-4": {
-            "Classes\\": "lib/classes",
-            "Interfaces\\": "lib/interfaces",
-            "Traits\\": "lib/traits",
-            "Controllers\\": "controllers",
-            "Models\\": "models",
-            "Middlewares\\": "middlewares",
-            "Providers\\": "providers",
-            "Events\\": "events",
-            "Crons\\": "queues/crons",
-            "Jobs\\": "queues/jobs",
-            "Workers\\": "queues/workers",
-            "Roles\\": "auth/roles",
-            "Commands\\": "commands"
+            "Classes\\": "Lib/Classes",
+            "Interfaces\\": "Lib/Interfaces",
+            "Traits\\": "Lib/Traits",
+            "Controllers\\": "Controllers",
+            "Models\\": "Models",
+            "Middlewares\\": "Middlewares",
+            "Providers\\": "Providers",
+            "Events\\": "Events",
+            "Crons\\": "Queues/Crons",
+            "Jobs\\": "Queues/Jobs",
+            "Workers\\": "Queues/Workers",
+            "Commands\\": "Commands"
         }
     },
     "require": {
