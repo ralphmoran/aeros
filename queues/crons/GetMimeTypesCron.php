@@ -41,11 +41,11 @@ class GetMimeTypesCron extends Cron
 
                         $mime_types[$key] = $value;
                     }
+
+                    cache()->set('mime.types', json_encode(array_filter($mime_types)));
+
+                    printf('Mime types updated.');
                 }
-
-                cache()->set('mime.types', json_encode(array_filter($mime_types)));
-
-                printf('Mime types updated.');
 
             })
             ->sunday()
