@@ -17,38 +17,36 @@ class GetMimeTypesCron extends Cron
             ->scheduler
             ->call(function() {
 
-                if (! cache()->exists('mime.types')) {
+                $mime_types = [];
 
-                    $mime_types = [];
+                $content = @file_get_contents(
+                    "http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types",
+                    false,
+                    stream_context_create([
+                        'http' => ['method' => 'head']
+                    ])
+                );
 
-                    $content = @file_get_contents(
-                        "http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types",
-                        false,
-                        stream_context_create([
-                            'http' => ['method' => 'head']
-                        ])
-                    );
+                if ($content !== false) {
 
-                    if ($content !== false) {
-
-                        foreach (explode("\n", $content) as $line) {
-                            if (strpos($line = trim($line), '#') === 0) {
-                                continue;
-                            }
-
-                            $parts = preg_split('/\s+/', $line);
-
-                            $value = array_shift($parts);
-                            $key = array_shift($parts);
-
-                            $mime_types[$key] = $value;
+                    foreach (explode("\n", $content) as $line) {
+                        if (strpos($line = trim($line), '#') === 0) {
+                            continue;
                         }
+
+                        $parts = preg_split('/\s+/', $line);
+
+                        $value = array_shift($parts);
+                        $key = array_shift($parts);
+
+                        $mime_types[$key] = $value;
                     }
-
-                    cache()->set('mime.types', json_encode(array_filter($mime_types)));
-
-                    printf('Mime types updated.');
                 }
+
+                cache()->set('mime.types', json_encode(array_filter($mime_types)));
+
+                printf('Mime types updated.');
+
             })
             ->sunday()
             ->then(function ($output) {
