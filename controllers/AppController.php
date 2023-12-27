@@ -9,12 +9,12 @@ class AppController extends ControllerBase
     public function index()
     {
         // Trigger email notify event
-        // app()->event->emit('email.notify', ['ralph@myaero.app']);
+        // app()->event->emit('email.notify', 'ralph@myaero.app');
 
         // more logic...
 
         // Trigger email reminder event
-        // app()->event->emit('email.reminder', ['adam@myaero.app']);
+        // app()->event->emit('email.reminder', 'adam@myaero.app');
 
         // more logic...
 
