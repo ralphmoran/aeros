@@ -40,10 +40,6 @@ class AppServiceProvider extends ServiceProvider
             app()->singleton('console', \Symfony\Component\Console\Application::class);
             app()->singleton('aeros', \Classes\Aeros::class);
         }
-
-        // Callables
-        // $app->singleton('some', SomeClassWithInvoke::class);
-        // $app->singleton('another', AnotherClassWithInvoke::class);
     }
 
     public function boot(): void

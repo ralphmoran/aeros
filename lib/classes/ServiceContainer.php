@@ -30,6 +30,7 @@ class ServiceContainer extends Kernel
             printf('%s', $this->bootstrap()->router->dispatch());
         } catch (\Throwable $e) {
 
+            # TODO: Improve visual error handling
             // view('common.errors.codes', ['code' => $e->getCode()]);
 
             printf(
@@ -82,8 +83,6 @@ class ServiceContainer extends Kernel
             return $this;
         }
 
-        #TODO: Double check whether it's properly booted
-
         (new \Providers\AppServiceProvider)->register();
 
         $this->isAppBooted = true;
@@ -98,7 +97,6 @@ class ServiceContainer extends Kernel
      */
     public function registerProviders(): ServiceContainer
     {
-        #TODO: Improve performance by caching providers
         foreach ($this->getProviders() as $providerWithNamespace) {
             if ($this->isProvider($providerWithNamespace)) {
                 (new $providerWithNamespace)->register();
@@ -115,7 +113,6 @@ class ServiceContainer extends Kernel
      */
     public function bootProviders(): ServiceContainer
     {
-        #TODO: Botting providers needs to run always on any web request
         foreach ($this->getProviders() as $providerWithNamespace) {
             if ($this->isProvider($providerWithNamespace)) {
                 (new $providerWithNamespace)->boot();
@@ -152,7 +149,7 @@ class ServiceContainer extends Kernel
      * @param string|callable $service
      * @return void
      */
-    public function register(string $name, $service)
+    public function register(string $name, string|callable $service)
     {
         if (isset($this->services[$name])) {
             return;
@@ -172,17 +169,18 @@ class ServiceContainer extends Kernel
             return;
         }
 
+        // Register a callable
         $this->services[$name] = $service;
     }
 
     /**
      * Bootstraps singleton services.
      *
-     * @param array|string $name
+     * @param string $name
      * @param string|callable $service
      * @return void
      */
-    public function singleton($name, string|callable $service)
+    public function singleton(string $name, string|callable $service)
     {
         if (is_string($service) || is_callable($service)) {
             $this->register($name, $service);
@@ -199,7 +197,7 @@ class ServiceContainer extends Kernel
      * @param string $name
      * @return object|callable
      */
-    public function get($name)
+    public function get(string $name)
     {
         if (! isset($this->services[$name])) {
             throw new \Exception("Service '$name' is not registered.");
@@ -214,7 +212,7 @@ class ServiceContainer extends Kernel
      * @param string $name
      * @return object|callable
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         return $this->get($name);
     }
