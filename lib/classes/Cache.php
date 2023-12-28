@@ -2,10 +2,15 @@
 
 namespace Classes;
 
+/**
+ * This is a wrapper class for Predis package.
+ * 
+ * @link https://github.com/predis/predis
+ */
 class Cache extends \Predis\Client
 {
     /**
-     * Setting up the client.
+     * Connects to Redis server.
      */
     public function __construct() {
         parent::__construct(

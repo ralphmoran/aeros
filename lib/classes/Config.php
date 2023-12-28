@@ -14,7 +14,7 @@ class Config
      * 
      * Example: 
      * 
-     *      "db.mysql.server" 
+     *      config("db.mysql.server")
      * 
      *      Ends up being: "prod001"
      *      From "./config/db.php": 
@@ -24,7 +24,7 @@ class Config
      *              ]
      *          ]
      *
-     * @param string $from Format: "'config_filename'.'parent_node'.'child_node'"
+     * @param string $from Format: config_filename[.parent_node[.child_node[. ...]]]
      * @param mixed $default
      * @return mixed
      */
@@ -51,6 +51,7 @@ class Config
 
         $configContent = require $configFile;
 
+        # TODO: Validates in getFrom(), $configContent when it's an object
         // Config content is an object
         if (is_object($configContent)) {
             return $this->storeRequestedKey($from, $configContent, $default);
@@ -76,12 +77,12 @@ class Config
     /**
      * Stores requested key in the store.
      *
-     * @param mixed $from
+     * @param string $from
      * @param mixed $configContent
      * @param mixed $default
      * @return mixed
      */
-    private function storeRequestedKey($from, $configContent, $default): mixed
+    private function storeRequestedKey(string $from, $configContent, $default): mixed
     {
         $configContent = $configContent ?: $default;
 

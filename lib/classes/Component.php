@@ -2,20 +2,21 @@
 
 namespace Classes;
 
+/**
+ * Core class Component renders and resuses small portions of HTML that
+ * could be embedded or returned for after rendering.
+ */
 final class Component
 {
     /**
-     * Renders a component or returns the component body.
+     * Renders and embeds a component or returns the component body for after rendering.
      *
      * @param string $component
      * @param array $data
      * @param boolean $return
-     * @return void
+     * @return string
      */
-    public function render(
-        string $component, 
-        array $data, 
-        bool $return = false)
+    public function render(string $component, array $data, bool $return = false): string
     {
         // Makes the view and returns the content to be embeded
         if ($return) {

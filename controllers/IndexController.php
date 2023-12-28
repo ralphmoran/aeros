@@ -5,9 +5,9 @@ namespace Controllers;
 use Models\User;
 use Models\Role;
 use Roles\SuperRole;
-use Classes\ControllerBase;
+use Classes\Controller;
 
-class IndexController extends ControllerBase
+class IndexController extends Controller
 {
     public function index()
     {

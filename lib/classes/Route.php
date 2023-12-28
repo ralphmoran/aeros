@@ -149,7 +149,7 @@ class Route extends Router
 
         $controllerName = "Controllers\\$controllerName";
 
-        if (! class_exists($controllerName) || get_parent_class($controllerName) != 'Classes\\ControllerBase') {
+        if (! class_exists($controllerName) || get_parent_class($controllerName) != 'Classes\\Controller') {
             throw new \Exception(
                 sprintf('ERROR[Controller] There was a problem trying to validate controller \'%s\.', $controllerName)
             );

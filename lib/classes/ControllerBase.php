@@ -2,7 +2,7 @@
 
 namespace Classes;
 
-class ControllerBase
+class Controller
 {
 
 }

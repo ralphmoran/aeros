@@ -2,11 +2,16 @@
 
 namespace Classes;
 
+/**
+ * This class works together with Aeros REPL.
+ */
 final class Aeros
 {
     /**
-     * Registers all commands.
-     *
+     * It registers all custom commands that live in "./Commands" directory
+     * for further execution based on which command is called.
+     * 
+     * @see /aeros
      * @return void
      */
     public function registerCommands()
