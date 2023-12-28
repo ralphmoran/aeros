@@ -24,13 +24,13 @@ class Db
     /** @var string|null */
     private $driver = null;
 
-    /** @var PDO|null */
+    /** @var \PDO|null */
     private $reflectionPDO = null;
     
-    /** @var PDOStatement|null */
+    /** @var \PDOStatement|null */
     private $reflectionPDOStatement = null;
 
-    /** @var PDOStatement|null */
+    /** @var \PDOStatement|null */
     private $stm = null;
 
     /** @var array */
