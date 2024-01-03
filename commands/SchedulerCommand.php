@@ -25,7 +25,7 @@ class SchedulerCommand extends Command
     {
         // Adding command description. 
         // This text will be displayed when: `$ php scheduler --help`
-        $this->setDescription('Aeros REPL - "scheduler" command. It runs all scheduled scripts.');
+        $this->setDescription('Aeros REPL - "scheduler" command. It runs all scheduled crons.');
     }
 
     /**

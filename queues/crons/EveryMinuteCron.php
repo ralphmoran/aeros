@@ -6,6 +6,8 @@ use Classes\Cron;
 
 class EveryMinuteCron extends Cron
 {
+    protected string $id = 'EveryMinute';
+
     /**
      * This method is called when main scheduler cron is invoked.
      *
@@ -21,7 +23,12 @@ class EveryMinuteCron extends Cron
                 logger('Starting ' . __CLASS__ . ' at ' . microtime(), app()->basedir . '/logs/cron.log');
             })
             ->then(function ($output) {
-                logger($output, app()->basedir . '/logs/cron.log');
+                logger('Finished ' . __CLASS__ . ' at ' . microtime() . serialize($output), app()->basedir . '/logs/cron.log');
             });
+    }
+
+    public function work()
+    {
+        
     }
 }

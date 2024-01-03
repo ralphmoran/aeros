@@ -462,3 +462,55 @@ if (! function_exists('cron')) {
 		}
 	}
 }
+
+if (! function_exists('email')) {
+
+	/**
+	 * It handles sending emails with attachements, also handles different settings
+	 * like plain text and HTML, TLS encryption, SMTP (suggested), etc.
+	 *
+	 * @param array $options
+	 * @return \PHPMailer\PHPMailer\PHPMailer
+	 */
+	function email(array $options = []): \PHPMailer\PHPMailer\PHPMailer {
+		if (class_exists('\PHPMailer\PHPMailer\PHPMailer')) {
+
+			# TODO: Build a queue for emails
+
+			// Enable verbose debug output
+			if (env('SMTP_DEBUG')) {
+				app()->email->SMTPDebug = \PHPMailer\PHPMailer\SMTP::DEBUG_SERVER; 
+			}
+
+			app()->email->isSMTP();                                            //Send using SMTP
+			app()->email->Host       = env('SMTP_HOST');                     //Set the SMTP server to send through
+			app()->email->SMTPAuth   = true;                                   //Enable SMTP authentication
+			app()->email->Username   = env('SMTP_USERNAME');                     //SMTP username
+			// Setting up an app password for GMail accounts: https://www.youtube.com/watch?v=sCsMfLf1MTg
+			app()->email->Password   = env('SMTP_PASSWORD');                               //SMTP password
+			app()->email->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+			app()->email->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+	
+			//Recipients
+			// app()->email->setFrom('ralphmoran2003@gmail.com', 'Mailer');
+			// app()->email->addAddress('ralph@myaero.app', 'Rafael');     //Add a recipient
+			app()->email->addAddress('ralphmoran2003@gmail.com', 'Rafael');     //Add a recipient
+			// app()->email->addAddress('ellen@example.com');               //Name is optional
+			// app()->email->addReplyTo('info@example.com', 'Information');
+			// app()->email->addCC('cc@example.com');
+			// app()->email->addBCC('bcc@example.com');
+	
+			//Attachments
+			// app()->email->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
+			app()->email->addAttachment(app()->basedir . '/logs/cron.log', 'Cron log');    //Optional name
+	
+			//Content
+			app()->email->isHTML(true);                                  //Set email format to HTML
+			app()->email->Subject = 'Here is the subject';
+			app()->email->Body    = 'This is the HTML message body <b>in bold!</b>';
+			app()->email->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+			return app()->email;
+		}
+	}
+}

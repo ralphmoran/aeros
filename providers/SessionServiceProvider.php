@@ -20,7 +20,7 @@ class SessionServiceProvider extends ServiceProvider
         ini_set('display_startup_errors', 1);
 
         // Only on web request
-        if (PHP_SAPI !== 'cli') {
+        if (strpos(PHP_SAPI, 'cli') !== false) {
 
             if (session_status() == PHP_SESSION_ACTIVE) {
                 

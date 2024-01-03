@@ -6,6 +6,8 @@ use Classes\Cron;
 
 class Every10MinutesCron extends Cron
 {
+    protected string $id = 'Every10Minutes';
+
     /**
      * This method is called when main scheduler cron is invoked.
      *
@@ -23,5 +25,10 @@ class Every10MinutesCron extends Cron
             ->then(function ($output) {
                 logger($output, app()->basedir . '/logs/cron.log');
             });
+    }
+
+    public function work()
+    {
+        
     }
 }

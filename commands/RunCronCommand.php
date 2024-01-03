@@ -2,6 +2,7 @@
 
 namespace Commands;
 
+use Classes\Cron;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -17,7 +18,7 @@ class RunCronCommand extends Command
      * Sets descriptions, options or arguments.
      * 
      * ```php
-     * $ php aeros run:cron
+     * $ php aeros run:cron <CronID> --all|-a
      * ```
      * @link https://symfony.com/doc/current/components/console.html
      * @return void
@@ -52,18 +53,36 @@ class RunCronCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Runs specific scheduled script
-        if ($name = $input->getArgument('name')) {
-            // $output->writeln(sprintf("Command name: %s", $name));
+        $all = $input->getOption('all');
+        $name = $input->getArgument('name');
+
+        if ($all || $name) {
+
+            if ($all) {
+                $output->writeln("<info>Running all registered crons</info>");
+            }
+
+            $path = app()->basedir . '/queues/crons';
+
+            foreach (scan($path) as $cron) {
+                require $path . '/' . $cron;
+
+                $cron = '\Crons\\' . rtrim($cron, '.php');
+
+                if (($cronInstance = new $cron()) instanceof Cron) {
+
+                    if ($all || ($name && $cronInstance->getId() == $name)) {
+
+                        $output->writeln(sprintf('Running cron: %s...', $cronInstance->getId()));
+                        $cronInstance->work();
+                        $output->writeln(sprintf('<info>Finished cron: %s.</info>', $cronInstance->getId()));
+
+                        unset($cronInstance);
+                    }
+                }
+            }
         }
 
-        // Runs all
-        if ($all = $input->getOption('all')) {
-            // $output->writeln(sprintf("Option 'clear': %s", $clear));
-        }
-
-        // Success if it's the case. 
-        // Other statuses: Command::FAILURE and Command::INVALID
         return Command::SUCCESS;
     }
 }

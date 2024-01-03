@@ -133,7 +133,7 @@ class ServiceContainer extends Kernel
             return $this->providers;
         }
 
-        $providers = (PHP_SAPI === 'cli') ? config('app.providers.cli') : config('app.providers.web');
+        $providers = (strpos(PHP_SAPI, 'cli') !== false) ? config('app.providers.cli') : config('app.providers.web');
 
         if (empty($providers)) {
             throw new \Exception('ERROR[provider] No providers were found.');

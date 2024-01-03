@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
         // Singletons
         app()->singleton('db', \Classes\Db::class);
         app()->singleton('security', \Classes\Security::class);
-        app()->singleton('email', \Classes\Email::class);
+        app()->singleton('email', \PHPMailer\PHPMailer\PHPMailer::class);
         app()->singleton('router', \Classes\Router::class);
         app()->singleton('view', \Classes\View::class);
         app()->singleton('component', \Classes\Component::class);
@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
         app()->singleton('scheduler', \GO\Scheduler::class);
 
         // Register objects only for CLI
-        if (PHP_SAPI === 'cli') {
+        if (strpos(PHP_SAPI, 'cli') !== false) {
             app()->singleton('console', \Symfony\Component\Console\Application::class);
             app()->singleton('aeros', \Classes\Aeros::class);
         }
