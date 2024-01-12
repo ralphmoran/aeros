@@ -121,32 +121,35 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Lib/Classes/Cron.php"><a href="files/lib-classes-cron.html"><abbr title="Lib/Classes/Cron.php">Cron.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">16</span>
+    <span class="phpdocumentor-element-found-in__line">15</span>
 
     </aside>
 
             <p class="phpdocumentor-summary">Schedules execution of jobs at specified intervals</p>
 
     <section class="phpdocumentor-description"><ul>
-<li>
-<p>Jobs run synchronously on a schedule.</p>
-</li>
-<li>
-<p>Timer-based execution rather on-demand job queueing.</p>
-</li>
-<li>
-<p>One instance runs at a time.</p>
-</li>
-<li>
-<p>Periodic batch of jobs.</p>
-</li>
-<li>
-<p>https://packagist.org/packages/peppeocchi/php-cron-scheduler</p>
-</li>
+<li>Jobs run synchronously on a schedule.</li>
+<li>Timer-based execution rather on-demand job queueing.</li>
+<li>One instance runs at a time.</li>
+<li>Periodic batch of jobs.</li>
 </ul>
 </section>
 
 
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/Classes-Cron.html#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">link</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                                                        <a class="phpdocumentor-tag-link" href="https://packagist.org/packages/peppeocchi/php-cron-scheduler"> https://packagist.org/packages/peppeocchi/php-cron-scheduler </a>
+                    
+                                    </dd>
+                                            </dl>
 
 
 
@@ -164,6 +167,20 @@
 
 
 
+<h4 id="toc-properties">
+    Properties
+    <a href="classes/Classes-Cron.html#toc-properties" class="headerlink"><i class="fas fa-link"></i></a>
+
+</h4>
+<dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    <a href="classes/Classes-Cron.html#property_id">$id</a>
+    <span>
+                        &nbsp;: string            </span>
+</dt>
+<dd>Unique cron identifier. This is required by the command &quot;run:cron&quot;.</dd>
+
+    </dl>
 
 <h4 id="toc-methods">
     Methods
@@ -172,10 +189,25 @@
 </h4>
 <dl class="phpdocumentor-table-of-contents">
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Classes-Cron.html#method_getId">getId()</a>
+    <span>
+                                &nbsp;: string    </span>
+</dt>
+<dd>Returns the unique cron identifier.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/Classes-Cron.html#method_run">run()</a>
     <span>
-                                &nbsp;: mixed    </span>
+                                &nbsp;: void    </span>
 </dt>
+<dd>Registers a new cron instance into app()-&gt;scheduler.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/Classes-Cron.html#method_work">work()</a>
+    <span>
+                                &nbsp;: void    </span>
+</dt>
+<dd>Forces to work a cron.</dd>
 
     </dl>
 
@@ -185,6 +217,47 @@
         
 
         
+    <section class="phpdocumentor-properties">
+        <h3 class="phpdocumentor-elements__header" id="properties">
+            Properties
+            <a href="classes/Classes-Cron.html#properties" class="headerlink"><i class="fas fa-link"></i></a>
+
+        </h3>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_id">
+        $id
+        <a href="classes/Classes-Cron.html#property_id" class="headerlink"><i class="fas fa-link"></i></a>
+
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="Lib/Classes/Cron.php"><a href="files/lib-classes-cron.html"><abbr title="Lib/Classes/Cron.php">Cron.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">22</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Unique cron identifier. This is required by the command &quot;run:cron&quot;.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$id</span>
+    </code>
+
+    
+    
+    
+
+</article>
+            </section>
 
             <section class="phpdocumentor-methods">
         <h3 class="phpdocumentor-elements__header" id="methods">
@@ -192,6 +265,57 @@
             <a href="classes/Classes-Cron.html#methods" class="headerlink"><i class="fas fa-link"></i></a>
 
         </h3>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_getId">
+        getId()
+        <a href="classes/Classes-Cron.html#method_getId" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="Lib/Classes/Cron.php"><a href="files/lib-classes-cron.html"><abbr title="Lib/Classes/Cron.php">Cron.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">44</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Returns the unique cron identifier.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                    <span class="phpdocumentor-signature__name">getId</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+    
+    <h5 class="phpdocumentor-tag-list__heading" id="tags">
+        Tags
+        <a href="classes/Classes-Cron.html#method_getId#tags" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h5>
+    <dl class="phpdocumentor-tag-list">
+                                    <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><abbr title="\Classes\Exception">Exception</abbr></span>
+                                                            
+                                             
+                                    </dd>
+                                            </dl>
+
+            <section>
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+        <span class="phpdocumentor-signature__response_type">string</span>
+            </section>
+
+</article>
                     <article
         class="phpdocumentor-element
             -method
@@ -206,14 +330,47 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="Lib/Classes/Cron.php"><a href="files/lib-classes-cron.html"><abbr title="Lib/Classes/Cron.php">Cron.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">18</span>
+    <span class="phpdocumentor-element-found-in__line">29</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Registers a new cron instance into app()-&gt;scheduler.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-    <span class="phpdocumentor-signature__abstract">abstract</span>                <span class="phpdocumentor-signature__name">run</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+    <span class="phpdocumentor-signature__abstract">abstract</span>                <span class="phpdocumentor-signature__name">run</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+    
+    
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                        -abstract                                "
+>
+    <h4 class="phpdocumentor-element__name" id="method_work">
+        work()
+        <a href="classes/Classes-Cron.html#method_work" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="Lib/Classes/Cron.php"><a href="files/lib-classes-cron.html"><abbr title="Lib/Classes/Cron.php">Cron.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">36</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Forces to work a cron.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+    <span class="phpdocumentor-signature__abstract">abstract</span>                <span class="phpdocumentor-signature__name">work</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -328,15 +485,24 @@
             <li class="phpdocumentor-on-this-page-section__title">Table Of Contents</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
-                                                                                <li><a href="classes/Classes-Cron.html#toc-methods">Methods</a></li>
+                                                            <li><a href="classes/Classes-Cron.html#toc-properties">Properties</a></li>
+                                                            <li><a href="classes/Classes-Cron.html#toc-methods">Methods</a></li>
                                     </ul>
             </li>
             
+                            <li class="phpdocumentor-on-this-page-section__title">Properties</li>
+                <li>
+                    <ul class="phpdocumentor-list -clean">
+                                                    <li><a href="classes/Classes-Cron.html#property_id">$id<a href="classes/Classes-Cron.html"></li>
+                                            </ul>
+                </li>
             
                         <li class="phpdocumentor-on-this-page-section__title">Methods</li>
             <li>
                 <ul class="phpdocumentor-list -clean">
+                                            <li><a href="classes/Classes-Cron.html#method_getId">getId()</a></li>
                                             <li><a href="classes/Classes-Cron.html#method_run">run()</a></li>
+                                            <li><a href="classes/Classes-Cron.html#method_work">work()</a></li>
                                     </ul>
             </li>
                     </ul>

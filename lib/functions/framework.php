@@ -5,13 +5,13 @@ if (! function_exists('app')) {
 	/**
 	 * Bootstraps the application.
 	 *
-	 * @return Classes\ServiceContainer
+	 * @return \Aeros\Lib\Classes\ServiceContainer
 	 * 
 	 * @throws \Exception
 	 */
-	function app(): Classes\ServiceContainer
+	function app(): \Aeros\Lib\Classes\ServiceContainer
 	{
-		return Classes\ServiceContainer::getInstance()
+		return \Aeros\Lib\Classes\ServiceContainer::getInstance()
 			->setBaseDir(env('APP_ROOT_DIR') ?? dirname(dirname(__DIR__)));
 	}
 }
@@ -59,7 +59,7 @@ if (! function_exists('view')) {
 	 */
 	function view(string $view, array $values = [], string $subfolder = '')
 	{
-		if (class_exists('Classes\View')) {
+		if (class_exists('Aeros\Lib\Classes\View')) {
 			return app()->view->make($view, $values, $subfolder);
 		}
 	}
@@ -76,9 +76,9 @@ if (! function_exists('response')) {
 	 * @param string $type
 	 * @return mixed
 	 */
-	function response($data = '', int $code = 200, string $type = Classes\Response::JSON)
+	function response($data = '', int $code = 200, string $type = \Aeros\Lib\Classes\Response::JSON)
 	{
-		if (class_exists('Classes\Response')) {
+		if (class_exists('Aeros\Lib\Classes\Response')) {
 			return app()->response->type($data, $code, $type);
 		}
 	}
@@ -95,7 +95,7 @@ if (! function_exists('request')) {
 	 */
 	function request(mixed $opts = '', array $keys = [])
 	{
-		if (class_exists('Classes\Request')) {
+		if (class_exists('Aeros\Lib\Classes\Request')) {
 			return app()->request->setOptions($opts, $keys);
 		}
 	}
@@ -113,7 +113,7 @@ if (! function_exists('redirect')) {
 	 */
 	function redirect(string $redirect, array $arguments = [], string $request_method = 'GET')
 	{
-		if (class_exists('Classes\Redirect')) {
+		if (class_exists('Aeros\Lib\Classes\Redirect')) {
 			return app()->redirect->goto($redirect, $arguments, $request_method);
 		}
 	}
@@ -129,6 +129,14 @@ if (! function_exists('dd')) {
 	 */
 	function dd(...$args) 
 	{
+		# TODO: Double check if this is actually efficient
+		// On terminal
+		if (strpos(PHP_SAPI, 'cli') !== false) {
+			$position = [debug_backtrace()[0]['file'] . ':' . debug_backtrace()[0]['line']];
+			die(response(array_merge($position, $args)));
+		}
+
+		# TODO: Add CLI compatibility output using Symfony Input/Output interfaces
 		die(
 			response(
 				array_values(
@@ -167,11 +175,11 @@ if (! function_exists('cache')) {
 	/**
 	 * cache() function is a Predis wrapper.
 	 *
-	 * @return Classes\Cache
+	 * @return \Aeros\Lib\Classes\Cache
 	 */
-	function cache(): Classes\Cache
+	function cache(): \Aeros\Lib\Classes\Cache
 	{
-		if (class_exists('Classes\Cache')) {
+		if (class_exists('Aeros\Lib\Classes\Cache')) {
 			return app()->cache;
 		}
 	}
@@ -190,7 +198,7 @@ if (! function_exists('component')) {
 	 */
 	function component(string $component, array $data = [], bool $return = false)
 	{
-		if (class_exists('Classes\Component')) {
+		if (class_exists('Aeros\Lib\Classes\Component')) {
 			return app()->component->render($component, $data, $return);
 		}
 	}
@@ -341,9 +349,9 @@ if (! function_exists('db')) {
 	 * Wrapper for DB conection and all its handlers.
 	 * 
 	 * @param ?string $driver - `sqlite` or `sqlite:db_alias`
-	 * @return Classes\Db
+	 * @return \Aeros\Lib\Classes\Db
 	 */
-	function db(string $driver = null): Classes\Db
+	function db(string $driver = null): \Aeros\Lib\Classes\Db
 	{
 		return app()->db->connect($driver);
 	}
@@ -367,10 +375,10 @@ if (! function_exists('worker')) {
 	/**
 	 * Returns the main app worker.
 	 *
-	 * @return Classes\Worker
+	 * @return \Aeros\Lib\Classes\Worker
 	 */
-	function worker(): Classes\Worker {
-		if (class_exists('Workers\AppWorker')) {
+	function worker(): \Aeros\Lib\Classes\Worker {
+		if (class_exists('Aeros\Queues\Workers\AppWorker')) {
 			return app()->worker;
 		}
 	}
@@ -381,10 +389,10 @@ if (! function_exists('encryptor')) {
 	/**
 	 * Returns the global encryptor.
 	 *
-	 * @return Classes\Encryptor
+	 * @return \Aeros\Lib\Classes\Encryptor
 	 */
-	function encryptor(): Classes\Encryptor {
-		if (class_exists('Classes\Encryptor')) {
+	function encryptor(): \Aeros\Lib\Classes\Encryptor {
+		if (class_exists('Aeros\Lib\Classes\Encryptor')) {
 			return app()->encryptor;
 		}
 	}
@@ -395,10 +403,10 @@ if (! function_exists('session')) {
 	/**
 	 * Returns the global session object.
 	 *
-	 * @return Classes\Session
+	 * @return \Aeros\Lib\Classes\Session
 	 */
-	function session(): Classes\Session {
-		if (class_exists('Classes\Session')) {
+	function session(): \Aeros\Lib\Classes\Session {
+		if (class_exists('Aeros\Lib\Classes\Session')) {
 			return app()->session;
 		}
 	}
@@ -412,7 +420,7 @@ if (! function_exists('config')) {
 	 * @return mixed
 	 */
 	function config(string $from, mixed $default = null): mixed {
-		if (class_exists('Classes\Config')) {
+		if (class_exists('Aeros\Lib\Classes\Config')) {
 			return app()->config->getFrom($from, $default);
 		}
 	}
@@ -421,15 +429,16 @@ if (! function_exists('config')) {
 if (! function_exists('logger')) {
 
 	/**
-	 * Appends a message into log file.
+	 * Appends a message into a log file.
 	 *
 	 * @param mixed $message
-	 * @param string $logFile
+	 * @param string $logFile Path and filename.
+	 * @param bool $createFile Flag to create the log file if it does not exist.
 	 * @return boolean
 	 */
-	function logger(mixed $message, string $logFile): bool {
-		if (class_exists('Classes\Logger')) {
-			return app()->logger->log($message, $logFile);
+	function logger(mixed $message, string $logFile, bool $createFile = false): bool {
+		if (class_exists('Aeros\Lib\Classes\Logger')) {
+			return app()->logger->log($message, $logFile, $createFile);
 		}
 	}
 }
@@ -439,10 +448,10 @@ if (! function_exists('queue')) {
 	/**
 	 * Returns the queue instance.
 	 *
-	 * @return Classes\Queue
+	 * @return \Aeros\Lib\Classes\Queue
 	 */
-	function queue(): Classes\Queue {
-		if (class_exists('Classes\Queue')) {
+	function queue(): \Aeros\Lib\Classes\Queue {
+		if (class_exists('Aeros\Lib\Classes\Queue')) {
 			return app()->queue;
 		}
 	}
@@ -454,63 +463,11 @@ if (! function_exists('cron')) {
 	 * Returns an instance of Cron. 
 	 * This is a wrapper for Scheduler class.
 	 *
-	 * @return Classes\Cron
+	 * @return \Aeros\Lib\Classes\Cron
 	 */
-	function cron(): Classes\Cron {
-		if (class_exists('Classes\Cron')) {
+	function cron(): \Aeros\Lib\Classes\Cron {
+		if (class_exists('Aeros\Lib\Classes\Cron')) {
 			return app()->cron;
-		}
-	}
-}
-
-if (! function_exists('email')) {
-
-	/**
-	 * It handles sending emails with attachements, also handles different settings
-	 * like plain text and HTML, TLS encryption, SMTP (suggested), etc.
-	 *
-	 * @param array $options
-	 * @return \PHPMailer\PHPMailer\PHPMailer
-	 */
-	function email(array $options = []): \PHPMailer\PHPMailer\PHPMailer {
-		if (class_exists('\PHPMailer\PHPMailer\PHPMailer')) {
-
-			# TODO: Build a queue for emails
-
-			// Enable verbose debug output
-			if (env('SMTP_DEBUG')) {
-				app()->email->SMTPDebug = \PHPMailer\PHPMailer\SMTP::DEBUG_SERVER; 
-			}
-
-			app()->email->isSMTP();                                            //Send using SMTP
-			app()->email->Host       = env('SMTP_HOST');                     //Set the SMTP server to send through
-			app()->email->SMTPAuth   = true;                                   //Enable SMTP authentication
-			app()->email->Username   = env('SMTP_USERNAME');                     //SMTP username
-			// Setting up an app password for GMail accounts: https://www.youtube.com/watch?v=sCsMfLf1MTg
-			app()->email->Password   = env('SMTP_PASSWORD');                               //SMTP password
-			app()->email->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
-			app()->email->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
-	
-			//Recipients
-			// app()->email->setFrom('ralphmoran2003@gmail.com', 'Mailer');
-			// app()->email->addAddress('ralph@myaero.app', 'Rafael');     //Add a recipient
-			app()->email->addAddress('ralphmoran2003@gmail.com', 'Rafael');     //Add a recipient
-			// app()->email->addAddress('ellen@example.com');               //Name is optional
-			// app()->email->addReplyTo('info@example.com', 'Information');
-			// app()->email->addCC('cc@example.com');
-			// app()->email->addBCC('bcc@example.com');
-	
-			//Attachments
-			// app()->email->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
-			app()->email->addAttachment(app()->basedir . '/logs/cron.log', 'Cron log');    //Optional name
-	
-			//Content
-			app()->email->isHTML(true);                                  //Set email format to HTML
-			app()->email->Subject = 'Here is the subject';
-			app()->email->Body    = 'This is the HTML message body <b>in bold!</b>';
-			app()->email->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
-			return app()->email;
 		}
 	}
 }

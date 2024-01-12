@@ -1,9 +1,8 @@
 <?php
 
-namespace Classes;
+namespace Aeros\Lib\Classes;
 
-use Cake\Core\ServiceConfig;
-use Classes\Kernel;
+use Aeros\Lib\Classes\Kernel;
 
 class ServiceContainer extends Kernel
 {
@@ -75,7 +74,7 @@ class ServiceContainer extends Kernel
      * 
      * Add here any setup that is required to take place before anything else.
      *
-     * @return Classes\ServiceContainer
+     * @return \Aeros\Lib\Classes\ServiceContainer
      */
     public function bootApplication(): ServiceContainer
     {
@@ -83,7 +82,7 @@ class ServiceContainer extends Kernel
             return $this;
         }
 
-        (new \Providers\AppServiceProvider)->register();
+        (new \Aeros\Providers\AppServiceProvider)->register();
 
         $this->isAppBooted = true;
 
@@ -93,7 +92,7 @@ class ServiceContainer extends Kernel
     /**
      * Registers service providers.
      * 
-     * @return Classes\ServiceContainer
+     * @return \Aeros\Lib\Classes\ServiceContainer
      */
     public function registerProviders(): ServiceContainer
     {
@@ -109,7 +108,7 @@ class ServiceContainer extends Kernel
     /**
      * Boots all already registered service providers.
      *
-     * @return Classes\ServiceContainer
+     * @return \Aeros\Lib\Classes\ServiceContainer
      */
     public function bootProviders(): ServiceContainer
     {

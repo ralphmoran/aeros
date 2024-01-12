@@ -28,18 +28,18 @@ return [
         // Providers that run only on web servers.
         'web' => [
             // Main service providers: DO NOT TOUCH
-            'SessionServiceProvider' => Providers\SessionServiceProvider::class,
-            'HttpServiceProvider' => Providers\HttpServiceProvider::class,
-            'RouteServiceProvider' => Providers\RouteServiceProvider::class,
+            'SessionServiceProvider' => \Aeros\Providers\SessionServiceProvider::class,
+            'HttpServiceProvider' => \Aeros\Providers\HttpServiceProvider::class,
+            'RouteServiceProvider' => \Aeros\Providers\RouteServiceProvider::class,
 
             // Other service providers
-            'DatabaseServiceProvider' => Providers\DatabaseServiceProvider::class,
-            'EmailServiceProvider' => Providers\EmailServiceProvider::class,
+            'DatabaseServiceProvider' => \Aeros\Providers\DatabaseServiceProvider::class,
+            'EmailServiceProvider' => \Aeros\Providers\EmailServiceProvider::class,
         ],
 
         // Other service providers that run on CLI
         'cli' => [
-            'RouteServiceProvider' => Providers\RouteServiceProvider::class,
+            'RouteServiceProvider' => \Aeros\Providers\RouteServiceProvider::class,
         ],
     ],
 
@@ -52,10 +52,10 @@ return [
 
         // Run over any request
         'app' => [
-            'SessionMiddleware' => Middlewares\SessionMiddleware::class,
-            'CorsMiddleware' => Middlewares\CorsMiddleware::class,
-            'BanBotsMiddleware' => Middlewares\BanBotsMiddleware::class,
-            'SanitizerMiddleware' => Middlewares\SanitizerMiddleware::class,
+            'SessionMiddleware' => \Aeros\Middlewares\SessionMiddleware::class,
+            'CorsMiddleware' => \Aeros\Middlewares\CorsMiddleware::class,
+            'BanBotsMiddleware' => \Aeros\Middlewares\BanBotsMiddleware::class,
+            'SanitizerMiddleware' => \Aeros\Middlewares\SanitizerMiddleware::class,
         ],
 
         'web' => [

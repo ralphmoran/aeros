@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes;
+namespace Aeros\Lib\Classes;
 
 /**
  * Core class Component renders and resuses small portions of HTML that

@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes;
+namespace Aeros\Lib\Classes;
 
 /**
  * Schedules execution of jobs at specified intervals

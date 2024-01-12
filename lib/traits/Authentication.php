@@ -1,6 +1,6 @@
 <?php
 
-namespace Traits;
+namespace Aeros\Lib\Traits;
 
 trait Authentication
 {

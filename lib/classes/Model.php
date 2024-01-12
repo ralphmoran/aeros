@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes;
+namespace Aeros\Lib\Classes;
 
 use JsonSerializable;
 
@@ -353,7 +353,7 @@ abstract class Model implements JsonSerializable
                 $placeholders = '';
                 $boundValues = [];
 
-                // Used by the Model instance, e.eg.: Models\User
+                // Used by the Model instance, e.eg.: Aeros\Models\User
                 if ($this->instantiated && empty($this->where)) {
                     $placeholders = "{$this->primary} = :{$this->primary}";
                     $boundValues = [$this->primary => $this->properties[$this->primary]];

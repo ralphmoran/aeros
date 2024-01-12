@@ -1,6 +1,6 @@
 <?php
 
-namespace Interfaces;
+namespace Aeros\Lib\Interfaces;
 
 interface JobInterface 
 {

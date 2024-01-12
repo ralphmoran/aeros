@@ -1,16 +1,16 @@
 <?php
 
-namespace Middlewares;
+namespace Aeros\Middlewares;
 
-use Classes\Request;
-use Classes\Response;
-use Interfaces\MiddlewareInterface;
+use Aeros\Lib\Classes\Request;
+use Aeros\Lib\Classes\Response;
+use Aeros\Lib\Interfaces\MiddlewareInterface;
 
 class BanBotsMiddleware implements MiddlewareInterface
 {
     public function __invoke(Request $request, Response $response)
     {
-        // See Classes\Request properties
+        // See \Aeros\Lib\Classes\Request properties
 
         // Work with $request->payload (POST) property or $request->queryParams (GET)
 

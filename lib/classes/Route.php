@@ -1,8 +1,8 @@
 <?php
 
-namespace Classes;
+namespace Aeros\Lib\Classes;
 
-use Interfaces\MiddlewareInterface;
+use Aeros\Lib\Interfaces\MiddlewareInterface;
 
 class Route extends Router
 {
@@ -40,10 +40,10 @@ class Route extends Router
     public $params = [];
 
     /** @var array */
-    private $middlewares = [];
+    public $middlewares = [];
 
     /** @var string */
-    protected $content = null;
+    public $content = null;
 
     /**
      * Constructor
@@ -147,9 +147,9 @@ class Route extends Router
                                     ? [$controller, 'index']
                                     : explode('@', $controller);
 
-        $controllerName = "Controllers\\$controllerName";
+        $controllerName = "Aeros\\Controllers\\$controllerName";
 
-        if (! class_exists($controllerName) || get_parent_class($controllerName) != 'Classes\\Controller') {
+        if (get_parent_class($controllerName) != \Aeros\Lib\Classes\Controller::class || ! class_exists($controllerName)) {
             throw new \Exception(
                 sprintf('ERROR[Controller] There was a problem trying to validate controller \'%s\.', $controllerName)
             );

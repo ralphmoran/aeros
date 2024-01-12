@@ -1,6 +1,6 @@
 <?php
 
-namespace Commands;
+namespace Aeros\Commands;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,13 +26,14 @@ class {{classname}}Command extends Command
     {
         // Adding command description. 
         // This text will be displayed when: `$ php {{name}} --help`
-        $this->setDescription('Aeros REPL - "{{name}}" command.');
+        $this->setDescription('Aeros REPL - "{{name}}" command.')
+            ->setHelp('Commands help...');
         
         // Adding arguments
         // InputArgument::REQUIRED
         // InputArgument::OPTIONAL
         // InputArgument::IS_ARRAY
-        // $this->addArgument('name', InputArgument::REQUIRED, 'Command name (required)');
+        // $this->addArgument('name', InputArgument::REQUIRED, 'Argument name (required)');
 
         // Adding options
         // InputOption::VALUE_NONE = 1; // Do not accept input for the option (e.g. --yell).

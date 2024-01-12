@@ -1,8 +1,8 @@
 <?php
 
-namespace Jobs;
+namespace Aeros\Queues\Jobs;
 
-use Classes\Job;
+use Aeros\Lib\Classes\Job;
 
 class ProcessImagesJob extends Job
 {

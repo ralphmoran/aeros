@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes;
+namespace Aeros\Lib\Classes;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;

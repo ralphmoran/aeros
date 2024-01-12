@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes;
+namespace Aeros\Lib\Classes;
 
 use phpseclib3\Net\SSH2;
 

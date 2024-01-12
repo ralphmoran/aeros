@@ -1,8 +1,8 @@
 <?php
 
-namespace Crons;
+namespace Aeros\Queues\Crons;
 
-use Classes\Cron;
+use Aeros\Lib\Classes\Cron;
 
 class GetMimeTypesCron extends Cron
 {
@@ -18,11 +18,21 @@ class GetMimeTypesCron extends Cron
         app()
             ->scheduler
             ->call(function() {
-                (new \Providers\MimeTypeServiceProvider)->boot();
+                logger(
+                    'Updating MIME types', 
+                    app()->basedir . '/logs/cron.log',
+                    true
+                );
+
+                (new \Aeros\Providers\MimeTypeServiceProvider)->boot();
             })
             ->sunday()
             ->then(function ($output) {
-                logger('MIME types updated', app()->basedir . '/logs/cron.log');
+                logger(
+                    'Updated MIME types', 
+                    app()->basedir . '/logs/cron.log',
+                    true
+                );
             });
     }
 
@@ -33,6 +43,6 @@ class GetMimeTypesCron extends Cron
      */
     public function work()
     {
-        // (new \Providers\MimeTypeServiceProvider)->boot();
+        // (new \Aeros\Providers\MimeTypeServiceProvider)->boot();
     }
 }

@@ -1,19 +1,19 @@
 <?php
 
-namespace Classes;
+namespace Aeros\Lib\Classes;
 
-use Classes\Route;
-use Interfaces\MiddlewareInterface;
+use Aeros\Lib\Classes\Route;
+use Aeros\Lib\Interfaces\MiddlewareInterface;
 
 /**
  * Router class manages static calls to HTTP methods, parses the registered routes and
  * parses the current requested URI.
  * 
- * @method static Classes\Route get(string $route, callable|string $handler)
- * @method static Classes\Route post(string $route, callable|string $handler)
- * @method static Classes\Route put(string $route, callable|string $handler)
- * @method static Classes\Route path(string $route, callable|string $handler)
- * @method static Classes\Route delete(string $route, callable|string $handler)
+ * @method static \Aeros\Lib\Classes\Route get(string $route, callable|string $handler)
+ * @method static \Aeros\Lib\Classes\Route post(string $route, callable|string $handler)
+ * @method static \Aeros\Lib\Classes\Route put(string $route, callable|string $handler)
+ * @method static \Aeros\Lib\Classes\Route path(string $route, callable|string $handler)
+ * @method static \Aeros\Lib\Classes\Route delete(string $route, callable|string $handler)
  */
 class Router
 {
@@ -69,6 +69,7 @@ class Router
      */
     public function addRoute(string $method, Route $route)
     {
+        # TODO: This line does not work, subdomain is missing
         if (isset($this->routes[$method]) && in_array($route, $this->routes[$method])) {
             return;
         }
@@ -131,7 +132,7 @@ class Router
         // Returns URI parts and subdomain if there is any
         $currentUriParts = $this->getUriParts($uri);
 
-        foreach ($this->getRoutes(strtoupper($method), $currentUriParts['subdomain']) as $route) {
+        foreach ($this->getRoutes($method, $currentUriParts['subdomain']) as $route) {
 
             // URI parts are not equal: `/user/login` and `/user`, skip
             if (count($route->uriParts) !== count($currentUriParts['parts'])) {
@@ -276,13 +277,18 @@ class Router
      */
     public function getRoutes(string $method = '', string $subdomain = '*') : array
     {
+        // If routes are already cached for production|staging...
+        if (in_array(env('APP_ENV'), ['production', 'staging']) && cache()->exists('cached.routes')) {
+            $this->routes = unserialize(cache()->get('cached.routes'));
+        }
+
         $method = strtoupper($method);
 
-        if (! isset($this->routes[$method])) {
+        if (! isset($this->routes[$method]) && ! empty($method)) {
             throw new \Exception("ERROR[route] Method '{$method}' is not registered.");
         }
 
-        if (! isset($this->routes[$method][$subdomain])) {
+        if (! isset($this->routes[$method][$subdomain]) && ! empty($method)) {
             throw new \Exception("ERROR[route] Subdomain '{$subdomain}' is not registered.");
         }
 

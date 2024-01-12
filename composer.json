@@ -6,18 +6,18 @@
             "Lib/Functions/all.php"
         ],
         "psr-4": {
-            "Classes\\": "Lib/Classes",
-            "Interfaces\\": "Lib/Interfaces",
-            "Traits\\": "Lib/Traits",
-            "Controllers\\": "Controllers",
-            "Models\\": "Models",
-            "Middlewares\\": "Middlewares",
-            "Providers\\": "Providers",
-            "Events\\": "Events",
-            "Crons\\": "Queues/Crons",
-            "Jobs\\": "Queues/Jobs",
-            "Workers\\": "Queues/Workers",
-            "Commands\\": "Commands"
+            "Aeros\\Lib\\Classes\\": "Lib/Classes",
+            "Aeros\\Lib\\Interfaces\\": "Lib/Interfaces",
+            "Aeros\\Lib\\Traits\\": "Lib/Traits",
+            "Aeros\\Controllers\\": "Controllers",
+            "Aeros\\Models\\": "Models",
+            "Aeros\\Middlewares\\": "Middlewares",
+            "Aeros\\Providers\\": "Providers",
+            "Aeros\\Events\\": "Events",
+            "Aeros\\Queues\\Crons\\": "Queues/Crons",
+            "Aeros\\Queues\\Jobs\\": "Queues/Jobs",
+            "Aeros\\Queues\\Workers\\": "Queues/Workers",
+            "Aeros\\Commands\\": "Commands"
         }
     },
     "require": {

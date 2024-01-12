@@ -1,10 +1,10 @@
 <?php
 
-namespace Models;
+namespace Aeros\Models;
 
-use Classes\Model;
-use Models\Role;
-use Traits\Authentication;
+use Aeros\Lib\Classes\Model;
+use Aeros\Models\Role;
+use Aeros\Lib\Traits\Authentication;
 
 class User extends Model
 {

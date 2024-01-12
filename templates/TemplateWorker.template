@@ -2,7 +2,7 @@
 
 namespace Workers;
 
-use Classes\Worker;
+use Aeros\Lib\Classes\Worker;
 
 /**
  * This worker will be ran by Supervisor on the background thread.

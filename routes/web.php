@@ -8,7 +8,7 @@
 |
 */
 
-use Classes\Route;
+use Aeros\Lib\Classes\Route;
 
 // Group middlewares: All routes within the calback are going 
 // to receive middlewares from 'auth' group (see config('app.middlewares.auth'))
@@ -34,9 +34,9 @@ Route::get("admin:/login/{userid}/{profile}", "AppController@profile");
 
 // Route::get("admin:/", "AppController")
 //     ->withMiddleware([
-//         Middlewares\BanBotsMiddleware::class,
-//         Middlewares\CorsMiddleware::class,
-//         Middlewares\SanitizerMiddleware::class
+//         \Aeros\Middlewares\BanBotsMiddleware::class,
+//         \Aeros\Middlewares\CorsMiddleware::class,
+//         \Aeros\Middlewares\SanitizerMiddleware::class
 //     ]);
 
 // -- Example #3: Route with dynamic URL, controller name and method, also, subdomain

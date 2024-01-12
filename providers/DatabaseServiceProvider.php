@@ -1,8 +1,8 @@
 <?php
 
-namespace Providers;
+namespace Aeros\Providers;
 
-use Classes\ServiceProvider;
+use Aeros\Lib\Classes\ServiceProvider;
 
 class DatabaseServiceProvider extends ServiceProvider
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Middlewares;
+namespace Aeros\Middlewares;
 
-use Classes\Request;
-use Classes\Response;
-use Interfaces\MiddlewareInterface;
+use Aeros\Lib\Classes\Request;
+use Aeros\Lib\Classes\Response;
+use Aeros\Lib\Interfaces\MiddlewareInterface;
 
 class SessionMiddleware implements MiddlewareInterface
 {

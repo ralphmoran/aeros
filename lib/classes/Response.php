@@ -1,6 +1,9 @@
 <?php
 
-namespace Classes;
+namespace Aeros\Lib\Classes;
+
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 
 final class Response
 {
@@ -56,7 +59,7 @@ final class Response
      */
     public function __construct()
     {
-        
+
     }
 
     /**
@@ -69,6 +72,24 @@ final class Response
      */
     public function type(mixed $data, int $code = 200, string $type = Response::JSON)
     {
+        // On terminal
+        if (strpos(PHP_SAPI, 'cli') !== false) {
+            $output = new ConsoleOutput();
+
+            $output->getFormatter()->setStyle(
+                'success', 
+                new OutputFormatterStyle('green', 'black', ['bold'])
+            );
+
+            // Dump values to the console with formatting
+            foreach ($data as $key => $value) {
+                $output->writeln(sprintf('<success>%s: </success>%s', $key, var_export($value, true)));
+            }
+
+            return;
+            // return json_encode($data);
+        }
+
         // Hack for special files
         $type = match ($type) {
             'map'   => 'json',

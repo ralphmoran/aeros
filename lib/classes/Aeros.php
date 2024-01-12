@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes;
+namespace Aeros\Lib\Classes;
 
 /**
  * This class works together with Aeros REPL.
@@ -23,7 +23,7 @@ final class Aeros
 
             require $path . '/' . $command;
 
-            $command = '\Commands\\' . rtrim($command, '.php');
+            $command = '\Aeros\Commands\\' . rtrim($command, '.php');
 
             app()->console->add(new $command());
         }

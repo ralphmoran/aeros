@@ -1,24 +1,40 @@
 <?php
 
-namespace Controllers;
+namespace Aeros\Controllers;
 
-use Models\User;
-use Models\Role;
-use Roles\SuperRole;
-use Classes\Controller;
+use Aeros\Lib\Classes\Controller;
 
 class IndexController extends Controller
 {
+    public function __construct()
+    {
+        // Each controller can execute multiple actions upon request.
+        // The constructor is called on any method/action, therefore, any logic
+        // here will be executed.
+        //
+        // Example:
+        //      - Extra request validation
+        //      - Logging action call
+        //      - Formatting data
+        //      - Validating if user is logged in
+        //      - Cheking user roles
+        //      - Checking if user has access to the current section
+        // logger('From inside: ' . __CLASS__, app()->basedir . '/logs/error.log');
+
+        // Call parent::__construct() method if needed
+        // parent::__construct();
+    }
+
     public function index()
     {
         //******************************************/
         // Note: All pipelines are prepended with "env('APP_NAME') . '_'" string
         // queue()->push([
-        //     \Jobs\CleanupJob::class,
-        //     \Jobs\SendEmailsJob::class,
-        //     \Jobs\DatabaseCleanupJob::class,
-        //     \Jobs\WebhookCallsJob::class,
-        //     \Jobs\ProcessImagesJob::class,
+        //     \Aeros\Queues\Jobs\CleanupJob::class,
+        //     \Aeros\Queues\Jobs\SendEmailsJob::class,
+        //     \Aeros\Queues\Jobs\DatabaseCleanupJob::class,
+        //     \Aeros\Queues\Jobs\WebhookCallsJob::class,
+        //     \Aeros\Queues\Jobs\ProcessImagesJob::class,
         // ]);
 
         //******************************************/
@@ -48,11 +64,11 @@ class IndexController extends Controller
         // Using a specific pipeline name
         // queue()->push(
         //     [
-        //         \Jobs\CleanupJob::class,
-        //         \Jobs\SendEmailsJob::class,
-        //         \Jobs\DatabaseCleanupJob::class,
-        //         \Jobs\WebhookCallsJob::class,
-        //         \Jobs\ProcessImagesJob::class,
+        //         \Aeros\Queues\Jobs\CleanupJob::class,
+        //         \Aeros\Queues\Jobs\SendEmailsJob::class,
+        //         \Aeros\Queues\Jobs\DatabaseCleanupJob::class,
+        //         \Aeros\Queues\Jobs\WebhookCallsJob::class,
+        //         \Aeros\Queues\Jobs\ProcessImagesJob::class,
         //     ],
         //     'custom_pipeline'
         // );
@@ -70,12 +86,12 @@ class IndexController extends Controller
 
         //******************************************/
         // Create projects table. You must use "exec" method for these type of queries
-        $stm = db()->exec('CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
-                username TEXT NOT NULL,
-                fname TEXT NOT NULL,
-                lname TEXT NOT NULL,
-                role INT NOT NULL)');
+        // $stm = db()->exec('CREATE TABLE IF NOT EXISTS users (
+        //         id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+        //         username TEXT NOT NULL,
+        //         fname TEXT NOT NULL,
+        //         lname TEXT NOT NULL,
+        //         role INT NOT NULL)');
 
         // dd(get_class($stm));
 
@@ -226,7 +242,7 @@ class IndexController extends Controller
         //         title TEXT NOT NULL,
         //         description TEXT NOT NULL)');
 
-        // $role = \Classes\Role::create([
+        // $role = \Aeros\Lib\Classes\Role::create([
         //     'role' => 8,
         //     'title' => 'Guest',
         //     'description' => 'Guest user',

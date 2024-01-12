@@ -1,8 +1,8 @@
 <?php
 
-namespace Events;
+namespace Aeros\Events;
 
-use Classes\Observable;
+use Aeros\Lib\Classes\Observable;
 
 class EmailReminderEvent extends Observable
 {

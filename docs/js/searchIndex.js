@@ -1,1230 +1,1250 @@
 Search.appendIndex(
     [
                 {
-            "fqsen": "\\Classes\\Aeros",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Aeros",
             "name": "Aeros",
             "summary": "This\u0020class\u0020works\u0020together\u0020with\u0020Aeros\u0020REPL.",
-            "url": "classes/Classes-Aeros.html"
+            "url": "classes/Aeros-Lib-Classes-Aeros.html"
         },                {
-            "fqsen": "\\Classes\\Aeros\u003A\u003AregisterCommands\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Aeros\u003A\u003AregisterCommands\u0028\u0029",
             "name": "registerCommands",
             "summary": "It\u0020registers\u0020all\u0020custom\u0020commands\u0020that\u0020live\u0020in\u0020\u0022.\/Commands\u0022\u0020directory\nfor\u0020further\u0020execution\u0020based\u0020on\u0020which\u0020command\u0020is\u0020called.",
-            "url": "classes/Classes-Aeros.html#method_registerCommands"
+            "url": "classes/Aeros-Lib-Classes-Aeros.html#method_registerCommands"
         },                {
-            "fqsen": "\\Classes\\Cache",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cache",
             "name": "Cache",
             "summary": "This\u0020is\u0020a\u0020wrapper\u0020class\u0020for\u0020Predis\u0020package.",
-            "url": "classes/Classes-Cache.html"
+            "url": "classes/Aeros-Lib-Classes-Cache.html"
         },                {
-            "fqsen": "\\Classes\\Cache\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cache\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "Connects\u0020to\u0020Redis\u0020server.",
-            "url": "classes/Classes-Cache.html#method___construct"
+            "url": "classes/Aeros-Lib-Classes-Cache.html#method___construct"
         },                {
-            "fqsen": "\\Classes\\Cluster",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cluster",
             "name": "Cluster",
             "summary": "",
-            "url": "classes/Classes-Cluster.html"
+            "url": "classes/Aeros-Lib-Classes-Cluster.html"
         },                {
-            "fqsen": "\\Classes\\Cluster\u003A\u003A__callStatic\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cluster\u003A\u003A__callStatic\u0028\u0029",
             "name": "__callStatic",
             "summary": "",
-            "url": "classes/Classes-Cluster.html#method___callStatic"
+            "url": "classes/Aeros-Lib-Classes-Cluster.html#method___callStatic"
         },                {
-            "fqsen": "\\Classes\\Cluster\u003A\u003A_connect\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cluster\u003A\u003A_connect\u0028\u0029",
             "name": "_connect",
             "summary": "",
-            "url": "classes/Classes-Cluster.html#method__connect"
+            "url": "classes/Aeros-Lib-Classes-Cluster.html#method__connect"
         },                {
-            "fqsen": "\\Classes\\Cluster\u003A\u003Aget\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cluster\u003A\u003Aget\u0028\u0029",
             "name": "get",
             "summary": "",
-            "url": "classes/Classes-Cluster.html#method_get"
+            "url": "classes/Aeros-Lib-Classes-Cluster.html#method_get"
         },                {
-            "fqsen": "\\Classes\\Cluster\u003A\u003A\u0024instance",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cluster\u003A\u003A\u0024instance",
             "name": "instance",
             "summary": "",
-            "url": "classes/Classes-Cluster.html#property_instance"
+            "url": "classes/Aeros-Lib-Classes-Cluster.html#property_instance"
         },                {
-            "fqsen": "\\Classes\\Component",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Component",
             "name": "Component",
             "summary": "Core\u0020class\u0020Component\u0020renders\u0020and\u0020resuses\u0020small\u0020portions\u0020of\u0020HTML\u0020that\ncould\u0020be\u0020embedded\u0020or\u0020returned\u0020for\u0020after\u0020rendering.",
-            "url": "classes/Classes-Component.html"
+            "url": "classes/Aeros-Lib-Classes-Component.html"
         },                {
-            "fqsen": "\\Classes\\Component\u003A\u003Arender\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Component\u003A\u003Arender\u0028\u0029",
             "name": "render",
             "summary": "Renders\u0020and\u0020embeds\u0020a\u0020component\u0020or\u0020returns\u0020the\u0020component\u0020body\u0020for\u0020after\u0020rendering.",
-            "url": "classes/Classes-Component.html#method_render"
+            "url": "classes/Aeros-Lib-Classes-Component.html#method_render"
         },                {
-            "fqsen": "\\Classes\\Config",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Config",
             "name": "Config",
             "summary": "",
-            "url": "classes/Classes-Config.html"
+            "url": "classes/Aeros-Lib-Classes-Config.html"
         },                {
-            "fqsen": "\\Classes\\Config\u003A\u003AgetFrom\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Config\u003A\u003AgetFrom\u0028\u0029",
             "name": "getFrom",
             "summary": "Returns\u0020an\u0020item\/value\u0020from\u0020config\u0020files.",
-            "url": "classes/Classes-Config.html#method_getFrom"
+            "url": "classes/Aeros-Lib-Classes-Config.html#method_getFrom"
         },                {
-            "fqsen": "\\Classes\\Config\u003A\u003AstoreRequestedKey\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Config\u003A\u003AstoreRequestedKey\u0028\u0029",
             "name": "storeRequestedKey",
             "summary": "Stores\u0020requested\u0020key\u0020in\u0020the\u0020store.",
-            "url": "classes/Classes-Config.html#method_storeRequestedKey"
+            "url": "classes/Aeros-Lib-Classes-Config.html#method_storeRequestedKey"
         },                {
-            "fqsen": "\\Classes\\Config\u003A\u003A\u0024requestedKeys",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Config\u003A\u003A\u0024requestedKeys",
             "name": "requestedKeys",
             "summary": "",
-            "url": "classes/Classes-Config.html#property_requestedKeys"
+            "url": "classes/Aeros-Lib-Classes-Config.html#property_requestedKeys"
         },                {
-            "fqsen": "\\Classes\\Controller",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Controller",
             "name": "Controller",
             "summary": "",
-            "url": "classes/Classes-Controller.html"
+            "url": "classes/Aeros-Lib-Classes-Controller.html"
         },                {
-            "fqsen": "\\Classes\\Cookie",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Controller\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/Aeros-Lib-Classes-Controller.html#method___construct"
+        },                {
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cookie",
             "name": "Cookie",
             "summary": "",
-            "url": "classes/Classes-Cookie.html"
+            "url": "classes/Aeros-Lib-Classes-Cookie.html"
         },                {
-            "fqsen": "\\Classes\\Cookie\u003A\u003Aset\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cookie\u003A\u003Aset\u0028\u0029",
             "name": "set",
             "summary": "Sets\/mames\u0020properly\u0020a\u0020cookie\u0020with\u0020value\u0020and\u0020params.",
-            "url": "classes/Classes-Cookie.html#method_set"
+            "url": "classes/Aeros-Lib-Classes-Cookie.html#method_set"
         },                {
-            "fqsen": "\\Classes\\Cookie\u003A\u003Aget\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cookie\u003A\u003Aget\u0028\u0029",
             "name": "get",
             "summary": "Returns\u0020value\u0020of\u0020cookie\u0020by\u0020\u0024key.",
-            "url": "classes/Classes-Cookie.html#method_get"
+            "url": "classes/Aeros-Lib-Classes-Cookie.html#method_get"
         },                {
-            "fqsen": "\\Classes\\Cookie\u003A\u003Aclear\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cookie\u003A\u003Aclear\u0028\u0029",
             "name": "clear",
             "summary": "Regenerates\u0020the\u0020whole\u0020session\u0020cookie.",
-            "url": "classes/Classes-Cookie.html#method_clear"
+            "url": "classes/Aeros-Lib-Classes-Cookie.html#method_clear"
         },                {
-            "fqsen": "\\Classes\\Cron",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cron",
             "name": "Cron",
             "summary": "Schedules\u0020execution\u0020of\u0020jobs\u0020at\u0020specified\u0020intervals",
-            "url": "classes/Classes-Cron.html"
+            "url": "classes/Aeros-Lib-Classes-Cron.html"
         },                {
-            "fqsen": "\\Classes\\Cron\u003A\u003Arun\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cron\u003A\u003Arun\u0028\u0029",
             "name": "run",
-            "summary": "",
-            "url": "classes/Classes-Cron.html#method_run"
+            "summary": "Registers\u0020a\u0020new\u0020cron\u0020instance\u0020into\u0020app\u0028\u0029\u002D\u003Escheduler.",
+            "url": "classes/Aeros-Lib-Classes-Cron.html#method_run"
         },                {
-            "fqsen": "\\Classes\\Db",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cron\u003A\u003Awork\u0028\u0029",
+            "name": "work",
+            "summary": "Forces\u0020to\u0020work\u0020a\u0020cron.",
+            "url": "classes/Aeros-Lib-Classes-Cron.html#method_work"
+        },                {
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cron\u003A\u003AgetId\u0028\u0029",
+            "name": "getId",
+            "summary": "Returns\u0020the\u0020unique\u0020cron\u0020identifier.",
+            "url": "classes/Aeros-Lib-Classes-Cron.html#method_getId"
+        },                {
+            "fqsen": "\\Aeros\\Lib\\Classes\\Cron\u003A\u003A\u0024id",
+            "name": "id",
+            "summary": "Unique\u0020cron\u0020identifier.\u0020This\u0020is\u0020required\u0020by\u0020the\u0020command\u0020\u0022run\u003Acron\u0022.",
+            "url": "classes/Aeros-Lib-Classes-Cron.html#property_id"
+        },                {
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db",
             "name": "Db",
             "summary": "Wrapper\u0020class\u0020for\u0020PDO\u0020library.",
-            "url": "classes/Classes-Db.html"
+            "url": "classes/Aeros-Lib-Classes-Db.html"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003Aconnect\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003Aconnect\u0028\u0029",
             "name": "connect",
             "summary": "Generic\u0020method\u0020to\u0020handle\u0020diffrent\u0020DB\u0020drivers.",
-            "url": "classes/Classes-Db.html#method_connect"
+            "url": "classes/Aeros-Lib-Classes-Db.html#method_connect"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003AlastInsertId\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003AlastInsertId\u0028\u0029",
             "name": "lastInsertId",
             "summary": "Returns\u0020the\u0020last\u0020inserted\u0020id",
-            "url": "classes/Classes-Db.html#method_lastInsertId"
+            "url": "classes/Aeros-Lib-Classes-Db.html#method_lastInsertId"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003A__call\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003A__call\u0028\u0029",
             "name": "__call",
             "summary": "Makes\u0020mathod\u0020calls\u0020to\u0020PDO\u0020connection.",
-            "url": "classes/Classes-Db.html#method___call"
+            "url": "classes/Aeros-Lib-Classes-Db.html#method___call"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003AgetPostgresPDO\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003AgetPostgresPDO\u0028\u0029",
             "name": "getPostgresPDO",
             "summary": "Connects\u0020to\u0020PostgreSQL\u0020database.",
-            "url": "classes/Classes-Db.html#method_getPostgresPDO"
+            "url": "classes/Aeros-Lib-Classes-Db.html#method_getPostgresPDO"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003AgetSqlitePDO\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003AgetSqlitePDO\u0028\u0029",
             "name": "getSqlitePDO",
             "summary": "Connects\u0020to\u0020SQLite\u0020database.",
-            "url": "classes/Classes-Db.html#method_getSqlitePDO"
+            "url": "classes/Aeros-Lib-Classes-Db.html#method_getSqlitePDO"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003AgetMysqlPDO\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003AgetMysqlPDO\u0028\u0029",
             "name": "getMysqlPDO",
             "summary": "Connects\u0020to\u0020MySQL\u0020database.",
-            "url": "classes/Classes-Db.html#method_getMysqlPDO"
+            "url": "classes/Aeros-Lib-Classes-Db.html#method_getMysqlPDO"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003AgetMssqlPDO\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003AgetMssqlPDO\u0028\u0029",
             "name": "getMssqlPDO",
             "summary": "Connects\u0020to\u0020MSSQL\u0020database.",
-            "url": "classes/Classes-Db.html#method_getMssqlPDO"
+            "url": "classes/Aeros-Lib-Classes-Db.html#method_getMssqlPDO"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003AprocessReflection\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003AprocessReflection\u0028\u0029",
             "name": "processReflection",
             "summary": "Processes\u0020a\u0020reflection\u0020object\u0020and\u0020executes\u0020the\u0020requested\u0020method.",
-            "url": "classes/Classes-Db.html#method_processReflection"
+            "url": "classes/Aeros-Lib-Classes-Db.html#method_processReflection"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003A\u0024activeDBConnections",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003A\u0024activeDBConnections",
             "name": "activeDBConnections",
             "summary": "",
-            "url": "classes/Classes-Db.html#property_activeDBConnections"
+            "url": "classes/Aeros-Lib-Classes-Db.html#property_activeDBConnections"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003A\u0024dbConnectionAlias",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003A\u0024dbConnectionAlias",
             "name": "dbConnectionAlias",
             "summary": "",
-            "url": "classes/Classes-Db.html#property_dbConnectionAlias"
+            "url": "classes/Aeros-Lib-Classes-Db.html#property_dbConnectionAlias"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003A\u0024driver",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003A\u0024driver",
             "name": "driver",
             "summary": "",
-            "url": "classes/Classes-Db.html#property_driver"
+            "url": "classes/Aeros-Lib-Classes-Db.html#property_driver"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003A\u0024reflectionPDO",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003A\u0024reflectionPDO",
             "name": "reflectionPDO",
             "summary": "",
-            "url": "classes/Classes-Db.html#property_reflectionPDO"
+            "url": "classes/Aeros-Lib-Classes-Db.html#property_reflectionPDO"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003A\u0024reflectionPDOStatement",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003A\u0024reflectionPDOStatement",
             "name": "reflectionPDOStatement",
             "summary": "",
-            "url": "classes/Classes-Db.html#property_reflectionPDOStatement"
+            "url": "classes/Aeros-Lib-Classes-Db.html#property_reflectionPDOStatement"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003A\u0024stm",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003A\u0024stm",
             "name": "stm",
             "summary": "",
-            "url": "classes/Classes-Db.html#property_stm"
+            "url": "classes/Aeros-Lib-Classes-Db.html#property_stm"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003A\u0024connFlags",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003A\u0024connFlags",
             "name": "connFlags",
             "summary": "",
-            "url": "classes/Classes-Db.html#property_connFlags"
+            "url": "classes/Aeros-Lib-Classes-Db.html#property_connFlags"
         },                {
-            "fqsen": "\\Classes\\Db\u003A\u003A\u0024finalMethods",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Db\u003A\u003A\u0024finalMethods",
             "name": "finalMethods",
             "summary": "",
-            "url": "classes/Classes-Db.html#property_finalMethods"
+            "url": "classes/Aeros-Lib-Classes-Db.html#property_finalMethods"
         },                {
-            "fqsen": "\\Classes\\Email",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Email",
             "name": "Email",
             "summary": "",
-            "url": "classes/Classes-Email.html"
+            "url": "classes/Aeros-Lib-Classes-Email.html"
         },                {
-            "fqsen": "\\Classes\\Email\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Email\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
-            "url": "classes/Classes-Email.html#method___construct"
+            "url": "classes/Aeros-Lib-Classes-Email.html#method___construct"
         },                {
-            "fqsen": "\\Classes\\Email\u003A\u003Acompose\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Email\u003A\u003Acompose\u0028\u0029",
             "name": "compose",
             "summary": "Configures\u0020the\u0020email\u0020body.",
-            "url": "classes/Classes-Email.html#method_compose"
+            "url": "classes/Aeros-Lib-Classes-Email.html#method_compose"
         },                {
-            "fqsen": "\\Classes\\Email\u003A\u003Asend\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Email\u003A\u003Asend\u0028\u0029",
             "name": "send",
             "summary": "Sends\u0020the\u0020Sendgrid\u0020email.",
-            "url": "classes/Classes-Email.html#method_send"
+            "url": "classes/Aeros-Lib-Classes-Email.html#method_send"
         },                {
-            "fqsen": "\\Classes\\Email\u003A\u003A\u0024email",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Email\u003A\u003A\u0024email",
             "name": "email",
             "summary": "",
-            "url": "classes/Classes-Email.html#property_email"
+            "url": "classes/Aeros-Lib-Classes-Email.html#property_email"
         },                {
-            "fqsen": "\\Classes\\Email\u003A\u003A\u0024sendgrid",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Email\u003A\u003A\u0024sendgrid",
             "name": "sendgrid",
             "summary": "",
-            "url": "classes/Classes-Email.html#property_sendgrid"
+            "url": "classes/Aeros-Lib-Classes-Email.html#property_sendgrid"
         },                {
-            "fqsen": "\\Classes\\Encryptor",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Encryptor",
             "name": "Encryptor",
             "summary": "",
-            "url": "classes/Classes-Encryptor.html"
+            "url": "classes/Aeros-Lib-Classes-Encryptor.html"
         },                {
-            "fqsen": "\\Classes\\Encryptor\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Encryptor\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
-            "url": "classes/Classes-Encryptor.html#method___construct"
+            "url": "classes/Aeros-Lib-Classes-Encryptor.html#method___construct"
         },                {
-            "fqsen": "\\Classes\\Encryptor\u003A\u003Abase64_encode_url\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Encryptor\u003A\u003Abase64_encode_url\u0028\u0029",
             "name": "base64_encode_url",
             "summary": "Formats\u0020a\u0020URL\u0020with\u0020base64_encode.",
-            "url": "classes/Classes-Encryptor.html#method_base64_encode_url"
+            "url": "classes/Aeros-Lib-Classes-Encryptor.html#method_base64_encode_url"
         },                {
-            "fqsen": "\\Classes\\Encryptor\u003A\u003Abase64_decode_url\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Encryptor\u003A\u003Abase64_decode_url\u0028\u0029",
             "name": "base64_decode_url",
             "summary": "Formats\u0020a\u0020URL\u0020with\u0020base64_decode.",
-            "url": "classes/Classes-Encryptor.html#method_base64_decode_url"
+            "url": "classes/Aeros-Lib-Classes-Encryptor.html#method_base64_decode_url"
         },                {
-            "fqsen": "\\Classes\\Encryptor\u003A\u003Aencrypt\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Encryptor\u003A\u003Aencrypt\u0028\u0029",
             "name": "encrypt",
             "summary": "OpenSSL\u0020Encrypts\u0020a\u0020value.",
-            "url": "classes/Classes-Encryptor.html#method_encrypt"
+            "url": "classes/Aeros-Lib-Classes-Encryptor.html#method_encrypt"
         },                {
-            "fqsen": "\\Classes\\Encryptor\u003A\u003Adecrypt\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Encryptor\u003A\u003Adecrypt\u0028\u0029",
             "name": "decrypt",
             "summary": "OpenSSL\u0020Decrypts\u0020a\u0020value.",
-            "url": "classes/Classes-Encryptor.html#method_decrypt"
+            "url": "classes/Aeros-Lib-Classes-Encryptor.html#method_decrypt"
         },                {
-            "fqsen": "\\Classes\\Encryptor\u003A\u003A\u0024key",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Encryptor\u003A\u003A\u0024key",
             "name": "key",
             "summary": "",
-            "url": "classes/Classes-Encryptor.html#property_key"
+            "url": "classes/Aeros-Lib-Classes-Encryptor.html#property_key"
         },                {
-            "fqsen": "\\Classes\\Encryptor\u003A\u003A\u0024ciphering",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Encryptor\u003A\u003A\u0024ciphering",
             "name": "ciphering",
             "summary": "",
-            "url": "classes/Classes-Encryptor.html#property_ciphering"
+            "url": "classes/Aeros-Lib-Classes-Encryptor.html#property_ciphering"
         },                {
-            "fqsen": "\\Classes\\Encryptor\u003A\u003A\u0024iv_length",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Encryptor\u003A\u003A\u0024iv_length",
             "name": "iv_length",
             "summary": "",
-            "url": "classes/Classes-Encryptor.html#property_iv_length"
+            "url": "classes/Aeros-Lib-Classes-Encryptor.html#property_iv_length"
         },                {
-            "fqsen": "\\Classes\\Event",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Event",
             "name": "Event",
             "summary": "",
-            "url": "classes/Classes-Event.html"
+            "url": "classes/Aeros-Lib-Classes-Event.html"
         },                {
-            "fqsen": "\\Classes\\Event\u003A\u003AaddEventListener\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Event\u003A\u003AaddEventListener\u0028\u0029",
             "name": "addEventListener",
             "summary": "Adds\u0020an\u0020event\u0020listener\u0020to\u0020a\u0020given\u0020name\u0020event.",
-            "url": "classes/Classes-Event.html#method_addEventListener"
+            "url": "classes/Aeros-Lib-Classes-Event.html#method_addEventListener"
         },                {
-            "fqsen": "\\Classes\\Event\u003A\u003Aemit\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Event\u003A\u003Aemit\u0028\u0029",
             "name": "emit",
             "summary": "Triggers\u0020a\u0020collection\u0020of\u0020events\u0020based\u0020on\u0020the\u0020given\u0020name.",
-            "url": "classes/Classes-Event.html#method_emit"
+            "url": "classes/Aeros-Lib-Classes-Event.html#method_emit"
         },                {
-            "fqsen": "\\Classes\\Event\u003A\u003AisEvent\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Event\u003A\u003AisEvent\u0028\u0029",
             "name": "isEvent",
             "summary": "Checks\u0020if\u0020the\u0020given\u0020event\u0020is\u0020valid\u0020and\u0020extends\u0020from\u0020Classes\\Observable.",
-            "url": "classes/Classes-Event.html#method_isEvent"
+            "url": "classes/Aeros-Lib-Classes-Event.html#method_isEvent"
         },                {
-            "fqsen": "\\Classes\\Event\u003A\u003A\u0024events",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Event\u003A\u003A\u0024events",
             "name": "events",
             "summary": "",
-            "url": "classes/Classes-Event.html#property_events"
+            "url": "classes/Aeros-Lib-Classes-Event.html#property_events"
         },                {
-            "fqsen": "\\Classes\\File",
+            "fqsen": "\\Aeros\\Lib\\Classes\\File",
             "name": "File",
             "summary": "",
-            "url": "classes/Classes-File.html"
+            "url": "classes/Aeros-Lib-Classes-File.html"
         },                {
-            "fqsen": "\\Classes\\File\u003A\u003Acreate\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\File\u003A\u003Acreate\u0028\u0029",
             "name": "create",
             "summary": "Creates\u0020a\u0020file\u0020with\u0020the\u0020given\u0020content.\u0020This\u0020method\u0020validates\u0020if\u0020the\u0020file\u0020exists,\u0020otherwise\nit\u0027s\u0020created.\u0020When\u0020it\u0020exists,\u0020the\u0020content\u0020is\u0020appended.",
-            "url": "classes/Classes-File.html#method_create"
+            "url": "classes/Aeros-Lib-Classes-File.html#method_create"
         },                {
-            "fqsen": "\\Classes\\File\u003A\u003AgetContent\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\File\u003A\u003AgetContent\u0028\u0029",
             "name": "getContent",
             "summary": "Gets\u0020the\u0020content\u0020of\u0020the\u0020file\u0020or\u0020a\u0020URL.",
-            "url": "classes/Classes-File.html#method_getContent"
+            "url": "classes/Aeros-Lib-Classes-File.html#method_getContent"
         },                {
-            "fqsen": "\\Classes\\File\u003A\u003AcreateFromTemplate\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\File\u003A\u003AcreateFromTemplate\u0028\u0029",
             "name": "createFromTemplate",
             "summary": "Creates\u0020a\u0020new\u0020file\u0020from\u0020a\u0020template\u0020with\u0020the\u0020given\u0020tokens.",
-            "url": "classes/Classes-File.html#method_createFromTemplate"
+            "url": "classes/Aeros-Lib-Classes-File.html#method_createFromTemplate"
         },                {
-            "fqsen": "\\Classes\\Job",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Job",
             "name": "Job",
             "summary": "",
-            "url": "classes/Classes-Job.html"
+            "url": "classes/Aeros-Lib-Classes-Job.html"
         },                {
-            "fqsen": "\\Classes\\Job\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Job\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "Constructor\u0020that\u0020adds\u0020a\u0020UUID\u0020to\u0020each\u0020job.",
-            "url": "classes/Classes-Job.html#method___construct"
+            "url": "classes/Aeros-Lib-Classes-Job.html#method___construct"
         },                {
-            "fqsen": "\\Classes\\Job\u003A\u003AdoWork\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Job\u003A\u003AdoWork\u0028\u0029",
             "name": "doWork",
             "summary": "Abstract\u0020method\u0020that\u0020runs\u0020the\u0020job\u0020work.",
-            "url": "classes/Classes-Job.html#method_doWork"
+            "url": "classes/Aeros-Lib-Classes-Job.html#method_doWork"
         },                {
-            "fqsen": "\\Classes\\Job\u003A\u003A\u0024uuid",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Job\u003A\u003A\u0024uuid",
             "name": "uuid",
             "summary": "",
-            "url": "classes/Classes-Job.html#property_uuid"
+            "url": "classes/Aeros-Lib-Classes-Job.html#property_uuid"
         },                {
-            "fqsen": "\\Classes\\Kernel",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Kernel",
             "name": "Kernel",
             "summary": "",
-            "url": "classes/Classes-Kernel.html"
+            "url": "classes/Aeros-Lib-Classes-Kernel.html"
         },                {
-            "fqsen": "\\Classes\\Kernel\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Kernel\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "Constructor\u0020has\u0020to\u0020be\u0020protected\u0020to\u0020avoid\u0020instantiation\u0020from\u0020outside.",
-            "url": "classes/Classes-Kernel.html#method___construct"
+            "url": "classes/Aeros-Lib-Classes-Kernel.html#method___construct"
         },                {
-            "fqsen": "\\Classes\\Kernel\u003A\u003A__clone\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Kernel\u003A\u003A__clone\u0028\u0029",
             "name": "__clone",
             "summary": "Singletons\u0020should\u0020not\u0020be\u0020cloneable.",
-            "url": "classes/Classes-Kernel.html#method___clone"
+            "url": "classes/Aeros-Lib-Classes-Kernel.html#method___clone"
         },                {
-            "fqsen": "\\Classes\\Kernel\u003A\u003A__wakeup\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Kernel\u003A\u003A__wakeup\u0028\u0029",
             "name": "__wakeup",
             "summary": "Singletons\u0020should\u0020not\u0020be\u0020restorable\u0020from\u0020strings.",
-            "url": "classes/Classes-Kernel.html#method___wakeup"
+            "url": "classes/Aeros-Lib-Classes-Kernel.html#method___wakeup"
         },                {
-            "fqsen": "\\Classes\\Kernel\u003A\u003AgetInstance\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Kernel\u003A\u003AgetInstance\u0028\u0029",
             "name": "getInstance",
             "summary": "Returns\u0020the\u0020singleton\u0020instance.",
-            "url": "classes/Classes-Kernel.html#method_getInstance"
+            "url": "classes/Aeros-Lib-Classes-Kernel.html#method_getInstance"
         },                {
-            "fqsen": "\\Classes\\Kernel\u003A\u003A\u0024counter",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Kernel\u003A\u003A\u0024counter",
             "name": "counter",
             "summary": "",
-            "url": "classes/Classes-Kernel.html#property_counter"
+            "url": "classes/Aeros-Lib-Classes-Kernel.html#property_counter"
         },                {
-            "fqsen": "\\Classes\\Kernel\u003A\u003A\u0024instances",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Kernel\u003A\u003A\u0024instances",
             "name": "instances",
             "summary": "",
-            "url": "classes/Classes-Kernel.html#property_instances"
+            "url": "classes/Aeros-Lib-Classes-Kernel.html#property_instances"
         },                {
-            "fqsen": "\\Classes\\Logger",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Logger",
             "name": "Logger",
             "summary": "",
-            "url": "classes/Classes-Logger.html"
+            "url": "classes/Aeros-Lib-Classes-Logger.html"
         },                {
-            "fqsen": "\\Classes\\Logger\u003A\u003Alog\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Logger\u003A\u003Alog\u0028\u0029",
             "name": "log",
             "summary": "Logs\u0020a\u0020message\u0020into\u0020\u0024logFile.\u0020If\u0020file\u0020does\u0020not\u0020exist,\u0020it\u0020will\u0020be\u0020created.",
-            "url": "classes/Classes-Logger.html#method_log"
+            "url": "classes/Aeros-Lib-Classes-Logger.html#method_log"
         },                {
-            "fqsen": "\\Classes\\Model",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model",
             "name": "Model",
             "summary": "Base\u0020class\u0020for\u0020models.",
-            "url": "classes/Classes-Model.html"
+            "url": "classes/Aeros-Lib-Classes-Model.html"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003Acreate\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003Acreate\u0028\u0029",
             "name": "create",
             "summary": "Sets\u0020new\u0020values\u0020as\u0020pending\u0020on\u0020commit\u0020event\u0020for\u0020INSERT\u0020action.",
-            "url": "classes/Classes-Model.html#method_create"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_create"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003AcreateMany\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003AcreateMany\u0028\u0029",
             "name": "createMany",
             "summary": "Inserts\u0020multiple\u0020records\u0020at\u0020once.",
-            "url": "classes/Classes-Model.html#method_createMany"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_createMany"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003Aupdate\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003Aupdate\u0028\u0029",
             "name": "update",
             "summary": "Sets\u0020new\u0020values\u0020as\u0020pending\u0020on\u0020commit\u0020event\u0020for\u0020UPDATE\u0020action.",
-            "url": "classes/Classes-Model.html#method_update"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_update"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003Adelete\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003Adelete\u0028\u0029",
             "name": "delete",
             "summary": "Deletes\u0020current\u0020model\u0020from\u0020table.",
-            "url": "classes/Classes-Model.html#method_delete"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_delete"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003Asave\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003Asave\u0028\u0029",
             "name": "save",
             "summary": "Updates\u0020the\u0020current\u0020model.",
-            "url": "classes/Classes-Model.html#method_save"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_save"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003Afind\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003Afind\u0028\u0029",
             "name": "find",
             "summary": "Finds\u0020only\u0020one\u0020record\u0020from\u0020current\u0020model.",
-            "url": "classes/Classes-Model.html#method_find"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_find"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003Acommit\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003Acommit\u0028\u0029",
             "name": "commit",
             "summary": "Commits\u0020pending\u0020Insert\u002DUpdate\u002DDelete\u0020transactions.",
-            "url": "classes/Classes-Model.html#method_commit"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_commit"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003AsetIntantiation\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003AsetIntantiation\u0028\u0029",
             "name": "setIntantiation",
             "summary": "Sets\u0020the\u0020value\u0020of\u0020the\u0020property\u0020instantiated\u0020to\u0020\u0024state.",
-            "url": "classes/Classes-Model.html#method_setIntantiation"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_setIntantiation"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003AsetPendingValuesForCommit\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003AsetPendingValuesForCommit\u0028\u0029",
             "name": "setPendingValuesForCommit",
             "summary": "Stores\u0020pending\u0020values\u0020for\u0020further\u0020commit\u0020on\u0020CRUD\u0020actions.",
-            "url": "classes/Classes-Model.html#method_setPendingValuesForCommit"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_setPendingValuesForCommit"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003AsetPropertiesFromModel\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003AsetPropertiesFromModel\u0028\u0029",
             "name": "setPropertiesFromModel",
             "summary": "Brings\u0020all\u0020columns\u0020from\u0020current\u0020model\/table\u0020and\u0020set\u0020them\u0020as\u0020properties.",
-            "url": "classes/Classes-Model.html#method_setPropertiesFromModel"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_setPropertiesFromModel"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003AparseWhere\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003AparseWhere\u0028\u0029",
             "name": "parseWhere",
             "summary": "Parses\u0020the\u0020\u0024where\u0020clause\u0020and\u0020sets\u0020new\u0020values\u0020for\u0020the\u0020placeholders\u0020and\u0020bound\u0020values.",
-            "url": "classes/Classes-Model.html#method_parseWhere"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_parseWhere"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003AtransformRecordToModel\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003AtransformRecordToModel\u0028\u0029",
             "name": "transformRecordToModel",
             "summary": "Transforms\u0020a\u0020record\u0020into\u0020a\u0020new\u0020model.",
-            "url": "classes/Classes-Model.html#method_transformRecordToModel"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_transformRecordToModel"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003AgetTableNameFromModel\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003AgetTableNameFromModel\u0028\u0029",
             "name": "getTableNameFromModel",
             "summary": "Returns\u0020the\u0020DB\u0020table\u0020linked\u0020to\u0020current\u0020model.",
-            "url": "classes/Classes-Model.html#method_getTableNameFromModel"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_getTableNameFromModel"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003AprepareQueryFromKeys\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003AprepareQueryFromKeys\u0028\u0029",
             "name": "prepareQueryFromKeys",
             "summary": "Prepares\u0020a\u0020query\u0020string\u0020from\u0020an\u0020array\u0020of\u0020keys.",
-            "url": "classes/Classes-Model.html#method_prepareQueryFromKeys"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_prepareQueryFromKeys"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003AgetFillableColumns\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003AgetFillableColumns\u0028\u0029",
             "name": "getFillableColumns",
             "summary": "Get\u0020the\u0020final\u0020columns\u0020to\u0020fill\u0020up.",
-            "url": "classes/Classes-Model.html#method_getFillableColumns"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_getFillableColumns"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003AjsonSerialize\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003AjsonSerialize\u0028\u0029",
             "name": "jsonSerialize",
             "summary": "Customizes\u0020the\u0020output\u0020when\u0020this\u0020object\u0020is\u0020printed\u0020with\u0020json_encode\u0020function.",
-            "url": "classes/Classes-Model.html#method_jsonSerialize"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method_jsonSerialize"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003A__set\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003A__set\u0028\u0029",
             "name": "__set",
             "summary": "Sets\u0020properties\u0020dynamically.",
-            "url": "classes/Classes-Model.html#method___set"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method___set"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003A__get\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003A__get\u0028\u0029",
             "name": "__get",
             "summary": "Returns\u0020the\u0020value\u0020of\u0020the\u0020property.",
-            "url": "classes/Classes-Model.html#method___get"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method___get"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003A__callStatic\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003A__callStatic\u0028\u0029",
             "name": "__callStatic",
             "summary": "Makes\u0020the\u0020calls\u0020to\u0020a\u0020private\u007Cprotected\u0020methods\u0020with\u0020arguments.",
-            "url": "classes/Classes-Model.html#method___callStatic"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method___callStatic"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003A__call\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003A__call\u0028\u0029",
             "name": "__call",
             "summary": "Calls\u0020unreachable\u0020methods.",
-            "url": "classes/Classes-Model.html#method___call"
+            "url": "classes/Aeros-Lib-Classes-Model.html#method___call"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003ASELECT",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003ASELECT",
             "name": "SELECT",
             "summary": "",
-            "url": "classes/Classes-Model.html#constant_SELECT"
+            "url": "classes/Aeros-Lib-Classes-Model.html#constant_SELECT"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003AINSERT",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003AINSERT",
             "name": "INSERT",
             "summary": "",
-            "url": "classes/Classes-Model.html#constant_INSERT"
+            "url": "classes/Aeros-Lib-Classes-Model.html#constant_INSERT"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003AUPDATE",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003AUPDATE",
             "name": "UPDATE",
             "summary": "",
-            "url": "classes/Classes-Model.html#constant_UPDATE"
+            "url": "classes/Aeros-Lib-Classes-Model.html#constant_UPDATE"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003ADELETE",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003ADELETE",
             "name": "DELETE",
             "summary": "",
-            "url": "classes/Classes-Model.html#constant_DELETE"
+            "url": "classes/Aeros-Lib-Classes-Model.html#constant_DELETE"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003A\u0024crudAction",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003A\u0024crudAction",
             "name": "crudAction",
             "summary": "",
-            "url": "classes/Classes-Model.html#property_crudAction"
+            "url": "classes/Aeros-Lib-Classes-Model.html#property_crudAction"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003A\u0024table",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003A\u0024table",
             "name": "table",
             "summary": "",
-            "url": "classes/Classes-Model.html#property_table"
+            "url": "classes/Aeros-Lib-Classes-Model.html#property_table"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003A\u0024primary",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003A\u0024primary",
             "name": "primary",
             "summary": "",
-            "url": "classes/Classes-Model.html#property_primary"
+            "url": "classes/Aeros-Lib-Classes-Model.html#property_primary"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003A\u0024fillable",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003A\u0024fillable",
             "name": "fillable",
             "summary": "",
-            "url": "classes/Classes-Model.html#property_fillable"
+            "url": "classes/Aeros-Lib-Classes-Model.html#property_fillable"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003A\u0024guarded",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003A\u0024guarded",
             "name": "guarded",
             "summary": "",
-            "url": "classes/Classes-Model.html#property_guarded"
+            "url": "classes/Aeros-Lib-Classes-Model.html#property_guarded"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003A\u0024properties",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003A\u0024properties",
             "name": "properties",
             "summary": "",
-            "url": "classes/Classes-Model.html#property_properties"
+            "url": "classes/Aeros-Lib-Classes-Model.html#property_properties"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003A\u0024onCommit",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003A\u0024onCommit",
             "name": "onCommit",
             "summary": "",
-            "url": "classes/Classes-Model.html#property_onCommit"
+            "url": "classes/Aeros-Lib-Classes-Model.html#property_onCommit"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003A\u0024where",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003A\u0024where",
             "name": "where",
             "summary": "",
-            "url": "classes/Classes-Model.html#property_where"
+            "url": "classes/Aeros-Lib-Classes-Model.html#property_where"
         },                {
-            "fqsen": "\\Classes\\Model\u003A\u003A\u0024instantiated",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Model\u003A\u003A\u0024instantiated",
             "name": "instantiated",
             "summary": "",
-            "url": "classes/Classes-Model.html#property_instantiated"
+            "url": "classes/Aeros-Lib-Classes-Model.html#property_instantiated"
         },                {
-            "fqsen": "\\Classes\\Network",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Network",
             "name": "Network",
             "summary": "",
-            "url": "classes/Classes-Network.html"
+            "url": "classes/Aeros-Lib-Classes-Network.html"
         },                {
-            "fqsen": "\\Classes\\Network\u003A\u003Assh\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Network\u003A\u003Assh\u0028\u0029",
             "name": "ssh",
             "summary": "",
-            "url": "classes/Classes-Network.html#method_ssh"
+            "url": "classes/Aeros-Lib-Classes-Network.html#method_ssh"
         },                {
-            "fqsen": "\\Classes\\Network\u003A\u003AgetClientIp\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Network\u003A\u003AgetClientIp\u0028\u0029",
             "name": "getClientIp",
             "summary": "Returns\u0020the\u0020client\u0020IP\u0020address.",
-            "url": "classes/Classes-Network.html#method_getClientIp"
+            "url": "classes/Aeros-Lib-Classes-Network.html#method_getClientIp"
         },                {
-            "fqsen": "\\Classes\\Observable",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Observable",
             "name": "Observable",
             "summary": "",
-            "url": "classes/Classes-Observable.html"
+            "url": "classes/Aeros-Lib-Classes-Observable.html"
         },                {
-            "fqsen": "\\Classes\\Observable\u003A\u003Aupdate\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Observable\u003A\u003Aupdate\u0028\u0029",
             "name": "update",
             "summary": "This\u0020method\u0020will\u0020be\u0020called\u0020when\u0020the\u0020event\u0020is\u0020triggered.",
-            "url": "classes/Classes-Observable.html#method_update"
+            "url": "classes/Aeros-Lib-Classes-Observable.html#method_update"
         },                {
-            "fqsen": "\\Classes\\Observable\u003A\u003A\u0024data",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Observable\u003A\u003A\u0024data",
             "name": "data",
             "summary": "",
-            "url": "classes/Classes-Observable.html#property_data"
+            "url": "classes/Aeros-Lib-Classes-Observable.html#property_data"
         },                {
-            "fqsen": "\\Classes\\Pipeline",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Pipeline",
             "name": "Pipeline",
             "summary": "",
-            "url": "classes/Classes-Pipeline.html"
+            "url": "classes/Aeros-Lib-Classes-Pipeline.html"
         },                {
-            "fqsen": "\\Classes\\Queue",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Queue",
             "name": "Queue",
             "summary": "",
-            "url": "classes/Classes-Queue.html"
+            "url": "classes/Aeros-Lib-Classes-Queue.html"
         },                {
-            "fqsen": "\\Classes\\Queue\u003A\u003Apush\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Queue\u003A\u003Apush\u0028\u0029",
             "name": "push",
             "summary": "Adds\u0020a\u0020Job\u0020or\u0020an\u0020array\u0020of\u0020jobs\u0020to\u0020a\u0020pipeline\u0020tail\u0020in\u0020the\u0020queue\u0020system.",
-            "url": "classes/Classes-Queue.html#method_push"
+            "url": "classes/Aeros-Lib-Classes-Queue.html#method_push"
         },                {
-            "fqsen": "\\Classes\\Queue\u003A\u003Apop\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Queue\u003A\u003Apop\u0028\u0029",
             "name": "pop",
             "summary": "Executes\u0020and\u0020removes\u0020a\u0020Job\u0020from\u0020the\u0020pipeline\u0027s\u0020head.",
-            "url": "classes/Classes-Queue.html#method_pop"
+            "url": "classes/Aeros-Lib-Classes-Queue.html#method_pop"
         },                {
-            "fqsen": "\\Classes\\Queue\u003A\u003AprocessPipeline\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Queue\u003A\u003AprocessPipeline\u0028\u0029",
             "name": "processPipeline",
             "summary": "Processes\u0020and\u0020execute\u0020all\u0020jobs\u0020from\u0020a\u0020pipeline.",
-            "url": "classes/Classes-Queue.html#method_processPipeline"
+            "url": "classes/Aeros-Lib-Classes-Queue.html#method_processPipeline"
         },                {
-            "fqsen": "\\Classes\\Queue\u003A\u003AgetJobStatus\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Queue\u003A\u003AgetJobStatus\u0028\u0029",
             "name": "getJobStatus",
             "summary": "Gets\u0020a\u0020list\u0020of\u0020job\u0020UUIDs\u0020and\u0020their\u0020timestamps.",
-            "url": "classes/Classes-Queue.html#method_getJobStatus"
+            "url": "classes/Aeros-Lib-Classes-Queue.html#method_getJobStatus"
         },                {
-            "fqsen": "\\Classes\\Queue\u003A\u003AclearJobStatus\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Queue\u003A\u003AclearJobStatus\u0028\u0029",
             "name": "clearJobStatus",
             "summary": "Deletes\u0020all\u0020job\u0020statuses\u0020from\u0020the\u0020cache\u0020based\u0020on\u0020a\u0020pipeline\u0020name\u0020and\u0020state.",
-            "url": "classes/Classes-Queue.html#method_clearJobStatus"
+            "url": "classes/Aeros-Lib-Classes-Queue.html#method_clearJobStatus"
         },                {
-            "fqsen": "\\Classes\\Queue\u003A\u003AparsePipelineName\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Queue\u003A\u003AparsePipelineName\u0028\u0029",
             "name": "parsePipelineName",
             "summary": "Parses\u0020pipeline\u0020name.",
-            "url": "classes/Classes-Queue.html#method_parsePipelineName"
+            "url": "classes/Aeros-Lib-Classes-Queue.html#method_parsePipelineName"
         },                {
-            "fqsen": "\\Classes\\Queue\u003A\u003AsetState\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Queue\u003A\u003AsetState\u0028\u0029",
             "name": "setState",
             "summary": "Sets\u0020the\u0020job\u0020state,\u0020this\u0020could\u0020be\u0020\u0022Lock\u0022\u0020a\u0020pipeline\u0020to\u0020prevent\u0020other\u0020workers\nto\u0020process\u0020it,\u0020\u0022completed\u0022\u0020or\u0020\u0022failed\u0022.",
-            "url": "classes/Classes-Queue.html#method_setState"
+            "url": "classes/Aeros-Lib-Classes-Queue.html#method_setState"
         },                {
-            "fqsen": "\\Classes\\Queue\u003A\u003AdelState\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Queue\u003A\u003AdelState\u0028\u0029",
             "name": "delState",
             "summary": "Removes\u0020states\u0020from\u0020the\u0020pipeline\u007Cjob.",
-            "url": "classes/Classes-Queue.html#method_delState"
+            "url": "classes/Aeros-Lib-Classes-Queue.html#method_delState"
         },                {
-            "fqsen": "\\Classes\\Queue\u003A\u003ADEFAULT_PIPELINE",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Queue\u003A\u003ADEFAULT_PIPELINE",
             "name": "DEFAULT_PIPELINE",
             "summary": "",
-            "url": "classes/Classes-Queue.html#constant_DEFAULT_PIPELINE"
+            "url": "classes/Aeros-Lib-Classes-Queue.html#constant_DEFAULT_PIPELINE"
         },                {
-            "fqsen": "\\Classes\\Queue\u003A\u003ALOCKED_STATE",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Queue\u003A\u003ALOCKED_STATE",
             "name": "LOCKED_STATE",
             "summary": "",
-            "url": "classes/Classes-Queue.html#constant_LOCKED_STATE"
+            "url": "classes/Aeros-Lib-Classes-Queue.html#constant_LOCKED_STATE"
         },                {
-            "fqsen": "\\Classes\\Queue\u003A\u003ACOMPLETED_STATE",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Queue\u003A\u003ACOMPLETED_STATE",
             "name": "COMPLETED_STATE",
             "summary": "",
-            "url": "classes/Classes-Queue.html#constant_COMPLETED_STATE"
+            "url": "classes/Aeros-Lib-Classes-Queue.html#constant_COMPLETED_STATE"
         },                {
-            "fqsen": "\\Classes\\Queue\u003A\u003AFAILED_STATE",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Queue\u003A\u003AFAILED_STATE",
             "name": "FAILED_STATE",
             "summary": "",
-            "url": "classes/Classes-Queue.html#constant_FAILED_STATE"
+            "url": "classes/Aeros-Lib-Classes-Queue.html#constant_FAILED_STATE"
         },                {
-            "fqsen": "\\Classes\\Redirect",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Redirect",
             "name": "Redirect",
             "summary": "",
-            "url": "classes/Classes-Redirect.html"
+            "url": "classes/Aeros-Lib-Classes-Redirect.html"
         },                {
-            "fqsen": "\\Classes\\Redirect\u003A\u003Agoto\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Redirect\u003A\u003Agoto\u0028\u0029",
             "name": "goto",
             "summary": "Redirects\u0020a\u0020request\u0020to\u0020anothe\u0020URL.",
-            "url": "classes/Classes-Redirect.html#method_goto"
+            "url": "classes/Aeros-Lib-Classes-Redirect.html#method_goto"
         },                {
-            "fqsen": "\\Classes\\Request",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request",
             "name": "Request",
             "summary": "Request\u0020class\u0020handles\u0020incoming\u0020requests\u0020and\u0020makes\u0020outgoing\u0020requests.",
-            "url": "classes/Classes-Request.html"
+            "url": "classes/Aeros-Lib-Classes-Request.html"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "Initializes\u0020request\u0020params",
-            "url": "classes/Classes-Request.html#method___construct"
+            "url": "classes/Aeros-Lib-Classes-Request.html#method___construct"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A\u0024url",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A\u0024url",
             "name": "url",
             "summary": "",
-            "url": "classes/Classes-Request.html#property_url"
+            "url": "classes/Aeros-Lib-Classes-Request.html#property_url"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A\u0024method",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A\u0024method",
             "name": "method",
             "summary": "",
-            "url": "classes/Classes-Request.html#property_method"
+            "url": "classes/Aeros-Lib-Classes-Request.html#property_method"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A\u0024headers",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A\u0024headers",
             "name": "headers",
             "summary": "",
-            "url": "classes/Classes-Request.html#property_headers"
+            "url": "classes/Aeros-Lib-Classes-Request.html#property_headers"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A\u0024payload",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A\u0024payload",
             "name": "payload",
             "summary": "",
-            "url": "classes/Classes-Request.html#property_payload"
+            "url": "classes/Aeros-Lib-Classes-Request.html#property_payload"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A\u0024only",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A\u0024only",
             "name": "only",
             "summary": "",
-            "url": "classes/Classes-Request.html#property_only"
+            "url": "classes/Aeros-Lib-Classes-Request.html#property_only"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A\u0024except",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A\u0024except",
             "name": "except",
             "summary": "",
-            "url": "classes/Classes-Request.html#property_except"
+            "url": "classes/Aeros-Lib-Classes-Request.html#property_except"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003AfilterKeys\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003AfilterKeys\u0028\u0029",
             "name": "filterKeys",
             "summary": "Filters\u0020the\u0020ONLY\u0020and\u0020EXCEPT\u0020keys\u0020from\u0020request\u0020array,\u0020if\u0020there\u0020is\u0020no\u0020filter,\nit\u0020returns\u0020the\u0020original\u0020content\u0020from\u0020the\u0020request\u0020array.",
-            "url": "classes/Classes-Request.html#method_filterKeys"
+            "url": "classes/Aeros-Lib-Classes-Request.html#method_filterKeys"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003AsetOptions\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003AsetOptions\u0028\u0029",
             "name": "setOptions",
             "summary": "Sets\u0020all\u0020options\u0020for\u0020cURL\u0020call",
-            "url": "classes/Classes-Request.html#method_setOptions"
+            "url": "classes/Aeros-Lib-Classes-Request.html#method_setOptions"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003AvalidateOpts\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003AvalidateOpts\u0028\u0029",
             "name": "validateOpts",
             "summary": "Validate\u0020cURL\u0020options\u0020and\u0020sets\u0020basic\u0020curlOptions.",
-            "url": "classes/Classes-Request.html#method_validateOpts"
+            "url": "classes/Aeros-Lib-Classes-Request.html#method_validateOpts"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003Asend\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003Asend\u0028\u0029",
             "name": "send",
             "summary": "Sends\u0020or\u0020executes\u0020a\u0020cURL\u0020request.",
-            "url": "classes/Classes-Request.html#method_send"
+            "url": "classes/Aeros-Lib-Classes-Request.html#method_send"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A__call\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A__call\u0028\u0029",
             "name": "__call",
             "summary": "Magic\u0020method\u0020to\u0020set\u0020the\u0020request\u0020method",
-            "url": "classes/Classes-Request.html#method___call"
+            "url": "classes/Aeros-Lib-Classes-Request.html#method___call"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A\u0024cookies",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A\u0024cookies",
             "name": "cookies",
             "summary": "",
-            "url": "classes/Classes-Request.html#property_cookies"
+            "url": "classes/Aeros-Lib-Classes-Request.html#property_cookies"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A\u0024queryParams",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A\u0024queryParams",
             "name": "queryParams",
             "summary": "",
-            "url": "classes/Classes-Request.html#property_queryParams"
+            "url": "classes/Aeros-Lib-Classes-Request.html#property_queryParams"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A\u0024requestParams",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A\u0024requestParams",
             "name": "requestParams",
             "summary": "",
-            "url": "classes/Classes-Request.html#property_requestParams"
+            "url": "classes/Aeros-Lib-Classes-Request.html#property_requestParams"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A\u0024curlOptions",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A\u0024curlOptions",
             "name": "curlOptions",
             "summary": "",
-            "url": "classes/Classes-Request.html#property_curlOptions"
+            "url": "classes/Aeros-Lib-Classes-Request.html#property_curlOptions"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A\u0024verbs",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A\u0024verbs",
             "name": "verbs",
             "summary": "",
-            "url": "classes/Classes-Request.html#property_verbs"
+            "url": "classes/Aeros-Lib-Classes-Request.html#property_verbs"
         },                {
-            "fqsen": "\\Classes\\Request\u003A\u003A\u0024api",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Request\u003A\u003A\u0024api",
             "name": "api",
             "summary": "",
-            "url": "classes/Classes-Request.html#property_api"
+            "url": "classes/Aeros-Lib-Classes-Request.html#property_api"
         },                {
-            "fqsen": "\\Classes\\Response",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response",
             "name": "Response",
             "summary": "",
-            "url": "classes/Classes-Response.html"
+            "url": "classes/Aeros-Lib-Classes-Response.html"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "Initializes\u0020Response",
-            "url": "classes/Classes-Response.html#method___construct"
+            "url": "classes/Aeros-Lib-Classes-Response.html#method___construct"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003Atype\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003Atype\u0028\u0029",
             "name": "type",
             "summary": "Outputs\u0020a\u0020special\u0020data\u0020type\u0020and\u0020sets\u0020the\u0020required\u0020headers.",
-            "url": "classes/Classes-Response.html#method_type"
+            "url": "classes/Aeros-Lib-Classes-Response.html#method_type"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003ACSS",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003ACSS",
             "name": "CSS",
             "summary": "",
-            "url": "classes/Classes-Response.html#constant_CSS"
+            "url": "classes/Aeros-Lib-Classes-Response.html#constant_CSS"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003AGIF",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003AGIF",
             "name": "GIF",
             "summary": "",
-            "url": "classes/Classes-Response.html#constant_GIF"
+            "url": "classes/Aeros-Lib-Classes-Response.html#constant_GIF"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003APNG",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003APNG",
             "name": "PNG",
             "summary": "",
-            "url": "classes/Classes-Response.html#constant_PNG"
+            "url": "classes/Aeros-Lib-Classes-Response.html#constant_PNG"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003AJPG",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003AJPG",
             "name": "JPG",
             "summary": "",
-            "url": "classes/Classes-Response.html#constant_JPG"
+            "url": "classes/Aeros-Lib-Classes-Response.html#constant_JPG"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003ASVG",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003ASVG",
             "name": "SVG",
             "summary": "",
-            "url": "classes/Classes-Response.html#constant_SVG"
+            "url": "classes/Aeros-Lib-Classes-Response.html#constant_SVG"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003AICO",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003AICO",
             "name": "ICO",
             "summary": "",
-            "url": "classes/Classes-Response.html#constant_ICO"
+            "url": "classes/Aeros-Lib-Classes-Response.html#constant_ICO"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003AJS",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003AJS",
             "name": "JS",
             "summary": "",
-            "url": "classes/Classes-Response.html#constant_JS"
+            "url": "classes/Aeros-Lib-Classes-Response.html#constant_JS"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003ACSV",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003ACSV",
             "name": "CSV",
             "summary": "",
-            "url": "classes/Classes-Response.html#constant_CSV"
+            "url": "classes/Aeros-Lib-Classes-Response.html#constant_CSV"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003AXML",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003AXML",
             "name": "XML",
             "summary": "",
-            "url": "classes/Classes-Response.html#constant_XML"
+            "url": "classes/Aeros-Lib-Classes-Response.html#constant_XML"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003AJSON",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003AJSON",
             "name": "JSON",
             "summary": "",
-            "url": "classes/Classes-Response.html#constant_JSON"
+            "url": "classes/Aeros-Lib-Classes-Response.html#constant_JSON"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003ATXT",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003ATXT",
             "name": "TXT",
             "summary": "",
-            "url": "classes/Classes-Response.html#constant_TXT"
+            "url": "classes/Aeros-Lib-Classes-Response.html#constant_TXT"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003APDF",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003APDF",
             "name": "PDF",
             "summary": "",
-            "url": "classes/Classes-Response.html#constant_PDF"
+            "url": "classes/Aeros-Lib-Classes-Response.html#constant_PDF"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003A\u0024status",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003A\u0024status",
             "name": "status",
             "summary": "",
-            "url": "classes/Classes-Response.html#property_status"
+            "url": "classes/Aeros-Lib-Classes-Response.html#property_status"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003A\u0024headers",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003A\u0024headers",
             "name": "headers",
             "summary": "",
-            "url": "classes/Classes-Response.html#property_headers"
+            "url": "classes/Aeros-Lib-Classes-Response.html#property_headers"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003A\u0024cookies",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003A\u0024cookies",
             "name": "cookies",
             "summary": "",
-            "url": "classes/Classes-Response.html#property_cookies"
+            "url": "classes/Aeros-Lib-Classes-Response.html#property_cookies"
         },                {
-            "fqsen": "\\Classes\\Response\u003A\u003A\u0024data",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Response\u003A\u003A\u0024data",
             "name": "data",
             "summary": "",
-            "url": "classes/Classes-Response.html#property_data"
+            "url": "classes/Aeros-Lib-Classes-Response.html#property_data"
         },                {
-            "fqsen": "\\Classes\\Route",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route",
             "name": "Route",
             "summary": "Router\u0020class\u0020manages\u0020static\u0020calls\u0020to\u0020HTTP\u0020methods,\u0020parses\u0020the\u0020registered\u0020routes\u0020and\nparses\u0020the\u0020current\u0020requested\u0020URI.",
-            "url": "classes/Classes-Route.html"
+            "url": "classes/Aeros-Lib-Classes-Route.html"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "Constructor",
-            "url": "classes/Classes-Route.html#method___construct"
+            "url": "classes/Aeros-Lib-Classes-Route.html#method___construct"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003AwithMiddleware\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003AwithMiddleware\u0028\u0029",
             "name": "withMiddleware",
             "summary": "Registers\u0020one\u0020or\u0020multiple\u0020middlewares\u0020sequentially.",
-            "url": "classes/Classes-Route.html#method_withMiddleware"
+            "url": "classes/Aeros-Lib-Classes-Route.html#method_withMiddleware"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003AisMiddleware\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003AisMiddleware\u0028\u0029",
             "name": "isMiddleware",
             "summary": "Checks\u0020if\u0020\u0024middleware\u0020is\u0020a\u0020valid\u0020Middleware\u0020class",
-            "url": "classes/Classes-Route.html#method_isMiddleware"
+            "url": "classes/Aeros-Lib-Classes-Route.html#method_isMiddleware"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003AgetMiddlewares\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003AgetMiddlewares\u0028\u0029",
             "name": "getMiddlewares",
             "summary": "Returns\u0020registered\u0020middlewares.",
-            "url": "classes/Classes-Route.html#method_getMiddlewares"
+            "url": "classes/Aeros-Lib-Classes-Route.html#method_getMiddlewares"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003A\u0024handler",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003A\u0024handler",
             "name": "handler",
             "summary": "",
-            "url": "classes/Classes-Route.html#property_handler"
+            "url": "classes/Aeros-Lib-Classes-Route.html#property_handler"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003AgetContent\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003AgetContent\u0028\u0029",
             "name": "getContent",
             "summary": "Returns\u0020the\u0020already\u0020processed\u0020content\u0020that\u0020corresponds\u0020to\u0020the\u0020request.",
-            "url": "classes/Classes-Route.html#method_getContent"
+            "url": "classes/Aeros-Lib-Classes-Route.html#method_getContent"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003AcallController\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003AcallController\u0028\u0029",
             "name": "callController",
             "summary": "Makes\u0020the\u0020controller\u0020call\u0020and\u0020assign\u0020the\u0020controller\u0020result\u0020to\u0020the\u0020content\u0020property.",
-            "url": "classes/Classes-Route.html#method_callController"
+            "url": "classes/Aeros-Lib-Classes-Route.html#method_callController"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003AGET",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003AGET",
             "name": "GET",
             "summary": "",
-            "url": "classes/Classes-Route.html#constant_GET"
+            "url": "classes/Aeros-Lib-Classes-Route.html#constant_GET"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003APOST",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003APOST",
             "name": "POST",
             "summary": "",
-            "url": "classes/Classes-Route.html#constant_POST"
+            "url": "classes/Aeros-Lib-Classes-Route.html#constant_POST"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003ADELETE",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003ADELETE",
             "name": "DELETE",
             "summary": "",
-            "url": "classes/Classes-Route.html#constant_DELETE"
+            "url": "classes/Aeros-Lib-Classes-Route.html#constant_DELETE"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003APUT",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003APUT",
             "name": "PUT",
             "summary": "",
-            "url": "classes/Classes-Route.html#constant_PUT"
+            "url": "classes/Aeros-Lib-Classes-Route.html#constant_PUT"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003APATCH",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003APATCH",
             "name": "PATCH",
             "summary": "",
-            "url": "classes/Classes-Route.html#constant_PATCH"
+            "url": "classes/Aeros-Lib-Classes-Route.html#constant_PATCH"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003A\u0024subdomain",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003A\u0024subdomain",
             "name": "subdomain",
             "summary": "",
-            "url": "classes/Classes-Route.html#property_subdomain"
+            "url": "classes/Aeros-Lib-Classes-Route.html#property_subdomain"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003A\u0024uriParts",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003A\u0024uriParts",
             "name": "uriParts",
             "summary": "",
-            "url": "classes/Classes-Route.html#property_uriParts"
+            "url": "classes/Aeros-Lib-Classes-Route.html#property_uriParts"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003A\u0024params",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003A\u0024params",
             "name": "params",
             "summary": "",
-            "url": "classes/Classes-Route.html#property_params"
+            "url": "classes/Aeros-Lib-Classes-Route.html#property_params"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003A\u0024middlewares",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003A\u0024middlewares",
             "name": "middlewares",
             "summary": "",
-            "url": "classes/Classes-Route.html#property_middlewares"
+            "url": "classes/Aeros-Lib-Classes-Route.html#property_middlewares"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003A\u0024content",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003A\u0024content",
             "name": "content",
             "summary": "",
-            "url": "classes/Classes-Route.html#property_content"
+            "url": "classes/Aeros-Lib-Classes-Route.html#property_content"
         },                {
-            "fqsen": "\\Classes\\Route\u003A\u003A\u0024path",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Route\u003A\u003A\u0024path",
             "name": "path",
             "summary": "",
-            "url": "classes/Classes-Route.html#property_path"
+            "url": "classes/Aeros-Lib-Classes-Route.html#property_path"
         },                {
-            "fqsen": "\\Classes\\Router",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Router",
             "name": "Router",
             "summary": "Router\u0020class\u0020manages\u0020static\u0020calls\u0020to\u0020HTTP\u0020methods,\u0020parses\u0020the\u0020registered\u0020routes\u0020and\nparses\u0020the\u0020current\u0020requested\u0020URI.",
-            "url": "classes/Classes-Router.html"
+            "url": "classes/Aeros-Lib-Classes-Router.html"
         },                {
-            "fqsen": "\\Classes\\Router\u003A\u003A__callStatic\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Router\u003A\u003A__callStatic\u0028\u0029",
             "name": "__callStatic",
             "summary": "Registers\u0020a\u0020new\u0020Route\u0020based\u0020on\u0020the\u0020static\u0020call\u0020of\u0020the\u0020requested\u0020method.",
-            "url": "classes/Classes-Router.html#method___callStatic"
+            "url": "classes/Aeros-Lib-Classes-Router.html#method___callStatic"
         },                {
-            "fqsen": "\\Classes\\Router\u003A\u003AaddRoute\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Router\u003A\u003AaddRoute\u0028\u0029",
             "name": "addRoute",
             "summary": "Registers\u0020a\u0020Route\u0020object.",
-            "url": "classes/Classes-Router.html#method_addRoute"
+            "url": "classes/Aeros-Lib-Classes-Router.html#method_addRoute"
         },                {
-            "fqsen": "\\Classes\\Router\u003A\u003Adispatch\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Router\u003A\u003Adispatch\u0028\u0029",
             "name": "dispatch",
             "summary": "Dispatches\u0020the\u0020content\u0020for\u0020the\u0020route\u0020\u0028URI\u0029\u0020and\u0020method\u0020\u0028REQUEST_METHOD\u0029.",
-            "url": "classes/Classes-Router.html#method_dispatch"
+            "url": "classes/Aeros-Lib-Classes-Router.html#method_dispatch"
         },                {
-            "fqsen": "\\Classes\\Router\u003A\u003Amatch\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Router\u003A\u003Amatch\u0028\u0029",
             "name": "match",
             "summary": "Confirms\u0020if\u0020the\u0020URI\u0020and\u0020the\u0020REQUEST_METHOD\u0020matches\u0020any\u0020registred\u0020route.",
-            "url": "classes/Classes-Router.html#method_match"
+            "url": "classes/Aeros-Lib-Classes-Router.html#method_match"
         },                {
-            "fqsen": "\\Classes\\Router\u003A\u003AgetUriParts\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Router\u003A\u003AgetUriParts\u0028\u0029",
             "name": "getUriParts",
             "summary": "Parses\u0020a\u0020URI\u0020and\u0020return\u0020its\u0020parts\u0020and\u0020the\u0020subdomain\u0020if\u0020there\u0020is\u0020any.",
-            "url": "classes/Classes-Router.html#method_getUriParts"
+            "url": "classes/Aeros-Lib-Classes-Router.html#method_getUriParts"
         },                {
-            "fqsen": "\\Classes\\Router\u003A\u003AparseRoute\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Router\u003A\u003AparseRoute\u0028\u0029",
             "name": "parseRoute",
             "summary": "Destructs\u0020a\u0020route.\u0020It\u0020returns\u0020the\u0020URI\u0020parts\u0020and\u0020the\u0020subdomain\u0020if\u0020there\u0020is\u0020any.",
-            "url": "classes/Classes-Router.html#method_parseRoute"
+            "url": "classes/Aeros-Lib-Classes-Router.html#method_parseRoute"
         },                {
-            "fqsen": "\\Classes\\Router\u003A\u003AgetRoutes\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Router\u003A\u003AgetRoutes\u0028\u0029",
             "name": "getRoutes",
             "summary": "Returns\u0020current\u0020registered\u0020routes\u0020from\u0020Router.",
-            "url": "classes/Classes-Router.html#method_getRoutes"
+            "url": "classes/Aeros-Lib-Classes-Router.html#method_getRoutes"
         },                {
-            "fqsen": "\\Classes\\Router\u003A\u003ArunMiddlewares\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Router\u003A\u003ArunMiddlewares\u0028\u0029",
             "name": "runMiddlewares",
             "summary": "Runs\u0020statically\u0020middlewares",
-            "url": "classes/Classes-Router.html#method_runMiddlewares"
+            "url": "classes/Aeros-Lib-Classes-Router.html#method_runMiddlewares"
         },                {
-            "fqsen": "\\Classes\\Router\u003A\u003Agroup\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Router\u003A\u003Agroup\u0028\u0029",
             "name": "group",
             "summary": "Groups\u0020routes\u0020to\u0020run\u0020a\u0020list\u0020of\u0020middlewares\u0020on\u0020them.",
-            "url": "classes/Classes-Router.html#method_group"
+            "url": "classes/Aeros-Lib-Classes-Router.html#method_group"
         },                {
-            "fqsen": "\\Classes\\Router\u003A\u003A\u0024groupMiddlewares",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Router\u003A\u003A\u0024groupMiddlewares",
             "name": "groupMiddlewares",
             "summary": "",
-            "url": "classes/Classes-Router.html#property_groupMiddlewares"
+            "url": "classes/Aeros-Lib-Classes-Router.html#property_groupMiddlewares"
         },                {
-            "fqsen": "\\Classes\\Router\u003A\u003A\u0024routes",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Router\u003A\u003A\u0024routes",
             "name": "routes",
             "summary": "",
-            "url": "classes/Classes-Router.html#property_routes"
+            "url": "classes/Aeros-Lib-Classes-Router.html#property_routes"
         },                {
-            "fqsen": "\\Classes\\Router\u003A\u003A\u0024methods",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Router\u003A\u003A\u0024methods",
             "name": "methods",
             "summary": "",
-            "url": "classes/Classes-Router.html#property_methods"
+            "url": "classes/Aeros-Lib-Classes-Router.html#property_methods"
         },                {
-            "fqsen": "\\Classes\\Security",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Security",
             "name": "Security",
             "summary": "",
-            "url": "classes/Classes-Security.html"
+            "url": "classes/Aeros-Lib-Classes-Security.html"
         },                {
-            "fqsen": "\\Classes\\Security\u003A\u003Acsrf\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Security\u003A\u003Acsrf\u0028\u0029",
             "name": "csrf",
             "summary": "Creates\u0020a\u0020hidden\u0020input\u0020with\u0020a\u0020token.\u0020This\u0020token\u0020helps\u0020to\u0020validate\u0020if\u0020a\nrequest\u0020is\u0020authorized.",
-            "url": "classes/Classes-Security.html#method_csrf"
+            "url": "classes/Aeros-Lib-Classes-Security.html#method_csrf"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer",
             "name": "ServiceContainer",
             "summary": "",
-            "url": "classes/Classes-ServiceContainer.html"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003Arun\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003Arun\u0028\u0029",
             "name": "run",
             "summary": "Runs\u0020the\u0020application.",
-            "url": "classes/Classes-ServiceContainer.html#method_run"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#method_run"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003Abootstrap\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003Abootstrap\u0028\u0029",
             "name": "bootstrap",
             "summary": "Bootstraps\u0020application.",
-            "url": "classes/Classes-ServiceContainer.html#method_bootstrap"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#method_bootstrap"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003AsetBaseDir\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003AsetBaseDir\u0028\u0029",
             "name": "setBaseDir",
             "summary": "Sets\u0020the\u0020APP\u0020basedir",
-            "url": "classes/Classes-ServiceContainer.html#method_setBaseDir"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#method_setBaseDir"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003AbootApplication\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003AbootApplication\u0028\u0029",
             "name": "bootApplication",
             "summary": "Boots\u0020main\u0020App.",
-            "url": "classes/Classes-ServiceContainer.html#method_bootApplication"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#method_bootApplication"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003AregisterProviders\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003AregisterProviders\u0028\u0029",
             "name": "registerProviders",
             "summary": "Registers\u0020service\u0020providers.",
-            "url": "classes/Classes-ServiceContainer.html#method_registerProviders"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#method_registerProviders"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003AbootProviders\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003AbootProviders\u0028\u0029",
             "name": "bootProviders",
             "summary": "Boots\u0020all\u0020already\u0020registered\u0020service\u0020providers.",
-            "url": "classes/Classes-ServiceContainer.html#method_bootProviders"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#method_bootProviders"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003AgetProviders\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003AgetProviders\u0028\u0029",
             "name": "getProviders",
             "summary": "Gets\u0020the\u0020current\u0020registered\u0020providers\u0020from\u0020\/config\/providers.php.",
-            "url": "classes/Classes-ServiceContainer.html#method_getProviders"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#method_getProviders"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003Aregister\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003Aregister\u0028\u0029",
             "name": "register",
             "summary": "Registers\u0020a\u0020service\u0020or\u0020a\u0020definition.",
-            "url": "classes/Classes-ServiceContainer.html#method_register"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#method_register"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003Asingleton\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003Asingleton\u0028\u0029",
             "name": "singleton",
             "summary": "Bootstraps\u0020singleton\u0020services.",
-            "url": "classes/Classes-ServiceContainer.html#method_singleton"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#method_singleton"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003Aget\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003Aget\u0028\u0029",
             "name": "get",
             "summary": "Gets\u0020the\u0020service\u0020or\u0020definition\u0020if\u0020it\u0027s\u0020already\u0020registered.",
-            "url": "classes/Classes-ServiceContainer.html#method_get"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#method_get"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003A__get\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003A__get\u0028\u0029",
             "name": "__get",
             "summary": "Retrieves\u0020magically\u0020the\u0020service\u0020or\u0020callable.",
-            "url": "classes/Classes-ServiceContainer.html#method___get"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#method___get"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003AgetServices\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003AgetServices\u0028\u0029",
             "name": "getServices",
             "summary": "Returns\u0020the\u0020array\u0020of\u0020registered\u0020services.",
-            "url": "classes/Classes-ServiceContainer.html#method_getServices"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#method_getServices"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003AisProvider\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003AisProvider\u0028\u0029",
             "name": "isProvider",
             "summary": "Validates\u0020if\u0020a\u0020service\u0020provider.",
-            "url": "classes/Classes-ServiceContainer.html#method_isProvider"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#method_isProvider"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003A\u0024basedir",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003A\u0024basedir",
             "name": "basedir",
             "summary": "",
-            "url": "classes/Classes-ServiceContainer.html#property_basedir"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#property_basedir"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003A\u0024services",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003A\u0024services",
             "name": "services",
             "summary": "",
-            "url": "classes/Classes-ServiceContainer.html#property_services"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#property_services"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003A\u0024providers",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003A\u0024providers",
             "name": "providers",
             "summary": "",
-            "url": "classes/Classes-ServiceContainer.html#property_providers"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#property_providers"
         },                {
-            "fqsen": "\\Classes\\ServiceContainer\u003A\u003A\u0024isAppBooted",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceContainer\u003A\u003A\u0024isAppBooted",
             "name": "isAppBooted",
             "summary": "",
-            "url": "classes/Classes-ServiceContainer.html#property_isAppBooted"
+            "url": "classes/Aeros-Lib-Classes-ServiceContainer.html#property_isAppBooted"
         },                {
-            "fqsen": "\\Classes\\ServiceProvider",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceProvider",
             "name": "ServiceProvider",
             "summary": "",
-            "url": "classes/Classes-ServiceProvider.html"
+            "url": "classes/Aeros-Lib-Classes-ServiceProvider.html"
         },                {
-            "fqsen": "\\Classes\\ServiceProvider\u003A\u003Aregister\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceProvider\u003A\u003Aregister\u0028\u0029",
             "name": "register",
             "summary": "It\u0020registers\u0020a\u0020service\u0020provider\u0020in\u0020the\u0020service\u0020container.",
-            "url": "classes/Classes-ServiceProvider.html#method_register"
+            "url": "classes/Aeros-Lib-Classes-ServiceProvider.html#method_register"
         },                {
-            "fqsen": "\\Classes\\ServiceProvider\u003A\u003Aboot\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\ServiceProvider\u003A\u003Aboot\u0028\u0029",
             "name": "boot",
             "summary": "This\u0020method\u0020is\u0020called\u0020after\u0020all\u0020service\u0020providers\u0020are\u0020registered.",
-            "url": "classes/Classes-ServiceProvider.html#method_boot"
+            "url": "classes/Aeros-Lib-Classes-ServiceProvider.html#method_boot"
         },                {
-            "fqsen": "\\Classes\\Session",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Session",
             "name": "Session",
             "summary": "",
-            "url": "classes/Classes-Session.html"
+            "url": "classes/Aeros-Lib-Classes-Session.html"
         },                {
-            "fqsen": "\\Classes\\Session\u003A\u003Arenovate\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Session\u003A\u003Arenovate\u0028\u0029",
             "name": "renovate",
             "summary": "",
-            "url": "classes/Classes-Session.html#method_renovate"
+            "url": "classes/Aeros-Lib-Classes-Session.html#method_renovate"
         },                {
-            "fqsen": "\\Classes\\Session\u003A\u003Adestroy\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Session\u003A\u003Adestroy\u0028\u0029",
             "name": "destroy",
             "summary": "",
-            "url": "classes/Classes-Session.html#method_destroy"
+            "url": "classes/Aeros-Lib-Classes-Session.html#method_destroy"
         },                {
-            "fqsen": "\\Classes\\Session\u003A\u003Aclear\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Session\u003A\u003Aclear\u0028\u0029",
             "name": "clear",
             "summary": "",
-            "url": "classes/Classes-Session.html#method_clear"
+            "url": "classes/Aeros-Lib-Classes-Session.html#method_clear"
         },                {
-            "fqsen": "\\Classes\\Session\u003A\u003Aput\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Session\u003A\u003Aput\u0028\u0029",
             "name": "put",
             "summary": "",
-            "url": "classes/Classes-Session.html#method_put"
+            "url": "classes/Aeros-Lib-Classes-Session.html#method_put"
         },                {
-            "fqsen": "\\Classes\\Session\u003A\u003Aget\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Session\u003A\u003Aget\u0028\u0029",
             "name": "get",
             "summary": "",
-            "url": "classes/Classes-Session.html#method_get"
+            "url": "classes/Aeros-Lib-Classes-Session.html#method_get"
         },                {
-            "fqsen": "\\Classes\\Token",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Token",
             "name": "Token",
             "summary": "",
-            "url": "classes/Classes-Token.html"
+            "url": "classes/Aeros-Lib-Classes-Token.html"
         },                {
-            "fqsen": "\\Classes\\Token\u003A\u003A__construct\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Token\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
             "summary": "",
-            "url": "classes/Classes-Token.html#method___construct"
+            "url": "classes/Aeros-Lib-Classes-Token.html#method___construct"
         },                {
-            "fqsen": "\\Classes\\Token\u003A\u003Aencode\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Token\u003A\u003Aencode\u0028\u0029",
             "name": "encode",
             "summary": "",
-            "url": "classes/Classes-Token.html#method_encode"
+            "url": "classes/Aeros-Lib-Classes-Token.html#method_encode"
         },                {
-            "fqsen": "\\Classes\\Token\u003A\u003Adecode\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Token\u003A\u003Adecode\u0028\u0029",
             "name": "decode",
             "summary": "",
-            "url": "classes/Classes-Token.html#method_decode"
+            "url": "classes/Aeros-Lib-Classes-Token.html#method_decode"
         },                {
-            "fqsen": "\\Classes\\Token\u003A\u003Avalidate\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Token\u003A\u003Avalidate\u0028\u0029",
             "name": "validate",
             "summary": "",
-            "url": "classes/Classes-Token.html#method_validate"
+            "url": "classes/Aeros-Lib-Classes-Token.html#method_validate"
         },                {
-            "fqsen": "\\Classes\\Token\u003A\u003Aget_auth_token\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Token\u003A\u003Aget_auth_token\u0028\u0029",
             "name": "get_auth_token",
             "summary": "",
-            "url": "classes/Classes-Token.html#method_get_auth_token"
+            "url": "classes/Aeros-Lib-Classes-Token.html#method_get_auth_token"
         },                {
-            "fqsen": "\\Classes\\Token\u003A\u003A\u0024key",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Token\u003A\u003A\u0024key",
             "name": "key",
             "summary": "",
-            "url": "classes/Classes-Token.html#property_key"
+            "url": "classes/Aeros-Lib-Classes-Token.html#property_key"
         },                {
-            "fqsen": "\\Classes\\Tracking",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Tracking",
             "name": "Tracking",
             "summary": "",
-            "url": "classes/Classes-Tracking.html"
+            "url": "classes/Aeros-Lib-Classes-Tracking.html"
         },                {
-            "fqsen": "\\Classes\\Tracking\u003A\u003Agoogle_url_tracking\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Tracking\u003A\u003Agoogle_url_tracking\u0028\u0029",
             "name": "google_url_tracking",
             "summary": "Returns\u0020the\u0020Google\u0020Tracking\u0020Parameters\u0020only",
-            "url": "classes/Classes-Tracking.html#method_google_url_tracking"
+            "url": "classes/Aeros-Lib-Classes-Tracking.html#method_google_url_tracking"
         },                {
-            "fqsen": "\\Classes\\View",
+            "fqsen": "\\Aeros\\Lib\\Classes\\View",
             "name": "View",
             "summary": "",
-            "url": "classes/Classes-View.html"
+            "url": "classes/Aeros-Lib-Classes-View.html"
         },                {
-            "fqsen": "\\Classes\\View\u003A\u003Amake\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\View\u003A\u003Amake\u0028\u0029",
             "name": "make",
             "summary": "Makes\/Renderes\u0020a\u0020view.",
-            "url": "classes/Classes-View.html#method_make"
+            "url": "classes/Aeros-Lib-Classes-View.html#method_make"
         },                {
-            "fqsen": "\\Classes\\View\u003A\u003AresolveView\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\View\u003A\u003AresolveView\u0028\u0029",
             "name": "resolveView",
             "summary": "Resolves\u0020the\u0020final\u0020path\u0020and\u0020filename\u0020for\u0020the\u0020requested\u0020view.",
-            "url": "classes/Classes-View.html#method_resolveView"
+            "url": "classes/Aeros-Lib-Classes-View.html#method_resolveView"
         },                {
-            "fqsen": "\\Classes\\Worker",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Worker",
             "name": "Worker",
             "summary": "",
-            "url": "classes/Classes-Worker.html"
+            "url": "classes/Aeros-Lib-Classes-Worker.html"
         },                {
-            "fqsen": "\\Classes\\Worker\u003A\u003Ahandle\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Classes\\Worker\u003A\u003Ahandle\u0028\u0029",
             "name": "handle",
             "summary": "",
-            "url": "classes/Classes-Worker.html#method_handle"
+            "url": "classes/Aeros-Lib-Classes-Worker.html#method_handle"
         },                {
             "fqsen": "\\app\u0028\u0029",
             "name": "app",
@@ -1328,7 +1348,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\logger\u0028\u0029",
             "name": "logger",
-            "summary": "Appends\u0020a\u0020message\u0020into\u0020log\u0020file.",
+            "summary": "Appends\u0020a\u0020message\u0020into\u0020a\u0020log\u0020file.",
             "url": "namespaces/default.html#function_logger"
         },                {
             "fqsen": "\\queue\u0028\u0029",
@@ -1340,11 +1360,6 @@ Search.appendIndex(
             "name": "cron",
             "summary": "Returns\u0020an\u0020instance\u0020of\u0020Cron.",
             "url": "namespaces/default.html#function_cron"
-        },                {
-            "fqsen": "\\sendemail\u0028\u0029",
-            "name": "sendemail",
-            "summary": "Sends\u0020or\u0020schedules\u0020an\u0020email\u0020with\/out\u0020attachment\u0028s\u0029.",
-            "url": "namespaces/default.html#function_sendemail"
         },                {
             "fqsen": "\\isInternal\u0028\u0029",
             "name": "isInternal",
@@ -1366,129 +1381,139 @@ Search.appendIndex(
             "summary": "Singularizes\u0020a\u0020word.",
             "url": "namespaces/default.html#function_singularize"
         },                {
-            "fqsen": "\\Interfaces\\DbInterface",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\DbInterface",
             "name": "DbInterface",
             "summary": "",
-            "url": "classes/Interfaces-DbInterface.html"
+            "url": "classes/Aeros-Lib-Interfaces-DbInterface.html"
         },                {
-            "fqsen": "\\Interfaces\\DbInterface\u003A\u003Aconnect\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\DbInterface\u003A\u003Aconnect\u0028\u0029",
             "name": "connect",
             "summary": "",
-            "url": "classes/Interfaces-DbInterface.html#method_connect"
+            "url": "classes/Aeros-Lib-Interfaces-DbInterface.html#method_connect"
         },                {
-            "fqsen": "\\Interfaces\\DbInterface\u003A\u003Aquery\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\DbInterface\u003A\u003Aquery\u0028\u0029",
             "name": "query",
             "summary": "",
-            "url": "classes/Interfaces-DbInterface.html#method_query"
+            "url": "classes/Aeros-Lib-Interfaces-DbInterface.html#method_query"
         },                {
-            "fqsen": "\\Interfaces\\DbInterface\u003A\u003Aselect_db\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\DbInterface\u003A\u003Aselect_db\u0028\u0029",
             "name": "select_db",
             "summary": "",
-            "url": "classes/Interfaces-DbInterface.html#method_select_db"
+            "url": "classes/Aeros-Lib-Interfaces-DbInterface.html#method_select_db"
         },                {
-            "fqsen": "\\Interfaces\\DbInterface\u003A\u003Amulti_query\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\DbInterface\u003A\u003Amulti_query\u0028\u0029",
             "name": "multi_query",
             "summary": "",
-            "url": "classes/Interfaces-DbInterface.html#method_multi_query"
+            "url": "classes/Aeros-Lib-Interfaces-DbInterface.html#method_multi_query"
         },                {
-            "fqsen": "\\Interfaces\\DbInterface\u003A\u003Astore_result\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\DbInterface\u003A\u003Astore_result\u0028\u0029",
             "name": "store_result",
             "summary": "",
-            "url": "classes/Interfaces-DbInterface.html#method_store_result"
+            "url": "classes/Aeros-Lib-Interfaces-DbInterface.html#method_store_result"
         },                {
-            "fqsen": "\\Interfaces\\DbInterface\u003A\u003Aerror\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\DbInterface\u003A\u003Aerror\u0028\u0029",
             "name": "error",
             "summary": "",
-            "url": "classes/Interfaces-DbInterface.html#method_error"
+            "url": "classes/Aeros-Lib-Interfaces-DbInterface.html#method_error"
         },                {
-            "fqsen": "\\Interfaces\\DbInterface\u003A\u003Anext_result\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\DbInterface\u003A\u003Anext_result\u0028\u0029",
             "name": "next_result",
             "summary": "",
-            "url": "classes/Interfaces-DbInterface.html#method_next_result"
+            "url": "classes/Aeros-Lib-Interfaces-DbInterface.html#method_next_result"
         },                {
-            "fqsen": "\\Interfaces\\DbInterface\u003A\u003Acommit\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\DbInterface\u003A\u003Acommit\u0028\u0029",
             "name": "commit",
             "summary": "",
-            "url": "classes/Interfaces-DbInterface.html#method_commit"
+            "url": "classes/Aeros-Lib-Interfaces-DbInterface.html#method_commit"
         },                {
-            "fqsen": "\\Interfaces\\DbInterface\u003A\u003Aescape\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\DbInterface\u003A\u003Aescape\u0028\u0029",
             "name": "escape",
             "summary": "",
-            "url": "classes/Interfaces-DbInterface.html#method_escape"
+            "url": "classes/Aeros-Lib-Interfaces-DbInterface.html#method_escape"
         },                {
-            "fqsen": "\\Interfaces\\DbInterface\u003A\u003Aclose\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\DbInterface\u003A\u003Aclose\u0028\u0029",
             "name": "close",
             "summary": "",
-            "url": "classes/Interfaces-DbInterface.html#method_close"
+            "url": "classes/Aeros-Lib-Interfaces-DbInterface.html#method_close"
         },                {
-            "fqsen": "\\Interfaces\\DbInterface\u003A\u003Aget_last_insert_id\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\DbInterface\u003A\u003Aget_last_insert_id\u0028\u0029",
             "name": "get_last_insert_id",
             "summary": "",
-            "url": "classes/Interfaces-DbInterface.html#method_get_last_insert_id"
+            "url": "classes/Aeros-Lib-Interfaces-DbInterface.html#method_get_last_insert_id"
         },                {
-            "fqsen": "\\Interfaces\\JobInterface",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\JobInterface",
             "name": "JobInterface",
             "summary": "",
-            "url": "classes/Interfaces-JobInterface.html"
+            "url": "classes/Aeros-Lib-Interfaces-JobInterface.html"
         },                {
-            "fqsen": "\\Interfaces\\JobInterface\u003A\u003AdoWork\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\JobInterface\u003A\u003AdoWork\u0028\u0029",
             "name": "doWork",
             "summary": "",
-            "url": "classes/Interfaces-JobInterface.html#method_doWork"
+            "url": "classes/Aeros-Lib-Interfaces-JobInterface.html#method_doWork"
         },                {
-            "fqsen": "\\Interfaces\\MiddlewareInterface",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\MiddlewareInterface",
             "name": "MiddlewareInterface",
             "summary": "",
-            "url": "classes/Interfaces-MiddlewareInterface.html"
+            "url": "classes/Aeros-Lib-Interfaces-MiddlewareInterface.html"
         },                {
-            "fqsen": "\\Interfaces\\MiddlewareInterface\u003A\u003A__invoke\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\MiddlewareInterface\u003A\u003A__invoke\u0028\u0029",
             "name": "__invoke",
             "summary": "",
-            "url": "classes/Interfaces-MiddlewareInterface.html#method___invoke"
+            "url": "classes/Aeros-Lib-Interfaces-MiddlewareInterface.html#method___invoke"
         },                {
-            "fqsen": "\\Interfaces\\StorageInterface",
+            "fqsen": "\\Aeros\\Lib\\Interfaces\\StorageInterface",
             "name": "StorageInterface",
             "summary": "",
-            "url": "classes/Interfaces-StorageInterface.html"
+            "url": "classes/Aeros-Lib-Interfaces-StorageInterface.html"
         },                {
-            "fqsen": "\\Traits\\Authentication",
+            "fqsen": "\\Aeros\\Lib\\Traits\\Authentication",
             "name": "Authentication",
             "summary": "",
-            "url": "classes/Traits-Authentication.html"
+            "url": "classes/Aeros-Lib-Traits-Authentication.html"
         },                {
-            "fqsen": "\\Traits\\Authentication\u003A\u003AisAuth\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Traits\\Authentication\u003A\u003AisAuth\u0028\u0029",
             "name": "isAuth",
             "summary": "",
-            "url": "classes/Traits-Authentication.html#method_isAuth"
+            "url": "classes/Aeros-Lib-Traits-Authentication.html#method_isAuth"
         },                {
-            "fqsen": "\\Traits\\Authentication\u003A\u003AisAdmin\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Traits\\Authentication\u003A\u003AisAdmin\u0028\u0029",
             "name": "isAdmin",
             "summary": "",
-            "url": "classes/Traits-Authentication.html#method_isAdmin"
+            "url": "classes/Aeros-Lib-Traits-Authentication.html#method_isAdmin"
         },                {
-            "fqsen": "\\Traits\\Authentication\u003A\u003AisSuper\u0028\u0029",
+            "fqsen": "\\Aeros\\Lib\\Traits\\Authentication\u003A\u003AisSuper\u0028\u0029",
             "name": "isSuper",
             "summary": "",
-            "url": "classes/Traits-Authentication.html#method_isSuper"
+            "url": "classes/Aeros-Lib-Traits-Authentication.html#method_isSuper"
         },                {
             "fqsen": "\\",
             "name": "\\",
             "summary": "",
             "url": "namespaces/default.html"
         },                {
-            "fqsen": "\\Classes",
+            "fqsen": "\\Aeros\\Lib\\Classes",
             "name": "Classes",
             "summary": "",
-            "url": "namespaces/classes.html"
+            "url": "namespaces/aeros-lib-classes.html"
         },                {
-            "fqsen": "\\Interfaces",
+            "fqsen": "\\Aeros\\Lib",
+            "name": "Lib",
+            "summary": "",
+            "url": "namespaces/aeros-lib.html"
+        },                {
+            "fqsen": "\\Aeros",
+            "name": "Aeros",
+            "summary": "",
+            "url": "namespaces/aeros.html"
+        },                {
+            "fqsen": "\\Aeros\\Lib\\Interfaces",
             "name": "Interfaces",
             "summary": "",
-            "url": "namespaces/interfaces.html"
+            "url": "namespaces/aeros-lib-interfaces.html"
         },                {
-            "fqsen": "\\Traits",
+            "fqsen": "\\Aeros\\Lib\\Traits",
             "name": "Traits",
             "summary": "",
-            "url": "namespaces/traits.html"
+            "url": "namespaces/aeros-lib-traits.html"
         }            ]
 );

@@ -1,8 +1,8 @@
 <?php
 
-namespace Workers;
+namespace Aeros\Queues\Workers;
 
-use Classes\Worker;
+use Aeros\Lib\Classes\Worker;
 
 /**
  * This worker will be ran by Supervisor on the background thread.

@@ -1,8 +1,8 @@
 <?php
 
-namespace Controllers;
+namespace Aeros\Controllers;
 
-use Classes\Controller;
+use Aeros\Lib\Classes\Controller;
 
 class AppController extends Controller
 {

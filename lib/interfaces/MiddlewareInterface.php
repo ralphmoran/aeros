@@ -1,9 +1,9 @@
 <?php
 
-namespace Interfaces;
+namespace Aeros\Lib\Interfaces;
 
-use Classes\Request;
-use Classes\Response;
+use Aeros\Lib\Classes\Request;
+use Aeros\Lib\Classes\Response;
 
 interface MiddlewareInterface
 {

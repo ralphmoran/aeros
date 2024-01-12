@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes;
+namespace Aeros\Lib\Classes;
 
 /*
 In programming and computer science, a "cluster" generally refers to a group 

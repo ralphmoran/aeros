@@ -1,6 +1,6 @@
 <?php
 
-namespace Classes;
+namespace Aeros\Lib\Classes;
 
 // https://phpdelusions.net/pdo
 // https://www.php.net/manual/en/class.pdo.php

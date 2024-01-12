@@ -8,7 +8,7 @@
 |
 */
 
-use Classes\Route;
+use Aeros\Lib\Classes\Route;
 
 // Route::post("admin:/{category}/{id}", "CategoryController@dynamicCategoryById");
 

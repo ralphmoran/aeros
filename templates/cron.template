@@ -1,8 +1,8 @@
 <?php
 
-namespace Crons;
+namespace Aeros\Queues\Crons;
 
-use Classes\Cron;
+use Aeros\Lib\Classes\Cron;
 
 class {{classname}}Cron extends Cron
 {

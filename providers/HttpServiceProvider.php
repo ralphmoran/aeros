@@ -1,8 +1,8 @@
 <?php
 
-namespace Providers;
+namespace Aeros\Providers;
 
-use Classes\ServiceProvider;
+use Aeros\Lib\Classes\ServiceProvider;
 
 class HttpServiceProvider extends ServiceProvider
 {
@@ -20,7 +20,7 @@ class HttpServiceProvider extends ServiceProvider
             throw new \Exception('ERROR[middleware] No middlewares were found.');
         }
 
-        \Classes\Router::runMiddlewares($middlewares);
+        \Aeros\Lib\Classes\Router::runMiddlewares($middlewares);
     }
 
     /**

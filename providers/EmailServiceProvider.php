@@ -1,8 +1,8 @@
 <?php
 
-namespace Providers;
+namespace Aeros\Providers;
 
-use Classes\ServiceProvider;
+use Aeros\Lib\Classes\ServiceProvider;
 
 class EmailServiceProvider extends ServiceProvider
 {
@@ -10,9 +10,9 @@ class EmailServiceProvider extends ServiceProvider
     {
         // Add event listener for email notification
         app()->event
-            ->addEventListener('email.notify', \Events\EmailNotifierEvent::class)
-            ->addEventListener('email.reminder', \Events\EmailReminderEvent::class)
-            ->addEventListener('email.followup', \Events\EmailFollowupEvent::class);
+            ->addEventListener('email.notify', \Aeros\Events\EmailNotifierEvent::class)
+            ->addEventListener('email.reminder', \Aeros\Events\EmailReminderEvent::class)
+            ->addEventListener('email.followup', \Aeros\Events\EmailFollowupEvent::class);
 
         // Setup email connection
         // ...

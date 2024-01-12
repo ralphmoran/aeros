@@ -1,8 +1,8 @@
 <?php
 
-namespace Crons;
+namespace Aeros\Queues\Crons;
 
-use Classes\Cron;
+use Aeros\Lib\Classes\Cron;
 
 class EveryMinuteCron extends Cron
 {
@@ -20,10 +20,18 @@ class EveryMinuteCron extends Cron
             ->raw('ps aux | grep httpd')
             ->everyMinute()
             ->before(function() {
-                logger('Starting ' . __CLASS__ . ' at ' . microtime(), app()->basedir . '/logs/cron.log');
+                logger(
+                    'Starting ' . __CLASS__ . ' at ' . microtime(), 
+                    app()->basedir . '/logs/cron.log',
+                    true
+                );
             })
             ->then(function ($output) {
-                logger('Finished ' . __CLASS__ . ' at ' . microtime() . serialize($output), app()->basedir . '/logs/cron.log');
+                logger(
+                    'Finished ' . __CLASS__ . ' at ' . microtime() . serialize($output), 
+                    app()->basedir . '/logs/cron.log',
+                    true
+                );
             });
     }
 

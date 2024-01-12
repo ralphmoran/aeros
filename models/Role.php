@@ -1,8 +1,8 @@
 <?php
 
-namespace Models;
+namespace Aeros\Models;
 
-use Classes\Model;
+use Aeros\Lib\Classes\Model;
 
 class Role extends Model
 {

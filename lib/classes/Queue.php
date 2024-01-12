@@ -1,8 +1,8 @@
 <?php
 
-namespace Classes;
+namespace Aeros\Lib\Classes;
 
-use Classes\Job;
+use Aeros\Lib\Classes\Job;
 
 class Queue
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Commands;
+namespace Aeros\Commands;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -52,14 +52,14 @@ class MakeCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $uc = ucfirst($input->getArgument('name'));
-        $command = implode(':', preg_split('/(?=[A-Z])/', lcfirst($uc)));
+        $classname = ucfirst($input->getArgument('name'));
+        $command = implode(':', preg_split('/(?=[A-Z])/', lcfirst($classname)));
 
         app()->file->createFromTemplate(
-            app()->basedir . '/commands/' . $uc . 'Command.php', 
+            app()->basedir . '/commands/' . $classname . 'Command.php', 
             app()->basedir . '/templates/command.template', 
             [
-                'classname' => $uc,
+                'classname' => $classname,
                 'name' => strtolower($command)
             ]
         );
