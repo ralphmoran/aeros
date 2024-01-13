@@ -51,15 +51,9 @@ class Config
 
         $configContent = require $configFile;
 
-        # TODO: Validates in getFrom(), $configContent when it's an object
-        // Config content is an object
-        if (is_object($configContent)) {
-            return $this->storeRequestedKey($from, $configContent, $default);
-        }
-
         // Return entire array from config file
-        // if there is no more requests
-        if (count($configParts) == 1) {
+        // Config content is an object or there is no more requests
+        if (is_object($configContent) || count($configParts) == 1) {
             return $this->storeRequestedKey($from, $configContent, $default);
         }
 

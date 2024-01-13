@@ -129,14 +129,12 @@ if (! function_exists('dd')) {
 	 */
 	function dd(...$args) 
 	{
-		# TODO: Double check if this is actually efficient
 		// On terminal
 		if (strpos(PHP_SAPI, 'cli') !== false) {
 			$position = [debug_backtrace()[0]['file'] . ':' . debug_backtrace()[0]['line']];
 			die(response(array_merge($position, $args)));
 		}
 
-		# TODO: Add CLI compatibility output using Symfony Input/Output interfaces
 		die(
 			response(
 				array_values(

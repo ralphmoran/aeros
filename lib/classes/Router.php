@@ -69,11 +69,6 @@ class Router
      */
     public function addRoute(string $method, Route $route)
     {
-        # TODO: This line does not work, subdomain is missing
-        if (isset($this->routes[$method]) && in_array($route, $this->routes[$method])) {
-            return;
-        }
-
         $this->parseRoute($route);
 
         // Run APP middlewares on all routes and requests
@@ -275,7 +270,7 @@ class Router
      * @param string $method
      * @return array
      */
-    public function getRoutes(string $method = '', string $subdomain = '*') : array
+    public function getRoutes(string $method = '', string $subdomain = '*'): array
     {
         // If routes are already cached for production|staging...
         if (in_array(env('APP_ENV'), ['production', 'staging']) && cache()->exists('cached.routes')) {

@@ -13,9 +13,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        # TODO: Add to cache by domain or any other unique hash 
-        // to avoid collisions: see env('HTTP_DOMAIN')
-
         // On Production
         if (in_array(env('APP_ENV'), ['production', 'staging']) && cache()->exists('cached.routes')) {
             return;
