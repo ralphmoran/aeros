@@ -20,8 +20,7 @@ class GetMimeTypesCron extends Cron
             ->call(function() {
                 logger(
                     'Updating MIME types', 
-                    app()->basedir . '/logs/cron.log',
-                    true
+                    app()->basedir . '/logs/cron.log'
                 );
 
                 (new \Aeros\Providers\MimeTypeServiceProvider)->boot();
@@ -30,8 +29,7 @@ class GetMimeTypesCron extends Cron
             ->then(function ($output) {
                 logger(
                     'Updated MIME types', 
-                    app()->basedir . '/logs/cron.log',
-                    true
+                    app()->basedir . '/logs/cron.log'
                 );
             });
     }

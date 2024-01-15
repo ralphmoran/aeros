@@ -7,6 +7,13 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Main class that is called by main cron from crontab.
+ * 
+ * This is call like this:
+ * 
+ *      * * * * * /usr/bin/php /var/www/html/aeros scheduler 1>> /var/www/html/logs/error.log 2>&1
+ */
 class SchedulerCommand extends Command
 {
     /** @var string Command name */

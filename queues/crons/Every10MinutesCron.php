@@ -22,15 +22,13 @@ class Every10MinutesCron extends Cron
             ->before(function() {
                 logger(
                     'Starting ' . __CLASS__ . ' at ' . microtime(), 
-                    app()->basedir . '/logs/cron.log',
-                    true
+                    app()->basedir . '/logs/cron.log'
                 );
             })
             ->then(function ($output) {
                 logger(
-                    'Finished ' . __CLASS__ . ' at ' . microtime() . serialize($output), 
-                    app()->basedir . '/logs/cron.log',
-                    true
+                    'Finished ' . __CLASS__ . ' at ' . microtime() . ':: '. print_r($output, true), 
+                    app()->basedir . '/logs/cron.log'
                 );
             });
     }

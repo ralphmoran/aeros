@@ -71,22 +71,7 @@ class CacheClearCommand extends Command
             if ($this->getHelper('question')->ask($input, $output, $question)) {
 
                 $keys = cache()->keys('*');
-
                 $output->writeln(sprintf("Keys to be eliminate: \n\n%s", implode("\n", $keys)));
-
-                # TODO: Process all Redis keys. Use a ProgressIndicator instead
-                $progressBar = new ProgressBar($output, count($keys));
-                $progressBar->start();
-
-                // Delete each key
-                foreach ($keys as $key) {
-                    # TODO: Delete each key
-                    $progressBar->advance();
-                }
-
-                // ensures that the progress bar is at 100%
-                $progressBar->finish();
-
                 cache()->flushdb();
 
                 $output->writeln("\n\nDone. \n");
@@ -99,7 +84,7 @@ class CacheClearCommand extends Command
         if ($keys = $input->getArgument('keys')) {
 
             $question = new ConfirmationQuestion(
-                "Are you sure you want to delete permanentely these keys? [y/N]\nKeys:  " . implode(', ', $keys), 
+                "Are you sure you want to delete permanentely these keys? [y/N] ", 
                 false,
                 '/^(y|Y)/i'
             );
@@ -107,15 +92,32 @@ class CacheClearCommand extends Command
             if ($this->getHelper('question')->ask($input, $output, $question)) {
 
                 $progressBar = new ProgressBar($output, count($keys));
+                $progressBar->setFormatDefinition(
+                    'custom', 
+                    " %current%/%max% [%bar%] %message% %percent:3s%% %elapsed:6s%/%estimated:-6s%\n"
+                );
+                $progressBar->setFormat('custom');
+                $progressBar->setMessage('Start');
+
                 $progressBar->start();
 
                 // Delete each key
                 foreach ($keys as $key) {
+
+                    if (! cache()->exists($key)) {
+                        $progressBar->setMessage('Key: ' . $key . ' does not exist.');
+                        $progressBar->advance();
+                        continue;
+                    }
+
+                    $progressBar->setMessage('Deleting key: ' . $key);
                     cache()->del($key);
+
                     $progressBar->advance();
                 }
 
                 // ensures that the progress bar is at 100%
+                $progressBar->setMessage('Completed');
                 $progressBar->finish();
 
                 return Command::SUCCESS;
