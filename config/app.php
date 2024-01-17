@@ -81,5 +81,14 @@ return [
             // 'admin' => Roles\AdminRole::class,
             // 'guest' => Roles\GuestRole::class,
         ]
-    ]
+    ],
+
+    /*
+    |----------------------------------------------
+    | Add any process that you require to warm up 
+    | the application in general.
+    */
+    'warmup' => [
+        'MimeTypeServiceProvider' => \Aeros\Providers\MimeTypeServiceProvider::class,
+    ],
 ];

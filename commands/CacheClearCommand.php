@@ -71,7 +71,7 @@ class CacheClearCommand extends Command
             if ($this->getHelper('question')->ask($input, $output, $question)) {
 
                 $keys = cache()->keys('*');
-                $output->writeln(sprintf("Keys to be eliminate: \n\n%s", implode("\n", $keys)));
+                $output->writeln(sprintf("Keys to be eliminated: \n\n%s", implode("\n", $keys)));
                 cache()->flushdb();
 
                 $output->writeln("\n\nDone. \n");

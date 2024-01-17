@@ -50,6 +50,7 @@
         "worker-update": "sudo cp -r /var/www/html/scripts/supervisor/*.conf /etc/supervisor/conf.d/",
         "worker-start": "sudo supervisorctl start all",
         "worker-stop": "sudo supervisorctl stop all",
+        "worker-restart": ["@worker-stop" , "@worker-start"],
         "worker-status": "sudo supervisorctl status",
         "worker-refresh": [
             "@worker-stop", 

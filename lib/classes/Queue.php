@@ -29,12 +29,14 @@ class Queue
     {
         $this->parsePipelineName($pipelineName);
 
+        # TODO: Maybe, add a human-readable name for each job...?
+
         // Adds jobs to a pipeline
-        foreach ($jobs as $jobObj) {
+        foreach ($jobs as $jobClass) {
 
-            if (class_exists($jobObj) && is_subclass_of($jobObj, Job::class)) {
+            if (class_exists($jobClass) && is_subclass_of($jobClass, Job::class)) {
 
-                $jobObj = serialize(new $jobObj);
+                $jobObj = serialize(new $jobClass);
 
                 cache()->rpush($pipelineName, $jobObj);
             }
@@ -114,7 +116,7 @@ class Queue
      * @param string $state
      * @return array
      */
-    public function getJobStatus( string $state = Queue::COMPLETED_STATE, string $pipelineName = '*'): array
+    public function getJobStatus(string $state = Queue::COMPLETED_STATE, string $pipelineName = '*'): array
     {
         $this->parsePipelineName($pipelineName);
 
@@ -163,7 +165,7 @@ class Queue
     }
 
     /**
-     * Sets the job state, this could be "Lock" a pipeline to prevent other workers 
+     * Sets the job state, this could be "Locking" a pipeline to prevent other workers 
      * to process it, "completed" or "failed".
      *
      * @param string $pipelineName

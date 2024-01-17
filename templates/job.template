@@ -1,0 +1,23 @@
+<?php
+
+namespace Aeros\Queues\Jobs;
+
+use Aeros\Lib\Classes\Job;
+
+class {{classname}}Job extends Job
+{
+    /**
+     * This method is called when the job is executed.
+     *
+     * @return boolean
+     */
+    public function doWork(): bool
+    {
+        logger(
+            'Doing work for: ' . __CLASS__, 
+            app()->basedir . '/logs/jobs.log'
+        );
+
+        return true;
+    }
+}

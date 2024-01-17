@@ -29,6 +29,8 @@ class IndexController extends Controller
     {
         //******************************************/
         // Note: All pipelines are prepended with "env('APP_NAME') . '_'" string
+        # TODO: Review this process, on every request, these jobs have been added or duplicated
+
         // queue()->push([
         //     \Aeros\Queues\Jobs\CleanupJob::class,
         //     \Aeros\Queues\Jobs\SendEmailsJob::class,
@@ -36,6 +38,8 @@ class IndexController extends Controller
         //     \Aeros\Queues\Jobs\WebhookCallsJob::class,
         //     \Aeros\Queues\Jobs\ProcessImagesJob::class,
         // ]);
+
+        // dd(queue()->getJobStatus());
 
         //******************************************/
         // Get all job statuses

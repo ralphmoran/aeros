@@ -59,7 +59,10 @@ final class Response
      */
     public function __construct()
     {
-
+        // Validates if mimetypes exist
+        if (! cache()->exists('mime.types')) {
+            queue()->push([\Aeros\Queues\Jobs\GetMimeTypesJob::class]);
+        }
     }
 
     /**

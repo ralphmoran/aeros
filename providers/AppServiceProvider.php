@@ -15,6 +15,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // Singletons
         app()->singleton('db', \Aeros\Lib\Classes\Db::class);
+        app()->singleton('queue', \Aeros\Lib\Classes\Queue::class);
+        app()->singleton('cache', \Aeros\Lib\Classes\Cache::class);
         app()->singleton('security', \Aeros\Lib\Classes\Security::class);
         app()->singleton('email', \PHPMailer\PHPMailer\PHPMailer::class);
         app()->singleton('router', \Aeros\Lib\Classes\Router::class);
@@ -30,8 +32,6 @@ class AppServiceProvider extends ServiceProvider
         app()->singleton('session', \Aeros\Lib\Classes\Session::class);
         app()->singleton('cookie', \Aeros\Lib\Classes\Cookie::class);
         app()->singleton('config', \Aeros\Lib\Classes\Config::class);
-        app()->singleton('queue', \Aeros\Lib\Classes\Queue::class);
-        app()->singleton('cache', \Aeros\Lib\Classes\Cache::class);
         app()->singleton('worker', \Aeros\Queues\Workers\AppWorker::class);
         app()->singleton('scheduler', \GO\Scheduler::class);
 

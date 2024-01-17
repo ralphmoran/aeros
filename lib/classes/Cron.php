@@ -36,17 +36,15 @@ abstract class Cron
     abstract public function work();
 
     /**
-     * Returns the unique cron identifier.
+     * Checks the unique cron identifier.
      *
-     * @return string
+     * @return void
      * @throws Exception
      */
-    public function getId(): string
+    public function checkCronId()
     {
         if (empty($this->id)) {
             throw new \Exception('ERROR[Cron] "' . get_called_class() . '" requires an id.');
         }
-
-        return $this->id;
     }
 }

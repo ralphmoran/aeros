@@ -41,6 +41,6 @@ class GetMimeTypesCron extends Cron
      */
     public function work()
     {
-        // (new \Aeros\Providers\MimeTypeServiceProvider)->boot();
+        (new \Aeros\Providers\MimeTypeServiceProvider)->boot();
     }
 }

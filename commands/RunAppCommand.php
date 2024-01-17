@@ -2,8 +2,12 @@
 
 namespace Aeros\Commands;
 
+use Aeros\Lib\Classes\Cron;
+use Aeros\Lib\Classes\Worker;
+use Aeros\Lib\Classes\ServiceProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -54,17 +58,56 @@ class RunAppCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // if ($name = $input->getArgument('name')) {
-        //     $output->writeln(sprintf("Command name: %s", $name));
+        // if ($staging = $input->getOption('staging')) {
+        //     $output->writeln(sprintf("Option 'staging': %s", $staging));
+        // }
+        
+        // if ($production = $input->getOption('production')) {
+        //     $output->writeln(sprintf("Option 'production': %s", $production));
         // }
 
-        // if ($clear = $input->getOption('clear')) {
-        //     $output->writeln(sprintf("Option 'clear': %s", $clear));
-        // }
+        // Get all from config('app.warmup')
+        // Check the parent class: ServiceProvider, Cron, Job, Worker, etc. 
+        // Each one has a specific method to run the main logic
+        $warmups = config('app.warmup');
 
-        //
-        // Add logic here
-        //
+        $progressBar = new ProgressBar($output, count($warmups));
+        $progressBar->setFormatDefinition(
+            'warmup', 
+            " %current%/%max% [%bar%] %message% %percent:3s%% %elapsed:6s%/%estimated:-6s%\n"
+        );
+        $progressBar->setFormat('warmup');
+        $progressBar->setMessage('Start');
+
+        $progressBar->start();
+
+        foreach ($warmups as $warmup) {
+            
+            if (class_exists($warmup)) {
+
+                $progressBar->setMessage('Warming up: ' . $warmup);
+
+                // Service providers
+                if (is_subclass_of($warmup, ServiceProvider::class)) {
+                    (new $warmup)->boot();
+                }
+
+                // Workers
+                if (is_subclass_of($warmup, Worker::class)) {
+                    (new $warmup)->handle();
+                }
+
+                // Crons
+                if (is_subclass_of($warmup, Cron::class)) {
+                    (new $warmup)->work();
+                }
+
+                $progressBar->advance();
+            }
+        }
+
+        $progressBar->setMessage('Warmup completed.');
+        $progressBar->finish();
 
         // Success if it's the case. 
         // Other statuses: Command::FAILURE and Command::INVALID
