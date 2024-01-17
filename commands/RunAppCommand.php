@@ -2,8 +2,10 @@
 
 namespace Aeros\Commands;
 
+use Aeros\Lib\Classes\Job;
 use Aeros\Lib\Classes\Cron;
 use Aeros\Lib\Classes\Worker;
+use Aeros\Lib\Classes\Observable;
 use Aeros\Lib\Classes\ServiceProvider;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
@@ -100,6 +102,16 @@ class RunAppCommand extends Command
                 // Crons
                 if (is_subclass_of($warmup, Cron::class)) {
                     (new $warmup)->work();
+                }
+
+                // Events
+                if (is_subclass_of($warmup, Observable::class)) {
+                    (new $warmup)->update();
+                }
+
+                // Jobs
+                if (is_subclass_of($warmup, Job::class)) {
+                    (new $warmup)->doWork();
                 }
 
                 $progressBar->advance();

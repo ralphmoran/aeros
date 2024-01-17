@@ -87,6 +87,13 @@ return [
     |----------------------------------------------
     | Add any process that you require to warm up 
     | the application in general.
+    |
+    | Supported instances:
+    |    - \Aeros\Providers\ServiceProvider::class
+    |    - \Aeros\Lib\Classes\Worker::class
+    |    - \Aeros\Lib\Classes\Cron::class
+    |    - \Aeros\Lib\Classes\Job::class
+    |    - \Aeros\Lib\Classes\Observable::class
     */
     'warmup' => [
         'MimeTypeServiceProvider' => \Aeros\Providers\MimeTypeServiceProvider::class,
