@@ -11,12 +11,6 @@ class EmailServiceProvider extends ServiceProvider
         # TODO: Add event listeners to cache, this way, they will be available and this process
         // can be avoided for performance improvements.
 
-        // Add event listener for email notification
-        app()->event
-            ->addEventListener('email.notify', \Aeros\Events\EmailNotifierEvent::class)
-            ->addEventListener('email.reminder', \Aeros\Events\EmailReminderEvent::class)
-            ->addEventListener('email.followup', \Aeros\Events\EmailFollowupEvent::class);
-
         // Setup email connection
         // ...
     }

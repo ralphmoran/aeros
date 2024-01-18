@@ -29,9 +29,26 @@ class ServiceContainer extends Kernel
             printf('%s', $this->bootstrap()->router->dispatch());
         } catch (\Throwable $e) {
 
+            // Log errors only on production or staging
+            if (in_array(env('APP_ENV'), ['production', 'staging'])) {
+                logger(
+                    sprintf(
+                        'Caught %s: %s. %s:%d.', 
+                        get_class($e),
+                        $e->getMessage(),
+                        $e->getFile(),
+                        $e->getLine()
+                    ),
+                    app()->basedir . '/logs/error.log'
+                );
+
+                exit;
+            }
+
             # TODO: Improve visual error handling
             // view('common.errors.codes', ['code' => $e->getCode()]);
 
+            // For development env only
             printf(
                 'Caught %s: %s. %s:%d.', 
                 get_class($e),

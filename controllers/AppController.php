@@ -25,6 +25,19 @@ class AppController extends Controller
 
         // return view('app');
 
+        app()->event->emit(
+            'email.notify', 
+            ['ralph@myaero.app']
+        );
+
+        // Or
+
+        // app()->event->emit(
+        //     'email.notify', 
+        //     ['ralph@myaero.app'], 
+        //     true
+        // );
+
         return 'Index';
     }
 

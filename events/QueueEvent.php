@@ -27,15 +27,15 @@ class QueueEvent extends Observable
      * Takes care of queue system.
      *
      * @param mixed $eventData
-     * @return Observable
+     * @return bool
      */
-    public function update($eventData): Observable
+    public function update($eventData): bool
     {
         logger(
             $this->data, 
             app()->basedir . '/logs/event.log'
         );
 
-        return $this;
+        return true;
     }
 }

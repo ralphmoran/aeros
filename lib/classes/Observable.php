@@ -9,7 +9,7 @@ abstract class Observable
     /**
      * This method will be called when the event is triggered.
      *
-     * @return Observable
+     * @return bool
      */
-    abstract public function update(mixed $eventData): Observable;
+    abstract public function update(mixed $eventData): bool;
 }

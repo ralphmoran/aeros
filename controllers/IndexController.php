@@ -29,8 +29,6 @@ class IndexController extends Controller
     {
         //******************************************/
         // Note: All pipelines are prepended with "env('APP_NAME') . '_'" string
-        # TODO: Review this process, on every request, these jobs have been added or duplicated
-
         // queue()->push([
         //     \Aeros\Queues\Jobs\CleanupJob::class,
         //     \Aeros\Queues\Jobs\SendEmailsJob::class,
@@ -85,8 +83,15 @@ class IndexController extends Controller
         // request()->get(['https://reqres.in/api/users/2')->send();
 
         //******************************************/
-        // Emits or triggers an event by name and value
-        // app()->event->emit('email.notify', ['ralph@myaero.app']);
+        // Add event listener for email notification
+        // app()->event
+            // ->addEventListener('email.reminder', \Aeros\Events\EmailReminderEvent::class)
+            // ->addEventListener('email.followup', \Aeros\Events\EmailFollowupEvent::class);
+
+        app()->event
+            ->addEventListener('email.notify', \Aeros\Events\EmailNotifierEvent::class);
+
+        // This event is triggered on http://admin.aeros.test. See "AppController::index".
 
         //******************************************/
         // Create projects table. You must use "exec" method for these type of queries

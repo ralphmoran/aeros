@@ -4,9 +4,6 @@ namespace Aeros\Lib\Classes;
 
 class Event
 {
-    /** @var array */
-    private $events = [];
-
     /**
      * Adds an event listener to a given name event.
      *
@@ -16,8 +13,10 @@ class Event
      */
     public function addEventListener(string $eventName, string $observer): Event
     {
-        if ($this->isEvent($observer)) {
-            $this->events[$eventName][] = $observer;
+        $this->isEvent($observer);
+
+        if (! cache()->exists($eventName)) {
+            cache()->set($eventName, $observer);
         }
 
         return $this;
@@ -28,15 +27,26 @@ class Event
      *
      * @param string $eventName
      * @param mixed $eventData
-     * @return void
+     * @param bool $deleteEvent
+     * @return bool
+     * @throws \TypeError
      */
-    public function emit(string $eventName, mixed $eventData = '')
+    public function emit(string $eventName, mixed $eventData = '', bool $deleteEvent = false): bool
     {
-        if (isset($this->events[$eventName])) {
-            foreach ($this->events[$eventName] as $observer) {
-                (new $observer)->update($eventData);
+        if ($observer = cache()->get($eventName)) {
+
+            (new $observer)->update($eventData);
+
+            if ($deleteEvent) {
+                cache()->del($eventName);
             }
+
+            return true;
         }
+
+        throw new \TypeError(
+            sprintf('ERROR[event] Event "%s" does not exist.', $eventName)
+        );
     }
 
     /**
@@ -44,12 +54,13 @@ class Event
      *
      * @param string $event
      * @return boolean
+     * @throws \TypeError
      */
     public function isEvent(string $event): bool
     {
         if (! class_exists($event) || ! is_subclass_of($event, Observable::class)) {
             throw new \TypeError(
-                sprintf('ERROR[event] Provider "%s" were not found or invalid.', $event)
+                sprintf('ERROR[event] Event "%s" were not found or invalid.', $event)
             );
         }
 
