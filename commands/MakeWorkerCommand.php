@@ -61,14 +61,14 @@ class MakeWorkerCommand extends Command
             // Create worker class
             app()->file->createFromTemplate(
                 $workerClass = env('WORKERS_DIR') . '/' . $workerName . '.php', 
-                app()->basedir . '/templates/TemplateWorker.template', 
+                app()->basedir . '/templates/worker.template', 
                 ['worker-name' => $workerName]
             );
 
             // Create worker script file
             app()->file->createFromTemplate(
                 $workerScript = env('SCRIPTS_DIR') . '/' . $name . '.php', 
-                app()->basedir . '/templates/template-worker-script.template', 
+                app()->basedir . '/templates/script.template', 
                 ['worker-name' => $workerName,]
             );
 
