@@ -2,15 +2,16 @@
 
 /*
 |----------------------------------------------
-| {{worker-name}} worker
+| "{{worker-name}}" worker
 |----------------------------------------------
 |
 | This worker will be executed in the background by Supervisor.
 |
 */
 
-// If you require to load Aeros framework, comment this line in.
-// require_once __DIR__ . '/../vendor/autoload.php';
+// If you require to load Aeros framework, comment next lines in.
+require_once __DIR__ . '/../vendor/autoload.php';
+app()->bootstrap();
 
 /**
  * All workers, in order to run indefinitely, need to run an infinite loop
@@ -19,7 +20,9 @@ while (true) {
     try {
         //
         // Your logic goes here
-        //...
+        //
+        logger('Testing: ' . __FILE__, app()->basedir . '/logs/{{worker-name}}-script.log');
+        sleep(3);
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();
     }

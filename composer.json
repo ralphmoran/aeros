@@ -47,15 +47,18 @@
     "license": "Property",
     "minimum-stability": "alpha",
     "scripts": {
-        "worker-update": "sudo cp -r /var/www/html/scripts/supervisor/*.conf /etc/supervisor/conf.d/",
-        "worker-start": "sudo supervisorctl start all",
         "worker-stop": "sudo supervisorctl stop all",
+        "worker-start": "sudo supervisorctl start all",
         "worker-restart": ["@worker-stop" , "@worker-start"],
         "worker-status": "sudo supervisorctl status",
+        "worker-remove": "sudo rm /etc/supervisor/conf.d/*", 
+        "worker-update": "sudo cp -r /var/www/html/scripts/supervisor/*.conf /etc/supervisor/conf.d/",
         "worker-refresh": [
             "@worker-stop", 
-            "sudo supervisorctl reread", 
+            "@worker-remove", 
+            "@worker-update", 
             "sudo supervisorctl update", 
+            "sudo supervisorctl reread", 
             "@worker-start"]
     },
     "config": {

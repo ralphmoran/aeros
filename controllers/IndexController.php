@@ -88,8 +88,8 @@ class IndexController extends Controller
             // ->addEventListener('email.reminder', \Aeros\Events\EmailReminderEvent::class)
             // ->addEventListener('email.followup', \Aeros\Events\EmailFollowupEvent::class);
 
-        app()->event
-            ->addEventListener('email.notify', \Aeros\Events\EmailNotifierEvent::class);
+        // app()->event
+        //     ->addEventListener('email.notify', \Aeros\Events\EmailNotifierEvent::class);
 
         // This event is triggered on http://admin.aeros.test. See "AppController::index".
 
