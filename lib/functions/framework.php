@@ -59,9 +59,7 @@ if (! function_exists('view')) {
 	 */
 	function view(string $view, array $values = [], string $subfolder = '')
 	{
-		// if (class_exists('Aeros\Lib\Classes\View')) {
-			return app()->view->make($view, $values, $subfolder);
-		// }
+		return app()->view->make($view, $values, $subfolder);
 	}
 }
 
@@ -78,9 +76,7 @@ if (! function_exists('response')) {
 	 */
 	function response($data = '', int $code = 200, string $type = \Aeros\Lib\Classes\Response::JSON)
 	{
-		// if (class_exists('Aeros\Lib\Classes\Response')) {
-			return app()->response->type($data, $code, $type);
-		// }
+		return app()->response->type($data, $code, $type);
 	}
 }
 
@@ -95,9 +91,7 @@ if (! function_exists('request')) {
 	 */
 	function request(mixed $opts = '', array $keys = [])
 	{
-		// if (class_exists('Aeros\Lib\Classes\Request')) {
-			return app()->request->setOptions($opts, $keys);
-		// }
+		return app()->request->setOptions($opts, $keys);
 	}
 }
 
@@ -113,9 +107,7 @@ if (! function_exists('redirect')) {
 	 */
 	function redirect(string $redirect, array $arguments = [], string $request_method = 'GET')
 	{
-		// if (class_exists('Aeros\Lib\Classes\Redirect')) {
-			return app()->redirect->goto($redirect, $arguments, $request_method);
-		// }
+		return app()->redirect->goto($redirect, $arguments, $request_method);
 	}
 }
 
@@ -194,9 +186,7 @@ if (! function_exists('component')) {
 	 */
 	function component(string $component, array $data = [], bool $return = false)
 	{
-		// if (class_exists('Aeros\Lib\Classes\Component')) {
-			return app()->component->render($component, $data, $return);
-		// }
+		return app()->component->render($component, $data, $return);
 	}
 }
 
@@ -374,9 +364,7 @@ if (! function_exists('worker')) {
 	 * @return \Aeros\Lib\Classes\Worker
 	 */
 	function worker(): \Aeros\Lib\Classes\Worker {
-		// if (class_exists('Aeros\Queues\Workers\AppWorker')) {
-			return app()->worker;
-		// }
+		return app()->worker;
 	}
 }
 
@@ -388,9 +376,7 @@ if (! function_exists('encryptor')) {
 	 * @return \Aeros\Lib\Classes\Encryptor
 	 */
 	function encryptor(): \Aeros\Lib\Classes\Encryptor {
-		// if (class_exists('Aeros\Lib\Classes\Encryptor')) {
-			return app()->encryptor;
-		// }
+		return app()->encryptor;
 	}
 }
 
@@ -402,9 +388,7 @@ if (! function_exists('session')) {
 	 * @return \Aeros\Lib\Classes\Session
 	 */
 	function session(): \Aeros\Lib\Classes\Session {
-		// if (class_exists('Aeros\Lib\Classes\Session')) {
-			return app()->session;
-		// }
+		return app()->session;
 	}
 }
 
@@ -416,9 +400,7 @@ if (! function_exists('config')) {
 	 * @return mixed
 	 */
 	function config(string $from, mixed $default = null): mixed {
-		// if (class_exists('Aeros\Lib\Classes\Config')) {
-			return app()->config->getFrom($from, $default);
-		// }
+		return app()->config->getFrom($from, $default);
 	}
 }
 
@@ -433,9 +415,7 @@ if (! function_exists('logger')) {
 	 * @return boolean
 	 */
 	function logger(mixed $message, string $logFile, bool $createFile = false): bool {
-		// if (class_exists('Aeros\Lib\Classes\Logger')) {
-			return app()->logger->log($message, $logFile, $createFile);
-		// }
+		return app()->logger->log($message, $logFile, $createFile);
 	}
 }
 
@@ -447,9 +427,7 @@ if (! function_exists('queue')) {
 	 * @return \Aeros\Lib\Classes\Queue
 	 */
 	function queue(): \Aeros\Lib\Classes\Queue {
-		// if (class_exists('Aeros\Lib\Classes\Queue')) {
-			return app()->queue;
-		// }
+		return app()->queue;
 	}
 }
 
@@ -462,8 +440,6 @@ if (! function_exists('cron')) {
 	 * @return \Aeros\Lib\Classes\Cron
 	 */
 	function cron(): \Aeros\Lib\Classes\Cron {
-		// if (class_exists('Aeros\Lib\Classes\Cron')) {
-			return app()->cron;
-		// }
+		return app()->cron;
 	}
 }
