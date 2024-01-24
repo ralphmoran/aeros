@@ -59,6 +59,8 @@ class CacheClearCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        # TODO: Implement compatibility with memcached, redis, and other drivers
+
         // Flush all cache: delete all Redis keys
         if ($input->getOption('flush')) {
 

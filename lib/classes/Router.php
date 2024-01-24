@@ -273,7 +273,7 @@ class Router
     public function getRoutes(string $method = '', string $subdomain = '*'): array
     {
         // If routes are already cached for production|staging...
-        if (in_array(env('APP_ENV'), ['production', 'staging']) && cache()->exists('cached.routes')) {
+        if (in_array(env('APP_ENV'), ['production', 'staging']) && cache('memcached')->get('cached.routes')) {
             $this->routes = cache('memcached')->get('cached.routes');
         }
 

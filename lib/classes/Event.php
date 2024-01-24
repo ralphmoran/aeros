@@ -15,8 +15,8 @@ class Event
     {
         $this->isEvent($observer);
 
-        if (! cache()->exists($eventName)) {
-            cache('memcached')->set($eventName, $observer);
+        if (! cache('memcached')->get($eventName) && cache('memcached')->getResultCode() == \Memcached::RES_NOTFOUND) {
+            cache('memcached')->add($eventName, $observer);
         }
 
         return $this;
@@ -38,15 +38,13 @@ class Event
             (new $observer)->update($eventData);
 
             if ($deleteEvent) {
-                cache()->del($eventName);
+                cache('memcached')->delete($eventName);
             }
 
             return true;
         }
 
-        throw new \TypeError(
-            sprintf('ERROR[event] Event "%s" does not exist.', $eventName)
-        );
+        return false;
     }
 
     /**
