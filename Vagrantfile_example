@@ -34,33 +34,41 @@ Vagrant.configure("2") do |config|
     export DEBIAN_FRONTEND=noninteractive
 
     # Update Packages
-    apt-get update
+    sudo apt-get update
 
     # Upgrade Packages
-    apt-get upgrade
+    sudo apt-get upgrade
 
     # Apache
-    apt-get install -y apache2
+    sudo apt-get install -y apache2
 
     # Enable Apache Mods
     sudo a2enmod rewrite
     sudo a2enmod headers
 
     # Add Onrej PPA Repo
-    apt-get install software-properties-common
-    apt-add-repository ppa:ondrej/php
-    apt-get update
+    sudo apt-get install software-properties-common
+    sudo apt-add-repository ppa:ondrej/php
 
     # Install PHP
-    apt-get install -y php8.0
+    sudo apt-get install -y php8.0
 
     # PHP Apache Mod
-    apt-get install -y libapache2-mod-php8.0
+    sudo apt-get install -y libapache2-mod-php8.0
 
     # PHP Mods
-    sudo apt-get install -y php8.0-{bcmath,bz2,intl,gd,mbstring,mysql,zip,common,xml}
+    sudo apt-get install -y php8.0-{memcached,bcmath,bz2,intl,gd,mbstring,mysql,sqlite3,zip,common,xml}
     sudo apt-get install wget
     sudo apt-get install php8.0-curl
+    
+    #==============================================
+    # Setting up Memcached
+    sudo adduser memcache
+    sudo apt-get -y install memcached
+
+    #==============================================
+    # Install Postgresl
+    sudo apt-get -y install postgresql
 
     # Enable short_open_tag for PHP (not recommended, the PHP team will deprecate it soon)
     sudo sed -i "s/^short_open_tag = Off/short_open_tag = On/" /etc/php/8.0/apache2/php.ini
@@ -75,7 +83,7 @@ Vagrant.configure("2") do |config|
 
     #==============================================
     # Install MySQL
-    apt-get install -y mysql-server
+    sudo apt-get install -y mysql-server
 
       # Accept connection from MySQL GUIs
       sudo sed -i "s/^bind-address/#bind-address/" /etc/mysql/my.cnf
@@ -97,7 +105,7 @@ Vagrant.configure("2") do |config|
 
     #==============================================
     # PHP-MYSQL lib
-    apt-get install -y php8.0-mysql
+    sudo apt-get install -y php8.0-mysql
 
     #==============================================
     # Subdomains setup
@@ -121,12 +129,12 @@ Vagrant.configure("2") do |config|
     RewriteRule ^ - [L]
   
     <FilesMatch "\.(html|htm|js|scss|css|png|jpg|jpeg|webp|gif|ico)$">
-      FileETag Mtime
-      <IfModule mod_headers.c>
-          Header unset ETag
-          Header set Cache-Control "max-age=3600, public"
-          Header set Expires "now plus 1 hour"
-      </IfModule>
+        FileETag Mtime
+        <IfModule mod_headers.c>
+            Header unset ETag
+            Header set Cache-Control "max-age=3600, public"
+            Header set Expires "now plus 1 hour"
+        </IfModule>
     </FilesMatch>
   
     RewriteCond %{REQUEST_FILENAME} !-f
@@ -154,10 +162,6 @@ Vagrant.configure("2") do |config|
     sudo systemctl restart redis
 
     #==============================================
-    # Installing Beanstalkd
-    sudo apt-get install beanstalkd
-
-    #==============================================
     # Installing Supervisor (handles multiple worker pools/instantces on background)
     sudo apt-get install supervisor
 
@@ -167,19 +171,21 @@ Vagrant.configure("2") do |config|
     autostart=true
     autorestart=true
     user=root
-    numprocs=10
+    numprocs=5
     redirect_stderr=true
-    stdout_logfile=/var/www/html/logs/app-worker.log' > /etc/supervisor/conf.d/app-worker-script.conf
+    stdout_logfile=/var/www/html/logs/app-worker-script.log' > /etc/supervisor/conf.d/app-worker-script.conf
+
+    #==============================================
+    # Add Scheduler cron
+    (crontab -l 2>/dev/null; echo "* * * * * /usr/bin/php /var/www/html/aeros scheduler 1>> /var/www/html/logs/error.log 2>&1") | crontab -
 
     #==============================================
     # Restart Apache
     sudo service apache2 restart
 
-  SHELL
+    #==============================================
+    # Clean up
+    sudo apt autoclean && sudo apt autoremove
 
-  #==============================================
-  # config.trigger.after :up do |trigger|
-  #   trigger.name = "Setting up Aero Adming V1.0..."
-  #   trigger.run = {inline: "curl http://192.168.56.11/create-local-db"}
-  # end
+  SHELL
 end

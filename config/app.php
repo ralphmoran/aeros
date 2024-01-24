@@ -97,5 +97,6 @@ return [
     */
     'warmup' => [
         'MimeTypeServiceProvider' => \Aeros\Providers\MimeTypeServiceProvider::class,
+        # TODO: Create tables for cache system (mysql, sqlite)
     ],
 ];

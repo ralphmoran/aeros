@@ -17,6 +17,9 @@ class Queue
 
     /** @var string */
     const FAILED_STATE = 'failed';
+    
+    /** @var string */
+    private $driver = 'redis';
 
     /**
      * Adds a Job or an array of jobs to a pipeline tail in the queue system.
@@ -29,8 +32,6 @@ class Queue
     {
         $this->parsePipelineName($pipelineName);
 
-        # TODO: Maybe, add a human-readable name for each job...?
-
         // Adds jobs to a pipeline
         foreach ($jobs as $jobClass) {
 
@@ -38,7 +39,7 @@ class Queue
 
                 $jobObj = serialize(new $jobClass);
 
-                cache()->rpush($pipelineName, $jobObj);
+                cache($this->driver)->rpush($pipelineName, $jobObj);
             }
         }
 
@@ -55,7 +56,7 @@ class Queue
     public function pop(string $pipelineName = '*'): Job|bool
     {
         // Return and remove a job from the pipeline, if there is any
-        return unserialize(cache()->lpop($pipelineName));
+        return unserialize(cache($this->driver)->lpop($pipelineName));
     }
 
     /**
@@ -92,7 +93,7 @@ class Queue
                     // If failed: put job back into the pipeline, delete lock state 
                     // and makes it available for worker
                     if (! $jobStatus) {
-                        cache()->rpush($pipelineName, $job);
+                        cache($this->driver)->rpush($pipelineName, $job);
                         $this->setState("{$pipelineName}:job:{$job->uuid}", Queue::FAILED_STATE);
                     }
 
@@ -122,10 +123,10 @@ class Queue
 
         $jobStatus  = [];
 
-        foreach (cache()->keys($state . ":{$pipelineName}:*") as $job) {
+        foreach (cache($this->driver)->keys($state . ":{$pipelineName}:*") as $job) {
             $jobStatus[] = [
                 'uuid' => $job, 
-                'timestamp' => cache()->get($job)
+                'timestamp' => cache($this->driver)->get($job)
             ];
         }
 
@@ -143,8 +144,8 @@ class Queue
     {
         $this->parsePipelineName($pipelineName);
 
-        foreach ($jobs = cache()->keys($state . ":{$pipelineName}:*") as $job) {
-            cache()->del($job);
+        foreach ($jobs = cache($this->driver)->keys($state . ":{$pipelineName}:*") as $job) {
+            cache($this->driver)->del($job);
         }
 
         return count($jobs);
@@ -177,11 +178,11 @@ class Queue
     {
         switch ($state) {
             case Queue::LOCKED_STATE:
-                return cache()->set($state . ":{$pipelineName}", time(), 'ex', $lockTime, 'nx');
+                return cache($this->driver)->set($state . ":{$pipelineName}", time(), 'ex', $lockTime, 'nx');
                 break;
             case Queue::COMPLETED_STATE:
             case Queue::FAILED_STATE:
-                return cache()->set($state . ":{$pipelineName}", time());
+                return cache($this->driver)->set($state . ":{$pipelineName}", time());
                 break;
         }
     }
@@ -195,6 +196,6 @@ class Queue
      */
     private function delState(string $pipelineName, string $state = Queue::LOCKED_STATE): mixed
     {
-        return cache()->del($state . ":{$pipelineName}");
+        return cache($this->driver)->del($state . ":{$pipelineName}");
     }
 }

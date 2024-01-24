@@ -4,11 +4,11 @@ namespace Aeros\Models;
 
 use Aeros\Lib\Classes\Model;
 use Aeros\Models\Role;
-use Aeros\Lib\Traits\Authentication;
+use Aeros\Lib\Traits\AuthenticationTrait;
 
 class User extends Model
 {
-    use Authentication;
+    use AuthenticationTrait;
 
     /** @var int */
     private int $currentRole = 0;

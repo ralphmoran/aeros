@@ -2,7 +2,7 @@
 
 namespace Aeros\Lib\Traits;
 
-trait Authentication
+trait AuthenticationTrait
 {
     public function isAuth()
     {

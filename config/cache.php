@@ -14,7 +14,7 @@ return [
      * By default, this is the driver to be used
      */
     'default' => [
-        'redis'
+        'memcached'
     ],
 
     'drivers' => [
@@ -23,19 +23,19 @@ return [
          */
         'redis' => [
             'server'   => env("REDIS_HOST"),
-            'password' => env("REDIS_PASSWORD"),
+            'port'     => env("REDIS_PORT"),
             'protocol' => env("REDIS_PROTOCOL"),
-            'port'     => env("REDIS_PORT")
+            'password' => env("REDIS_PASSWORD"),
         ],
         
         /*
-         * Memcache connection
+         * Memcached connection
          */
-        'memcache' => [
-            'server'   => env("MEMCACHE_HOST"),
-            'password' => env("MEMCACHE_PASSWORD"),
-            'protocol' => env("MEMCACHE_PROTOCOL"),
-            'port'     => env("MEMCACHE_PORT")
+        'memcached' => [
+            'server'   => env("MEMCACHED_HOST"),
+            'port'     => env("MEMCACHED_PORT"),
+            'user'     => env("MEMCACHED_USER"),
+            'password' => env("MEMCACHED_PASSWORD"),
         ],
 
         /*
