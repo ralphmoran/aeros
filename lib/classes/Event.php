@@ -16,7 +16,7 @@ class Event
         $this->isEvent($observer);
 
         if (! cache()->exists($eventName)) {
-            cache()->set($eventName, $observer);
+            cache('memcached')->set($eventName, $observer);
         }
 
         return $this;
@@ -33,7 +33,7 @@ class Event
      */
     public function emit(string $eventName, mixed $eventData = '', bool $deleteEvent = false): bool
     {
-        if ($observer = cache()->get($eventName)) {
+        if ($observer = cache('memcached')->get($eventName)) {
 
             (new $observer)->update($eventData);
 

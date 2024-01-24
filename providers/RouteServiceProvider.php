@@ -33,7 +33,7 @@ class RouteServiceProvider extends ServiceProvider
 
         // Caching routes for production|staging
         if (in_array(env('APP_ENV'), ['production', 'staging'])) {
-            cache()->set('cached.routes', serialize(app()->router->getRoutes()));
+            cache('memcached')->set('cached.routes', app()->router->getRoutes());
         }
     }
 

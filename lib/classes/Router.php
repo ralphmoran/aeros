@@ -274,7 +274,7 @@ class Router
     {
         // If routes are already cached for production|staging...
         if (in_array(env('APP_ENV'), ['production', 'staging']) && cache()->exists('cached.routes')) {
-            $this->routes = unserialize(cache()->get('cached.routes'));
+            $this->routes = cache('memcached')->get('cached.routes');
         }
 
         $method = strtoupper($method);

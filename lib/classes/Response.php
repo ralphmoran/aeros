@@ -100,7 +100,7 @@ final class Response
         };
 
         header_remove();
-        header("Content-type: " . json_decode(cache()->get('mime.types'), true)[$type]);
+        header("Content-type: " . cache('memcached')->get('mime.types')[$type]);
         http_response_code($code);
 
         if ($type == 'json') {

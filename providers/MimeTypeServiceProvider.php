@@ -37,7 +37,7 @@ class MimeTypeServiceProvider extends ServiceProvider
                 $mime_types[$key] = $value;
             }
 
-            cache()->set('mime.types', json_encode(array_filter($mime_types)));
+            cache('memcached')->set('mime.types', array_filter($mime_types));
         }
     }
 }

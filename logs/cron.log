@@ -1,0 +1,97 @@
+[2024-01-24 13:36:02] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.30098100 1706132162
+[2024-01-24 13:36:02] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.31327600 1706132162:: Array
+(
+    [0] => root        1413 20.0  1.8  97324 36984 ?        S    13:36   0:00 /usr/bin/php
+    [1] => root        1423  0.0  0.0   8900   736 ?        S    13:36   0:00 grep php
+)
+
+[2024-01-24 13:37:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.92846500 1706132221
+[2024-01-24 13:37:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.97410400 1706132221:: Array
+(
+    [0] => root        1534 29.1  1.7  95276 35252 ?        R    13:36   0:10 /usr/bin/php
+    [1] => root        1535 28.2  1.7  95276 34772 ?        R    13:36   0:10 /usr/bin/php
+    [2] => root        1536 29.0  1.7  95276 34888 ?        R    13:36   0:10 /usr/bin/php
+    [3] => root        1537 28.2  1.7  95276 35124 ?        S    13:36   0:10 /usr/bin/php
+    [4] => root        1538 28.1  1.7  95276 34860 ?        S    13:36   0:10 /usr/bin/php
+    [5] => root        1554  0.0  1.8  97324 37060 ?        S    13:37   0:00 /usr/bin/php
+    [6] => root        1563  0.0  0.0   9032   668 ?        S    13:37   0:00 grep php
+)
+
+[2024-01-24 13:38:02] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.52975400 1706132282
+[2024-01-24 13:38:02] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.56238000 1706132282:: Array
+(
+    [0] => root        1534 28.6  1.7  95276 35252 ?        R    13:36   0:28 /usr/bin/php
+    [1] => root        1535 28.0  1.7  95276 34772 ?        S    13:36   0:27 /usr/bin/php
+    [2] => root        1536 29.9  1.7  95276 34888 ?        R    13:36   0:29 /usr/bin/php
+    [3] => root        1537 27.9  1.7  95276 35124 ?        R    13:36   0:27 /usr/bin/php
+    [4] => root        1538 28.0  1.7  95276 34860 ?        R    13:36   0:27 /usr/bin/php
+    [5] => root        1572  0.0  1.8  97324 36776 ?        S    13:38   0:00 /usr/bin/php
+    [6] => root        1581  0.0  0.0   9032   736 ?        S    13:38   0:00 grep php
+)
+
+[2024-01-24 13:39:02] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.02813100 1706132342
+[2024-01-24 13:39:02] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.05282300 1706132342:: Array
+(
+    [0] => root        1534 28.6  1.7  95276 35252 ?        S    13:36   0:45 /usr/bin/php
+    [1] => root        1535 28.2  1.7  95276 34772 ?        S    13:36   0:44 /usr/bin/php
+    [2] => root        1536 29.7  1.7  95276 34888 ?        R    13:36   0:47 /usr/bin/php
+    [3] => root        1537 28.4  1.7  95276 35124 ?        R    13:36   0:44 /usr/bin/php
+    [4] => root        1538 28.0  1.7  95276 34860 ?        R    13:36   0:44 /usr/bin/php
+    [5] => root        1588 20.0  1.8  97324 37092 ?        S    13:39   0:00 /usr/bin/php
+    [6] => root        1597  0.0  0.0   9032   668 ?        S    13:39   0:00 grep php
+)
+
+[2024-01-24 13:40:01] Starting Aeros\Queues\Crons\Every10MinutesCron at 0.43499200 1706132401
+[2024-01-24 13:40:01] Finished Aeros\Queues\Crons\Every10MinutesCron at 0.46368300 1706132401:: Array
+(
+    [0] => root        1684  0.0  0.0   8900   732 ?        S    13:40   0:00 grep httpd
+)
+
+[2024-01-24 13:40:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.46644300 1706132401
+[2024-01-24 13:40:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.49282000 1706132401:: Array
+(
+    [0] => root        1534 28.6  1.7  95276 35252 ?        R    13:36   1:02 /usr/bin/php
+    [1] => root        1535 28.5  1.7  95276 34772 ?        S    13:36   1:01 /usr/bin/php
+    [2] => root        1536 29.5  1.7  95276 34888 ?        R    13:36   1:04 /usr/bin/php
+    [3] => root        1537 28.6  1.7  95276 35124 ?        R    13:36   1:02 /usr/bin/php
+    [4] => root        1538 28.1  1.7  95276 34860 ?        R    13:36   1:00 /usr/bin/php
+    [5] => root        1675  0.0  1.8  97324 37124 ?        S    13:40   0:00 /usr/bin/php
+    [6] => root        1687  0.0  0.0   9032   732 ?        S    13:40   0:00 grep php
+)
+
+[2024-01-24 13:41:02] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.03287800 1706132462
+[2024-01-24 13:41:02] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.06950600 1706132462:: Array
+(
+    [0] => root        1534 28.8  1.7  95276 35252 ?        R    13:36   1:20 /usr/bin/php
+    [1] => root        1535 28.7  1.7  95276 34772 ?        R    13:36   1:19 /usr/bin/php
+    [2] => root        1536 29.2  1.7  95276 34888 ?        R    13:36   1:21 /usr/bin/php
+    [3] => root        1537 28.5  1.7  95276 35124 ?        R    13:36   1:19 /usr/bin/php
+    [4] => root        1538 28.1  1.7  95276 34860 ?        R    13:36   1:18 /usr/bin/php
+    [5] => root        1694 24.0  1.8  97324 36704 ?        S    13:41   0:00 /usr/bin/php
+    [6] => root        1703  0.0  0.0   8900   728 ?        S    13:41   0:00 grep php
+)
+
+[2024-01-24 13:42:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.48863500 1706132521
+[2024-01-24 13:42:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.51363200 1706132521:: Array
+(
+    [0] => root        1534 28.7  1.7  95276 35252 ?        R    13:36   1:37 /usr/bin/php
+    [1] => root        1535 29.0  1.7  95276 34772 ?        R    13:36   1:37 /usr/bin/php
+    [2] => root        1536 29.1  1.7  95276 34888 ?        R    13:36   1:38 /usr/bin/php
+    [3] => root        1537 28.7  1.7  95276 35124 ?        S    13:36   1:36 /usr/bin/php
+    [4] => root        1538 28.2  1.7  95276 34860 ?        S    13:36   1:35 /usr/bin/php
+    [5] => root        1708  0.0  1.8  97324 36792 ?        S    13:42   0:00 /usr/bin/php
+    [6] => root        1717  0.0  0.0   8900   736 ?        S    13:42   0:00 grep php
+)
+
+[2024-01-24 13:43:02] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.07016700 1706132582
+[2024-01-24 13:43:02] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.11463900 1706132582:: Array
+(
+    [0] => root        1534 28.8  1.7  95276 35252 ?        R    13:36   1:54 /usr/bin/php
+    [1] => root        1535 29.0  1.7  95276 34772 ?        S    13:36   1:55 /usr/bin/php
+    [2] => root        1536 29.1  1.7  95276 34888 ?        S    13:36   1:55 /usr/bin/php
+    [3] => root        1537 28.7  1.7  95276 35124 ?        S    13:36   1:54 /usr/bin/php
+    [4] => root        1538 28.3  1.7  95276 34860 ?        R    13:36   1:52 /usr/bin/php
+    [5] => root        1722 24.0  1.8  97324 37164 ?        S    13:43   0:00 /usr/bin/php
+    [6] => root        1731  0.0  0.0   8900   736 ?        S    13:43   0:00 grep php
+)
+
