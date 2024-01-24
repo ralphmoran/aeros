@@ -14,16 +14,16 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RunAppCommand extends Command
+class RunWarmupCommand extends Command
 {
     /** @var string Command name */
-    protected static $defaultName = 'run:app';
+    protected static $defaultName = 'run:warmup';
 
     /**
      * Sets descriptions, options or arguments.
      * 
      * ```php
-     * $ php aeros run:app
+     * $ php aeros run:warmup
      * ```
      * @link https://symfony.com/doc/current/components/console.html
      * @return void
@@ -31,8 +31,8 @@ class RunAppCommand extends Command
     protected function configure()
     {
         // Adding command description. 
-        // This text will be displayed when: `$ php run:app --help`
-        $this->setDescription('Aeros REPL - "run:app" command.')
+        // This text will be displayed when: `$ php run:warmup --help`
+        $this->setDescription('Aeros REPL - "run:warmup" command.')
             ->setHelp('Running this command will warmup generally the application.');
         
         // Adding arguments
