@@ -17,7 +17,7 @@ class MakeWorkerCommand extends Command
      * Sets descriptions, options or arguments.
      * 
      * ```php
-     * $ php aeros make:worker
+     * $ php aeros make:worker AnotherWorker
      * ```
      * @link https://symfony.com/doc/current/components/console.html
      * @return void
@@ -26,19 +26,17 @@ class MakeWorkerCommand extends Command
     {
         // Adding command description. 
         // This text will be displayed when: `$ php make:worker --help`
-        $this->setDescription('Aeros REPL - "make:worker" command.');
+        $this->setDescription('Creates a worker class and option a script file, log file, and supervisor config file.');
         
         // Adding arguments
         $this->addArgument('name', InputArgument::REQUIRED, 'Argument "name" (required)');
 
         // Adding options
         $this->addOption('processes', 'p', InputOption::VALUE_OPTIONAL, 'Option "processes" with alias "p"');
-        $this->addOption(
-            'withClass', 
-            'w', 
-            InputOption::VALUE_NONE, 
-            'Option "withClass" with alias "wc". If provided, it creates a Worker class.'
-        );
+        $this->addOption('log', 'l', InputOption::VALUE_NONE, 'Option "log" with alias "l". If provided, it creates a log file.');
+        $this->addOption('config', 'c', InputOption::VALUE_NONE, 'Option "config" with alias "c". If provided, it creates a config file.');
+        $this->addOption('script', 's', InputOption::VALUE_NONE, 'Option "script" with alias "s". If provided, it creates a script file.');
+        $this->addOption('all', 'a', InputOption::VALUE_NONE, 'Option "all" with alias "a". If provided, it creates all files.');
     }
 
     /**
@@ -56,46 +54,52 @@ class MakeWorkerCommand extends Command
     {
         if (! empty($name = $input->getArgument('name'))) {
 
+            $name = preg_replace('/worker$/i', '', $name);
+
             // Give the proper format
             $hyphenatedWorkerName = strtolower(preg_replace('/(?<!^)[A-Z]/', '-$0', $name));
 
             // Create worker class
-            if ($input->getOption('withClass')) {
+            app()->file->createFromTemplate(
+                $workerClass = env('WORKERS_DIR') . '/' . $name . 'Worker.php', 
+                app()->basedir . '/templates/worker.template', 
+                ['classname' => $name]
+            );
+
+            // Create worker script file
+            if ($input->getOption('script') || $input->getOption('all')) {
                 app()->file->createFromTemplate(
-                    $workerClass = env('WORKERS_DIR') . '/' . $name . 'Worker.php', 
-                    app()->basedir . '/templates/worker.template', 
-                    ['classname' => $name]
+                    $workerScript = env('SCRIPTS_DIR') . '/' . $hyphenatedWorkerName . '-worker-script.php', 
+                    app()->basedir . '/templates/script.template', 
+                    ['worker-name' => $hyphenatedWorkerName,]
                 );
             }
 
-            // Create worker script file
-            app()->file->createFromTemplate(
-                $workerScript = env('SCRIPTS_DIR') . '/' . $hyphenatedWorkerName . '-script.php', 
-                app()->basedir . '/templates/script.template', 
-                ['worker-name' => $hyphenatedWorkerName,]
-            );
-
-            $processes = $input->getOption('processes') ?: 3;
-
             // Create config worker file
-            app()->file->createFromTemplate(
-                $workerConf = env('WORKERS_CONF_DIR') . '/' . $hyphenatedWorkerName . '-script.conf', 
-                app()->basedir . '/templates/conf.template', 
-                [
-                    'script-name' => $hyphenatedWorkerName . '-script',
-                    'process-num' => $processes,
-                ]
-            );
+            if ($input->getOption('config') || $input->getOption('all')) {
+                $processes = $input->getOption('processes') ?: 3;
+
+                app()->file->createFromTemplate(
+                    $workerConf = env('WORKERS_CONF_DIR') . '/' . $hyphenatedWorkerName . '-worker-script.conf', 
+                    app()->basedir . '/templates/conf.template', 
+                    [
+                        'script-name' => $hyphenatedWorkerName . '-script',
+                        'process-num' => $processes,
+                    ]
+                );
+            }
 
             // Create log file for new worker
-            app()->file->create($workerLog = env('LOGS_DIR') . '/' . $hyphenatedWorkerName . '-script.log');
+            if ($input->getOption('log') || $input->getOption('all')) {
+                app()->file->create($workerLog = env('LOGS_DIR') . '/' . $hyphenatedWorkerName . '-worker-script.log');
+            }
 
             $output->writeln([
                 sprintf('<info>New files were created for worker: %s</info>', $name),
                 isset($workerClass) ? $workerClass : '',
-                $workerScript,
-                $workerConf,
-                $workerLog
+                isset($workerScript) ? $workerScript : '',
+                isset($workerConf) ? $workerConf : '',
+                isset($workerLog) ? $workerLog : ''
             ]);
 
             return Command::SUCCESS;

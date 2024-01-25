@@ -37,9 +37,15 @@ class CacheClearCommand extends Command
         // InputArgument::IS_ARRAY
         $this->addArgument(
             'keys', 
-            InputArgument::IS_ARRAY, 
+            InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 
             'Argument "keys" (array). Example: `$ php aeros clear:cache cache.routes cache.middlewares`'
         );
+
+        // $this->addArgument(
+        //     'drivers', 
+        //     InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 
+        //     'Argument "drivers" (array). Example: `$ php aeros clear:cache memcached redis`'
+        // );
 
         // Adding options
         // InputOption::VALUE_NONE = 1; // Do not accept input for the option (e.g. --yell).
@@ -47,7 +53,7 @@ class CacheClearCommand extends Command
         // InputOption::VALUE_OPTIONAL = 4; // e.g. --yell or --yell=loud
         // InputOption::VALUE_IS_ARRAY = 8; // The option accepts multiple values (e.g. --dir=/foo --dir=/bar).
         // InputOption::VALUE_NEGATABLE = 16; // The option may have either positive or negative value (e.g. --ansi or --no-ansi).
-        $this->addOption('flush', 'f', InputOption::VALUE_NONE, 'Option "flush" with alias "f"');
+        $this->addOption('flush', 'f', InputOption::VALUE_OPTIONAL, 'Option "flush" with alias "f"');
     }
 
     /**
@@ -61,11 +67,15 @@ class CacheClearCommand extends Command
     {
         # TODO: Implement compatibility with memcached, redis, and other drivers
 
+        dd(array_keys(config('db.drivers')), $input->getArgument('keys'), $input->getOption('flush'));
+
+        $cacheDrivers = array_keys(config('db.drivers'));
+
         // Flush all cache: delete all Redis keys
-        if ($input->getOption('flush')) {
+        if ($input->getOption('flush') == 'all') {
 
             $question = new ConfirmationQuestion(
-                'Continue with this action? [y/N] ', 
+                'This action is destructive. Do you want to continue with this action? [y/N] ', 
                 false,
                 '/^(y|Y)/i'
             );
@@ -82,6 +92,7 @@ class CacheClearCommand extends Command
             }
         }
 
+        // Example : `php aeros cache:clear redis:cache.routes memcached:cache.routes --flush=redis,mem`
         // Delete all requested "$keys"
         if ($keys = $input->getArgument('keys')) {
 

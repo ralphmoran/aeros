@@ -20,6 +20,7 @@ while (true) {
     try {
         // It takes care of all the registered pipelines and processing their jobs.
         $mainWorker->handle();
+        sleep(5);
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();
     }

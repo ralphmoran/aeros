@@ -27,7 +27,7 @@ class AppWorker extends Worker
      */
     public function call(string $worker)
     {
-        if (! $this->isWorkerValid($worker)) {
+        if (! $this->isWorker($worker)) {
             throw new \Exception(
                 sprintf('ERROR[Worker] There was a problem validating worker \'%s\.', $worker)
             );
@@ -58,8 +58,8 @@ class AppWorker extends Worker
      * @param string $worker
      * @return boolean
      */
-    private function isWorkerValid(string $worker): bool
+    private function isWorker(string $worker): bool
     {
-        return (! class_exists($worker) || get_parent_class($worker) != Worker::class);
+        return (class_exists($worker) && get_parent_class($worker) == Worker::class);
     }
 }
