@@ -1,0 +1,206 @@
+[2024-01-28 08:04:02] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.36565100 1706457842
+[2024-01-28 08:04:02] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.37578300 1706457842:: Array
+(
+    [0] => root        2063 13.0  1.8  97324 37260 ?        S    08:04   0:00 /usr/bin/php
+    [1] => root        2073  0.0  0.0   8900   736 ?        S    08:04   0:00 grep php
+)
+
+[2024-01-28 08:05:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.63001600 1706457901
+[2024-01-28 08:05:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.64162800 1706457901:: Array
+(
+    [0] => root        2086  0.4  1.7  95276 34936 ?        S    08:04   0:00 /usr/bin/php
+    [1] => root        2087  0.4  1.7  95276 34956 ?        S    08:04   0:00 /usr/bin/php
+    [2] => root        2088  0.3  1.7  95276 34988 ?        S    08:04   0:00 /usr/bin/php
+    [3] => root        2095  0.0  1.8  97324 37256 ?        S    08:05   0:00 /usr/bin/php
+    [4] => root        2104  0.0  0.0   8900   736 ?        S    08:05   0:00 grep php
+)
+
+[2024-01-28 08:06:02] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.09039000 1706457962
+[2024-01-28 08:06:02] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.10345200 1706457962:: Array
+(
+    [0] => root        2086  0.1  1.7  95276 34936 ?        S    08:04   0:00 /usr/bin/php
+    [1] => root        2087  0.1  1.7  95276 34956 ?        S    08:04   0:00 /usr/bin/php
+    [2] => root        2088  0.1  1.7  95276 34988 ?        S    08:04   0:00 /usr/bin/php
+    [3] => root        2108 16.0  1.8  97324 36952 ?        S    08:06   0:00 /usr/bin/php
+    [4] => root        2119  0.0  0.0   8900   732 ?        S    08:06   0:00 grep php
+)
+
+[2024-01-28 08:07:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.37967800 1706458021
+[2024-01-28 08:07:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.39168100 1706458021:: Array
+(
+    [0] => root        2086  0.0  1.7  95276 34936 ?        S    08:04   0:00 /usr/bin/php
+    [1] => root        2087  0.0  1.7  95276 34956 ?        S    08:04   0:00 /usr/bin/php
+    [2] => root        2088  0.0  1.7  95276 34988 ?        S    08:04   0:00 /usr/bin/php
+    [3] => root        2123  0.0  1.8  97324 37100 ?        S    08:07   0:00 /usr/bin/php
+    [4] => root        2132  0.0  0.0   8900   732 ?        S    08:07   0:00 grep php
+)
+
+[2024-01-28 08:08:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.78865400 1706458081
+[2024-01-28 08:08:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.79911100 1706458081:: Array
+(
+    [0] => root        2086  0.0  1.7  95276 34936 ?        S    08:04   0:00 /usr/bin/php
+    [1] => root        2087  0.0  1.7  95276 34956 ?        S    08:04   0:00 /usr/bin/php
+    [2] => root        2088  0.0  1.7  95276 34988 ?        S    08:04   0:00 /usr/bin/php
+    [3] => root        2136  0.0  1.8  97324 37088 ?        S    08:08   0:00 /usr/bin/php
+    [4] => root        2145  0.0  0.0   8900   672 ?        S    08:08   0:00 grep php
+)
+
+[2024-01-28 08:09:02] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.12004000 1706458142
+[2024-01-28 08:09:02] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.12891200 1706458142:: Array
+(
+    [0] => root        2086  0.0  1.7  95276 34936 ?        S    08:04   0:00 /usr/bin/php
+    [1] => root        2087  0.0  1.7  95276 34956 ?        S    08:04   0:00 /usr/bin/php
+    [2] => root        2088  0.0  1.7  95276 34988 ?        S    08:04   0:00 /usr/bin/php
+    [3] => root        2151 13.0  1.8  97324 37240 ?        S    08:09   0:00 /usr/bin/php
+    [4] => root        2160  0.0  0.0   8900   736 ?        S    08:09   0:00 grep php
+)
+
+[2024-01-28 08:10:01] Starting Aeros\Queues\Crons\Every10MinutesCron at 0.34781800 1706458201
+[2024-01-28 08:10:01] Finished Aeros\Queues\Crons\Every10MinutesCron at 0.36162700 1706458201:: Array
+(
+    [0] => root        2234  0.0  0.0   8900   736 ?        S    08:10   0:00 grep httpd
+)
+
+[2024-01-28 08:10:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.36335900 1706458201
+[2024-01-28 08:10:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.37567100 1706458201:: Array
+(
+    [0] => root        2086  0.0  1.7  95276 34936 ?        S    08:04   0:00 /usr/bin/php
+    [1] => root        2087  0.0  1.7  95276 34956 ?        S    08:04   0:00 /usr/bin/php
+    [2] => root        2088  0.0  1.7  95276 34988 ?        S    08:04   0:00 /usr/bin/php
+    [3] => root        2225  0.0  1.8  97324 36968 ?        S    08:10   0:00 /usr/bin/php
+    [4] => root        2237  0.0  0.0   8900   736 ?        S    08:10   0:00 grep php
+)
+
+[2024-01-28 08:11:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.68159400 1706458261
+[2024-01-28 08:11:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.69095000 1706458261:: Array
+(
+    [0] => root        2086  0.0  1.7  95276 34936 ?        S    08:04   0:00 /usr/bin/php
+    [1] => root        2087  0.0  1.7  95276 34956 ?        S    08:04   0:00 /usr/bin/php
+    [2] => root        2088  0.0  1.7  95276 34988 ?        S    08:04   0:00 /usr/bin/php
+    [3] => root        2241  0.0  1.8  97324 37140 ?        S    08:11   0:00 /usr/bin/php
+    [4] => root        2250  0.0  0.0   8900   736 ?        S    08:11   0:00 grep php
+)
+
+[2024-01-28 08:12:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.93550900 1706458321
+[2024-01-28 08:12:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.94491800 1706458321:: Array
+(
+    [0] => root        2086  0.0  1.7  95276 34936 ?        S    08:04   0:00 /usr/bin/php
+    [1] => root        2087  0.0  1.7  95276 34956 ?        S    08:04   0:00 /usr/bin/php
+    [2] => root        2088  0.0  1.7  95276 34988 ?        S    08:04   0:00 /usr/bin/php
+    [3] => root        2255  8.0  1.8  97324 37072 ?        S    08:12   0:00 /usr/bin/php
+    [4] => root        2264  0.0  0.0   8900   664 ?        S    08:12   0:00 grep php
+)
+
+[2024-01-28 08:13:02] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.27737800 1706458382
+[2024-01-28 08:13:02] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.28625500 1706458382:: Array
+(
+    [0] => root        2086  0.0  1.7  95276 34936 ?        S    08:04   0:00 /usr/bin/php
+    [1] => root        2087  0.0  1.7  95276 34956 ?        S    08:04   0:00 /usr/bin/php
+    [2] => root        2088  0.0  1.7  95276 34988 ?        S    08:04   0:00 /usr/bin/php
+    [3] => root        2268  0.0  1.8  97324 36968 ?        S    08:13   0:00 /usr/bin/php
+    [4] => root        2277  0.0  0.0   8900   736 ?        S    08:13   0:00 grep php
+)
+
+[2024-01-28 08:14:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.45325700 1706458441
+[2024-01-28 08:14:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.46393400 1706458441:: Array
+(
+    [0] => root        2086  0.0  1.7  95276 34936 ?        S    08:04   0:00 /usr/bin/php
+    [1] => root        2087  0.0  1.7  95276 34956 ?        S    08:04   0:00 /usr/bin/php
+    [2] => root        2088  0.0  1.7  95276 34988 ?        S    08:04   0:00 /usr/bin/php
+    [3] => root        2282  0.0  1.8  97324 37168 ?        S    08:14   0:00 /usr/bin/php
+    [4] => root        2291  0.0  0.0   8900   740 ?        S    08:14   0:00 grep php
+)
+
+[2024-01-28 08:15:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.84628700 1706458501
+[2024-01-28 08:15:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.85781200 1706458501:: Array
+(
+    [0] => root        2086  0.0  1.7  95276 34936 ?        S    08:04   0:00 /usr/bin/php
+    [1] => root        2087  0.0  1.7  95276 34956 ?        S    08:04   0:00 /usr/bin/php
+    [2] => root        2088  0.0  1.7  95276 34988 ?        S    08:04   0:00 /usr/bin/php
+    [3] => root        2299 11.0  1.8  97324 36892 ?        S    08:15   0:00 /usr/bin/php
+    [4] => root        2308  0.0  0.0   8900   676 ?        S    08:15   0:00 grep php
+)
+
+[2024-01-29 11:08:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.77773300 1706555281
+[2024-01-29 11:08:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.78932400 1706555281:: Array
+(
+    [0] => root        1496 12.0  1.8  97324 37116 ?        S    11:08   0:00 /usr/bin/php
+    [1] => root        1505  0.0  0.0   8900   736 ?        S    11:08   0:00 grep php
+)
+
+[2024-01-29 11:09:02] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.15047600 1706555342
+[2024-01-29 11:09:02] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.16264600 1706555342:: Array
+(
+    [0] => root        1522  0.2  1.7  95276 34984 ?        S    11:08   0:00 /usr/bin/php
+    [1] => root        1523  0.2  1.7  95276 35140 ?        S    11:08   0:00 /usr/bin/php
+    [2] => root        1524  0.4  1.7  95276 35076 ?        S    11:08   0:00 /usr/bin/php
+    [3] => root        1530  0.0  1.8  97324 37032 ?        S    11:09   0:00 /usr/bin/php
+    [4] => root        1539  0.0  0.0   9032   740 ?        S    11:09   0:00 grep php
+)
+
+[2024-01-29 11:10:01] Starting Aeros\Queues\Crons\Every10MinutesCron at 0.44775400 1706555401
+[2024-01-29 11:10:01] Finished Aeros\Queues\Crons\Every10MinutesCron at 0.45699600 1706555401:: Array
+(
+    [0] => root        1615  0.0  0.0   8900   736 ?        S    11:10   0:00 grep httpd
+)
+
+[2024-01-29 11:10:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.45823100 1706555401
+[2024-01-29 11:10:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.46684100 1706555401:: Array
+(
+    [0] => root        1522  0.0  1.7  95276 34984 ?        S    11:08   0:00 /usr/bin/php
+    [1] => root        1523  0.0  1.7  95276 35140 ?        S    11:08   0:00 /usr/bin/php
+    [2] => root        1524  0.1  1.7  95276 35076 ?        S    11:08   0:00 /usr/bin/php
+    [3] => root        1606 17.0  1.8  97324 37044 ?        S    11:10   0:00 /usr/bin/php
+    [4] => root        1618  0.0  0.0   8900   736 ?        R    11:10   0:00 grep php
+)
+
+[2024-01-29 11:11:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.80924200 1706555461
+[2024-01-29 11:11:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.82266400 1706555461:: Array
+(
+    [0] => root        1522  0.0  1.7  95276 34984 ?        S    11:08   0:00 /usr/bin/php
+    [1] => root        1523  0.0  1.7  95276 35140 ?        S    11:08   0:00 /usr/bin/php
+    [2] => root        1524  0.1  1.7  95276 35076 ?        S    11:08   0:00 /usr/bin/php
+    [3] => root        1622  0.0  1.8  97324 37272 ?        S    11:11   0:00 /usr/bin/php
+    [4] => root        1631  0.0  0.0   9032   740 ?        S    11:11   0:00 grep php
+)
+
+[2024-01-29 11:12:02] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.25343600 1706555522
+[2024-01-29 11:12:02] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.26434400 1706555522:: Array
+(
+    [0] => root        1522  0.0  1.7  95276 34984 ?        S    11:08   0:00 /usr/bin/php
+    [1] => root        1523  0.0  1.7  95276 35140 ?        S    11:08   0:00 /usr/bin/php
+    [2] => root        1524  0.0  1.7  95276 35076 ?        S    11:08   0:00 /usr/bin/php
+    [3] => root        1635  0.0  1.8  97324 36952 ?        S    11:12   0:00 /usr/bin/php
+    [4] => root        1644  0.0  0.0   9032   736 ?        S    11:12   0:00 grep php
+)
+
+[2024-01-29 11:13:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.48208500 1706555581
+[2024-01-29 11:13:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.49209500 1706555581:: Array
+(
+    [0] => root        1522  0.0  1.7  95276 34984 ?        S    11:08   0:00 /usr/bin/php
+    [1] => root        1523  0.0  1.7  95276 35140 ?        S    11:08   0:00 /usr/bin/php
+    [2] => root        1524  0.0  1.7  95276 35076 ?        S    11:08   0:00 /usr/bin/php
+    [3] => root        1651 12.0  1.8  97324 37080 ?        S    11:13   0:00 /usr/bin/php
+    [4] => root        1660  0.0  0.0   8900   736 ?        S    11:13   0:00 grep php
+)
+
+[2024-01-29 11:14:01] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.87349300 1706555641
+[2024-01-29 11:14:01] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.88908600 1706555641:: Array
+(
+    [0] => root        1522  0.0  1.7  95276 34984 ?        S    11:08   0:00 /usr/bin/php
+    [1] => root        1523  0.0  1.7  95276 35140 ?        S    11:08   0:00 /usr/bin/php
+    [2] => root        1524  0.0  1.7  95276 35076 ?        S    11:08   0:00 /usr/bin/php
+    [3] => root        1665  0.0  1.8  97324 37016 ?        S    11:14   0:00 /usr/bin/php
+    [4] => root        1674  0.0  0.0   8900   732 ?        S    11:14   0:00 grep php
+)
+
+[2024-01-29 11:15:02] Starting Aeros\Queues\Crons\EveryMinuteCron at 0.28483900 1706555702
+[2024-01-29 11:15:02] Finished Aeros\Queues\Crons\EveryMinuteCron at 0.29532300 1706555702:: Array
+(
+    [0] => root        1522  0.0  1.7  95276 34984 ?        S    11:08   0:00 /usr/bin/php
+    [1] => root        1523  0.0  1.7  95276 35140 ?        S    11:08   0:00 /usr/bin/php
+    [2] => root        1524  0.0  1.7  95276 35076 ?        S    11:08   0:00 /usr/bin/php
+    [3] => root        1681  0.0  1.8  97324 36988 ?        S    11:15   0:00 /usr/bin/php
+    [4] => root        1691  0.0  0.0   8900   668 ?        S    11:15   0:00 grep php
+)
+

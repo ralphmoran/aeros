@@ -28,7 +28,7 @@ class CacheClearCommand extends Command
     {
         // Adding command description. 
         // This text will be displayed when: `$ php cache:clear --help`
-        $this->setDescription('Aeros REPL - "cache:clear" command.')
+        $this->setDescription('Clears or flushes cache per keys or all.')
             ->setHelp('Commands help...');
         
         // Adding arguments
@@ -38,13 +38,13 @@ class CacheClearCommand extends Command
         $this->addArgument(
             'keys', 
             InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 
-            'Argument "keys" (array). Example: `$ php aeros clear:cache cache.routes cache.middlewares`'
+            'Argument "keys" (array). Example: `$ php aeros cache:clear memcached:cache.routes sqlite:cache.middlewares`'
         );
 
         // $this->addArgument(
         //     'drivers', 
         //     InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 
-        //     'Argument "drivers" (array). Example: `$ php aeros clear:cache memcached redis`'
+        //     'Argument "drivers" (array). Example: `$ php aeros cache:clear memcached redis`'
         // );
 
         // Adding options
@@ -53,7 +53,7 @@ class CacheClearCommand extends Command
         // InputOption::VALUE_OPTIONAL = 4; // e.g. --yell or --yell=loud
         // InputOption::VALUE_IS_ARRAY = 8; // The option accepts multiple values (e.g. --dir=/foo --dir=/bar).
         // InputOption::VALUE_NEGATABLE = 16; // The option may have either positive or negative value (e.g. --ansi or --no-ansi).
-        $this->addOption('flush', 'f', InputOption::VALUE_OPTIONAL, 'Option "flush" with alias "f"');
+        $this->addOption('flush', 'f', InputOption::VALUE_OPTIONAL, 'Option "flush" with alias "f", if provided, it flushes all cache drivers.');
     }
 
     /**
@@ -81,6 +81,43 @@ class CacheClearCommand extends Command
             );
 
             if ($this->getHelper('question')->ask($input, $output, $question)) {
+
+                //
+                // Add logic to flush all cache drivers
+                //
+                foreach ($cacheDrivers as $driver) {
+
+                    switch ($driver) {
+                        case 'memcached':
+                            cache('memcached')->flush();
+                            break;
+                        case 'redis':
+                            cache('redis')->flushdb();
+                            break;
+
+                        case 'mysql':
+                            // cache('redis')->flushdb();
+                            break;
+                        case 'mssql':
+                            // cache('redis')->flushdb();
+                            break;
+                        case 'sqlite':
+                            // cache('redis')->flushdb();
+                            break;
+                        case 'postgres':
+                            // cache('redis')->flushdb();
+                            break;
+                    }
+                }
+
+                // memcached
+
+                // redis
+
+                // mysql
+                // mssql
+                // sqlite
+                // postgres
 
                 $keys = cache()->keys('*');
                 $output->writeln(sprintf("Keys to be eliminated: \n\n%s", implode("\n", $keys)));

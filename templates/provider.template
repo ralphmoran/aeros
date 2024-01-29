@@ -1,0 +1,22 @@
+<?php
+
+namespace Aeros\Providers;
+
+use Aeros\Lib\Classes\ServiceProvider;
+
+class {{classname}}ServiceProvider extends ServiceProvider
+{
+    public function register(): void
+    {
+        //
+        // If you require to register a service into the service container
+        //
+    }
+
+    public function boot(): void
+    {
+        //
+        // If you require to boot a service after all services were registered
+        //
+    }
+}

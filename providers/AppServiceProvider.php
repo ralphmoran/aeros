@@ -34,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         app()->singleton('config', \Aeros\Lib\Classes\Config::class);
         app()->singleton('worker', \Aeros\Queues\Workers\AppWorker::class);
         app()->singleton('scheduler', \GO\Scheduler::class);
+        app()->singleton('service', \Aeros\Providers\ServiceAgentServiceProvider::class);
 
         // Register objects only for CLI
         if (strpos(PHP_SAPI, 'cli') !== false) {

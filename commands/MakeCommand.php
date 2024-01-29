@@ -52,7 +52,9 @@ class MakeCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $classname = ucfirst($input->getArgument('name'));
+        $name = preg_replace('/command$/i', '', $input->getArgument('name'));
+
+        $classname = ucfirst($name);
         $command = implode(':', preg_split('/(?=[A-Z])/', lcfirst($classname)));
 
         app()->file->createFromTemplate(

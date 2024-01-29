@@ -58,7 +58,9 @@ class Db
     {
         $dbSetup = config('db');
 
-        // Driver comes with an alias
+        # TODO: Create a class to handle diffrent DB connections properly.
+        // It could be a driver with/out alias, and different server configuration
+        // Driver comes with an alias: mysql:readonly
         if (strpos($driver, ':') !== false) {
             $driverParts =  array_filter(explode(':', $driver), function ($alias) {
                     return ! empty($alias) ? $alias : null;
