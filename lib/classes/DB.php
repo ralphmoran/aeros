@@ -53,6 +53,11 @@ class Db
      */
     public function connect(string $connection = null): Db|\PDO
     {
+        // Return PDO object by driver, if exists
+        if (isset($this->activeDBConnections[$this->connectionName])) {
+            return $this;
+        }
+
         if (! is_null($connection) && ! in_array($connection, array_keys(config('db.connections')))) {
             throw new \PDOException(
                 sprintf(
@@ -60,11 +65,6 @@ class Db
                     $connection
                 )
             );
-        }
-
-        // Return PDO object by driver, if exists
-        if (isset($this->activeDBConnections[$this->connectionName])) {
-            return $this;
         }
 
         $dbConfig = config('db');

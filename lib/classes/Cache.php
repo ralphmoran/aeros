@@ -9,23 +9,31 @@ class Cache
     use ProxyableTrait;
 
     /**
-     * Sets/Picks cache driver.
+     * Sets/Picks cache connection.
      *
-     * @param string $driver
+     * @param string $connection
      * @return void
      */
-    public function setDriver(string $driver = null)
+    public function setDriver(string $connection = null)
     {
-        if (! $this->index) {
-            $this->index = $driver ?: config('cache.default')[0];
-        }
-
-        // Singleton
         if (isset($this->objects[$this->index])) {
             return $this->objects[$this->index];
         }
 
-        switch ($this->index) {
+        if (! is_null($connection) && ! in_array($connection, array_keys(config('cache.connections')))) {
+            throw new \PDOException(
+                sprintf(
+                    'ERROR[DB connection] Cache connection "%s" not found.', 
+                    $connection
+                )
+            );
+        }
+
+        $cacheConfig = config('cache');
+
+        $this->index = $connection ?? implode(config('cache.default'));
+
+        switch ($cacheConfig['connections'][$this->index]['driver']) {
             case 'memcached':
                 $this->objects[$this->index] = new \Memcached();
                 $this->objects[$this->index]->setOption(\Memcached::OPT_COMPRESSION, true);
@@ -43,38 +51,6 @@ class Cache
                         ]
                     ]
                 );
-
-                return $this->objects[$this->index];
-
-                break;
-            case 'mysql':
-                $this->objects[$this->index] = db('mysql');
-
-                # TODO: Implement mysql env for cache: queues table, jobs table, etc
-
-                return $this->objects[$this->index];
-
-                break;
-            case 'mssql':
-                $this->objects[$this->index] = db('mssql');
-
-                # TODO: Implement mssql env for cache: queues table, jobs table, etc
-
-                return $this->objects[$this->index];
-
-                break;
-            case 'postgres':
-                $this->objects[$this->index] = db('postgres');
-
-                # TODO: Implement postgres env for cache: queues table, jobs table, etc
-
-                return $this->objects[$this->index];
-
-                break;
-            case 'sqlite':
-                $this->objects[$this->index] = db('sqlite');
-
-                # TODO: Implement sqlite env for cache: queues table, jobs table, etc
 
                 return $this->objects[$this->index];
 

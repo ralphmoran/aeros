@@ -163,13 +163,13 @@ if (! function_exists('dd')) {
 if (! function_exists('cache')) {
 
 	/**
-	 * It returns a cache object that utilizes CacheInterface.
+	 * It returns a cache object.
 	 *
-	 * @param ?string $driver
+	 * @param ?string $connection
 	 */
-	function cache($driver = null)
+	function cache($connection = null)
 	{
-		return app()->cache->setDriver($driver);
+		return app()->cache->setDriver($connection);
 	}
 }
 

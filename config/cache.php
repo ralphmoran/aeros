@@ -14,14 +14,14 @@ return [
      * By default, this is the driver to be used
      */
     'default' => [
-        'memcached'
+        'memcached-001'
     ],
 
     'connections' => [
         /*
          * Redis connection
          */
-        'redis' => [
+        'redis-001' => [
             'server'   => env("REDIS_HOST"),
             'port'     => env("REDIS_PORT"),
             'protocol' => env("REDIS_PROTOCOL"),
@@ -32,24 +32,12 @@ return [
         /*
          * Memcached connection
          */
-        'memcached' => [
+        'memcached-001' => [
             'server'   => env("MEMCACHED_HOST"),
             'port'     => env("MEMCACHED_PORT"),
             'user'     => env("MEMCACHED_USER"),
             'password' => env("MEMCACHED_PASSWORD"),
             'driver'   => 'memcached'
-        ],
-
-        /*
-         * MySQL connection
-         */
-        'mysql' => [
-            'server'   => env("DB_HOST"),
-            'username' => env("DB_USERNAME"),
-            'password' => env("DB_PASSWORD"),
-            'database' => env("DB_DATABASE"),
-            'port'     => env("DB_PORT"),
-            'driver'   => 'mysql'
         ],
     ],
 
