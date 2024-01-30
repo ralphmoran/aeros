@@ -11,17 +11,17 @@
 
 return [
     /*
-     * By default, this is the driver to be used
+     * By default, this is the connection to be used
      */
     'default' => [
-        'memcached-001'
+        'memcached'
     ],
 
     'connections' => [
         /*
          * Redis connection
          */
-        'redis-001' => [
+        'redis' => [
             'server'   => env("REDIS_HOST"),
             'port'     => env("REDIS_PORT"),
             'protocol' => env("REDIS_PROTOCOL"),
@@ -32,7 +32,7 @@ return [
         /*
          * Memcached connection
          */
-        'memcached-001' => [
+        'memcached' => [
             'server'   => env("MEMCACHED_HOST"),
             'port'     => env("MEMCACHED_PORT"),
             'user'     => env("MEMCACHED_USER"),

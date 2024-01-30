@@ -14,7 +14,7 @@ class Cache
      * @param string $connection
      * @return void
      */
-    public function setDriver(string $connection = null)
+    public function setConnection(string $connection = null)
     {
         if (isset($this->objects[$this->index])) {
             return $this->objects[$this->index];

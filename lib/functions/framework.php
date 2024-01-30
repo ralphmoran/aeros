@@ -169,7 +169,7 @@ if (! function_exists('cache')) {
 	 */
 	function cache($connection = null)
 	{
-		return app()->cache->setDriver($connection);
+		return app()->cache->setConnection($connection);
 	}
 }
 

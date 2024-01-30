@@ -30,30 +30,14 @@ class CacheClearCommand extends Command
         // This text will be displayed when: `$ php cache:clear --help`
         $this->setDescription('Clears or flushes cache per keys or all.')
             ->setHelp('Commands help...');
-        
-        // Adding arguments
-        // InputArgument::REQUIRED
-        // InputArgument::OPTIONAL
-        // InputArgument::IS_ARRAY
+
         $this->addArgument(
             'keys', 
             InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 
             'Argument "keys" (array). Example: `$ php aeros cache:clear memcached:cache.routes sqlite:cache.middlewares`'
         );
 
-        // $this->addArgument(
-        //     'drivers', 
-        //     InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 
-        //     'Argument "drivers" (array). Example: `$ php aeros cache:clear memcached redis`'
-        // );
-
-        // Adding options
-        // InputOption::VALUE_NONE = 1; // Do not accept input for the option (e.g. --yell).
-        // InputOption::VALUE_REQUIRED = 2; // e.g. --iterations=5 or -i5
-        // InputOption::VALUE_OPTIONAL = 4; // e.g. --yell or --yell=loud
-        // InputOption::VALUE_IS_ARRAY = 8; // The option accepts multiple values (e.g. --dir=/foo --dir=/bar).
-        // InputOption::VALUE_NEGATABLE = 16; // The option may have either positive or negative value (e.g. --ansi or --no-ansi).
-        $this->addOption('flush', 'f', InputOption::VALUE_OPTIONAL, 'Option "flush" with alias "f", if provided, it flushes all cache drivers.');
+        $this->addOption('flush', 'f', InputOption::VALUE_NONE, 'Option "flush" with alias "f", if provided, it flushes all cache drivers.');
     }
 
     /**
@@ -65,71 +49,37 @@ class CacheClearCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        # TODO: Implement compatibility with memcached, redis, and other drivers
-
-        $cacheConnections = array_keys(config('cache.connections'));
-
-        dd($cacheConnections);
-
-        // Flush all cache: delete all Redis keys
-        if ($input->getOption('flush') == 'all') {
+        // Flush all cache connections
+        if ($input->getOption('flush')) {
 
             $question = new ConfirmationQuestion(
-                'This action is destructive. Do you want to continue with this action? [y/N] ', 
+                'This action is destructive. Do you want to continue? [Y/n] ', 
                 false,
                 '/^(y|Y)/i'
             );
 
+            $cacheConnections = config('cache.connections');
+
             if ($this->getHelper('question')->ask($input, $output, $question)) {
 
-                //
-                // Add logic to flush all cache drivers
-                //
-                foreach ($cacheDrivers as $driver) {
-
-                    switch ($driver) {
+                foreach ($cacheConnections as $connection => $setup) {
+                    switch ($setup['driver']) {
                         case 'memcached':
-                            cache('memcached')->flush();
+                            cache($connection)->flush();
                             break;
                         case 'redis':
-                            cache('redis')->flushdb();
-                            break;
-
-                        case 'mysql':
-                            // cache('redis')->flushdb();
-                            break;
-                        case 'mssql':
-                            // cache('redis')->flushdb();
-                            break;
-                        case 'sqlite':
-                            // cache('redis')->flushdb();
-                            break;
-                        case 'postgres':
-                            // cache('redis')->flushdb();
+                            cache($connection)->flushdb();
                             break;
                     }
                 }
 
-                // memcached
-
-                // redis
-
-                // mysql
-                // mssql
-                // sqlite
-                // postgres
-
-                $keys = cache()->keys('*');
-                $output->writeln(sprintf("Keys to be eliminated: \n\n%s", implode("\n", $keys)));
-                cache()->flushdb();
-
-                $output->writeln("\n\nDone. \n");
+                $output->writeln("All cache connections were flushed.");
 
                 return Command::SUCCESS;
             }
         }
 
-        // Example : `php aeros cache:clear redis:cache.routes memcached:cache.routes --flush=redis,mem`
+        // Example : `php aeros cache:clear redis-conn:cache.routes memcached-conn:cache.routes`
         // Delete all requested "$keys"
         if ($keys = $input->getArgument('keys')) {
 
@@ -154,14 +104,16 @@ class CacheClearCommand extends Command
                 // Delete each key
                 foreach ($keys as $key) {
 
-                    if (! cache()->exists($key)) {
-                        $progressBar->setMessage('Key: ' . $key . ' does not exist.');
+                    [$connectionName, $cacheKey] = explode(':', $key);
+
+                    if (! cache($connectionName)->exists($cacheKey)) {
+                        $progressBar->setMessage('Key: ' . $cacheKey . ' does not exist.');
                         $progressBar->advance();
                         continue;
                     }
 
-                    $progressBar->setMessage('Deleting key: ' . $key);
-                    cache()->del($key);
+                    $progressBar->setMessage('Deleting key: ' . $cacheKey);
+                    cache($connectionName)->del($cacheKey);
 
                     $progressBar->advance();
                 }
