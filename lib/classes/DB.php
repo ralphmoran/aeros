@@ -19,10 +19,7 @@ class Db
     private $activeDBConnections = [];
 
     /** @var string|null */
-    private $dbConnectionAlias = null;
-    
-    /** @var string|null */
-    private $driver = null;
+    private $connectionName = null;
 
     /** @var \PDO|null */
     private $reflectionPDO = null;
@@ -50,61 +47,33 @@ class Db
     /**
      * Generic method to handle diffrent DB drivers.
      *
-     * @param ?string $driver `sqlite` or `sqlite:db_alias`, if it's null, the driver
+     * @param ?string $connection `sqlite` or `sqlite:db_alias`, if it's null, the driver
      *                          will be get from config('db.default') field.
      * @return Db|\PDO
      */
-    public function connect(string $driver = null): Db|\PDO
+    public function connect(string $connection = null): Db|\PDO
     {
-        $dbSetup = config('db');
-
-        # TODO: Create a class to handle diffrent DB connections properly.
-        // It could be a driver with/out alias, and different server configuration
-        // Driver comes with an alias: mysql:readonly
-        if (strpos($driver, ':') !== false) {
-            $driverParts =  array_filter(explode(':', $driver), function ($alias) {
-                    return ! empty($alias) ? $alias : null;
-                }
+        if (! is_null($connection) && ! in_array($connection, array_keys(config('db.connections')))) {
+            throw new \PDOException(
+                sprintf(
+                    'ERROR[DB connection] DB connection "%s" not found.', 
+                    $connection
+                )
             );
-
-            $this->driver = $driver = $driverParts[0];
-            $this->dbConnectionAlias = $driverParts[1];
-        }
-
-        $this->driver = $driver ?? $dbSetup['default'][0];
-
-        // Return PDO object by alias, if exists
-        if (isset($this->activeDBConnections[$this->dbConnectionAlias])) {
-            return $this;
         }
 
         // Return PDO object by driver, if exists
-        if (isset($this->activeDBConnections[$this->driver])) {
+        if (isset($this->activeDBConnections[$this->connectionName])) {
             return $this;
         }
 
-        switch ($this->driver) {
-            case 'postgres':
-                $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver] = $this->getPostgresPDO();
-                break;
-            case 'sqlite':
-                $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver] = $this->getSqlitePDO();
-                break;
-            case 'mysql':
-                $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver] = $this->getMysqlPDO();
-                break;
-            case 'mssql':
-                $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver] = $this->getMssqlPDO();
-                break;
-            default:
-                throw new \PDOException(
-                    sprintf(
-                        'ERROR[PDOException] DB Driver "%s:%s" not found or invalid.', 
-                        $this->driver,
-                        $this->dbConnectionAlias
-                    )
-                );
-        }
+        $dbConfig = config('db');
+
+        $this->connectionName = $connection ?? implode($dbConfig['default']);
+
+        $this->activeDBConnections[$this->connectionName] = $this->resolveDbObject(
+            $dbConfig['connections'][$this->connectionName]
+        );
 
         return $this;
     }
@@ -116,7 +85,7 @@ class Db
      */
     public function lastInsertId(): int|bool
     {
-        return $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver]->lastInsertId();
+        return $this->activeDBConnections[$this->connectionName]->lastInsertId();
     }
 
     /**
@@ -137,7 +106,7 @@ class Db
         // Process PDO
         $result = $this->processReflection(
             $this->reflectionPDO, 
-            $this->activeDBConnections[$this->dbConnectionAlias ?? $this->driver], 
+            $this->activeDBConnections[$this->connectionName], 
             $method, 
             $arguments
         );
@@ -180,75 +149,31 @@ class Db
     }
 
     /**
-     * Connects to PostgreSQL database.
+     * Resolves the DB driver and connection.
      *
+     * @param array $dbSetup
      * @return \PDO
      */
-    private function getPostgresPDO(): \PDO
+    private function resolveDbObject(array $dbSetup): \PDO
     {
-        $dbSetup = config('db.drivers.postgres');
+        $dns = $dbSetup['driver'] . ":host=" . $dbSetup['server'] . ":" . $dbSetup['port'] .  ";dbname=" . $dbSetup['database'];
 
-        return new \PDO(
-            "pgsql:host=" . $dbSetup['server'] . ":" . $dbSetup['port'] .  ";dbname=" . $dbSetup['database'], 
-            $dbSetup['username'], 
-            $dbSetup['password'], 
-            $this->connFlags
-        );
-    }
+        // Exception for sqlite
+        if ($dbSetup['driver'] == 'sqlite') {
+            if (strtolower(pathinfo($dbSetup['database'])['extension']) !== 'sql') {
+                throw new \InvalidArgumentException(
+                    sprintf('ERROR[InvalidArgumentException] Database file name "%s" is not valid.', $dbSetup['database'])
+                );
+            }
 
-    /**
-     * Connects to SQLite database.
-     *
-     * @return void
-     */
-    private function getSqlitePDO(): \PDO
-    {
-        $dbSetup = config('db.drivers.sqlite');
-
-        if (strtolower(pathinfo($dbSetup['database'])['extension']) !== 'sql') {
-            throw new \InvalidArgumentException(
-                sprintf('ERROR[InvalidArgumentException] Database file name "%s" is not valid.', $dbSetup['database'])
-            );
+            $dns = "sqlite:" . $dbSetup['server'] . "/" . $dbSetup['database'];
         }
 
+        // Resolve PDO
         return new \PDO(
-            "sqlite:" . $dbSetup['server'] . "/" . $dbSetup['database'], 
-            null, 
-            null, 
-            $this->connFlags
-        );
-    }
-
-    /**
-     * Connects to MySQL database.
-     *
-     * @return \PDO
-     */
-    private function getMysqlPDO(): \PDO
-    {
-        $dbSetup = config('db.drivers.mysql');
-
-        return new \PDO(
-            "mysql:host=" . $dbSetup['server'] . ":" . $dbSetup['port'] . ";dbname=" . $dbSetup['database'] . ';charset=UTF8', 
-            $dbSetup['username'], 
-            $dbSetup['password'], 
-            $this->connFlags
-        );
-    }
-    
-    /**
-     * Connects to MSSQL database.
-     *
-     * @return \PDO
-     */
-    private function getMssqlPDO(): \PDO
-    {
-        $dbSetup = config('db.drivers.mssql');
-
-        return new \PDO(
-            "sqlsrv:host=" . $dbSetup['server'] . ":" . $dbSetup['port'] . ";dbname=" . $dbSetup['database'],
-            $dbSetup['username'], 
-            $dbSetup['password'], 
+            $dns,
+            $dbSetup['username'],
+            $dbSetup['password'],
             $this->connFlags
         );
     }

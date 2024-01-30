@@ -17,7 +17,7 @@ return [
         'memcached'
     ],
 
-    'drivers' => [
+    'connections' => [
         /*
          * Redis connection
          */
@@ -26,6 +26,7 @@ return [
             'port'     => env("REDIS_PORT"),
             'protocol' => env("REDIS_PROTOCOL"),
             'password' => env("REDIS_PASSWORD"),
+            'driver'   => 'redis'
         ],
         
         /*
@@ -36,6 +37,7 @@ return [
             'port'     => env("MEMCACHED_PORT"),
             'user'     => env("MEMCACHED_USER"),
             'password' => env("MEMCACHED_PASSWORD"),
+            'driver'   => 'memcached'
         ],
 
         /*
@@ -46,7 +48,8 @@ return [
             'username' => env("DB_USERNAME"),
             'password' => env("DB_PASSWORD"),
             'database' => env("DB_DATABASE"),
-            'port'     => env("DB_PORT")
+            'port'     => env("DB_PORT"),
+            'driver'   => 'mysql'
         ],
     ],
 

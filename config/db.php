@@ -2,9 +2,9 @@
 
 /*
 |----------------------------------------------
-| Set up your DB drivers here.
+| Set up your DB connections here.
 |
-| This config file is to store persistent data
+| This config file is to store persistent data.
 |----------------------------------------------
 |
 */
@@ -12,22 +12,23 @@
 return [
 
     'default' => [
-        'mysql'
+        'mysql-001'
     ],
 
-    'drivers' => [
+    'connections' => [
 
         /*
          * MySQL connection.
          * 
          * Note: Make sure you have installed MySQL driver.
          */
-        'mysql' => [
+        'mysql-001' => [
             'server'   => env("DB_HOST"),
             'username' => env("DB_USERNAME"),
             'password' => env("DB_PASSWORD"),
             'database' => env("DB_DATABASE"),
-            'port'     => env("DB_PORT")
+            'port'     => env("DB_PORT"),
+            'driver'   => 'mysql'
         ],
 
         /*
@@ -35,12 +36,13 @@ return [
          * 
          * Note: Make sure you have installed MSSQL driver.
          */
-        'mssql' => [
+        'mssql-001' => [
             'server'   => 'host',
             'username' => 'username',
             'password' => 'password',
             'database' => 'database',
-            'port'     => '1433'
+            'port'     => '1433',
+            'driver'   => 'sqlsrv'
         ],
 
         /*
@@ -48,20 +50,25 @@ return [
          * 
          * Note: Make sure you have installed PostgreSQL driver.
          */
-        'postgres' => [
+        'postgres-001' => [
             'server'   => 'host',
             'username' => 'username',
             'password' => 'password',
             'database' => 'database',
-            'port'     => '5432'
+            'port'     => '5432',
+            'driver'   => 'pgsql'
         ],
 
         /*
          * SQLite connection.
          */
-        'sqlite' => [
+        'sqlite-001' => [
             'server'   => app()->basedir . '/db',
-            'database' => 'new-database.sql'
+            'username' => null,
+            'password' => null,
+            'database' => 'new-database.sql',
+            'port'     => null,
+            'driver'   => 'sqlite'
         ],
     ],
 

@@ -43,3 +43,4 @@ Route::get("admin:/login/{userid}/{profile}", "AppController@profile");
 // Route::get("admin:/users/{firstname}/{lastname}", "AppController@testMethod");
 
 // Route::post("/", "AppController");
+# TODO: Confirm middleware group names

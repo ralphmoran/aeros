@@ -18,7 +18,7 @@ return [
         'local'
     ],
 
-    'drivers' => [
+    'spaces' => [
         /*
          * Local storage: it requires the path on the server 
          * where files are going to be stored
@@ -36,7 +36,8 @@ return [
             'username' => env("DB_USERNAME"),
             'password' => env("DB_PASSWORD"),
             'database' => env("DB_DATABASE"),
-            'port'     => env("DB_PORT")
+            'port'     => env("DB_PORT"),
+            'driver'   => 'aws',
         ],
     ],
 

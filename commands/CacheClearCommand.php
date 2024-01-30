@@ -67,9 +67,9 @@ class CacheClearCommand extends Command
     {
         # TODO: Implement compatibility with memcached, redis, and other drivers
 
-        dd(array_keys(config('db.drivers')), $input->getArgument('keys'), $input->getOption('flush'));
+        $cacheConnections = array_keys(config('cache.connections'));
 
-        $cacheDrivers = array_keys(config('db.drivers'));
+        dd($cacheConnections);
 
         // Flush all cache: delete all Redis keys
         if ($input->getOption('flush') == 'all') {

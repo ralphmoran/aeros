@@ -1,0 +1,15 @@
+<?php
+
+namespace Aeros\Middlewares;
+
+use Aeros\Lib\Classes\Request;
+use Aeros\Lib\Classes\Response;
+use Aeros\Lib\Interfaces\MiddlewareInterface;
+
+class {{classname}}Middleware implements MiddlewareInterface
+{
+    public function __invoke(Request $request, Response $response)
+    {
+        // logger('From: ' . __CLASS__ . '::' . __METHOD__, app()->basedir . '/logs/event.log');
+    }
+}

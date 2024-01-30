@@ -334,12 +334,12 @@ if (! function_exists('db')) {
 	/**
 	 * Wrapper for DB conection and all its handlers.
 	 * 
-	 * @param ?string $driver - `sqlite` or `sqlite:db_alias`
+	 * @param ?string $connection - `sqlite-server-01`. This should be listed in config('db.connections').
 	 * @return \Aeros\Lib\Classes\Db
 	 */
-	function db(string $driver = null): \Aeros\Lib\Classes\Db
+	function db(string $connection = null): \Aeros\Lib\Classes\Db
 	{
-		return app()->db->connect($driver);
+		return app()->db->connect($connection);
 	}
 }
 

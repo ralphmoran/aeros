@@ -26,7 +26,7 @@ class RunAppCommand extends Command
     protected function configure()
     {
         // This text will be displayed when: `$ php run:app --help`
-        $this->setDescription('Runs the application. It warms up and caches the app, if option is "-p" provided.');
+        $this->setDescription('Runs the application. It warms up and caches the app, if option "-p" is provided.');
 
         $this->addOption(
             'production', 
