@@ -13,17 +13,6 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$mainWorker = app()->bootApplication()->worker;
-
-while (true) {
-
-    try {
-        // It takes care of all the registered pipelines and processing their jobs.
-        $mainWorker->handle();
-        sleep(5);
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-    }
-}
+app()->bootApplication()->worker->start();
 
 exit(1);

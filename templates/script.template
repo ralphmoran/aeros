@@ -9,27 +9,11 @@
 |
 */
 
-// If you require to load Aeros framework, comment next lines in.
-// require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
-// Boot Aeros application
-// app()->bootstrap();
+app()
+    ->bootstrap()
+    ->worker
+    ->startWorker(\Aeros\Queues\Workers\{{classname}}Worker::class);
 
-/**
- * All workers, in order to run indefinitely, need to run an infinite loop
- */
-while (true) {
-    try {
-        //
-        // Your logic goes here
-        //
-        // logger('Testing: ' . __FILE__, app()->basedir . '/logs/{{worker-name}}-script.log');
-
-        sleep(5);
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-    }
-}
-
-// Make sure you exit the application with 1
 exit(1);

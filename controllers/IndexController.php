@@ -28,6 +28,16 @@ class IndexController extends Controller
     public function index()
     {
         //******************************************/
+        // Calls  directly the worker
+        // app()->worker->call(\Aeros\Queues\Workers\NewLogicWorker::class);
+
+        // Same funcionality as above
+        // (new \Aeros\Queues\Workers\NewLogicWorker)->handle();
+
+        // Starts an infinite loop for this worker
+        // (new \Aeros\Queues\Workers\NewLogicWorker)->start();
+
+        //******************************************/
         // Note: All pipelines are prepended with "env('APP_NAME') . '_'" string
         // queue()->push([
         //     \Aeros\Queues\Jobs\CleanupJob::class,

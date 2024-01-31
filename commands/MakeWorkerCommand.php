@@ -32,7 +32,7 @@ class MakeWorkerCommand extends Command
         $this->addArgument('name', InputArgument::REQUIRED, 'Argument "name" (required)');
 
         // Adding options
-        $this->addOption('processes', 'p', InputOption::VALUE_OPTIONAL, 'Option "processes" with alias "p"');
+        $this->addOption('processes', 'p', InputOption::VALUE_OPTIONAL, 'Option "processes" with alias "p". Default 3.');
         $this->addOption('log', 'l', InputOption::VALUE_NONE, 'Option "log" with alias "l". If provided, it creates a log file.');
         $this->addOption('config', 'c', InputOption::VALUE_NONE, 'Option "config" with alias "c". If provided, it creates a config file.');
         $this->addOption('script', 's', InputOption::VALUE_NONE, 'Option "script" with alias "s". If provided, it creates a script file.');
@@ -71,7 +71,10 @@ class MakeWorkerCommand extends Command
                 app()->file->createFromTemplate(
                     $workerScript = env('SCRIPTS_DIR') . '/' . $hyphenatedWorkerName . '-worker-script.php', 
                     app()->basedir . '/templates/script.template', 
-                    ['worker-name' => $hyphenatedWorkerName,]
+                    [
+                        'worker-name' => $hyphenatedWorkerName,
+                        'classname' => $name
+                    ]
                 );
             }
 
@@ -83,7 +86,7 @@ class MakeWorkerCommand extends Command
                     $workerConf = env('WORKERS_CONF_DIR') . '/' . $hyphenatedWorkerName . '-worker-script.conf', 
                     app()->basedir . '/templates/conf.template', 
                     [
-                        'script-name' => $hyphenatedWorkerName . '-script',
+                        'script-name' => $hyphenatedWorkerName . '-worker-script',
                         'process-num' => $processes,
                     ]
                 );

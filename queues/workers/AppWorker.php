@@ -22,18 +22,22 @@ class AppWorker extends Worker
     /**
      * Calls the requested worker and puts it to do its job.
      *
-     * @param string $workerName
+     * @param string|array $worker or an array workers
      * @return void
      */
-    public function call(string $worker)
+    public function call(string|array $worker)
     {
-        if (! $this->isWorker($worker)) {
-            throw new \Exception(
-                sprintf('ERROR[Worker] There was a problem validating worker \'%s\.', $worker)
-            );
-        }
+        $workers = is_string($worker) ? [$worker] : $worker;
 
-        (new $worker)->handle();
+        foreach ($workers as $w) {
+            if (! $this->isWorker($w)) {
+                throw new \Exception(
+                    sprintf('ERROR[Worker] There was a problem validating worker \'%s\.', $w)
+                );
+            }
+
+            (new $w)->handle();
+        }
     }
 
     /**
@@ -49,6 +53,19 @@ class AppWorker extends Worker
             foreach ($workers as $worker) {
                 $this->call($worker);
             }
+        }
+    }
+
+    /**
+     * Initiates a worker infinite loop.
+     *
+     * @param Worker|string $worker
+     * @return void
+     */
+    public function startWorker(Worker|string $worker)
+    {
+        if (is_string($worker) && is_subclass_of($worker, Worker::class)) {
+            (new $worker)->start();
         }
     }
 

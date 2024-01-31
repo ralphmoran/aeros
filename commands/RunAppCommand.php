@@ -67,6 +67,7 @@ class RunAppCommand extends Command
         // Validate cache access and connectivity
         // Warm the app up
         // Cache routes, SQL queries, content, etc
+        // Run migrations
 
         // By default, unless it's provided, this command runs for development: see 
 
@@ -85,6 +86,32 @@ class RunAppCommand extends Command
         //     ]), 
         //     $output
         // );
+
+        if ($seed = $input->getOption('seed')) {
+            $output->writeln([
+                sprintf("Option 'seed': %s", $seed),
+                '====================================',
+                ''
+            ]);
+        }
+
+        // Run Symfony console commands
+        // $returnCode = $this->getApplication()->doRun(
+        //     new ArrayInput([
+        //         'command' => 'composer worker-stop'
+        //     ]), 
+        //     $output
+        // );
+
+        // Run systems commands
+        // $process = new Process([
+        //     './vendor/bin/phinx', 
+        //     'migrate'
+        // ]);
+
+        // $process->mustRun();
+
+        // $output->writeln($process->getOutput());
 
         // Success if it's the case. 
         // Other statuses: Command::FAILURE and Command::INVALID

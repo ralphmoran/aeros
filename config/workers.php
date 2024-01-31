@@ -16,7 +16,7 @@ return [
     |
     */
 
-    // 'GreatWorker' => \Aeros\Queues\Workers\GreatWorker::class,
+    // 'NewLogicWorker' => \Aeros\Queues\Workers\NewLogicWorker::class,
 
     // ...
 ];
