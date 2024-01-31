@@ -60,7 +60,7 @@ class RunAppCommand extends Command
         //     $output->writeln(sprintf("Option 'staging': %s", $staging));
         // }
 
-        # TODO: List of action to run application
+        # TODO: List of actions to run application
         // Generate APP_KEY: env('APP_KEY')
         // Validate DB connection
         // Confirm if DBs are available

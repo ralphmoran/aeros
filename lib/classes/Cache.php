@@ -13,17 +13,18 @@ class Cache
      *
      * @param string $connection
      * @return void
+     * @throws \Exception
      */
     public function setConnection(string $connection = null)
     {
-        if (isset($this->objects[$this->index])) {
-            return $this->objects[$this->index];
+        if (isset($this->objects[$connection])) {
+            return $this->objects[$connection];
         }
 
         if (! is_null($connection) && ! in_array($connection, array_keys(config('cache.connections')))) {
-            throw new \PDOException(
+            throw new \Exception(
                 sprintf(
-                    'ERROR[DB connection] Cache connection "%s" not found.', 
+                    'ERROR[Cache connection] Cache connection "%s" not found.', 
                     $connection
                 )
             );

@@ -410,11 +410,11 @@ if (! function_exists('logger')) {
 	 * Appends a message into a log file.
 	 *
 	 * @param mixed $message
-	 * @param string $logFile Path and filename.
+	 * @param string $logFile Path and filename. If empty, error.log is set.
 	 * @param bool $createFile Flag to create the log file if it does not exist.
 	 * @return boolean
 	 */
-	function logger(mixed $message, string $logFile, bool $createFile = false): bool {
+	function logger(mixed $message, string $logFile = '', bool $createFile = false): bool {
 		return app()->logger->log($message, $logFile, $createFile);
 	}
 }
