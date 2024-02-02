@@ -147,7 +147,7 @@ class Route extends Router
                                     ? [$controller, 'index']
                                     : explode('@', $controller);
 
-        $controllerName = "Aeros\\Controllers\\$controllerName";
+        $controllerName = "\\Aeros\\Controllers\\$controllerName";
 
         if (get_parent_class($controllerName) != \Aeros\Lib\Classes\Controller::class || ! class_exists($controllerName)) {
             throw new \Exception(

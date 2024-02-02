@@ -18,5 +18,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 # TODO: Implement Phinx for all drivers, also, use socket connections (ONLY if client and server are in the same server)
 # TODO: Use socket connections for MySQL to improve performance
 # TODO: Add broadcasting feature from backend to front end (Axios or Pusher)
+# TODO: Refactor file tree
 
 app()->run();
