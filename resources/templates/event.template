@@ -1,0 +1,17 @@
+<?php
+
+namespace Aeros\App\Events;
+
+use Aeros\Src\Classes\Observable;
+
+class {{classname}}Event extends Observable
+{
+    public function update($eventData): bool
+    {
+        //
+        // Your logic goes here
+        //
+
+        return true;
+    }
+}

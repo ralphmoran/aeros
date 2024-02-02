@@ -1,0 +1,360 @@
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Warning:  require_once(/var/www/html/app/queues/workers/scripts/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14
+PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/html/app/queues/workers/scripts/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/html/app/queues/workers/scripts/app-worker-script.php:14
+Stack trace:
+#0 {main}
+  thrown in /var/www/html/app/queues/workers/scripts/app-worker-script.php on line 14

@@ -1,0 +1,21 @@
+<?php
+
+namespace Aeros\App\Queues\Workers;
+
+use Aeros\Src\Classes\Worker;
+
+/**
+ * This worker will be ran on the background.
+ * 
+ * Make sure to run `$ composer worker-update`. 
+ */
+
+class {{classname}}Worker extends Worker
+{
+    public function handle()
+    {
+        //
+        // Your logic goes here...
+        //
+    }
+}

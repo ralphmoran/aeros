@@ -1,0 +1,19 @@
+<?php
+
+/*
+|----------------------------------------------
+| "{{worker-name}}" worker
+|----------------------------------------------
+|
+| This worker will be executed in the background by Supervisor.
+|
+*/
+
+require_once __DIR__ . '/../../../../vendor/autoload.php';
+
+app()
+    ->bootstrap()
+    ->worker
+    ->startWorker(\Aeros\App\Queues\Workers\{{classname}}Worker::class);
+
+exit(1);

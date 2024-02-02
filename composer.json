@@ -3,21 +3,21 @@
     "type": "project",
     "autoload":{
         "files":[
-            "Lib/Functions/all.php"
+            "src/Functions/all.php"
         ],
         "psr-4": {
-            "Aeros\\Lib\\Classes\\": "Lib/Classes",
-            "Aeros\\Lib\\Interfaces\\": "Lib/Interfaces",
-            "Aeros\\Lib\\Traits\\": "Lib/Traits",
-            "Aeros\\Controllers\\": "Controllers",
-            "Aeros\\Models\\": "Models",
-            "Aeros\\Middlewares\\": "Middlewares",
-            "Aeros\\Providers\\": "Providers",
-            "Aeros\\Events\\": "Events",
-            "Aeros\\Queues\\Crons\\": "Queues/Crons",
-            "Aeros\\Queues\\Jobs\\": "Queues/Jobs",
-            "Aeros\\Queues\\Workers\\": "Queues/Workers",
-            "Aeros\\Commands\\": "Commands"
+            "Aeros\\Src\\Classes\\": "src/Classes",
+            "Aeros\\Src\\Interfaces\\": "src/Interfaces",
+            "Aeros\\Src\\Traits\\": "src/Traits",
+            "Aeros\\App\\Controllers\\": "App/Controllers",
+            "Aeros\\App\\Models\\": "App/Models",
+            "Aeros\\App\\Middlewares\\": "App/Middlewares",
+            "Aeros\\App\\Providers\\": "App/Providers",
+            "Aeros\\App\\Events\\": "App/Events",
+            "Aeros\\App\\Queues\\Crons\\": "App/Queues/Crons",
+            "Aeros\\App\\Queues\\Jobs\\": "App/Queues/Jobs",
+            "Aeros\\App\\Queues\\Workers\\": "App/Queues/Workers",
+            "Aeros\\App\\Commands\\": "App/Commands"
         }
     },
     "require": {
@@ -53,7 +53,7 @@
         "worker-status": "sudo supervisorctl status",
         "worker-remove": "sudo rm /etc/supervisor/conf.d/*", 
         "worker-update": [
-            "sudo cp -r /var/www/html/scripts/supervisor/*.conf /etc/supervisor/conf.d/",
+            "sudo cp -r /var/www/html/app/queues/workers/scripts/supervisor/*.conf /etc/supervisor/conf.d/",
             "sudo supervisorctl update", 
             "sudo supervisorctl reread"
         ],
