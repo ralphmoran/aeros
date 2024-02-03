@@ -44,7 +44,7 @@ class MakeJobCommand extends Command
     {
         app()->file->createFromTemplate(
             app()->basedir . '/queues/jobs/' . ucfirst($input->getArgument('name')) . 'Job.php', 
-            app()->basedir . '/../resources/templates/job.template', 
+            app()->basedir . '/../src/resources/templates/job.template', 
             [
                 'classname' => ucfirst($input->getArgument('name')),
             ]

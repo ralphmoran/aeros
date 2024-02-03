@@ -41,7 +41,7 @@ class MakeCronCommand extends Command
     {
         app()->file->createFromTemplate(
             app()->basedir . '/queues/crons/' . ucfirst($input->getArgument('name')) . 'Cron.php', 
-            app()->basedir . '/../resources/templates/cron.template', 
+            app()->basedir . '/../src/resources/templates/cron.template', 
             [
                 'classname' => ucfirst($input->getArgument('name')),
             ]

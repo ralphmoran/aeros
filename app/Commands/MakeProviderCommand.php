@@ -47,7 +47,7 @@ class MakeProviderCommand extends Command
 
         app()->file->createFromTemplate(
             app()->basedir . '/providers/' . $classname . 'ServiceProvider.php', 
-            app()->basedir . '/../resources/templates/provider.template', 
+            app()->basedir . '/../src/resources/templates/provider.template', 
             [
                 'classname' => $classname
             ]

@@ -46,7 +46,7 @@ class MakeEventCommand extends Command
 
             app()->file->createFromTemplate(
                 app()->basedir . '/events/' . ucfirst($name) . 'Event.php', 
-                app()->basedir . '/../resources/templates/event.template', 
+                app()->basedir . '/../src/resources/templates/event.template', 
                 [
                     'classname' => ucfirst($name),
                 ]
