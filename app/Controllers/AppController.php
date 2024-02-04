@@ -32,6 +32,7 @@ class AppController extends Controller
 
         // Or
 
+        // If you want to remove the event from the event hub, pass a 3rd parameter as true
         // app()->event->emit(
         //     'email.notify', 
         //     ['ralph@myaero.app'], 

@@ -333,7 +333,9 @@ class Router
 
             $appMiddlewares = config('app.middlewares');
 
-            $middlewares = array_reduce($middlewares, function ($carry, $key) use ($appMiddlewares) {
+            $middlewares = array_reduce(
+                $middlewares, 
+                function ($carry, $key) use ($appMiddlewares) {
                     return array_merge($carry, $appMiddlewares[$key] ?? []);
                 }, 
                 []
@@ -348,5 +350,40 @@ class Router
 
         // Clear group middleware variable
         self::$groupMiddlewares = null;
+    }
+
+    /**
+     * Load requested routes from a specified route file.
+     *
+     * This method loads routes from the specified route file and caches them 
+     * in production or staging environments.
+     * ```php
+     * // To load the default 'web' routes:
+     * Router::loadRequestedRoutes();
+     * ```
+     * 
+     * ```php
+     * // To load custom routes from a file named 'custom_routes.php':
+     * Router::loadRequestedRoutes('custom_routes');
+     * ```
+     *
+     * @param   string  $routeFile The name of the route file to load (default is 'web').
+     * @return  bool    True if routes were successfully loaded and cached, false otherwise.
+     */
+    public static function loadRequestedRoutes(string $routeFile = 'web')
+    {
+        if (file_exists($routeFile = app()->basedir . '/routes/' . $routeFile . '.php')) {
+
+            require $routeFile;
+
+            // Caching routes for production|staging
+            if (in_array(env('APP_ENV'), ['production', 'staging'])) {
+                cache('memcached')->set('cached.routes', app()->router->getRoutes());
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

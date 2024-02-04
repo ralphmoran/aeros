@@ -2,6 +2,7 @@
 
 namespace Aeros\App\Providers;
 
+use Aeros\Src\Classes\Router;
 use Aeros\Src\Classes\ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
@@ -18,22 +19,31 @@ class RouteServiceProvider extends ServiceProvider
             return;
         }
 
-        // On development
-        $path = app()->basedir . '/routes';
-        
-        $routes = scan($path);
+        // Only on web
+        if (strpos(PHP_SAPI, 'cli') === false) {
 
-        if (empty($routes)) {
-            throw new \Exception("ERROR[route] There are no routes registered.");
-        }
+            $tld = explode('.', $_SERVER['HTTP_HOST']);
 
-        foreach ($routes as $file) {
-            require $path . '/' . $file;
-        }
+            // Loads routes for subdomain
+            if (count($tld) > 2 && $tld[0] != 'www' && Router::loadRequestedRoutes($tld[0])) {
+                return;
+            }
 
-        // Caching routes for production|staging
-        if (in_array(env('APP_ENV'), ['production', 'staging'])) {
-            cache('memcached')->set('cached.routes', app()->router->getRoutes());
+            // There is no subdomain
+            if (count($tld) == 2) {
+
+                // Get the URI
+                $uri = array_filter(explode('/', trim($_SERVER['REQUEST_URI'], '/')));
+
+                if (! empty($uri) && Router::loadRequestedRoutes(reset($uri))) {
+                    return;
+                }
+
+                // Default routes: web.php
+                Router::loadRequestedRoutes();
+
+                return;
+            }
         }
     }
 

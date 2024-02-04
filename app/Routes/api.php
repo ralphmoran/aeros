@@ -10,8 +10,6 @@
 
 use Aeros\Src\Classes\Route;
 
-// Route::post("admin:/{category}/{id}", "CategoryController@dynamicCategoryById");
-
-// Route::post("admin:/list/{id}", "CategoryController@dynamic_category_id");
-// Route::post("admin:/lender/{id}", "CategoryController@dynamic_category_id");
-// Route::post("admin:/calendar/{month}/{day}", "CategoryController@dynamic_category_id");
+// Both routes work in the same way
+Route::get("api:/test/profile", "ApiController");
+Route::get(":/api/test/profile", "ApiController");

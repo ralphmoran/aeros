@@ -15,12 +15,14 @@ class SessionServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-
+        if (! in_array(env('APP_ENV'), ['production'])) {
+            error_reporting(E_ALL);
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+        }
+        
         // Only on web request
-        if (strpos(PHP_SAPI, 'cli') !== false) {
+        if (strpos(PHP_SAPI, 'cli') === false) {
 
             if (session_status() == PHP_SESSION_ACTIVE) {
                 

@@ -19,15 +19,17 @@ if (! function_exists('app')) {
 if (! function_exists('scan')) {
 
 	/**
-	 * Scans a dir for files with specific extensions.
+	 * Scans a directory for files with specific extensions.
 	 *
-	 * @param string $path
-	 * @param mixed $extensions:default ('php')
-	 * @return array
-	 * 
-	 * @throws \Exception
+	 * @param 	string 	$path 		The path of the directory to scan.
+	 * @param 	array 	$filenames 	(optional) The array of filenames to filter by.
+	 * @param 	mixed 	$extensions (optional) The array of file extensions to 
+	 * 								filter by. Defaults to ['php'].
+	 * @return 	array 				An array of matching file names.
+	 *
+	 * @throws \Exception If the provided path is empty or the directory does not exist.
 	 */
-	function scan(string $path, $extensions = ['php']): array
+	function scan(string $path, array $filenames = [], $extensions = ['php']): array
 	{
 		if (empty($path)) {
 			throw new \Exception("ERROR[dir] 'path' should not be empty.");
@@ -37,13 +39,57 @@ if (! function_exists('scan')) {
             throw new \Exception("ERROR[dir] Directory '{$path}' does not exist.");
         }
 
-		return array_filter(scandir($path), function ($file) use ($extensions) {
-			$file_ext = pathinfo($file, PATHINFO_EXTENSION);
+		return array_filter(scandir($path), function ($file) use ($extensions, $filenames) {
+			$parts = pathinfo($file);
 
-			if (in_array($file_ext, $extensions)) {
-				return $file_ext;
+			if (in_array($parts['extension'], $extensions)) {
+
+				// Return all files that match the extensions
+				if (empty($filenames)) {
+					return true;
+				}
+
+				// Filenames were provided
+				if (in_array($parts['filename'], $filenames)) {
+					return true;
+				}
 			}
 		});
+	}
+}
+
+if (! function_exists('load')) {
+
+	/**
+	 * Loads PHP files from a specified directory.
+	 *
+	 * This function scans the specified directory for PHP files and includes 
+	 * them using the built-in `require` function. It is a convenient way to load 
+	 * multiple PHP files at once.
+	 *
+	 * @param 	string 	$path 		The path to the directory containing the 
+	 * 								PHP files.
+	 * @param 	array 	$filenames 	An optional array of specific filenames to 
+	 * 								load. If provided, only files with matching 
+	 * 								filenames will be included.
+	 *
+	 * @throws 	\Exception 	If no files are found in the specified directory.
+	 *
+	 * @return 	bool 		Returns true if the files are loaded successfully.
+	 */
+	function load(string $path, array $filenames = []) {
+
+		$files = scan($path, $filenames);
+
+		if (empty($files)) {
+			throw new \Exception("ERROR[load] No files were found in '$path'.");
+		}
+
+		foreach ($files as $file) {
+			require $path . '/' . $file;
+		}
+
+		return true;
 	}
 }
 
