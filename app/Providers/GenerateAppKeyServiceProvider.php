@@ -17,16 +17,7 @@ class GenerateAppKeyServiceProvider extends ServiceProvider
     {
         // Generate APP_KEY: env('APP_KEY')
         if (empty(env('APP_KEY'))) {
-            $envFile = app()->basedir . '/../.env';
-            $newAppKey = bin2hex(random_bytes(32));
-
-            $envBody = preg_replace(
-                '/(APP_KEY=)(.*)/', 
-                'APP_KEY=' . $newAppKey, 
-                file_get_contents($envFile)
-            );
-
-            file_put_contents($envFile, $envBody);
+            updateEnvVariable(['APP_KEY' => bin2hex(random_bytes(32))]);
         }
     }
 }

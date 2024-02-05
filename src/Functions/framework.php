@@ -489,3 +489,37 @@ if (! function_exists('cron')) {
 		return app()->cron;
 	}
 }
+
+if (! function_exists('updateEnv')) {
+
+	/**
+	 * Updates environment variables in the .env file.
+	 *
+	 * This function takes an associative array of new environment variable values
+	 * and updates the corresponding values in the .env file. It uses regular
+	 * expressions to find and replace the existing values for the specified keys.
+	 *
+	 * @param 	array 	$newEnvValues 	An associative array where keys represent the
+	 *                            		environment variable names, and values are the
+	 *                            		new values to be set.
+	 *
+	 * @return 	bool|int 	Returns the number of bytes written to the .env file on success,
+	 *                  	or false on failure. In case of failure, an error message can
+	 *                  	be retrieved with error_get_last().
+	 */
+	function updateEnvVariable(array $newEnvValues): bool|int {
+
+		$envFile = app()->basedir . '/../.env';
+		$envBody = file_get_contents($envFile);
+
+		foreach ($newEnvValues as $key => $value) {
+			$envBody = preg_replace(
+				"/($key=)(.*)/", 
+				$key . '=' . $value, 
+				$envBody
+			);
+		}
+
+		return file_put_contents($envFile, $envBody);
+	}
+}

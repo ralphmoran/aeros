@@ -33,14 +33,21 @@ class RunAppCommand extends Command
             'production', 
             'p', 
             InputOption::VALUE_NONE, 
-            'Option "production", alias "p". If provided, it runs warmup, cache, etc.'
+            'Option "production", alias "p". If provided, it changes environtment to production.'
         );
 
         $this->addOption(
             'staging', 
             's', 
             InputOption::VALUE_NONE, 
-            'Option "staging", alias "s". It runs development setup on remote server.'
+            'Option "staging", alias "s". If provided, it changes environtment to staging.'
+        );
+
+        $this->addOption(
+            'development', 
+            'd', 
+            InputOption::VALUE_NONE, 
+            'Option "development", alias "d". If provided, it changes environtment to development.'
         );
     }
 
@@ -53,13 +60,16 @@ class RunAppCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // if ($production = $input->getOption('production')) {
-        //     $output->writeln(sprintf("Option 'production': %s", $production));
-        // }
-
-        // if ($staging = $input->getOption('staging')) {
-        //     $output->writeln(sprintf("Option 'staging': %s", $staging));
-        // }
+        if ($input->getOption('production')) {
+            $output->writeln('==> Changing environtment to production...');
+            updateEnvVariable(['APP_ENV' => 'production']);
+        } else if ($input->getOption('staging')) {
+            $output->writeln('==> Changing environtment to staging...');
+            updateEnvVariable(['APP_ENV' => 'staging']);
+        } else if ($input->getOption('development')) {
+            $output->writeln('==> Changing environtment to development...');
+            updateEnvVariable(['APP_ENV' => 'development']);
+        }
 
         # TODO: List of actions to run application
         // Warm app up
