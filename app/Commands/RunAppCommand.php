@@ -60,6 +60,8 @@ class RunAppCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        # TODO: List of actions to run application
+        // Set environtment variable to...
         if ($input->getOption('production')) {
             $output->writeln('==> Changing environtment to production...');
             updateEnvVariable(['APP_ENV' => 'production']);
@@ -69,9 +71,11 @@ class RunAppCommand extends Command
         } else if ($input->getOption('development')) {
             $output->writeln('==> Changing environtment to development...');
             updateEnvVariable(['APP_ENV' => 'development']);
+        } else {
+            $output->writeln('==> No env flag provided. Changing environtment to development...');
+            updateEnvVariable(['APP_ENV' => 'development']);
         }
 
-        # TODO: List of actions to run application
         // Warm app up
         $output->writeln(sprintf('==> Warming up the application "%s"...', env('APP_NAME')));
         $returnCode = $this->getApplication()->doRun(
