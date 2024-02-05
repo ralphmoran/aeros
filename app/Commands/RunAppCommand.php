@@ -2,6 +2,7 @@
 
 namespace Aeros\App\Commands;
 
+use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
@@ -61,57 +62,49 @@ class RunAppCommand extends Command
         // }
 
         # TODO: List of actions to run application
-        // Generate APP_KEY: env('APP_KEY')
-        // Validate DB connection
-        // Confirm if DBs are available
-        // Validate cache access and connectivity
-        // Warm the app up
-        // Cache routes, SQL queries, content, etc
-        // Run migrations
+        // Warm app up
+        $output->writeln(sprintf('==> Warming up the application "%s"...', env('APP_NAME')));
+        $returnCode = $this->getApplication()->doRun(
+            new ArrayInput([
+                'command' => 'run:warmup'
+            ]), 
+            $output
+        );
 
-        // By default, unless it's provided, this command runs for development: see 
+        // Activate workers
+        $output->writeln('==> Waking up workers...');
 
-        // // Build DBs for default driver
-        // $driver = config('db.default');
-        // $output->writeln(sprintf('- Creating database for driver "%s"', strtoupper(implode($driver))));
+        $process = new Process([
+            '/usr/local/bin/composer', 
+            'worker-refresh'
+        ]);
 
-        // app()->service->call(new \Aeros\App\Providers\CreateAppDatabaseServiceProvider);
+        $process->mustRun();
+        $output->writeln($process->getOutput());
 
-        // // Warming app up
-        // $output->writeln(sprintf('- Warming up the application "%s"', env('APP_NAME')));
-
-        // $returnCode = $this->getApplication()->doRun(
-        //     new ArrayInput([
-        //         'command' => 'run:warmup'
-        //     ]), 
-        //     $output
-        // );
-
-        if ($seed = $input->getOption('seed')) {
-            $output->writeln([
-                sprintf("Option 'seed': %s", $seed),
-                '====================================',
-                ''
-            ]);
-        }
-
-        // Run Symfony console commands
-        // $returnCode = $this->getApplication()->doRun(
-        //     new ArrayInput([
-        //         'command' => 'composer worker-stop'
-        //     ]), 
-        //     $output
-        // );
-
-        // Run systems commands
+        // DB checking
+        $output->writeln('==> Checking DB connections...');
+        // $process = new Process([
+        //     './vendor/bin/phinx', 
+        //     'migrate'
+        // ]);
+        
+        // Run DB migrations
+        $output->writeln('==> Runnig DB connections...');
         // $process = new Process([
         //     './vendor/bin/phinx', 
         //     'migrate'
         // ]);
 
-        // $process->mustRun();
+        // Cache checking
+        $output->writeln('==> Checking Cache connections...');
+        // $process = new Process([
+        //     './vendor/bin/phinx', 
+        //     'migrate'
+        // ]);
 
-        // $output->writeln($process->getOutput());
+        // Optimizing assets
+        $output->writeln('==> Optimizing assets...');
 
         // Success if it's the case. 
         // Other statuses: Command::FAILURE and Command::INVALID

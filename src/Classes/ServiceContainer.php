@@ -30,7 +30,7 @@ class ServiceContainer extends Kernel
         } catch (\Throwable $e) {
 
             // Log errors only on production or staging
-            if (in_array(env('APP_ENV'), ['production', 'staging'])) {
+            if (in_array(env('APP_ENV'), ['production'])) {
                 logger(
                     sprintf(
                         'Caught %s: %s. %s:%d.', 

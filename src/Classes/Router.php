@@ -127,6 +127,11 @@ class Router
         // Returns URI parts and subdomain if there is any
         $currentUriParts = $this->getUriParts($uri);
 
+        // If routes are already cached for production...
+        if (in_array(env('APP_ENV'), ['production']) && empty($this->routes)) {
+            $this->routes = cache('memcached')->get('cached.routes');
+        }
+
         foreach ($this->getRoutes($method, $currentUriParts['subdomain']) as $route) {
 
             // URI parts are not equal: `/user/login` and `/user`, skip
@@ -272,11 +277,6 @@ class Router
      */
     public function getRoutes(string $method = '', string $subdomain = '*'): array
     {
-        // If routes are already cached for production|staging...
-        if (in_array(env('APP_ENV'), ['production', 'staging']) && cache('memcached')->get('cached.routes')) {
-            $this->routes = cache('memcached')->get('cached.routes');
-        }
-
         $method = strtoupper($method);
 
         if (! isset($this->routes[$method]) && ! empty($method)) {
@@ -353,35 +353,67 @@ class Router
     }
 
     /**
+     * Load requested routes based on the current environment and URI.
+     *
+     * This method is responsible for loading routes depending on the web or 
+     * CLI environment, handling subdomains, and validating requested routes by 
+     * checking corresponding files.
+     *
+     * @return void
+     */
+    public static function loadRequestedRoutes()
+    {
+        // Only on web
+        if (strpos(PHP_SAPI, 'cli') === false) {
+
+            $tld = explode('.', $_SERVER['HTTP_HOST']);
+
+            // Loads routes for subdomain
+            if (count($tld) > 2 && reset($tld) != 'www' && Router::validateRequestedRoutesByFile(reset($tld))) {
+                return;
+            }
+
+            // There is no subdomain
+            if (count($tld) == 2) {
+
+                // Get the URI
+                $uri = array_filter(explode('/', trim($_SERVER['REQUEST_URI'], '/')));
+
+                if (! empty($uri) && Router::validateRequestedRoutesByFile(reset($uri))) {
+                    return;
+                }
+
+                // Default routes: web.php
+                Router::validateRequestedRoutesByFile();
+
+                return;
+            }
+        }
+    }
+
+    /**
      * Load requested routes from a specified route file.
      *
      * This method loads routes from the specified route file and caches them 
      * in production or staging environments.
+     * 
      * ```php
      * // To load the default 'web' routes:
-     * Router::loadRequestedRoutes();
+     * Router::validateRequestedRoutesByFile();
      * ```
      * 
      * ```php
      * // To load custom routes from a file named 'custom_routes.php':
-     * Router::loadRequestedRoutes('custom_routes');
+     * Router::validateRequestedRoutesByFile('custom_routes');
      * ```
      *
      * @param   string  $routeFile The name of the route file to load (default is 'web').
      * @return  bool    True if routes were successfully loaded and cached, false otherwise.
      */
-    public static function loadRequestedRoutes(string $routeFile = 'web')
+    public static function validateRequestedRoutesByFile(string $routeFile = 'web')
     {
         if (file_exists($routeFile = app()->basedir . '/routes/' . $routeFile . '.php')) {
-
-            require $routeFile;
-
-            // Caching routes for production|staging
-            if (in_array(env('APP_ENV'), ['production', 'staging'])) {
-                cache('memcached')->set('cached.routes', app()->router->getRoutes());
-            }
-
-            return true;
+            return (require $routeFile);
         }
 
         return false;

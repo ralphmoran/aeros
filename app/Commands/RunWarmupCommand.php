@@ -35,18 +35,6 @@ class RunWarmupCommand extends Command
         $this->setDescription('Aeros REPL - "run:warmup" command.')
             ->setHelp('Running this command will warmup generally the application.');
         
-        // Adding arguments
-        // InputArgument::REQUIRED
-        // InputArgument::OPTIONAL
-        // InputArgument::IS_ARRAY
-        // $this->addArgument('name', InputArgument::REQUIRED, 'Command name (required)');
-
-        // Adding options
-        // InputOption::VALUE_NONE = 1; // Do not accept input for the option (e.g. --yell).
-        // InputOption::VALUE_REQUIRED = 2; // e.g. --iterations=5 or -i5
-        // InputOption::VALUE_OPTIONAL = 4; // e.g. --yell or --yell=loud
-        // InputOption::VALUE_IS_ARRAY = 8; // The option accepts multiple values (e.g. --dir=/foo --dir=/bar).
-        // InputOption::VALUE_NEGATABLE = 16; // The option may have either positive or negative value (e.g. --ansi or --no-ansi).
         $this->addOption('staging', 's', InputOption::VALUE_NONE, 'Option "staging" with alias "s"');
         $this->addOption('production', 'p', InputOption::VALUE_NONE, 'Option "production" with alias "p"');
     }
@@ -60,14 +48,6 @@ class RunWarmupCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // if ($staging = $input->getOption('staging')) {
-        //     $output->writeln(sprintf("Option 'staging': %s", $staging));
-        // }
-        
-        // if ($production = $input->getOption('production')) {
-        //     $output->writeln(sprintf("Option 'production': %s", $production));
-        // }
-
         // Get all from config('app.warmup')
         // Check the parent class: ServiceProvider, Cron, Job, Worker, etc. 
         // Each one has a specific method to run the main logic

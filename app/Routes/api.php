@@ -13,3 +13,9 @@ use Aeros\Src\Classes\Route;
 // Both routes work in the same way
 Route::get("api:/test/profile", "ApiController");
 Route::get(":/api/test/profile", "ApiController");
+
+Route::post("api:/test/profile", "ApiController");
+Route::post(":/api/test/profile", "ApiController");
+
+Route::put("api:/test/profile", "ApiController");
+Route::put(":/api/test/profile", "ApiController");

@@ -96,7 +96,8 @@ return [
     |    - \Aeros\Src\Classes\Observable::class
     */
     'warmup' => [
+        'GenerateAppKeyServiceProvider' => \Aeros\App\Providers\GenerateAppKeyServiceProvider::class,
         'MimeTypeServiceProvider' => \Aeros\App\Providers\MimeTypeServiceProvider::class,
-        # TODO: Create tables for cache system (mysql, sqlite)
+        'CacheRoutesServiceProvider' => \Aeros\App\Providers\CacheRoutesServiceProvider::class,
     ],
 ];

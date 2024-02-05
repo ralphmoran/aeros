@@ -125,10 +125,10 @@ Vagrant.configure("2") do |config|
     RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
   
     # Serve static files directly without rewrite
-    RewriteCond %{REQUEST_FILENAME} \.(html|htm|js|scss|css|png|jpg|jpeg|webp|gif|ico)$
+    RewriteCond %{REQUEST_FILENAME} \.(svg|html|htm|js|scss|css|png|jpg|jpeg|webp|gif|ico)$
     RewriteRule ^ - [L]
   
-    <FilesMatch "\.(html|htm|js|scss|css|png|jpg|jpeg|webp|gif|ico)$">
+    <FilesMatch "\.(svg|html|htm|js|scss|css|png|jpg|jpeg|webp|gif|ico)$">
         FileETag Mtime
         <IfModule mod_headers.c>
             Header unset ETag
