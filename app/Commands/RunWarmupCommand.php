@@ -98,7 +98,7 @@ class RunWarmupCommand extends Command
             }
         }
 
-        $progressBar->setMessage('Warmup completed.');
+        $progressBar->setMessage('<fg=green;options=bold>Warmup completed.</>');
         $progressBar->finish();
 
         // Success if it's the case. 
