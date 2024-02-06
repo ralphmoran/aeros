@@ -61,32 +61,53 @@ class RunAppCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         # TODO: List of actions to run application
+        // ---------------------------------------------------
         // Set environtment variable to...
         if ($input->getOption('production')) {
-            $output->writeln('==> Changing environtment to production...');
+            $output->write('==> Changing environtment to <fg=bright-green;options=bold>production</>... ');
+
             updateEnvVariable(['APP_ENV' => 'production']);
+
+            $output->write('<fg=green;options=bold>OK.</>');
+            $output->writeln('');
         } else if ($input->getOption('staging')) {
-            $output->writeln('==> Changing environtment to staging...');
+            $output->write('==> Changing environtment to <fg=magenta;options=bold>staging</>... ');
+
             updateEnvVariable(['APP_ENV' => 'staging']);
+
+            $output->write('<fg=green;options=bold>OK.</>');
+            $output->writeln('');
         } else if ($input->getOption('development')) {
-            $output->writeln('==> Changing environtment to development...');
+            $output->write('==> Changing environtment to <fg=yellow;options=bold>development</>... ');
+
             updateEnvVariable(['APP_ENV' => 'development']);
+
+            $output->write('<fg=green;options=bold>OK.</>');
+            $output->writeln('');
         } else {
-            $output->writeln('==> No env flag provided. Changing environtment to development...');
+            $output->write('==> No env flag provided. Changing environtment to <fg=yellow;options=bold>development</>... ');
+
             updateEnvVariable(['APP_ENV' => 'development']);
+
+            $output->write('<fg=green;options=bold>OK.</>');
+            $output->writeln('');
         }
 
-        // Warm app up
-        $output->writeln(sprintf('==> Warming up the application "%s"...', env('APP_NAME')));
+        // ---------------------------------------------------
+        // Warm the app up
+        $output->writeln(sprintf('==> Warming up the application <fg=bright-green;options=bold>"%s"</>', env('APP_NAME')));
         $returnCode = $this->getApplication()->doRun(
             new ArrayInput([
                 'command' => 'run:warmup'
             ]), 
             $output
         );
+        // $output->write('<fg=green;options=bold>OK.</>');
+        // $output->writeln('');
 
-        // Activate workers
-        $output->writeln('==> Waking up workers...');
+        // ---------------------------------------------------
+        // // Activate workers
+        $output->write('==> Waking up workers... ');
 
         $process = new Process([
             '/usr/local/bin/composer', 
@@ -94,31 +115,49 @@ class RunAppCommand extends Command
         ]);
 
         $process->mustRun();
-        $output->writeln($process->getOutput());
+        // $output->write(trim($process->getOutput()));
+        $output->write('<fg=green;options=bold>OK.</>');
+        $output->writeln('');
 
+        // ---------------------------------------------------
         // DB checking
-        $output->writeln('==> Checking DB connections...');
+        $output->write('==> Checking DB connections... ');
         // $process = new Process([
         //     './vendor/bin/phinx', 
         //     'migrate'
         // ]);
-        
+        $output->write('<fg=green;options=bold>OK.</>');
+        $output->writeln('');
+
+        // ---------------------------------------------------
         // Run DB migrations
-        $output->writeln('==> Runnig DB connections...');
+        $output->write('==> Running DB migrations... ');
         // $process = new Process([
         //     './vendor/bin/phinx', 
         //     'migrate'
         // ]);
+        $output->write('<fg=green;options=bold>OK.</>');
+        $output->writeln('');
 
+        // ---------------------------------------------------
         // Cache checking
-        $output->writeln('==> Checking Cache connections...');
+        $output->write('==> Checking Cache connections... ');
         // $process = new Process([
         //     './vendor/bin/phinx', 
         //     'migrate'
         // ]);
+        $output->write('<fg=green;options=bold>OK.</>');
+        $output->writeln('');
 
+        // ---------------------------------------------------
         // Optimizing assets
-        $output->writeln('==> Optimizing assets...');
+        $output->write('==> Optimizing assets... ');
+        // $process = new Process([
+        //     './vendor/bin/phinx', 
+        //     'migrate'
+        // ]);
+        $output->write('<fg=green;options=bold>OK.</>');
+        $output->writeln('');
 
         // Success if it's the case. 
         // Other statuses: Command::FAILURE and Command::INVALID
