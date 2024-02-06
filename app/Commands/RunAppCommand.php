@@ -102,8 +102,6 @@ class RunAppCommand extends Command
             ]), 
             $output
         );
-        // $output->write('<fg=green;options=bold>OK.</>');
-        // $output->writeln('');
 
         // ---------------------------------------------------
         // // Activate workers
