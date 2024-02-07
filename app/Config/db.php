@@ -28,7 +28,7 @@ return [
             'password' => env("DB_PASSWORD"),
             'database' => env("DB_DATABASE"),
             'port'     => env("DB_PORT"),
-            'driver'   => 'mysql'
+            'driver'   => env("DB_DRIVER")
         ],
 
         /*

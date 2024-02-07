@@ -76,52 +76,30 @@ class RunDatabaseCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
+        if (($production = $input->getOption('production')) && $input->getOption('create') && ! $input->getOption('all')) {
+            $this->verifyDBConnection($production, 'production', $output);
+        }
+
+        if (($staging = $input->getOption('staging')) && $input->getOption('create') && ! $input->getOption('all')) {
+            $this->verifyDBConnection($staging, 'staging', $output);
+        }
+
+        if (($development = $input->getOption('development')) && $input->getOption('create') && ! $input->getOption('all')) {
+            $this->verifyDBConnection($development, 'development', $output);
+        }
+
         // Add logic here
-        if (empty(env('DB_DATABASE')) || $input->getOption('create')) {
-
-            $development = $input->getOption('development');
-            $staging = $input->getOption('staging');
-            $production = $input->getOption('production');
-
-            // All DB names were provided
-            if ($development && $staging && $production) {
-
-                $this->verifyDBConnection($staging, 'staging', $output);
-                $this->verifyDBConnection($production, 'production', $output);
-                $this->verifyDBConnection($development, 'development', $output);
-
-                return Command::SUCCESS;
-            }
+        if ($input->getOption('all') && $input->getOption('create')) {
 
             $helper = $this->getHelper('question');
             $question = new Question('<fg=yellow>Enter your database name:</> ');
 
             if ($database = $helper->ask($input, $output, $question)) {
 
-                $development = null;
-                $staging = null;
-                $production = null;
-
-                if ($input->getOption('all')) {
-                    $development = $database . '_development';
-                    $staging = $database . '_staging';
-                    $production = $database . '_production';
-                }
-
-                // Staging
-                if ($staging || $staging = $input->getOption('staging')) {
-                    $this->verifyDBConnection($staging, 'staging', $output);
-                }
-
-                // Production
-                if ($production || $production = $input->getOption('production')) {
-                    $this->verifyDBConnection($production, 'production', $output);
-                }
-                
-                // Development
-                if ($development || $development = $input->getOption('development')) {
-                    $this->verifyDBConnection($development, 'development', $output);
-                }
+                $this->verifyDBConnection($database . '_production', 'production', $output);
+                $this->verifyDBConnection($database . '_staging', 'staging', $output);
+                $this->verifyDBConnection($database . '_development', 'development', $output);
 
                 return Command::SUCCESS;
             }
@@ -130,6 +108,8 @@ class RunDatabaseCommand extends Command
 
             return Command::FAILURE;
         }
+
+        return Command::SUCCESS;
     }
 
     /**
@@ -146,7 +126,12 @@ class RunDatabaseCommand extends Command
         // Testing DB connection
         $defaultDBSetup = config('db.connections')[implode(config('db.default'))];
 
-        $dbh = new \PDO("mysql:host=" . $defaultDBSetup['server'], $defaultDBSetup['username'], $defaultDBSetup['password']);
+        // Create DBs
+        $dbh = new \PDO(
+            "mysql:host=" . $defaultDBSetup['server'], 
+            $defaultDBSetup['username'], 
+            $defaultDBSetup['password']
+        );
 
         if ($dbh->exec("CREATE DATABASE IF NOT EXISTS `$database`;") === false) {
             print_r($dbh->errorInfo(), true);
@@ -161,10 +146,12 @@ class RunDatabaseCommand extends Command
             return;
         }
 
+        // Validates if phinx.json exists
         if (! file_exists(app()->basedir . '/../phinx.json')) {
             app()->file->createFromTemplate(
                 app()->basedir . '/../phinx.json',
-                app()->basedir . '/../src/resources/templates/phinx.template'
+                app()->basedir . '/../src/resources/templates/phinx.template',
+                $defaultDBSetup
             );
         }
 
