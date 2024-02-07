@@ -12,7 +12,7 @@
 return [
 
     'default' => [
-        'mysql-001'
+        'mysql'
     ],
 
     'connections' => [
@@ -22,13 +22,13 @@ return [
          * 
          * Note: Make sure you have installed MySQL driver.
          */
-        'mysql-001' => [
+        'mysql' => [
             'server'   => env("DB_HOST"),
             'username' => env("DB_USERNAME"),
             'password' => env("DB_PASSWORD"),
             'database' => env("DB_DATABASE"),
             'port'     => env("DB_PORT"),
-            'driver'   => 'mysql'
+            'driver'   => env("DB_DRIVER")
         ],
 
         /*

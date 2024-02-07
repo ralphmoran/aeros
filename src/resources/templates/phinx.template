@@ -1,0 +1,41 @@
+{
+    "paths": {
+        "migrations": "%%PHINX_CONFIG_DIR%%/app/database/migrations",
+        "seeds": "%%PHINX_CONFIG_DIR%%/app/database/seeds"
+    },
+    "environments": {
+        "default_migration_table": "phinxlog_development",
+        "default_environment": "development",
+        "production": {
+            "migration_table": "phinxlog_production",
+            "adapter": "{{driver}}",
+            "host": "{{server}}",
+            "name": "{{database}}",
+            "user": "{{username}}",
+            "pass": "{{password}}",
+            "port": {{port}},
+            "charset": "utf8"
+        },
+        "staging": {
+            "migration_table": "phinxlog_staging",
+            "adapter": "{{driver}}",
+            "host": "{{server}}",
+            "name": "{{database}}",
+            "user": "{{username}}",
+            "pass": "{{password}}",
+            "port": {{port}},
+            "charset": "utf8"
+        },
+        "development": {
+            "migration_table": "phinxlog_development",
+            "adapter": "{{driver}}",
+            "host": "{{server}}",
+            "name": "{{database}}",
+            "user": "{{username}}",
+            "pass": "{{password}}",
+            "port": {{port}},
+            "charset": "utf8"
+        }
+    },
+    "version_order": "creation"
+}
