@@ -85,7 +85,8 @@ class RunAppCommand extends Command
             $output->write('<fg=green;options=bold>OK.</>');
             $output->writeln('');
         } else {
-            $output->write('==> No env flag provided. Changing environtment to <fg=yellow;options=bold>development</>... ');
+            $output
+                ->write('==> <fg=yellow;options=bold>No env flag provided. </>Changing environtment to <fg=yellow;options=bold>development</>... ');
 
             updateEnvVariable(['APP_ENV' => 'development']);
 
@@ -94,38 +95,24 @@ class RunAppCommand extends Command
         }
 
         // ---------------------------------------------------
-        // Warm the app up
-        $output->writeln(sprintf('==> Warming up the application <fg=bright-green;options=bold>"%s"</>', env('APP_NAME')));
-        $returnCode = $this->getApplication()->doRun(
+        // DB checking
+        $output->writeln(
+            sprintf(
+                '==> Checking default DB connection <fg=yellow;options=bold>%s</>... ', 
+                implode(config('db.default'))
+            )
+        );
+
+        $database = $this->getApplication()->doRun(
             new ArrayInput([
-                'command' => 'run:warmup'
+                'command' => 'run:database',
+                '--create' => true,
+                '--all' => true,
             ]), 
             $output
         );
-
-        // ---------------------------------------------------
-        // // Activate workers
-        $output->write('==> Waking up workers... ');
-
-        $process = new Process([
-            '/usr/local/bin/composer', 
-            'worker-refresh'
-        ]);
-
-        $process->mustRun();
-        // $output->write(trim($process->getOutput()));
-        $output->write('<fg=green;options=bold>OK.</>');
-        $output->writeln('');
-
-        // ---------------------------------------------------
-        // DB checking
-        $output->write('==> Checking DB connections... ');
-        // $process = new Process([
-        //     './vendor/bin/phinx', 
-        //     'migrate'
-        // ]);
-        $output->write('<fg=green;options=bold>OK.</>');
-        $output->writeln('');
+        // $output->write('<fg=green;options=bold>OK.</>');
+        // $output->writeln('');
 
         // ---------------------------------------------------
         // Run DB migrations
@@ -144,6 +131,29 @@ class RunAppCommand extends Command
         //     './vendor/bin/phinx', 
         //     'migrate'
         // ]);
+        $output->write('<fg=green;options=bold>OK.</>');
+        $output->writeln('');
+
+        // ---------------------------------------------------
+        // Warm the app up
+        $output->writeln(sprintf('==> Warming up the application <fg=bright-green;options=bold>"%s"</>', env('APP_NAME')));
+        $runWarmup = $this->getApplication()->doRun(
+            new ArrayInput([
+                'command' => 'run:warmup'
+            ]), 
+            $output
+        );
+
+        // ---------------------------------------------------
+        // Activate workers
+        $output->write('==> Waking up workers... ');
+
+        $process = new Process([
+            '/usr/local/bin/composer', 
+            'worker-refresh'
+        ]);
+
+        $process->mustRun();
         $output->write('<fg=green;options=bold>OK.</>');
         $output->writeln('');
 

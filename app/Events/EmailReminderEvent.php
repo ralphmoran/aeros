@@ -8,8 +8,7 @@ class EmailReminderEvent extends Observable
 {
     public function update($eventData): bool
     {
-        // echo 'From: ' . __CLASS__ . '::' . __LINE__ . '::' . json_encode($eventData) . PHP_EOL;
-        // echo "\n";
+        logger('Triggered: ' . __METHOD__, app()->basedir . '/logs/event.log');
 
         return true;
     }

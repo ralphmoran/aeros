@@ -503,6 +503,9 @@ if (! function_exists('updateEnv')) {
 	 *                            		environment variable names, and values are the
 	 *                            		new values to be set.
 	 *
+	 * ```php
+	 * 	updateEnvVariable(['APP_KEY' => 'new app key']);
+	 * ```
 	 * @return 	bool|int 	Returns the number of bytes written to the .env file on success,
 	 *                  	or false on failure. In case of failure, an error message can
 	 *                  	be retrieved with error_get_last().
@@ -513,13 +516,63 @@ if (! function_exists('updateEnv')) {
 		$envBody = file_get_contents($envFile);
 
 		foreach ($newEnvValues as $key => $value) {
-			$envBody = preg_replace(
-				"/($key=)(.*)/", 
-				$key . '=' . $value, 
-				$envBody
-			);
+			if (! ($envBody = preg_replace("/($key=)(.*)/", $key . '=' . $value, $envBody))) {
+				return false;
+			}
 		}
 
 		return file_put_contents($envFile, $envBody);
+	}
+}
+
+if (!function_exists('updateJsonNode')) {
+
+	/**
+	 * Update values of nested nodes in a JSON file.
+	 *
+	 * This function updates the values of nested nodes in a JSON file based on 
+	 * the provided key-value pairs.
+	 *
+	 * @param 	array  	$keyValues 	An associative array where keys represent 
+	 * 								the nested structure within the JSON file 
+	 * 								and values are the new values to be updated.
+	 * @param 	string 	$jsonFile  	The path to the JSON file to be updated.
+	 * 
+	 * ```php
+	 * 	updateJsonNode(
+	 * 		['environments.staging.name' => 'newdb'], 
+	 * 		app()->basedir . '/../phinx.json'
+	 * 	);
+	 * ```
+	 *
+	 * @return bool|int Returns true if the JSON file was successfully updated, 
+	 * 					false if a key is not found in the JSON structure, or 
+	 * 					the number of bytes written to the file if successful.
+	 */
+	function updateJsonNode(array $keyValues, string $jsonFile): bool|int {
+
+        $jsonConfig = json_decode(file_get_contents($jsonFile), true);
+
+        foreach ($keyValues as $key => $value) {
+
+            $keys = explode('.', $key);
+            $tempConfig = &$jsonConfig;
+
+            foreach ($keys as $nestedKey) {
+
+                if (! isset($tempConfig[$nestedKey])) {
+                    return false;
+                }
+
+                $tempConfig = &$tempConfig[$nestedKey];
+            }
+
+            $tempConfig = $value;
+        }
+
+        return file_put_contents(
+			$jsonFile, 
+			str_replace('\/', '/', json_encode($jsonConfig, JSON_PRETTY_PRINT))
+		);
 	}
 }

@@ -31,10 +31,6 @@ return [
             'SessionServiceProvider' => \Aeros\App\Providers\SessionServiceProvider::class,
             'HttpServiceProvider' => \Aeros\App\Providers\HttpServiceProvider::class,
             'RouteServiceProvider' => \Aeros\App\Providers\RouteServiceProvider::class,
-
-            // Other service providers
-            'DatabaseServiceProvider' => \Aeros\App\Providers\DatabaseServiceProvider::class,
-            'EmailServiceProvider' => \Aeros\App\Providers\EmailServiceProvider::class,
         ],
 
         // Other service providers that run on CLI
@@ -99,5 +95,6 @@ return [
         'GenerateAppKeyServiceProvider' => \Aeros\App\Providers\GenerateAppKeyServiceProvider::class,
         'MimeTypeServiceProvider' => \Aeros\App\Providers\MimeTypeServiceProvider::class,
         'CacheRoutesServiceProvider' => \Aeros\App\Providers\CacheRoutesServiceProvider::class,
+        'AppEventListernersServiceProvider' => \Aeros\App\Providers\AppEventListernersServiceProvider::class,
     ],
 ];

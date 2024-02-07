@@ -7,17 +7,15 @@ class Event
     /**
      * Adds an event listener to a given name event.
      *
-     * @param string $eventName
-     * @param string $observer
+     * @param string $eventId
+     * @param string $event
      * @return Event
      */
-    public function addEventListener(string $eventName, string $observer): Event
+    public function addEventListener(string|array $eventId, string $event): Event
     {
-        $this->isEvent($observer);
+        $this->isEvent($event);
 
-        if (! cache('memcached')->get($eventName) && cache('memcached')->getResultCode() == \Memcached::RES_NOTFOUND) {
-            cache('memcached')->add($eventName, $observer);
-        }
+        cache('memcached')->add($eventId, $event);
 
         return $this;
     }
@@ -25,20 +23,20 @@ class Event
     /**
      * Triggers a collection of events based on the given name.
      *
-     * @param string $eventName
+     * @param string $eventId
      * @param mixed $eventData
      * @param bool $deleteEvent
      * @return bool
      * @throws \TypeError
      */
-    public function emit(string $eventName, mixed $eventData = '', bool $deleteEvent = false): bool
+    public function emit(string $eventId, mixed $eventData = '', bool $deleteEvent = false): bool
     {
-        if ($observer = cache('memcached')->get($eventName)) {
+        if ($observer = cache('memcached')->get($eventId)) {
 
             (new $observer)->update($eventData);
 
             if ($deleteEvent) {
-                cache('memcached')->delete($eventName);
+                cache('memcached')->delete($eventId);
             }
 
             return true;

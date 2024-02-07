@@ -1,0 +1,41 @@
+{
+    "paths": {
+        "migrations": "%%PHINX_CONFIG_DIR%%/app/database/migrations",
+        "seeds": "%%PHINX_CONFIG_DIR%%/app/database/seeds"
+    },
+    "environments": {
+        "default_migration_table": "phinxlog_development",
+        "default_environment": "development",
+        "production": {
+            "migration_table": "phinxlog_production",
+            "adapter": "mysql",
+            "host": "",
+            "name": "",
+            "user": "",
+            "pass": "",
+            "port": 3306,
+            "charset": "utf8"
+        },
+        "staging": {
+            "migration_table": "phinxlog_staging",
+            "adapter": "mysql",
+            "host": "1",
+            "name": "",
+            "user": "",
+            "pass": "",
+            "port": 3306,
+            "charset": "utf8"
+        },
+        "development": {
+            "migration_table": "phinxlog_development",
+            "adapter": "mysql",
+            "host": "192.168.56.11",
+            "name": "aeros_db_development",
+            "user": "root",
+            "pass": "root",
+            "port": 3306,
+            "charset": "utf8"
+        }
+    },
+    "version_order": "creation"
+}

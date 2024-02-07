@@ -113,6 +113,7 @@ class ServiceContainer extends Kernel
      */
     public function registerProviders(): ServiceContainer
     {
+        # TODO: Cache all services when it comes to running the app...?
         foreach ($this->getProviders() as $providerWithNamespace) {
             if ($this->isProvider($providerWithNamespace)) {
                 (new $providerWithNamespace)->register();
