@@ -99,7 +99,7 @@ class RunDatabaseCommand extends Command
 
                 $this->verifyDBConnection($database . '_production', 'production', $output);
                 $this->verifyDBConnection($database . '_staging', 'staging', $output);
-                $this->verifyDBConnection($database . '_development', 'development', $output);
+                $this->verifyDBConnection($database, 'development', $output);
 
                 return Command::SUCCESS;
             }

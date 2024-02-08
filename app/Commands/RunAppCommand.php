@@ -96,23 +96,29 @@ class RunAppCommand extends Command
 
         // ---------------------------------------------------
         // DB checking
-        $output->writeln(
+        $output->write(
             sprintf(
-                '==> Checking default DB connection <fg=yellow;options=bold>%s</>... ', 
+                '==> Checking default DB connection status <fg=yellow;options=bold>%s</>... ', 
                 implode(config('db.default'))
             )
         );
 
-        $database = $this->getApplication()->doRun(
-            new ArrayInput([
-                'command' => 'run:database',
-                '--create' => true,
-                '--all' => true,
-            ]), 
-            $output
-        );
-        // $output->write('<fg=green;options=bold>OK.</>');
-        // $output->writeln('');
+        // $database = $this->getApplication()->doRun(
+        //     new ArrayInput([
+        //         'command' => 'run:database',
+        //         '--create' => true,
+        //         '--all' => true,
+        //     ]), 
+        //     $output
+        // );
+
+        if (db()->ping() === false) {
+            $output->write('<bg=red;options=bold>error</>.');
+        } else {
+            $output->write('<fg=green;options=bold>Ok.</>');
+        }
+
+        $output->writeln('');
 
         // ---------------------------------------------------
         // Run DB migrations

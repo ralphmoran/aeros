@@ -89,6 +89,16 @@ class Db
     }
 
     /**
+     * Pings selected connection.
+     *
+     * @return integer|false
+     */
+    public function ping(): int|false
+    {
+        return $this->activeDBConnections[$this->connectionName]->exec('SELECT 1');
+    }
+
+    /**
      * Makes mathod calls to PDO connection.
      *
      * @param string $method
