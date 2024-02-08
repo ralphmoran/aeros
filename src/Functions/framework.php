@@ -264,93 +264,6 @@ if (! function_exists('env')) {
 	}
 }
 
-if (! function_exists('setCookieWith')) {
-
-	/**
-	 * Creates a cookie with mixed values (callables are not supported).
-	 *
-	 * @param string $key
-	 * @param mixed $value Callable type is not supported
-	 * @param integer|array $params
-	 * @param string $path
-	 * @param string $domain
-	 * @param boolean $secure
-	 * @param boolean $httponly
-	 * @return boolean
-	 */
-	function setCookieWith(
-		string $key, 
-		mixed $value, 
-		int|array $params, 
-		string $path = '/', 
-		string $domain = '', 
-		bool $secure = false, 
-		bool $httponly = false): bool
-	{
-		// Cast $value
-		if (! is_string($value)) {
-			$value = serialize($value);
-		}
-
-		$status = setcookie($key, $value, $params, $path, $domain, $secure, $httponly);
-
-		if ($status) {
-			$_COOKIE[$key] = $value;
-			$_REQUEST[$key] = $value;
-		}
-
-		return $status;
-	}
-}
-
-if (! function_exists('deleteCookie')) {
-
-	/**
-	 * Deletes a cookie by $key.
-	 *
-	 * @param string $key
-	 * @return boolean
-	 */
-	function deleteCookie(string $key, bool $clear = false): bool
-	{
-		$status = setCookieWith($key, '', time() - 60);
-
-		if ($status) {
-			if (isset($_COOKIE[$key])) {
-				unset($_COOKIE[$key]);
-			}
-
-			if (isset($_REQUEST[$key])) {
-				unset($_REQUEST[$key]);
-			}
-
-			if ($clear) {
-				cookie()->clear();
-			}
-		}
-
-		return $status;
-	}
-}
-
-if (! function_exists('cookie')) {
-
-	/**
-	 * Returns the main cookie or a specific one.
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	function cookie(string $key = null): mixed
-	{
-		if (! is_null($key)) {
-			return app()->cookie->get($key);
-		}
-
-		return app()->cookie;
-	}
-}
-
 if (! function_exists('sanitizeWith')) {
 
 	/**
@@ -574,5 +487,69 @@ if (!function_exists('updateJsonNode')) {
 			$jsonFile, 
 			str_replace('\/', '/', json_encode($jsonConfig, JSON_PRETTY_PRINT))
 		);
+	}
+}
+
+if (! function_exists('cookie')) {
+
+	/**
+	 * Manages cookies.
+	 *
+	 * This function allows setting, getting, or retrieving the CookieJar instance.
+	 *
+	 * @param 	string 	$cookie_name 		The name of the cookie.
+	 * @param 	mixed 	$cookie_value 		(Optional) The value of the cookie. 
+	 * 													Default is null.
+	 * @param 	int 	$cookie_expiration 	(Optional) The expiration time of the 
+	 * 													cookie. Default is 0.
+	 * @param 	string 	$path 				(Optional) The path on the server in 
+	 * 													which the cookie will be 
+	 * 													available. Default is "/".
+	 * @param 	string 	$cookie_domain 		(Optional) The domain that the cookie 
+	 * 													is available to. Default 
+	 * 													is an empty string.
+	 * @param 	bool 	$secure 			(Optional) Indicates whether the 
+	 * 													cookie should only be 
+	 * 													transmitted over a secure 
+	 * 													HTTPS connection. 
+	 * 													Default is false.
+	 * @param 	bool 	$httponly 			(Optional) When true, the cookie will 
+	 * 													be made accessible only 
+	 * 													through the HTTP protocol. 
+	 * 													Default is false.
+	 *
+	 * @return 	mixed 	Returns the value of the specified cookie when only the 
+	 * 					cookie name is provided, sets the cookie when both name 
+	 * 					and value are provided, or returns the CookieJar instance 
+	 * 					when no parameters are provided.
+	 */
+	function cookie(
+		string $cookie_name = null, 
+		mixed $cookie_value = null, 
+		int $cookie_expiration = 0, 
+		string $path = "/", 
+		string $cookie_domain = '', 
+		bool $secure = false, 
+		bool $httponly = false) : mixed {
+
+		if (! is_null($cookie_name) && is_null($cookie_value)) {
+			return app()->cookie->get($cookie_name);
+		}
+		
+		if (! is_null($cookie_name) && ! is_null($cookie_value)) {
+			return app()->cookie->set(
+				$cookie_name, 
+				$cookie_value, 
+				$cookie_expiration, 
+				$path, 
+				$cookie_domain, 
+				$secure, 
+				$httponly
+			);
+		}
+
+		if (is_null($cookie_name) && is_null($cookie_value)) {
+			return app()->cookie;
+		}
 	}
 }
