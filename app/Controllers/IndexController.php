@@ -28,6 +28,19 @@ class IndexController extends Controller
     public function index()
     {
         //******************************************/
+        // Setting a cookie to expire in a minute and be visible in all subdomains
+        // cookie('test_cookie', 11223344, time() + 60, '/', '.aeros.test');
+
+        // Get a cookie by name
+        // dd(cookie('test_cookie'));
+
+        // Delete a cookie by name
+        // dd(cookie()->delete('test_cookie'));
+
+        // cookie()->clear();
+        // dd(cookie('test_cookie'));
+
+        //******************************************/
         // Calls  directly the worker
         // app()->worker->call(\Aeros\App\Queues\Workers\NewLogicWorker::class);
 
