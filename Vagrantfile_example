@@ -110,38 +110,35 @@ Vagrant.configure("2") do |config|
   #==============================================
   # Subdomains setup
   echo '<VirtualHost *:80>
+  ServerName _
 
-    ServerName _
-  
-    DocumentRoot /var/www/html/public
-  
-    <Directory /var/www/html/public>
-      Options -Indexes -FollowSymLinks
+  DocumentRoot /var/www/html/public
+
+  <Directory /var/www/html/public>
+      Options FollowSymLinks
       AllowOverride All
       Require all granted
-    </Directory>
-  
-    RewriteEngine On
-    RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-  
-    # Serve static files directly without rewrite
-    RewriteCond %{REQUEST_FILENAME} \.(svg|html|htm|js|scss|css|png|jpg|jpeg|webp|gif|ico)$
-    RewriteRule ^ - [L]
-  
-    <FilesMatch "\.(svg|html|htm|js|scss|css|png|jpg|jpeg|webp|gif|ico)$">
-        FileETag Mtime
-        <IfModule mod_headers.c>
-            Header unset ETag
-            Header set Cache-Control "max-age=3600, public"
-            Header set Expires "now plus 1 hour"
-        </IfModule>
-    </FilesMatch>
-  
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ /index.php/$1 [L]
-  
-  </VirtualHost>' > /etc/apache2/sites-available/aeros.conf
+
+      RewriteEngine On
+      RewriteBase /
+
+      # Serve static files directly if they exist
+      RewriteCond %{REQUEST_FILENAME} -f
+      RewriteRule ^ - [L]
+
+      # Route all other requests to index.php
+      RewriteCond %{REQUEST_FILENAME} !-f
+      RewriteCond %{REQUEST_FILENAME} !-d
+      RewriteRule ^ index.php [L]
+
+      # Set HTTP_AUTHORIZATION for Bearer tokens
+      RewriteCond %{HTTP:Authorization} ^Bearer\s(.+)
+      RewriteRule ^ - [E=HTTP_AUTHORIZATION:%1]
+  </Directory>
+
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>' > /etc/apache2/sites-available/aeros.conf
 
     # Disabling default configuration
     cd /etc/apache2/sites-available/
