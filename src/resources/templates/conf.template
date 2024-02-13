@@ -1,7 +1,7 @@
 [program:{{script-name}}]
 process_name=%(program_name)s_%(process_num)02d
 command=/usr/bin/php /var/www/html/app/queues/workers/scripts/{{script-name}}.php
-autostart=true
+autostart=false
 autorestart=true
 user=root
 numprocs={{process-num}}

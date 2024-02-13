@@ -165,7 +165,7 @@ Vagrant.configure("2") do |config|
     echo '[program:app-worker-script]
     process_name=%(program_name)s_%(process_num)02d
     command=/usr/bin/php /var/www/html/app/scripts/app-worker-script.php
-    autostart=true
+    autostart=false
     autorestart=true
     user=root
     numprocs=5
