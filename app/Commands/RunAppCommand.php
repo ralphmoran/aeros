@@ -60,7 +60,6 @@ class RunAppCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        # TODO: List of actions to run application
         // ---------------------------------------------------
         // Set environtment variable to...
         if ($input->getOption('production')) {
