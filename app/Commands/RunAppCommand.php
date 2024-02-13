@@ -68,82 +68,105 @@ class RunAppCommand extends Command
 
             updateEnvVariable(['APP_ENV' => 'production']);
 
-            $output->write('<fg=green;options=bold>OK.</>');
-            $output->writeln('');
+            $output->writeln('<fg=green;options=bold>OK.</>');
         } else if ($input->getOption('staging')) {
             $output->write('==> Changing environtment to <fg=magenta;options=bold>staging</>... ');
 
             updateEnvVariable(['APP_ENV' => 'staging']);
 
-            $output->write('<fg=green;options=bold>OK.</>');
-            $output->writeln('');
+            $output->writeln('<fg=green;options=bold>OK.</>');
         } else if ($input->getOption('development')) {
-            $output->write('==> Changing environtment to <fg=yellow;options=bold>development</>... ');
+            $output->write('==> Changing environtment to <fg=yellow>development</>... ');
 
             updateEnvVariable(['APP_ENV' => 'development']);
 
-            $output->write('<fg=green;options=bold>OK.</>');
-            $output->writeln('');
+            $output->writeln('<fg=green;options=bold>OK.</>');
         } else {
             $output
-                ->write('==> <fg=yellow;options=bold>No env flag provided. </>Changing environtment to <fg=yellow;options=bold>development</>... ');
+                ->write('==> <fg=yellow>No env flag provided. </>Changing environtment to <fg=yellow;options=bold>development</>... ');
 
             updateEnvVariable(['APP_ENV' => 'development']);
 
-            $output->write('<fg=green;options=bold>OK.</>');
-            $output->writeln('');
+            $output->writeln('<fg=green;options=bold>OK.</>');
         }
 
         // ---------------------------------------------------
         // DB checking
         $output->write(
             sprintf(
-                '==> Checking default DB connection status <fg=yellow;options=bold>%s</>... ', 
+                '==> Checking default <fg=yellow>%s</> DB connection status... ', 
                 implode(config('db.default'))
             )
         );
 
-        // $database = $this->getApplication()->doRun(
-        //     new ArrayInput([
-        //         'command' => 'run:database',
-        //         '--create' => true,
-        //         '--all' => true,
-        //     ]), 
-        //     $output
-        // );
-
         if (db()->ping() === false) {
-            $output->write('<bg=red;options=bold>error</>.');
-        } else {
-            $output->write('<fg=green;options=bold>Ok.</>');
+            $output->writeln('<bg=red;options=bold>Error</> There was a problem connecting to the DB server');
+
+            return Command::FAILURE;
         }
 
-        $output->writeln('');
+        $output->writeln('<fg=green;options=bold>Ok.</>');
 
         // ---------------------------------------------------
         // Run DB migrations
-        $output->write('==> Running DB migrations... ');
-        // $process = new Process([
-        //     './vendor/bin/phinx', 
-        //     'migrate'
-        // ]);
-        $output->write('<fg=green;options=bold>OK.</>');
-        $output->writeln('');
+        $output->writeln('==> Running DB migrations... ');
+
+        if (! file_exists(app()->basedir . '/../phinx.json')) {
+            $output->writeln(
+                '<bg=red;options=bold>Error</> <fg=yellow>phinx.json</> file does not exist. ' .
+                'Please, run <fg=yellow>`php aeros run:database <environment>`</> command'
+            );
+
+            return Command::FAILURE;
+        }
+
+        $migrations = new Process([
+            './vendor/bin/phinx', 
+            'migrate'
+        ]);
+
+        $migrations->mustRun();
+        $output->write('<fg=green>'. $migrations->getOutput() . '</>');
+        $output->writeln('... <fg=green;options=bold>OK.</>');
 
         // ---------------------------------------------------
         // Cache checking
-        $output->write('==> Checking Cache connections... ');
-        // $process = new Process([
-        //     './vendor/bin/phinx', 
-        //     'migrate'
-        // ]);
-        $output->write('<fg=green;options=bold>OK.</>');
-        $output->writeln('');
+        $defaultCacheConn = implode(config('cache.default'));
+
+        $output->write(
+            sprintf(
+                '==> Checking default <fg=yellow>%s</> cache connection status... ', 
+                $defaultCacheConn
+            )
+        );
+
+        $cacheStatus = false;
+
+        switch ($defaultCacheConn) {
+            case 'memcached':
+                $cacheStatus = (cache()->getStats() !== false) ?: false;
+            break;
+
+            case 'redis':
+                $cacheStatus = (cache()->ping() == 'PONG') ?: false;
+            break;
+        }
+
+        if (! $cacheStatus) {
+            $output->writeln(
+                sprintf('<bg=red;options=bold>Error</> Cache connection <fg=yellow>%s</> could not be stablished', $defaultCacheConn)
+            );
+
+            return Command::FAILURE;
+        }
+
+        $output->writeln('<fg=green;options=bold>OK.</>');
 
         // ---------------------------------------------------
         // Warm the app up
         $output->writeln(sprintf('==> Warming up the application <fg=bright-green;options=bold>"%s"</>', env('APP_NAME')));
-        $runWarmup = $this->getApplication()->doRun(
+
+        $this->getApplication()->doRun(
             new ArrayInput([
                 'command' => 'run:warmup'
             ]), 
@@ -151,30 +174,19 @@ class RunAppCommand extends Command
         );
 
         // ---------------------------------------------------
-        // Activate workers
-        $output->write('==> Waking up workers... ');
+        // Waking up workers
+        $output->writeln('==> Waking up workers... ');
 
-        $process = new Process([
-            '/usr/local/bin/composer', 
-            'worker-refresh'
-        ]);
+        $this->getApplication()->doRun(
+            new ArrayInput([
+                'command' => 'run:worker',
+                '--all' => true,
+            ]), 
+            $output
+        );
 
-        $process->mustRun();
-        $output->write('<fg=green;options=bold>OK.</>');
-        $output->writeln('');
+        $output->writeln('... <fg=green;options=bold>OK.</>');
 
-        // ---------------------------------------------------
-        // Optimizing assets
-        $output->write('==> Optimizing assets... ');
-        // $process = new Process([
-        //     './vendor/bin/phinx', 
-        //     'migrate'
-        // ]);
-        $output->write('<fg=green;options=bold>OK.</>');
-        $output->writeln('');
-
-        // Success if it's the case. 
-        // Other statuses: Command::FAILURE and Command::INVALID
         return Command::SUCCESS;
     }
 }
