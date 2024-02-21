@@ -120,8 +120,12 @@ if (! function_exists('response')) {
 	 * @param string $type
 	 * @return mixed
 	 */
-	function response($data = '', int $code = 200, string $type = \Aeros\Src\Classes\Response::JSON)
+	function response($data = null, int $code = 200, string $type = \Aeros\Src\Classes\Response::HTML)
 	{
+		if (is_null($data)) {
+			return app()->response;
+		}
+
 		return app()->response->type($data, $code, $type);
 	}
 }
@@ -168,12 +172,12 @@ if (! function_exists('dd')) {
 	function dd(...$args) 
 	{
 		// On terminal
-		if (strpos(PHP_SAPI, 'cli') !== false) {
+		if (strpos(php_sapi_name(), 'cli') !== false) {
 			$position = [debug_backtrace()[0]['file'] . ':' . debug_backtrace()[0]['line']];
 			die(response(array_merge($position, $args)));
 		}
 
-		die(
+		print_r(
 			response(
 				array_values(
 					array_filter(
@@ -200,9 +204,13 @@ if (! function_exists('dd')) {
 							debug_backtrace()
 						)
 					)
-				)
+				),
+				200,
+				\Aeros\Src\Classes\Response::JSON
 			)
 		);
+
+		exit;
 	}
 }
 
@@ -516,7 +524,7 @@ if (! function_exists('cookie')) {
 	 * @param 	bool 	$httponly 			(Optional) When true, the cookie will 
 	 * 													be made accessible only 
 	 * 													through the HTTP protocol. 
-	 * 													Default is false.
+	 * 													Default is true.
 	 *
 	 * @return 	mixed 	Returns the value of the specified cookie when only the 
 	 * 					cookie name is provided, sets the cookie when both name 
@@ -530,12 +538,14 @@ if (! function_exists('cookie')) {
 		string $path = "/", 
 		string $cookie_domain = '', 
 		bool $secure = false, 
-		bool $httponly = false) : mixed {
+		bool $httponly = true) : mixed {
 
+		// Return cookie value by name only
 		if (! is_null($cookie_name) && is_null($cookie_value)) {
 			return app()->cookie->get($cookie_name);
 		}
-		
+
+		// Set or create a new cookie
 		if (! is_null($cookie_name) && ! is_null($cookie_value)) {
 			return app()->cookie->set(
 				$cookie_name, 
@@ -548,6 +558,7 @@ if (! function_exists('cookie')) {
 			);
 		}
 
+		// Return cookie instance to use 'clear' and 'delete' methods
 		if (is_null($cookie_name) && is_null($cookie_value)) {
 			return app()->cookie;
 		}

@@ -118,7 +118,11 @@ class Route extends Router
 
         // Controller name
         if (is_string($this->handler)) {
+            ob_start();
+
             $this->callController($this->handler);
+
+            $this->content = ob_get_clean();
         }
 
         return $this;
@@ -180,6 +184,6 @@ class Route extends Router
             $arguments[] = $this->params[':' . $param->name];
         }
 
-        $this->content = $reflectionMethod->invokeArgs($controller, $arguments);
+        $reflectionMethod->invokeArgs($controller, $arguments);
     }
 }

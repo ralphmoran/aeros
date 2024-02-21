@@ -16,5 +16,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 # TODO: Implement cache system for views, DB queries. DB queries can be hashed using the APP_KEY 
 # TODO: Implement headers to improve performance and CORS
 # TODO: Minify files CSS, JS, images
+# TODO: Implement an active object pool. Store objects in memcached: https://stackoverflow.com/questions/16809953/can-memcached-store-complex-objects
+# TODO: Simulate HTTPS protocol on local development
 
 app()->run();

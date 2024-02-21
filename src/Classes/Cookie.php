@@ -44,8 +44,6 @@ class Cookie
             $_REQUEST[$cookie_name] = $value;
 		}
 
-        // dd($status);
-
 		return $status;
     }
 
@@ -72,7 +70,10 @@ class Cookie
             unset($_COOKIE[$cookie_name]);
             unset($_REQUEST[$cookie_name]);
 
-            setcookie($cookie_name, 0, time() - 1);
+            setcookie($cookie_name, null, time() - (60 * 60 * 24));
+
+            // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
+            // header('Set-Cookie: test_cookie_3=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=aeros.test; path=/; HttpOnly');
 
             return true;
         }
@@ -81,7 +82,7 @@ class Cookie
     }
 
     /**
-     * Regenerates the whole session cookie.
+     * Deletes all cookies
      *
      * @return  void
      */
@@ -94,11 +95,5 @@ class Cookie
         foreach ($_REQUEST as $key => $value) {
             $this->delete($key);
         }
-
-        session_regenerate_id(true);
-        session_unset();
-        session_destroy();
-        session_write_close();
-        setcookie(session_name(), '', 0, '/');
     }
 }

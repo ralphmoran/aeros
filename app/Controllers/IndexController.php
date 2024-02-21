@@ -28,8 +28,40 @@ class IndexController extends Controller
     public function index()
     {
         //******************************************/
+        // Add new headers to the response
+        // This new header will be added to the final response
+        // response()->addHeaders(['www-Cache-Control' => 'max-age=3600']);
+
+        // The default headers will not be deleted
+        // response()->removeHeaders(['www-Cache-Control', 'Date', 'Expires']); 
+
+        //******************************************/
+        // Session. See Aeros\Src\Classes\Session class
+
+        // Starts a new session
+        // session()->start();
+
+        // Setting variables into $_SESSION
+        // session()->test = 111;
+
+        // isset(session()->test); // Checks if 'test' exists in $_SESSION
+        // unset(session()->test2); // Removes a variable from $_SESSION
+
+        // Destroys or renovates session
+        // session()->renovate(); // Destroys, unsets and renovates session ID
+
+        //******************************************/
         // Setting a cookie to expire in a minute and be visible in all subdomains
-        // cookie('test_cookie', 11223344, time() + 60, '/', '.aeros.test');
+        // If there is no protocol (http or https) and no subdomain (www or any other), by defualt, 
+        // the cookie will be available for all subdomains
+        // cookie('test_cookie_3', 111, time() + 60, '/', 'aeros.test');
+
+        // dd(getallheaders());
+        // dd(headers_list());
+        // header_remove(?string $name = null);
+        // headers_sent()
+
+        // dd(cookie('test_cookie_3'));
 
         // Get a cookie by name
         // dd(cookie('test_cookie'));
