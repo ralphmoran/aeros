@@ -29,11 +29,19 @@ abstract class Cron
     abstract public function run();
 
     /**
-     * Forces to work a cron.
+     * Forces a cron to work.
      *
      * @return void
      */
     abstract public function work();
+
+    /**
+     * Constructor to validate basic variables on a cron.
+     */
+    public function __construct()
+    {
+        $this->checkCronId();
+    }
 
     /**
      * Checks the unique cron identifier.
@@ -46,5 +54,15 @@ abstract class Cron
         if (empty($this->id)) {
             throw new \Exception('ERROR[Cron] "' . get_called_class() . '" requires an id.');
         }
+    }
+
+    /**
+     * Returns the cron identifier.
+     *
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
     }
 }
