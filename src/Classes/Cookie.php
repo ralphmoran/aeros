@@ -82,8 +82,6 @@ class Cookie
 
             setcookie($cookie_name, null, time() - (60 * 60 * 24));
 
-            // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
-            // header('Set-Cookie: test_cookie_3=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=aeros.test; path=/; HttpOnly');
             response()->addHeaders([
                 'Set-Cookie' => $cookie_name . '=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT;'
             ]);

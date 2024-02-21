@@ -118,6 +118,11 @@ final class Response
         return $data;
     }
 
+    /**
+     * Sends the headers for the response.
+     *
+     * @return void
+     */
     public function sendHeaders()
     {
         header_remove();
