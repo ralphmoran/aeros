@@ -59,7 +59,12 @@ class RunCronCommand extends Command
         if ($all || $name) {
 
             if ($all) {
-                $output->writeln("<info>Running all registered crons</info>");
+                $output->writeln([
+                    "<info>=============================</info>",
+                    "<info>Running all registered crons</info>",
+                    "<info>=============================</info>",
+                    ''
+                ]);
             }
 
             $path = app()->basedir . '/queues/crons';
@@ -73,9 +78,12 @@ class RunCronCommand extends Command
 
                     if ($all || ($name && $cronInstance->getId() == $name)) {
 
-                        $output->writeln(sprintf('Running cron: %s...', $cronInstance->getId()));
+                        $output->writeln(sprintf('==> Running cron: %s...', $cronInstance->getId()));
                         $cronInstance->work();
-                        $output->writeln(sprintf('<info>Finished cron: %s.</info>', $cronInstance->getId()));
+                        $output->writeln([
+                            sprintf('<info>Finished cron: %s.</info>', $cronInstance->getId()),
+                            ''
+                        ]);
 
                         unset($cronInstance);
                     }
