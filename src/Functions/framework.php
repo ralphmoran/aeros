@@ -116,16 +116,12 @@ if (! function_exists('response')) {
 	 * content as JSON, XML or any other content type.
 	 *
 	 * @param mixed $data
-	 * @param ?int $code
+	 * @param int $code
 	 * @param string $type
 	 * @return mixed
 	 */
-	function response($data = null, int $code = null, string $type = \Aeros\Src\Classes\Response::HTML)
+	function response($data = '', int $code = 200, string $type = \Aeros\Src\Classes\Response::JSON)
 	{
-		if (is_null($data)) {
-			return app()->response;
-		}
-
 		return app()->response->type($data, $code, $type);
 	}
 }
@@ -172,12 +168,12 @@ if (! function_exists('dd')) {
 	function dd(...$args) 
 	{
 		// On terminal
-		if (strpos(php_sapi_name(), 'cli') !== false) {
+		if (strpos(PHP_SAPI, 'cli') !== false) {
 			$position = [debug_backtrace()[0]['file'] . ':' . debug_backtrace()[0]['line']];
 			die(response(array_merge($position, $args)));
 		}
 
-		print_r(
+		die(
 			response(
 				array_values(
 					array_filter(
@@ -204,13 +200,9 @@ if (! function_exists('dd')) {
 							debug_backtrace()
 						)
 					)
-				),
-				200,
-				Aeros\Src\Classes\Response::JSON
+				)
 			)
 		);
-
-		exit;
 	}
 }
 
@@ -231,16 +223,16 @@ if (! function_exists('component')) {
 
 	/**
 	 * Component function is a wrapper for the Component class which renders and returns
-	 * HTML content.
+	 * HTML content to the browser.
 	 *
 	 * @param string $component
 	 * @param array $data
-	 * @param bool $dump If true, the component body will be returned instead of being dumped
+	 * @param bool $return If true, the component body will be returned instead of being dumped
 	 * @return mixed
 	 */
-	function component(string $component, array $data = [], bool $dump = true)
+	function component(string $component, array $data = [], bool $return = false)
 	{
-		return app()->component->render($component, $data, $dump);
+		return app()->component->render($component, $data, $return);
 	}
 }
 
@@ -524,7 +516,7 @@ if (! function_exists('cookie')) {
 	 * @param 	bool 	$httponly 			(Optional) When true, the cookie will 
 	 * 													be made accessible only 
 	 * 													through the HTTP protocol. 
-	 * 													Default is true.
+	 * 													Default is false.
 	 *
 	 * @return 	mixed 	Returns the value of the specified cookie when only the 
 	 * 					cookie name is provided, sets the cookie when both name 
@@ -538,14 +530,12 @@ if (! function_exists('cookie')) {
 		string $path = "/", 
 		string $cookie_domain = '', 
 		bool $secure = false, 
-		bool $httponly = true) : mixed {
+		bool $httponly = false) : mixed {
 
-		// Return cookie value by name only
 		if (! is_null($cookie_name) && is_null($cookie_value)) {
 			return app()->cookie->get($cookie_name);
 		}
-
-		// Set or create a new cookie
+		
 		if (! is_null($cookie_name) && ! is_null($cookie_value)) {
 			return app()->cookie->set(
 				$cookie_name, 
@@ -558,7 +548,6 @@ if (! function_exists('cookie')) {
 			);
 		}
 
-		// Return cookie instance to use 'clear' and 'delete' methods
 		if (is_null($cookie_name) && is_null($cookie_value)) {
 			return app()->cookie;
 		}
