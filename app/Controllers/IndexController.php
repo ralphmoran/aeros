@@ -56,11 +56,6 @@ class IndexController extends Controller
         // the cookie will be available for all subdomains
         // cookie('test_cookie_3', 111, time() + 60, '/', 'aeros.test');
 
-        // dd(getallheaders());
-        // dd(headers_list());
-        // header_remove(?string $name = null);
-        // headers_sent()
-
         // dd(cookie('test_cookie_3'));
 
         // Get a cookie by name

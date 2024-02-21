@@ -42,6 +42,16 @@ class Cookie
         if ($status) {
 			$_COOKIE[$cookie_name] = $value;
             $_REQUEST[$cookie_name] = $value;
+
+            $cookieHeader = "$cookie_name=$value; ";
+
+            $cookieHeader .= (! empty($expiration)) ? 'expires=' . gmdate('D, d M Y H:i:s', $expiration) . ' ' . date('T') . '; ' : '';
+            $cookieHeader .= (! empty($path)) ? 'path=' . $path . '; ' : '';
+            $cookieHeader .= (! empty($domain)) ? 'domain=' . $domain . '; ' : '';
+            $cookieHeader .= (! empty($secure)) ? 'Secure; ' : '';
+            $cookieHeader .= (! empty($httponly)) ? 'HttpOnly' : '';
+
+            response()->addHeaders(['Set-Cookie' => $cookieHeader]);
 		}
 
 		return $status;
@@ -74,6 +84,9 @@ class Cookie
 
             // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
             // header('Set-Cookie: test_cookie_3=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=aeros.test; path=/; HttpOnly');
+            response()->addHeaders([
+                'Set-Cookie' => $cookie_name . '=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT;'
+            ]);
 
             return true;
         }

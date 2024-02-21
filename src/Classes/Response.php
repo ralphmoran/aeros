@@ -46,8 +46,10 @@ final class Response
     /** @var string PDF */
     const PDF  = 'pdf';
 
+    /** @var array */
     private $headers = [];
 
+    /** @var int */
     private $code = 200;
 
     /**
@@ -86,13 +88,15 @@ final class Response
         };
 
         // Setting up response headers
-        header_remove();
-        $this->assignHeadersToResponse();
-        http_response_code($this->code);
+        $this->sendHeaders();
 
         // JSON format
         if ($type == 'json') {
-            $this->addHeaders(['Content-type' => cache('memcached')->get('mime.types')[$type]]);
+
+            $this
+                ->removeHeaders(['Content-type'])
+                ->addHeaders(['Content-type' => cache('memcached')->get('mime.types')[$type]])
+                ->sendHeaders();
 
             if (! is_array($data)) {
 
@@ -114,6 +118,13 @@ final class Response
         return $data;
     }
 
+    public function sendHeaders()
+    {
+        header_remove();
+        $this->assignHeadersToResponse();
+        http_response_code($this->code);
+    }
+
     /**
      * Assigns headers to the response.
      * 
@@ -125,9 +136,9 @@ final class Response
      *                          This parameter is not used in the method as described but is included
      *                          in the method signature for example purposes. Depending on your implementation,
      *                          you might want to remove it or update the documentation accordingly.
-     * @return void
+     * @return self
      */
-    public function assignHeadersToResponse(array $headers = [])
+    public function assignHeadersToResponse(array $headers = []): self
     {
         foreach ($this->getHeaders() as $key => $value) {
 
@@ -154,7 +165,7 @@ final class Response
      */
     public function getHeaders(): array
     {
-        return array_merge($this->headers, config('session.headers.default'));
+        return $this->headers;
     }
 
     /**
@@ -165,9 +176,9 @@ final class Response
      *
      * @param   array $headers An associative array of headers to add, where each 
      *                          key is a header name and each value is the header value.
-     * @return  void
+     * @return  self
      */
-    public function addHeaders(array $headers = []) 
+    public function addHeaders(array $headers = []): self 
     {
         foreach ($headers as $key => $value) {
 
@@ -188,15 +199,17 @@ final class Response
      * Note: This method will not remove the default headers. See config('session.headers.default')
      *
      * @param   array   $headers
-     * @return  void
+     * @return  self
      */
-    public function removeHeaders(array $headers = []) 
+    public function removeHeaders(array $headers = []): self 
     {
         foreach ($headers as $header) {
             if (isset($this->headers[$header])) {
                 unset($this->headers[$header]);
             }
         }
+
+        return $this;
     }
 
     /**

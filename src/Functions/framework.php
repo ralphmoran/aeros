@@ -116,11 +116,11 @@ if (! function_exists('response')) {
 	 * content as JSON, XML or any other content type.
 	 *
 	 * @param mixed $data
-	 * @param int $code
+	 * @param ?int $code
 	 * @param string $type
 	 * @return mixed
 	 */
-	function response($data = null, int $code = 200, string $type = \Aeros\Src\Classes\Response::HTML)
+	function response($data = null, int $code = null, string $type = \Aeros\Src\Classes\Response::HTML)
 	{
 		if (is_null($data)) {
 			return app()->response;
@@ -206,7 +206,7 @@ if (! function_exists('dd')) {
 					)
 				),
 				200,
-				\Aeros\Src\Classes\Response::JSON
+				Aeros\Src\Classes\Response::JSON
 			)
 		);
 
@@ -231,16 +231,16 @@ if (! function_exists('component')) {
 
 	/**
 	 * Component function is a wrapper for the Component class which renders and returns
-	 * HTML content to the browser.
+	 * HTML content.
 	 *
 	 * @param string $component
 	 * @param array $data
-	 * @param bool $return If true, the component body will be returned instead of being dumped
+	 * @param bool $dump If true, the component body will be returned instead of being dumped
 	 * @return mixed
 	 */
-	function component(string $component, array $data = [], bool $return = false)
+	function component(string $component, array $data = [], bool $dump = true)
 	{
-		return app()->component->render($component, $data, $return);
+		return app()->component->render($component, $data, $dump);
 	}
 }
 
