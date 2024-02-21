@@ -43,7 +43,7 @@ class Route extends Router
     public $middlewares = [];
 
     /** @var string */
-    public $content = null;
+    private $content = null;
 
     /**
      * Constructor
@@ -118,7 +118,7 @@ class Route extends Router
 
         // Controller name
         if (is_string($this->handler)) {
-            $this->callController($this->handler);
+            $this->content = $this->callController($this->handler);
         }
 
         return $this;
@@ -139,10 +139,12 @@ class Route extends Router
      *
      * @param string $controller
      * @throws \Exception
-     * @return void
+     * @return string
      */
-    private function callController(string $controller)
+    private function callController(string $controller): string
     {
+        ob_start();
+
         [$controllerName, $method] = strpos($controller, '@') === false
                                     ? [$controller, 'index']
                                     : explode('@', $controller);
@@ -180,6 +182,12 @@ class Route extends Router
             $arguments[] = $this->params[':' . $param->name];
         }
 
-        $this->content = $reflectionMethod->invokeArgs($controller, $arguments);
+        $reflectionMethod->invokeArgs($controller, $arguments);
+
+        $content = ob_get_contents();
+
+        ob_end_clean();
+
+        return $content;
     }
 }

@@ -11,11 +11,8 @@ final class View
      * @param array $vars
      * @param string $subfolder (optional) Commonly used for components
      */
-    public function make(
-        string $view, 
-        array $vars = [], 
-        string $subfolder = ''
-    ) {
+    public function make(string $view, array $vars = [], string $subfolder = '') 
+    {
         // Resolve view: absolute path and filename
         $resolved_view = $this->resolveView($view, $subfolder);
 
