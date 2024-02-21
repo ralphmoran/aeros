@@ -17,7 +17,7 @@ abstract class Worker
     public function start(?Callable $callable = null, mixed $args = null, int $sleep = 5) 
     {
         // Only on CLI
-        if (strpos(PHP_SAPI, 'cli') !== false) {
+        if (strpos(php_sapi_name(), 'cli') !== false) {
             while (true) {
                 if (is_null($callable)) {
                     $this->handle();

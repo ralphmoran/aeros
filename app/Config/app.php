@@ -13,6 +13,12 @@ return [
 
     /*
     |----------------------------------------------
+    | Timezone.
+    */
+    'timezone' => 'America/Los_Angeles',
+
+    /*
+    |----------------------------------------------
     | Views setup.
     */
     'views' => [
@@ -49,7 +55,6 @@ return [
         // Run over any request
         'app' => [
             'SessionMiddleware' => \Aeros\App\Middlewares\SessionMiddleware::class,
-            'CorsMiddleware' => \Aeros\App\Middlewares\CorsMiddleware::class,
             'BanBotsMiddleware' => \Aeros\App\Middlewares\BanBotsMiddleware::class,
             'SanitizerMiddleware' => \Aeros\App\Middlewares\SanitizerMiddleware::class,
         ],
@@ -59,12 +64,17 @@ return [
         ],
 
         'api' => [
-
+            'CorsMiddleware' => \Aeros\App\Middlewares\CorsMiddleware::class,
         ],
 
         'auth' => [
 
         ],
+
+        // 'another' => [
+        //     'AnotherMiddleware' => \Aeros\App\Middlewares\AnotherMiddleware::class,
+        //     ...
+        // ],
     ],
 
     /*

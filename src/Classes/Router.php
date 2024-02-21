@@ -364,7 +364,7 @@ class Router
     public static function loadRequestedRoutes()
     {
         // Only on web
-        if (strpos(PHP_SAPI, 'cli') === false) {
+        if (strpos(php_sapi_name(), 'cli') === false) {
 
             $tld = explode('.', $_SERVER['HTTP_HOST']);
 

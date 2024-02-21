@@ -13,17 +13,22 @@ final class Component
      *
      * @param string $component
      * @param array $data
-     * @param boolean $return
+     * @param boolean $dump
      * @return string
      */
-    public function render(string $component, array $data, bool $return = false): string
+    public function render(string $component, array $data, bool $dump = true)
     {
         // Makes the view and returns the content to be embeded
-        if ($return) {
+        if (! $dump) {
             ob_start();
+
             app()->view->make($component, $data, 'components');
 
-            return ob_get_clean();
+            $content = ob_get_contents();
+
+            ob_end_clean();
+
+            return $content;
         }
 
         return app()->view->make($component, $data, 'components');
