@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
         app()->singleton('service', \Aeros\App\Providers\ServiceAgentServiceProvider::class);
 
         // Register objects only for CLI
-        if (strpos(php_sapi_name(), 'cli') !== false) {
+        if (strpos(PHP_SAPI, 'cli') !== false) {
             app()->singleton('console', \Symfony\Component\Console\Application::class);
             app()->singleton('aeros', \Aeros\Src\Classes\Aeros::class);
         }

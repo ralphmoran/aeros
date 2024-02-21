@@ -26,14 +26,7 @@ class ServiceContainer extends Kernel
     public function run()
     {
         try {
-            $content = $this->bootstrap()->router->dispatch();
-
-            if (empty($content)) {
-                throw new \TypeError("ERROR[route] No content found.");
-            }
-
-            printf('%s', response($content));
-
+            printf('%s', $this->bootstrap()->router->dispatch());
         } catch (\Throwable $e) {
 
             // Log errors only on production or staging
@@ -157,7 +150,7 @@ class ServiceContainer extends Kernel
             return $this->providers;
         }
 
-        $providers = (strpos(php_sapi_name(), 'cli') !== false) ? config('app.providers.cli') : config('app.providers.web');
+        $providers = (strpos(PHP_SAPI, 'cli') !== false) ? config('app.providers.cli') : config('app.providers.web');
 
         if (empty($providers)) {
             throw new \Exception('ERROR[provider] No providers were found.');

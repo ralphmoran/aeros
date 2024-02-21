@@ -42,17 +42,9 @@ class Cookie
         if ($status) {
 			$_COOKIE[$cookie_name] = $value;
             $_REQUEST[$cookie_name] = $value;
-
-            $cookieHeader = "$cookie_name=$value; ";
-
-            $cookieHeader .= (! empty($expiration)) ? 'expires=' . gmdate('D, d M Y H:i:s', $expiration) . ' ' . date('T') . '; ' : '';
-            $cookieHeader .= (! empty($path)) ? 'path=' . $path . '; ' : '';
-            $cookieHeader .= (! empty($domain)) ? 'domain=' . $domain . '; ' : '';
-            $cookieHeader .= (! empty($secure)) ? 'Secure; ' : '';
-            $cookieHeader .= (! empty($httponly)) ? 'HttpOnly' : '';
-
-            response()->addHeaders(['Set-Cookie' => $cookieHeader]);
 		}
+
+        // dd($status);
 
 		return $status;
     }
@@ -80,13 +72,7 @@ class Cookie
             unset($_COOKIE[$cookie_name]);
             unset($_REQUEST[$cookie_name]);
 
-            setcookie($cookie_name, null, time() - (60 * 60 * 24));
-
-            // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie
-            // header('Set-Cookie: test_cookie_3=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT; domain=aeros.test; path=/; HttpOnly');
-            response()->addHeaders([
-                'Set-Cookie' => $cookie_name . '=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT;'
-            ]);
+            setcookie($cookie_name, 0, time() - 1);
 
             return true;
         }
@@ -95,7 +81,7 @@ class Cookie
     }
 
     /**
-     * Deletes all cookies
+     * Regenerates the whole session cookie.
      *
      * @return  void
      */
@@ -108,5 +94,11 @@ class Cookie
         foreach ($_REQUEST as $key => $value) {
             $this->delete($key);
         }
+
+        session_regenerate_id(true);
+        session_unset();
+        session_destroy();
+        session_write_close();
+        setcookie(session_name(), '', 0, '/');
     }
 }

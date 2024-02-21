@@ -39,8 +39,6 @@ class AppController extends Controller
         //     true
         // );
 
-        dd(cookie('test_cookie_3'));
-
         return 'Index';
     }
 

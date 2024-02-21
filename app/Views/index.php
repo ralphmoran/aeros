@@ -8,6 +8,4 @@
 
 <?php endif; ?>
 
-<?php component('component1', ['foo'=> 'bar']); ?>
-
 <?php view('common.footer')?>
