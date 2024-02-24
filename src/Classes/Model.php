@@ -591,6 +591,16 @@ abstract class Model implements JsonSerializable
     }
 
     /**
+     * Returns the primary key that model uses.
+     *
+     * @return void
+     */
+    public function getPrimaryKey()
+    {
+        return $this->primary;
+    }
+
+    /**
      * Customizes the output when this object is printed with json_encode function.
      *
      * @return void
@@ -711,5 +721,123 @@ abstract class Model implements JsonSerializable
     public function __call(string $method, $arguments)
     {
         return call_user_func_array([$this, $method], $arguments);
+    }
+
+    /**
+     * Define a "has one" relationship.
+     * 
+     * If found, it will return the last record inserted from $relatedModel.
+     *
+     * @param   string  $relatedModel   The related model class name
+     * @return  mixed   The related model instance
+     */
+    private function hasOne(string $relatedModel)
+    {
+        return $this->getHasRelationship($relatedModel);
+    }
+
+    /**
+     * Define a "has many" relationship.
+     * 
+     * If found, it will return all the records inserted from $relatedModel.
+     *
+     * @param   string  $relatedModel   The related model class name
+     * @return  mixed   The related model instances
+     */
+    private function hasMany(string $relatedModel)
+    {
+        return $this->getHasRelationship($relatedModel, true);
+    }
+
+    /**
+     * Retrieve related model(s) based on the relationship type.
+     *
+     * @param   string  $relatedModel   The name of the related model.
+     * @param   bool    $hasMany        Indicates whether the relationship is hasMany (default: false).
+     *
+     * @return  mixed   Returns the related model or models based on the relationship type.
+     */
+    private function getHasRelationship(string $relatedModel, bool $hasMany = false)
+    {
+        $calledModel = get_called_class();
+
+        $pivotTableScheme = self::getPivotTableScheme(
+            $calledModel, 
+            $relatedModel
+        );
+
+        $relatedModel_primary = (new $relatedModel)->getPrimaryKey();
+        $relatedModel_column = strtolower(class_basename($relatedModel)) . '_' . $relatedModel_primary;
+
+        $has = db()
+            ->prepare(
+                "SELECT {$relatedModel_column} FROM {$pivotTableScheme['name']} WHERE " 
+                . strtolower(class_basename($calledModel)) . '_' . $this->primary 
+                . " = ? ORDER BY id DESC " 
+                . ((! $hasMany) ? "LIMIT 1" : "")
+            )
+            ->execute([$this->id]);
+
+        // hasOne relationship
+        if (! $hasMany) {
+            $has = $has->fetch();
+
+            return (new $relatedModel)->find($has[$relatedModel_column]);
+        }
+
+        // hasMany relationship
+        if ($hasMany) {
+
+            // $filters = [];
+
+            foreach($has->fetchAll() as $key => $value) {
+                $filters[] = [$relatedModel_primary, '=', $value[$relatedModel_column], 'OR'];
+            }
+
+            return (new $relatedModel)->find($filters);
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the pivot table scheme from two given models.
+     *
+     * @param   string  $calledModel    The class name of the called model.
+     * @param   string  $relatedModel   The class name of the related model.
+     *
+     * @return  array|false     An array containing the pivot table scheme with the following keys:
+     *                     - 'name': The name of the pivot table.
+     *                     - 'col1': The column name for the first model's primary key in the pivot table.
+     *                     - 'col2': The column name for the second model's primary key in the pivot table.
+     *                     Returns false if the comparison between models fails.
+     */
+    public static function getPivotTableScheme(string $calledModel, string $relatedModel) 
+    {
+        $calledModelClass = $calledModel;
+        $relatedModelClass = $relatedModel;
+
+        $relatedModel = strtolower(class_basename($relatedModel));
+        $calledModel = strtolower(class_basename($calledModel));
+
+        $result = strcmp($calledModel, $relatedModel);
+
+        if ($result < 0) {
+            return [ 
+                'name' => $calledModel . '_' . $relatedModel,
+                'col1' => $calledModel . '_' . (new $calledModelClass)->getPrimaryKey(),
+                'col2' => $relatedModel . '_' . (new $relatedModelClass)->getPrimaryKey(),
+            ];
+        }
+
+        if ($result > 0) {
+            return [ 
+                'name' => $relatedModel . '_' . $calledModel,
+                'col1' => $relatedModel . '_' . (new $relatedModelClass)->getPrimaryKey(),
+                'col2' => $calledModel . '_' . (new $calledModelClass)->getPrimaryKey(),
+            ];
+        }
+
+        return false;
     }
 }

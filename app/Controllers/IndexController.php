@@ -2,6 +2,7 @@
 
 namespace Aeros\App\Controllers;
 
+use Aeros\App\Models\User;
 use Aeros\Src\Classes\Controller;
 
 class IndexController extends Controller
@@ -27,6 +28,10 @@ class IndexController extends Controller
 
     public function index()
     {
+        //******************************************/
+        // Relationships: hasMany and hasOne. See Aeros\App\Models\User for more information
+        // dd(User::find(1)->roles());
+
         //******************************************/
         // Add new headers to the response
         // This new header will be added to the final response
@@ -236,8 +241,6 @@ class IndexController extends Controller
         //     'lname' => 'lname', // If this column is guarded, it will be ignored
         //     'role' => 0, // If this column is guarded, it will be ignored
         // ]);
-
-        # TODO: Add support to add or connect to other tables
 
         // dd($newUser);
 

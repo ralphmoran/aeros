@@ -22,6 +22,31 @@ class User extends Model
     /** @var array */
     protected $guarded = ['lname'];
 
+
+
+
+
+
+
+
+
+    /**
+     * User has roles.
+     * 
+     * This method will return the roles associated with the current user.
+     *
+     * @return void
+     */
+    public function roles()
+    {
+        return $this->hasMany(Role::class);
+    }
+
+
+
+
+
+
     /**
      * Assigns a role to a user.
      *

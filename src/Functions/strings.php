@@ -53,3 +53,20 @@ if (! function_exists('singularize')) {
 		return implode('', (new \Symfony\Component\String\Inflector\EnglishInflector())->singularize($word));
 	}
 }
+
+if (! function_exists('class_basename')) {
+
+	/**
+	 * Returns the class name from format 'Aeros\Classes\User'.
+	 *
+	 * @param 	string 	$string
+	 * @param 	string 	$separator
+	 * @return 	string
+	 */
+	function class_basename(string $string, string $separator = '\\'): string
+	{
+		$parts = explode($separator, $string);
+
+		return end($parts);
+	}
+}
