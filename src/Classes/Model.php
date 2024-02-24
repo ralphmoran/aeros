@@ -788,8 +788,6 @@ abstract class Model implements JsonSerializable
         // hasMany relationship
         if ($hasMany) {
 
-            // $filters = [];
-
             foreach($has->fetchAll() as $key => $value) {
                 $filters[] = [$relatedModel_primary, '=', $value[$relatedModel_column], 'OR'];
             }
