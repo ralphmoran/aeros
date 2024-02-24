@@ -4,11 +4,11 @@ namespace Aeros\App\Models;
 
 use Aeros\Src\Classes\Model;
 use Aeros\App\Models\Role;
-use Aeros\Src\Traits\AuthenticationTrait;
+use Aeros\Src\Traits\Authenticable;
 
 class User extends Model
 {
-    use AuthenticationTrait;
+    use Authenticable;
 
     /** @var int */
     private int $currentRole = 0;
@@ -22,14 +22,6 @@ class User extends Model
     /** @var array */
     protected $guarded = ['lname'];
 
-
-
-
-
-
-
-
-
     /**
      * User has roles.
      * 
@@ -41,11 +33,6 @@ class User extends Model
     {
         return $this->hasMany(Role::class);
     }
-
-
-
-
-
 
     /**
      * Assigns a role to a user.
