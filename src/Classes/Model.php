@@ -812,27 +812,32 @@ abstract class Model implements JsonSerializable
      */
     public static function getPivotTableScheme(string $calledModel, string $relatedModel) 
     {
-        $calledModelClass = $calledModel;
-        $relatedModelClass = $relatedModel;
+        $calledModelClass = new $calledModel();
+        $relatedModelClass = new $relatedModel();
 
-        $relatedModel = strtolower(class_basename($relatedModel));
-        $calledModel = strtolower(class_basename($calledModel));
+        $relatedModel = strtolower(
+            class_basename($relatedModel)
+        );
+
+        $calledModel = strtolower(
+            class_basename($calledModel)
+        );
 
         $result = strcmp($calledModel, $relatedModel);
 
         if ($result < 0) {
             return [ 
                 'name' => $calledModel . '_' . $relatedModel,
-                'col1' => $calledModel . '_' . (new $calledModelClass)->getPrimaryKey(),
-                'col2' => $relatedModel . '_' . (new $relatedModelClass)->getPrimaryKey(),
+                'col1' => $calledModel . '_' . $calledModelClass->getPrimaryKey(),
+                'col2' => $relatedModel . '_' . $relatedModelClass->getPrimaryKey(),
             ];
         }
 
         if ($result > 0) {
             return [ 
                 'name' => $relatedModel . '_' . $calledModel,
-                'col1' => $relatedModel . '_' . (new $relatedModelClass)->getPrimaryKey(),
-                'col2' => $calledModel . '_' . (new $calledModelClass)->getPrimaryKey(),
+                'col1' => $relatedModel . '_' . $relatedModelClass->getPrimaryKey(),
+                'col2' => $calledModel . '_' . $calledModelClass->getPrimaryKey(),
             ];
         }
 
