@@ -2,7 +2,7 @@
 
 namespace Aeros\Src\Traits;
 
-trait ProxyableTrait
+trait Proxyable
 {
     /** @var ?string */
     public $index = null;

@@ -708,6 +708,16 @@ abstract class Model implements JsonSerializable
     {
         $class = get_called_class();
 
+        if (! method_exists($class, $method)) {
+            throw new \BadMethodCallException(
+                sprintf(
+                    'ERROR[method] Method "%s" does not exist in model "%s"', 
+                    $method,
+                    $class
+                )
+            );
+        }
+
         return (new $class())->$method(...$arguments);
     }
 
@@ -720,6 +730,16 @@ abstract class Model implements JsonSerializable
      */
     public function __call(string $method, $arguments)
     {
+        if (! method_exists(get_called_class(), $method)) {
+            throw new \BadMethodCallException(
+                sprintf(
+                    'ERROR[method] Method "%s" does not exist in model "%s"', 
+                    $method,
+                    get_called_class()
+                )
+            );
+        }
+
         return call_user_func_array([$this, $method], $arguments);
     }
 

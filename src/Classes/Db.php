@@ -38,10 +38,16 @@ class Db
         \PDO::ATTR_TIMEOUT => 1,
     ];
 
+    /** @var array */
     private $finalMethods = [
         'getColumnMeta',
         'columnCount',
         'rowCount',
+    ];
+
+    /** @var array */
+    private $authMethods = [
+        'where',
     ];
 
     /**
@@ -96,6 +102,16 @@ class Db
     public function ping(): int|false
     {
         return $this->activeDBConnections[$this->connectionName]->exec('SELECT 1');
+    }
+
+    /**
+     * Returns the current active connections.
+     *
+     * @return array
+     */
+    public function getActiveDBConnections(): array
+    {
+        return $this->activeDBConnections;
     }
 
     /**

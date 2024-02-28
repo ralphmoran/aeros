@@ -28,6 +28,7 @@ class IndexController extends Controller
 
     public function index()
     {
+        User::where();
         //******************************************/
         // Relationships: hasMany and hasOne. See Aeros\App\Models\User for more information
         // dd(User::find(1)->roles());

@@ -2,11 +2,11 @@
 
 namespace Aeros\Src\Classes;
 
-use Aeros\Src\Traits\ProxyableTrait;
+use Aeros\Src\Traits\Proxyable;
 
 class Cache
 {
-    use ProxyableTrait;
+    use Proxyable;
 
     /**
      * Sets/Picks cache connection.
