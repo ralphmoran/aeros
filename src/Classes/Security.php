@@ -12,6 +12,7 @@ class Security
      */
     public function csrf(): string
     {
+        # TODO: Add support for token validation and CSRF hidden input
         return component('inputs.hidden', [
                 'id' => 'csrf_token',
                 'name' => 'csrf_token',

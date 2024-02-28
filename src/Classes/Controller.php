@@ -9,6 +9,7 @@ class Controller
 {
     public function __construct()
     {
+        # TODO: Implement
         // Add request validation...? Or, middleware does this job...?
         // Add conditional caching system based on request
         // Add async taks handling
