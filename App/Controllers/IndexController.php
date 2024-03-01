@@ -376,4 +376,10 @@ class IndexController extends Controller
     {
         return 'Another Profile';
     }
+
+    public function validatedCSRFToken()
+    {
+        // CSRF token was validated correctly
+        return 'All good with CSRF token';
+    }
 }

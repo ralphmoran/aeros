@@ -18,5 +18,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 # TODO: Minify files CSS, JS, images
 # TODO: Implement an active object pool. Store objects in memcached: https://stackoverflow.com/questions/16809953/can-memcached-store-complex-objects
 # TODO: Simulate HTTPS protocol on local development
+# TODO: Add a new command to flush cache
 
 app()->run();

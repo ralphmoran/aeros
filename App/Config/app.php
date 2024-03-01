@@ -35,6 +35,7 @@ return [
         'web' => [
             // Main service providers: DO NOT TOUCH
             'SessionServiceProvider' => \Aeros\App\Providers\SessionServiceProvider::class,
+            'CsrfTokenServiceProvider' => \Aeros\App\Providers\CsrfTokenServiceProvider::class,
             'HttpServiceProvider' => \Aeros\App\Providers\HttpServiceProvider::class,
             'RouteServiceProvider' => \Aeros\App\Providers\RouteServiceProvider::class,
         ],
@@ -57,6 +58,7 @@ return [
             'SessionMiddleware' => \Aeros\App\Middlewares\SessionMiddleware::class,
             'BanBotsMiddleware' => \Aeros\App\Middlewares\BanBotsMiddleware::class,
             'SanitizerMiddleware' => \Aeros\App\Middlewares\SanitizerMiddleware::class,
+            'VerifyCsrfTokenMiddleware' => \Aeros\App\Middlewares\VerifyCsrfTokenMiddleware::class,
         ],
 
         'web' => [

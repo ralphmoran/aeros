@@ -182,7 +182,7 @@ class Route extends Router
             $arguments[] = $this->params[':' . $param->name];
         }
 
-        $reflectionMethod->invokeArgs($controller, $arguments);
+        printf('%s', $reflectionMethod->invokeArgs($controller, $arguments));
 
         $content = ob_get_contents();
 

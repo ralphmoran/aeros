@@ -32,7 +32,7 @@ final class Request
         "Content-Type:application/json"
     ];
 
-    /** @var array $payload */
+    /** @var mixed $payload */
     public $payload = [];
 
     /** @var array $cookies */
@@ -66,7 +66,7 @@ final class Request
     public function __construct()
     {
         $this->url = $_SERVER['PHP_SELF'];
-        $this->payload = file_get_contents('php://input');
+        $this->payload = $this->getPayload();
         $this->headers = getallheaders();
         $this->cookies = $_COOKIE;
         $this->queryParams = $_GET;
@@ -118,7 +118,7 @@ final class Request
      * @param mixed $data
      * @return Request
      */
-    public function payload(mixed $data): Request
+    public function setPayload(mixed $data): Request
     {
         $this->payload = $data;
 
@@ -192,21 +192,7 @@ final class Request
     {
         // Return values from current request
         if (is_string($opts) && in_array(strtoupper($opts), $this->verbs)) {
-
-            if ($opts == 'get') {
-                return $this->filterKeys($_GET, $keys);
-            }
-
-            if ($opts == 'files') {
-                return $this->filterKeys($_FILES, $keys);
-            }
-
-            if ($opts == 'post' && ! empty($_POST)) {
-                return $this->filterKeys($_POST, $keys);
-            }
-
-            // Other HTTP verbs: POST, PUT, DELETE, PATCH
-            return $this->filterKeys(json_decode(file_get_contents('php://input'), true) ?? [], $keys);
+            return $this->filterKeys($this->getPayload($opts), $keys);
         }
 
         // Sets options to make a request
@@ -244,17 +230,17 @@ final class Request
             );
         }
 
-        if (empty($this->payload) && isset($this->curlOptions['payload'])) {
-            $this->payload($this->curlOptions['payload']);
+        if (empty($this->getPayload()) && isset($this->curlOptions['payload'])) {
+            $this->setPayload($this->curlOptions['payload']);
         }
 
         // Special format for GET and POST
-        if ($this->method == 'GET' && ! empty($this->payload)) {
-            $this->url($this->url . '?' . http_build_query($this->payload));
+        if ($this->method == 'GET' && ! empty($this->getPayload())) {
+            $this->url($this->url . '?' . http_build_query($this->getPayload()));
         }
         
-        if ($this->method == 'POST' && ! empty($this->payload)) {
-            $this->payload(json_encode($this->payload));
+        if ($this->method == 'POST' && ! empty($this->getPayload())) {
+            $this->setPayload(json_encode($this->getPayload()));
         }
 
         return [
@@ -268,7 +254,7 @@ final class Request
             CURLOPT_CUSTOMREQUEST  => $this->method,
             CURLOPT_HTTPHEADER     => $this->headers,
             CURLOPT_URL            => $this->url,
-            CURLOPT_POSTFIELDS     => $this->payload,
+            CURLOPT_POSTFIELDS     => $this->getPayload(),
         ];
     }
 
@@ -338,6 +324,125 @@ final class Request
             return $this;
         }
 
-        throw new \BadMethodCallException();
+        throw new \BadMethodCallException(
+            sprintf(
+                'ERROR[BadMethodCallException] HTTP method "%s" is invalid.', 
+                $verb
+            )
+        );
+    }
+
+    /**
+     * Retrieves the HTTP method of the current request.
+     *
+     * @return  string  The HTTP method (e.g., GET, POST, PUT, DELETE, PATCH).
+     */
+    public function getHttpMethod()
+    {
+        return $_SERVER['REQUEST_METHOD'];
+    }
+
+    /**
+     * Retrieves the payload data based on the specified HTTP method.
+     *
+     * @param   string|null     $from       The HTTP method to retrieve payload from. 
+     *                                      If null, retrieves based on the current HTTP method.
+     * @return  array                       The payload data associated with the specified HTTP method.
+     * @throws  \BadMethodCallException     When the specified HTTP method is invalid.
+     */
+    public function getPayload(string $from = null)
+    {
+        $from ??= $this->getHttpMethod();
+        $from = strtoupper($from);
+
+        if ($from === $this->getHttpMethod()) {
+
+            switch ($from) {
+                case 'GET':
+                    return array_merge($_GET, $this->payload);
+                    break;
+                case 'FILES':
+                    return array_merge($_FILES, $this->payload);
+                case 'POST':
+                    return array_merge($_POST, $this->payload);
+                    break;
+                case 'PUT':
+                    parse_str(file_get_contents('php://input'), $_PUT);
+                    return array_merge($_PUT, $this->payload);
+                    break;
+                case 'PATCH':
+                    parse_str(file_get_contents('php://input'), $_PATCH);
+                    return array_merge($_PATCH, $this->payload);
+                case 'DELETE':
+                    parse_str(file_get_contents('php://input'), $_DELETE);
+                    return array_merge($_DELETE, $this->payload);
+                    break;
+                default: [];
+            }
+
+        }
+
+        if (in_array($from, $this->verbs, true)) {
+            return [];
+        }
+
+        throw new \BadMethodCallException(
+            sprintf(
+                'ERROR[BadMethodCallException] HTTP method "%s" is invalid.', 
+                $this->getHttpMethod()
+            )
+        );
+    }
+
+    /**
+     * Magic method to set session variables.
+     *
+     * @param   string  $name   The session variable name.
+     * @param   mixed   $value  The session variable value.
+     */
+    public function __set($name, $value)
+    {
+        $this->payload[$name] = $value;
+    }
+
+    /**
+     * Magic method to get session variables.
+     *
+     * @param   string  $name   The session variable name.
+     * @return  mixed|null  The session variable value if set, otherwise null.
+     */
+    public function __get($name)
+    {
+        if (isset($this->payload[$name])) {
+            return $this->payload[$name];
+        }
+
+        return null;
+    }
+
+    /**
+     * Magic method to check if a session variable is set.
+     *
+     * @param   string  $name   The session variable name.
+     * @return  bool    Returns true if the session variable is set, otherwise false.
+     */
+    public function __isset($name)
+    {
+        return isset($this->payload[$name]);
+    }
+
+    /**
+     * Magic method to unset a session variable.
+     *
+     * @param   string  $name   The session variable name.
+     * @return  bool    Returns true on success.
+     */
+    public function __unset($name)
+    {
+        if (isset($this->payload[$name])) {
+            unset($this->payload[$name]);
+        }
+
+        return true;
     }
 }

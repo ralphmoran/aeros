@@ -20,6 +20,8 @@ Route::get(":/", "IndexController");
 Route::get(":/list/{userid}/profile", "IndexController@list");
 Route::get(":/another/{roleid}/profile/{anotherid}", "IndexController@anotherProfile");
 
+Route::post(":/", "IndexController@validatedCSRFToken");
+
 // -- Example #1: Route with a closure|callback
 
 // Route::get(":/", function () {

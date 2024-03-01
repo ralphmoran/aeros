@@ -71,11 +71,6 @@ class Router
     {
         $this->parseRoute($route);
 
-        // Run APP middlewares on all routes and requests
-        if (! empty($appMiddlewares = array_values(config('app.middlewares.app')))) {
-            $route->withMiddleware($appMiddlewares);
-        }
-
         // Asign group middlewares to this route
         if (! is_null($this::$groupMiddlewares)) {
             $route->withMiddleware($this::$groupMiddlewares);
