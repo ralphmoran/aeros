@@ -130,6 +130,24 @@ if (! function_exists('response')) {
 	}
 }
 
+if (! function_exists('abort')) {
+
+	/**
+	 * Abort function is a wrapper for Response class and ends the script. 
+	 *
+	 * @param mixed $data
+	 * @param ?int $code
+	 * @param string $type
+	 * @return mixed
+	 */
+	function abort($data = null, int $code = 403, string $type = \Aeros\Src\Classes\Response::HTML) 
+	{
+		printf('%s', response($data, $code));
+
+		exit;
+	}
+}
+
 if (! function_exists('request')) {
 
 	/**
@@ -141,6 +159,10 @@ if (! function_exists('request')) {
 	 */
 	function request(mixed $opts = '', array $keys = [])
 	{
+		if (empty($opts)) {
+			return app()->request;
+		}
+
 		return app()->request->setOptions($opts, $keys);
 	}
 }
@@ -315,9 +337,9 @@ if (! function_exists('csrf')) {
 	/**
 	 * Embeds a CSRF token into a hidden input.
 	 *
-	 * @return string
+	 * @return void
 	 */
-	function csrf(): string
+	function csrf()
 	{
 		return app()->security->csrf();
 	}

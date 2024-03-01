@@ -10,15 +10,15 @@ class Security
      *
      * @return string
      */
-    public function csrf(): string
+    public function csrf()
     {
-        # TODO: Add support for token validation and CSRF hidden input
-        return component('inputs.hidden', [
+        return component(
+            'inputs.hidden', 
+            [
                 'id' => 'csrf_token',
                 'name' => 'csrf_token',
-                'value' => $_SESSION['token'],
-            ], 
-            true
+                'value' => session()->csrf_token,
+            ]
         );
     }
 }

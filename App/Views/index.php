@@ -10,4 +10,6 @@
 
 <?php component('component1', ['foo'=> 'bar']); ?>
 
+<?php csrf(); ?>
+
 <?php view('common.footer')?>
