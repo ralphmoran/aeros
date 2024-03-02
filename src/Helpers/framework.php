@@ -266,34 +266,6 @@ if (! function_exists('component')) {
 	}
 }
 
-if (! function_exists('env')) {
-
-	/**
-	 * Gets an ENV variable if exists, otherwise, if $default is not null, sets
-	 * the new value.
-	 *
-	 * @param string $key
-	 * @param string $default
-	 * @return mixed
-	 */
-	function env(string $key, $default = NULL) 
-	{
-		if (empty($key)) {
-			return null;
-		}
-
-		if (! is_null($default)) {
-			return $_ENV[$key] = $default;
-		}
-
-		if (array_key_exists($key, $_ENV)) {
-			return $_ENV[$key];
-		}
-
-		return null;
-	}
-}
-
 if (! function_exists('sanitizeWith')) {
 
 	/**

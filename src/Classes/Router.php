@@ -35,6 +35,9 @@ class Router
         // 'trace',
     ];
 
+    /** @var Route $currentRoute */
+    protected $currentRoute;
+
     /**
      * Registers a new Route based on the static call of the requested method.
      *
@@ -105,9 +108,21 @@ class Router
         // Call middleware(s) for this route
         self::runMiddlewares($route->getMiddlewares());
 
+        $this->currentRoute = $route;
+
         return $route
                 ->handler()
                 ->getContent();
+    }
+
+    /**
+     * Returns the current route.
+     *
+     * @return Route
+     */
+    public function getCurrentRoute(): Route
+    {
+        return $this->currentRoute;
     }
 
     /**

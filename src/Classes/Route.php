@@ -143,6 +143,18 @@ class Route extends Router
      */
     private function callController(string $controller): string
     {
+        dd(
+            serialize(request()->getPayload()), 
+            $_SERVER['REQUEST_METHOD'], 
+            $_SERVER['REQUEST_URI'],
+            hash('sha256', $_SERVER['REQUEST_METHOD'] . ':' . $_SERVER['REQUEST_URI'] . ':' . serialize(request()->getPayload()))
+        );
+
+        // VAlidate if env is production or staging
+        // Create hash key based on current route
+        // Check if new hash key exists in cache
+        // If so, return the hash content
+
         ob_start();
 
         [$controllerName, $method] = strpos($controller, '@') === false
