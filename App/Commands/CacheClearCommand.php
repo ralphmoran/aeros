@@ -202,6 +202,13 @@ class CacheClearCommand extends Command
                 case 'redis':
                     cache($connectionName)->flushdb();
                     break;
+                case 'local':
+                    array_map(
+                        'unlink', 
+                        glob(app()->basedir . '/logs/cache/*.log')
+                    );
+
+                    break;
             }
 
             return true;

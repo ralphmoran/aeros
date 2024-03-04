@@ -45,6 +45,9 @@ class Route extends Router
     /** @var string */
     private $content = null;
 
+    /** @var string */
+    public $hash = null;
+
     /**
      * Constructor
      *
@@ -135,6 +138,21 @@ class Route extends Router
     }
 
     /**
+     * Calculates a hash for the current route.
+     *
+     * @param   string  $hash   The hash algorithm to use (default is 'sha256').
+     *
+     * @return  string  The calculated hash value for the route.
+     */
+    public static function getRouteHash(string $hash = 'sha256'): string
+    {
+        return hash(
+            $hash, 
+            $_SERVER['REQUEST_METHOD'] . ':' . $_SERVER['REQUEST_URI'] . ':' . serialize(request()->getPayload())
+        );
+    }
+
+    /**
      * Makes the controller call and assign the controller result to the content property.
      *
      * @param string $controller
@@ -143,18 +161,6 @@ class Route extends Router
      */
     private function callController(string $controller): string
     {
-        dd(
-            serialize(request()->getPayload()), 
-            $_SERVER['REQUEST_METHOD'], 
-            $_SERVER['REQUEST_URI'],
-            hash('sha256', $_SERVER['REQUEST_METHOD'] . ':' . $_SERVER['REQUEST_URI'] . ':' . serialize(request()->getPayload()))
-        );
-
-        // VAlidate if env is production or staging
-        // Create hash key based on current route
-        // Check if new hash key exists in cache
-        // If so, return the hash content
-
         ob_start();
 
         [$controllerName, $method] = strpos($controller, '@') === false

@@ -11,7 +11,7 @@
 |
 */
 
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../../src/aeros_autoload.php';
 
 app()->bootApplication()->worker->start();
 

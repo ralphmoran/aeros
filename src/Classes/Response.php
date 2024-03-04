@@ -65,7 +65,7 @@ final class Response
         $this->withResponseCode(! is_null($code) ? $code : $this->code);
 
         // On terminal
-        if (strpos(php_sapi_name(), 'cli') !== false) {
+        if (isMode('cli')) {
             $output = new ConsoleOutput();
 
             $output->getFormatter()->setStyle(

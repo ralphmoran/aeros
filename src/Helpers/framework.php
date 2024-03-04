@@ -194,7 +194,7 @@ if (! function_exists('dd')) {
 	function dd(...$args) 
 	{
 		// On terminal
-		if (strpos(php_sapi_name(), 'cli') !== false) {
+		if (isMode('cli')) {
 			$position = [debug_backtrace()[0]['file'] . ':' . debug_backtrace()[0]['line']];
 			die(response(array_merge($position, $args)));
 		}

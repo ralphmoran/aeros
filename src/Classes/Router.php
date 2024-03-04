@@ -138,7 +138,7 @@ class Router
         $currentUriParts = $this->getUriParts($uri);
 
         // If routes are already cached for production...
-        if (in_array(env('APP_ENV'), ['production']) && empty($this->routes)) {
+        if (isEnv('production') && empty($this->routes)) {
             $this->routes = cache('memcached')->get('cached.routes');
         }
 
