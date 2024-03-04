@@ -45,7 +45,7 @@ if (! function_exists('isInternal')) {
 	function isInternal(): bool
 	{
 		// Only on Staging or PROD
-		if (in_array(env('APP_ENV'), ['staging', 'production'])) {
+		if (isEnv(['staging', 'production'])) {
 
 			// In our VPN
 			if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])
@@ -55,10 +55,6 @@ if (! function_exists('isInternal')) {
 			}
 		}
 
-		if (env('APP_ENV') == 'development') {
-			return true;
-		}
-
-		return false;
+		return isEnv('development');
 	}
 }

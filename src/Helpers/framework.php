@@ -194,7 +194,7 @@ if (! function_exists('dd')) {
 	function dd(...$args) 
 	{
 		// On terminal
-		if (strpos(php_sapi_name(), 'cli') !== false) {
+		if (isMode('cli')) {
 			$position = [debug_backtrace()[0]['file'] . ':' . debug_backtrace()[0]['line']];
 			die(response(array_merge($position, $args)));
 		}
@@ -263,34 +263,6 @@ if (! function_exists('component')) {
 	function component(string $component, array $data = [], bool $dump = true)
 	{
 		return app()->component->render($component, $data, $dump);
-	}
-}
-
-if (! function_exists('env')) {
-
-	/**
-	 * Gets an ENV variable if exists, otherwise, if $default is not null, sets
-	 * the new value.
-	 *
-	 * @param string $key
-	 * @param string $default
-	 * @return mixed
-	 */
-	function env(string $key, $default = NULL) 
-	{
-		if (empty($key)) {
-			return null;
-		}
-
-		if (! is_null($default)) {
-			return $_ENV[$key] = $default;
-		}
-
-		if (array_key_exists($key, $_ENV)) {
-			return $_ENV[$key];
-		}
-
-		return null;
 	}
 }
 

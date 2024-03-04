@@ -5,8 +5,8 @@ namespace Aeros\Src\Classes;
 class File
 {
     /**
-     * Creates a file with the given content. This method validates if the file exists, otherwise
-     * it's created. When it exists, the content is appended.
+     * Creates a file with the given content. This method validates if the file 
+     * exists, otherwise it's created. When it exists, the content is appended.
      *
      * @param string $filename
      * @param mixed $content

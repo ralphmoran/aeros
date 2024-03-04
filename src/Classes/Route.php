@@ -45,6 +45,9 @@ class Route extends Router
     /** @var string */
     private $content = null;
 
+    /** @var string */
+    public $hash = null;
+
     /**
      * Constructor
      *
@@ -132,6 +135,21 @@ class Route extends Router
     public function getContent()
     {
         return $this->content;
+    }
+
+    /**
+     * Calculates a hash for the current route.
+     *
+     * @param   string  $hash   The hash algorithm to use (default is 'sha256').
+     *
+     * @return  string  The calculated hash value for the route.
+     */
+    public static function getRouteHash(string $hash = 'sha256'): string
+    {
+        return hash(
+            $hash, 
+            $_SERVER['REQUEST_METHOD'] . ':' . $_SERVER['REQUEST_URI'] . ':' . serialize(request()->getPayload())
+        );
     }
 
     /**

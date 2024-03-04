@@ -15,7 +15,7 @@ class RouteServiceProvider extends ServiceProvider
     public function register(): void
     {
         // On Production
-        if (in_array(env('APP_ENV'), ['production'])) {
+        if (isEnv('production')) {
             return;
         }
 

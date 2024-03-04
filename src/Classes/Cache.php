@@ -56,6 +56,11 @@ class Cache
                 return $this->objects[$this->index];
 
                 break;
+            case 'local':
+                $this->objects[$this->index] = app()->file;
+
+                return $this->objects[$this->index];
+                break;
             default:
                 throw new \Exception('ERROR[ObjectException] Driver "%s" is not supported.');
         }

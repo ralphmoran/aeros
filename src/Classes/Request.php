@@ -339,7 +339,7 @@ final class Request
      */
     public function getHttpMethod()
     {
-        if (strpos(php_sapi_name(), 'cli') !== false) {
+        if (isMode('cli')) {
             return 'GET';
         }
 

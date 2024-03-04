@@ -26,18 +26,38 @@ class ServiceContainer extends Kernel
     public function run()
     {
         try {
-            $content = $this->bootstrap()->router->dispatch();
+            // Booting app
+            $this->bootstrap();
+
+            // If env is prouction and cache is enabled, return route content
+            if (isEnv('production') && env('CACHE')) {
+                if ($content = cache('local')->getContent(app()->basedir . '/logs/cache/' . Route::getRouteHash() . '.log')) {
+                    printf('%s', response($content));
+
+                    exit;
+                }
+            }
+
+            $content = app()->router->dispatch();
 
             if (empty($content)) {
                 throw new \TypeError("ERROR[route] No content found.");
+            }
+
+            // If env is prouction and cache is enabled, store route content
+            if (isEnv('production') && env('CACHE')) {
+                cache('local')->create(
+                    app()->basedir . '/logs/cache/' . Route::getRouteHash() . '.log', 
+                    $content
+                );
             }
 
             printf('%s', response($content));
 
         } catch (\Throwable $e) {
 
-            // Log errors only on production or staging
-            if (in_array(env('APP_ENV'), ['production'])) {
+            // Log errors only on production
+            if (isEnv('production')) {
                 logger(
                     sprintf(
                         'Caught %s: %s. %s:%d.', 
@@ -45,8 +65,7 @@ class ServiceContainer extends Kernel
                         $e->getMessage(),
                         $e->getFile(),
                         $e->getLine()
-                    ),
-                    app()->basedir . '/logs/error.log'
+                    )
                 );
 
                 exit;
@@ -156,7 +175,7 @@ class ServiceContainer extends Kernel
             return $this->providers;
         }
 
-        $providers = (strpos(php_sapi_name(), 'cli') !== false) ? config('app.providers.cli') : config('app.providers.web');
+        $providers = (isMode('cli')) ? config('app.providers.cli') : config('app.providers.web');
 
         if (empty($providers)) {
             throw new \Exception('ERROR[provider] No providers were found.');

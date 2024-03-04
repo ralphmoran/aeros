@@ -39,6 +39,13 @@ return [
             'password' => env("MEMCACHED_PASSWORD"),
             'driver'   => 'memcached'
         ],
+
+        /*
+         * Local connection
+         */
+        'local' => [
+            'driver'   => 'local'
+        ],
     ],
 
     /*

@@ -1,4 +1,5 @@
 <?php
+
 /*
 |----------------------------------------------
 | Index - Main point
@@ -8,7 +9,7 @@
 |
 */
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../src/aeros_autoload.php';
 
 # TODO: Use a different email sender system: PHPMailer is recommended
 # TODO: Use socket connections for MySQL to improve performance
