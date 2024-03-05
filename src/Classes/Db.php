@@ -124,8 +124,6 @@ class Db
      */
     public function __call($method, $arguments)
     {
-        logger('INIT: ' . $method . '::' . serialize($arguments));
-
         // PDO is null
         if (is_null($this->reflectionPDO)) {
             $this->reflectionPDO = new \ReflectionClass('PDO');
@@ -142,7 +140,6 @@ class Db
         if (! is_null($result)) {
             if ($result instanceof \PDOStatement) {
                 $this->stm = $result;
-                logger('RESULT 1: ' . $method . '::' . serialize($arguments) . '::' . json_encode($result));
             }
 
             return $this;
@@ -163,11 +160,9 @@ class Db
 
         if (! is_null($result)) {
             if (in_array($method, $this->finalMethods)) {
-                logger('RESULT 2: ' . $method . '::' . serialize($arguments) . '::' . json_encode($result));
                 return $result;
             }
 
-            logger('STM: ' . $method . '::' . serialize($arguments) . '::' . json_encode($this->stm));
             return $this->stm;
         }
 
