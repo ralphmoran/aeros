@@ -30,11 +30,7 @@ class IndexController extends Controller
     {
         //******************************************/
         // Relationships: hasMany and hasOne. See Aeros\App\Models\User for more information
-        // dd(db()->prepare("SELECT * FROM users WHERE id = ?")
-        //     ->execute([1])
-        //     ->fetchAll()
-        // );
-        dd(User::find(1));
+        // dd(User::find(1)->roles());
 
         //******************************************/
         // Add new headers to the response
