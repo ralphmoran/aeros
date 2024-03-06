@@ -24,7 +24,7 @@ class SessionServiceProvider extends ServiceProvider
         }
         
         // Only on web request
-        if (strpos(php_sapi_name(), 'cli') === false) {
+        if (! isMode('cli')) {
             session()->start();
 
             response()->addHeaders(config('session.headers.default'));
