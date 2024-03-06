@@ -241,6 +241,27 @@ class RunWorkerCommand extends Command
      */
     private function processWorkerAction(string $action = 'start', string|array $workerName = '*'): string
     {
+        if ($action == 'start') {
+
+            // Reread
+            $reread = new Process([
+                '/usr/bin/sudo', 
+                '/usr/bin/supervisorctl', 
+                'reread'
+            ]);
+
+            $reread->mustRun();
+
+            // Update
+            $update = new Process([
+                '/usr/bin/sudo', 
+                '/usr/bin/supervisorctl', 
+                'update'
+            ]);
+
+            $update->mustRun();
+        }
+
         $status = [];
 
         $workerName = ($workerName == '*') ? 'all' : $workerName;
