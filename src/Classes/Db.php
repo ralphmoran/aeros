@@ -101,7 +101,14 @@ class Db
      */
     public function ping(): int|false
     {
-        return $this->activeDBConnections[$this->connectionName]->exec('SELECT 1');
+        $status = $this->activeDBConnections[$this->connectionName]->exec('SELECT 1');
+
+        // Inmediately close connection if it's 'none'
+        if ($this->connectionName == 'none') {
+            $this->activeDBConnections[$this->connectionName] = null;
+        }
+
+        return $status;
     }
 
     /**

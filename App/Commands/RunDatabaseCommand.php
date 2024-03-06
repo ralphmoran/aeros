@@ -126,15 +126,10 @@ class RunDatabaseCommand extends Command
         // Testing DB connection
         $defaultDBSetup = config('db.connections')[implode(config('db.default'))];
 
-        // Create DBs
-        $dbh = new \PDO(
-            "mysql:host=" . $defaultDBSetup['server'], 
-            $defaultDBSetup['username'], 
-            $defaultDBSetup['password']
-        );
+        // Create DB
+        if (db('none')->exec("CREATE DATABASE IF NOT EXISTS `$database`;") === false) {
+            print_r(db('none')->errorInfo(), true);
 
-        if ($dbh->exec("CREATE DATABASE IF NOT EXISTS `$database`;") === false) {
-            print_r($dbh->errorInfo(), true);
             return Command::FAILURE;
         }
 

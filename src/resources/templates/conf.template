@@ -1,6 +1,6 @@
 [program:{{script-name}}]
 process_name=%(program_name)s_%(process_num)02d
-command=/usr/bin/php /var/www/html/app/queues/workers/scripts/{{script-name}}.php
+command=/usr/bin/php /var/www/html/App/Queues/Workers/Scripts/{{script-name}}.php
 autostart=false
 autorestart=true
 user=root
@@ -9,4 +9,4 @@ redirect_stderr=true
 startsecs=3
 startretries=3
 exitcodes=0
-stdout_logfile=/var/www/html/app/logs/{{script-name}}.log
+stdout_logfile=/var/www/html/App/Logs/{{script-name}}.log

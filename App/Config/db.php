@@ -70,6 +70,18 @@ return [
             'port'     => null,
             'driver'   => 'sqlite'
         ],
+
+        /*
+         * Neutral DB connection: Just to test or ping the database server.
+         */
+        'none' => [
+            'server'   => env("DB_HOST"),
+            'username' => env("DB_USERNAME"),
+            'password' => env("DB_PASSWORD"),
+            'database' => '',
+            'port'     => env("DB_PORT"),
+            'driver'   => env("DB_DRIVER")
+        ],
     ],
 
     /*

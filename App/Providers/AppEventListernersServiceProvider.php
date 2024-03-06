@@ -15,10 +15,10 @@ class AppEventListernersServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        app()->event
+        // app()->event
         // ->addEventListener()
         // ...
         // ->addEventListener()
-        ->addEventListener('email.reminder', \Aeros\App\Events\EmailReminderEvent::class);
+        // ->addEventListener('email.reminder', \Aeros\App\Events\EmailReminderEvent::class);
     }
 }

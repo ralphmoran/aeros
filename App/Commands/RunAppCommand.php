@@ -112,11 +112,18 @@ class RunAppCommand extends Command
 
         if (! file_exists(app()->basedir . '/../phinx.json')) {
             $output->writeln(
-                '<bg=red;options=bold>Error</> <fg=yellow>phinx.json</> file does not exist. ' .
-                'Please, run <fg=yellow>`php aeros run:database <environment>`</> command'
+                '==> <bg=red;options=bold>Error</> <fg=yellow>phinx.json</> file does not exist. ' .
+                'Running <fg=yellow>`php aeros run:database -c -d`</> command to create it...'
             );
 
-            return Command::FAILURE;
+            $this->getApplication()->doRun(
+                new ArrayInput([
+                    'command' => 'run:database',
+                    '-c' => true,
+                    '-a' => true
+                ]), 
+                $output
+            );
         }
 
         $migrations = new Process([
