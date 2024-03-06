@@ -12,8 +12,8 @@ Working on it
 
 # Setup
 
-- Add .env file
-- Add phinx.json file
+- Run `vagrant up`. If required, authorize NFS configuration
+- Add .env file and update database section
 - Run `composer install`
 - Run `composer cc && composer dump -o`
-- Run Phinx migration command
+- Run next command from within working directory `php aeros run:app`
