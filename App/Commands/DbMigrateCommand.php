@@ -29,9 +29,9 @@ class DbMigrateCommand extends Command
         $this->setDescription('Aeros REPL - "db:migrate" command.')
             ->setHelp('Commands help...');
 
-        $this->addOption('environment', 'e', InputOption::VALUE_OPTIONAL, 'Option "environment" with alias "e", if provided, it determines the environment');
-        $this->addOption('withSeeds', null, InputOption::VALUE_NONE, 'Option "withSeeds" with alias "ws", if provided, all seeders will be called');
-        $this->addOption('seed', 's', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Option "seed" with alias "s"');
+        $this->addOption('environment', null, InputOption::VALUE_OPTIONAL, 'Option "environment", if provided, it determines the environment');
+        $this->addOption('withSeeds', null, InputOption::VALUE_NONE, 'Option "withSeeds", if provided, all seeders will be called');
+        $this->addOption('seed', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Option "seed", if given, only these will be called');
     }
 
     /**
@@ -43,6 +43,16 @@ class DbMigrateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // Confirm if App/Database/migrations dir exists
+        if (! is_dir($migrationDir = app()->basedir . '/Database/migrations')) {
+            mkdir($migrationDir);
+        }
+
+        // Confirm if App/Database/seeds dir exists
+        if (! is_dir($seedDir = app()->basedir . '/Database/seeds')) {
+            mkdir($seedDir);
+        }
+
         $phinx = app()->basedir . '/../vendor/bin/phinx';
 
         // Migrate
