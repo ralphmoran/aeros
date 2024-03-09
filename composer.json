@@ -6,18 +6,8 @@
             "src/Helpers/all.php"
         ],
         "psr-4": {
-            "Aeros\\Src\\Classes\\": "src/Classes",
-            "Aeros\\Src\\Interfaces\\": "src/Interfaces",
-            "Aeros\\Src\\Traits\\": "src/Traits",
-            "Aeros\\App\\Controllers\\": "App/Controllers",
-            "Aeros\\App\\Models\\": "App/Models",
-            "Aeros\\App\\Middlewares\\": "App/Middlewares",
-            "Aeros\\App\\Providers\\": "App/Providers",
-            "Aeros\\App\\Events\\": "App/Events",
-            "Aeros\\App\\Queues\\Crons\\": "App/Queues/Crons",
-            "Aeros\\App\\Queues\\Jobs\\": "App/Queues/Jobs",
-            "Aeros\\App\\Queues\\Workers\\": "App/Queues/Workers",
-            "Aeros\\App\\Commands\\": "App/Commands"
+            "Aeros\\App\\": "App",
+            "Aeros\\Src\\": "src"
         }
     },
     "require": {
