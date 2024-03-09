@@ -1,0 +1,7 @@
+[2024-03-08 18:16:02] Starting Aeros\App\Queues\Crons\EveryMinuteCron at 0.03236800 1709950562
+[2024-03-08 18:16:02] Finished Aeros\App\Queues\Crons\EveryMinuteCron at 0.04343000 1709950562:: Array
+(
+    [0] => root        1555 14.0  1.8  97324 37172 ?        S    18:16   0:00 /usr/bin/php
+    [1] => root        1564  0.0  0.0   8900   736 ?        S    18:16   0:00 grep php
+)
+
