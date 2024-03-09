@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Queues\Jobs;
+namespace App\Queues\Jobs;
 
 use Aeros\Src\Classes\Job;
 
@@ -13,7 +13,7 @@ class GetMimeTypesJob extends Job
      */
     public function doWork(): bool
     {
-        (new \Aeros\App\Providers\MimeTypeServiceProvider)->boot();
+        (new \App\Providers\MimeTypeServiceProvider)->boot();
 
         return true;
     }

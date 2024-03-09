@@ -125,7 +125,7 @@ class ServiceContainer extends Kernel
             return $this;
         }
 
-        (new \Aeros\App\Providers\AppServiceProvider)->register();
+        (new \App\Providers\AppServiceProvider)->register();
 
         $this->isAppBooted = true;
 

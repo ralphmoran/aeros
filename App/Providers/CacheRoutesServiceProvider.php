@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Providers;
+namespace App\Providers;
 
 use Aeros\Src\Classes\ServiceProvider;
 
@@ -9,7 +9,7 @@ use Aeros\Src\Classes\ServiceProvider;
  *
  * This class extends the base ServiceProvider class and is responsible for caching routes.
  *
- * @package Aeros\App\Providers
+ * @package App\Providers
  */
 class CacheRoutesServiceProvider extends ServiceProvider
 {

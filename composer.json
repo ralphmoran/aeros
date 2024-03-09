@@ -6,7 +6,7 @@
             "src/Helpers/all.php"
         ],
         "psr-4": {
-            "Aeros\\App\\": "App",
+            "App\\": "App",
             "Aeros\\Src\\": "src"
         }
     },

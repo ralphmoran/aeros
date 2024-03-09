@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Queues\Crons;
+namespace App\Queues\Crons;
 
 use Aeros\Src\Classes\Cron;
 

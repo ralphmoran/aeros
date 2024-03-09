@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Queues\Crons;
+namespace App\Queues\Crons;
 
 use Aeros\Src\Classes\Cron;
 
@@ -23,7 +23,7 @@ class GetMimeTypesCron extends Cron
                     app()->basedir . '/logs/cron.log'
                 );
 
-                (new \Aeros\App\Providers\MimeTypeServiceProvider)->boot();
+                (new \App\Providers\MimeTypeServiceProvider)->boot();
             })
             ->sunday()
             ->then(function ($output) {
@@ -41,6 +41,6 @@ class GetMimeTypesCron extends Cron
      */
     public function work()
     {
-        (new \Aeros\App\Providers\MimeTypeServiceProvider)->boot();
+        (new \App\Providers\MimeTypeServiceProvider)->boot();
     }
 }

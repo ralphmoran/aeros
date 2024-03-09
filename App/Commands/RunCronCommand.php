@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Commands;
+namespace App\Commands;
 
 use Aeros\Src\Classes\Cron;
 use Symfony\Component\Console\Command\Command;
@@ -72,7 +72,7 @@ class RunCronCommand extends Command
             foreach (scan($path) as $cron) {
                 require $path . '/' . $cron;
 
-                $cron = '\\Aeros\\App\\Queues\\Crons\\' . rtrim($cron, '.php');
+                $cron = '\\App\\Queues\\Crons\\' . rtrim($cron, '.php');
 
                 if (($cronInstance = new $cron()) instanceof Cron) {
 

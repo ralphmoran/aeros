@@ -1,9 +1,9 @@
 <?php
 
-namespace Aeros\App\Models;
+namespace App\Models;
 
 use Aeros\Src\Classes\Model;
-use Aeros\App\Models\Role;
+use App\Models\Role;
 use Aeros\Src\Traits\Authenticable;
 
 class User extends Model

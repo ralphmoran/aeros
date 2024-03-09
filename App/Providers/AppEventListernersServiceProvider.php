@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Providers;
+namespace App\Providers;
 
 use Aeros\Src\Classes\ServiceProvider;
 
@@ -19,6 +19,6 @@ class AppEventListernersServiceProvider extends ServiceProvider
         // ->addEventListener()
         // ...
         // ->addEventListener()
-        // ->addEventListener('email.reminder', \Aeros\App\Events\EmailReminderEvent::class);
+        // ->addEventListener('email.reminder', \App\Events\EmailReminderEvent::class);
     }
 }

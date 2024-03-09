@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Commands;
+namespace App\Commands;
 
 use Aeros\Src\Classes\Job;
 use Aeros\Src\Classes\Cron;

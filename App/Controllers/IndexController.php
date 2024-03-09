@@ -1,8 +1,8 @@
 <?php
 
-namespace Aeros\App\Controllers;
+namespace App\Controllers;
 
-use Aeros\App\Models\User;
+use App\Models\User;
 use Aeros\Src\Classes\Controller;
 
 class IndexController extends Controller
@@ -29,7 +29,7 @@ class IndexController extends Controller
     public function index()
     {
         //******************************************/
-        // Relationships: hasMany and hasOne. See Aeros\App\Models\User for more information
+        // Relationships: hasMany and hasOne. See App\Models\User for more information
         // dd(User::find(1)->roles());
 
         //******************************************/
@@ -74,22 +74,22 @@ class IndexController extends Controller
 
         //******************************************/
         // Calls  directly the worker
-        // app()->worker->call(\Aeros\App\Queues\Workers\NewLogicWorker::class);
+        // app()->worker->call(\App\Queues\Workers\NewLogicWorker::class);
 
         // Same funcionality as above
-        // (new \Aeros\App\Queues\Workers\NewLogicWorker)->handle();
+        // (new \App\Queues\Workers\NewLogicWorker)->handle();
 
         // Starts an infinite loop for this worker
-        // (new \Aeros\App\Queues\Workers\NewLogicWorker)->start();
+        // (new \App\Queues\Workers\NewLogicWorker)->start();
 
         //******************************************/
         // Note: All pipelines are prepended with "env('APP_NAME') . '_'" string
         // queue()->push([
-        //     \Aeros\App\Queues\Jobs\CleanupJob::class,
-        //     \Aeros\App\Queues\Jobs\SendEmailsJob::class,
-        //     \Aeros\App\Queues\Jobs\DatabaseCleanupJob::class,
-        //     \Aeros\App\Queues\Jobs\WebhookCallsJob::class,
-        //     \Aeros\App\Queues\Jobs\ProcessImagesJob::class,
+        //     \App\Queues\Jobs\CleanupJob::class,
+        //     \App\Queues\Jobs\SendEmailsJob::class,
+        //     \App\Queues\Jobs\DatabaseCleanupJob::class,
+        //     \App\Queues\Jobs\WebhookCallsJob::class,
+        //     \App\Queues\Jobs\ProcessImagesJob::class,
         // ]);
 
         // dd(queue()->getJobStatus());
@@ -121,11 +121,11 @@ class IndexController extends Controller
         // Using a specific pipeline name
         // queue()->push(
         //     [
-        //         \Aeros\App\Queues\Jobs\CleanupJob::class,
-        //         \Aeros\App\Queues\Jobs\SendEmailsJob::class,
-        //         \Aeros\App\Queues\Jobs\DatabaseCleanupJob::class,
-        //         \Aeros\App\Queues\Jobs\WebhookCallsJob::class,
-        //         \Aeros\App\Queues\Jobs\ProcessImagesJob::class,
+        //         \App\Queues\Jobs\CleanupJob::class,
+        //         \App\Queues\Jobs\SendEmailsJob::class,
+        //         \App\Queues\Jobs\DatabaseCleanupJob::class,
+        //         \App\Queues\Jobs\WebhookCallsJob::class,
+        //         \App\Queues\Jobs\ProcessImagesJob::class,
         //     ],
         //     'custom_pipeline'
         // );
@@ -140,11 +140,11 @@ class IndexController extends Controller
         //******************************************/
         // Add event listener for email notification
         // app()->event
-            // ->addEventListener('email.reminder', \Aeros\App\Events\EmailReminderEvent::class)
-            // ->addEventListener('email.followup', \Aeros\App\Events\EmailFollowupEvent::class);
+            // ->addEventListener('email.reminder', \App\Events\EmailReminderEvent::class)
+            // ->addEventListener('email.followup', \App\Events\EmailFollowupEvent::class);
 
         // app()->event
-        //     ->addEventListener('email.notify', \Aeros\App\Events\EmailNotifierEvent::class);
+        //     ->addEventListener('email.notify', \App\Events\EmailNotifierEvent::class);
 
         // This event is triggered on http://admin.aeros.test. See "AppController::index".
 

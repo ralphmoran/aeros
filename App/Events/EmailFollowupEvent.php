@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Events;
+namespace App\Events;
 
 use Aeros\Src\Classes\Observable;
 

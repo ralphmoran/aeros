@@ -16,7 +16,7 @@ return [
     |
     */
 
-    // 'NewLogicWorker' => \Aeros\App\Queues\Workers\NewLogicWorker::class,
+    // 'NewLogicWorker' => \App\Queues\Workers\NewLogicWorker::class,
 
     // ...
 ];

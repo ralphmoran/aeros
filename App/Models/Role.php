@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Models;
+namespace App\Models;
 
 use Aeros\Src\Classes\Model;
 

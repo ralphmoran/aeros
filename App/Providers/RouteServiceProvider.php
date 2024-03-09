@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Providers;
+namespace App\Providers;
 
 use Aeros\Src\Classes\Router;
 use Aeros\Src\Classes\ServiceProvider;
