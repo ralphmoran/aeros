@@ -34,15 +34,15 @@ return [
         // Providers that run only on web servers.
         'web' => [
             // Main service providers: DO NOT TOUCH
-            'SessionServiceProvider' => \Aeros\App\Providers\SessionServiceProvider::class,
-            'CsrfTokenServiceProvider' => \Aeros\App\Providers\CsrfTokenServiceProvider::class,
-            'HttpServiceProvider' => \Aeros\App\Providers\HttpServiceProvider::class,
-            'RouteServiceProvider' => \Aeros\App\Providers\RouteServiceProvider::class,
+            'SessionServiceProvider' => \App\Providers\SessionServiceProvider::class,
+            'CsrfTokenServiceProvider' => \App\Providers\CsrfTokenServiceProvider::class,
+            'HttpServiceProvider' => \App\Providers\HttpServiceProvider::class,
+            'RouteServiceProvider' => \App\Providers\RouteServiceProvider::class,
         ],
 
         // Other service providers that run on CLI
         'cli' => [
-            'RouteServiceProvider' => \Aeros\App\Providers\RouteServiceProvider::class,
+            'RouteServiceProvider' => \App\Providers\RouteServiceProvider::class,
         ],
     ],
 
@@ -55,10 +55,10 @@ return [
 
         // Run over any request
         'app' => [
-            'SessionMiddleware' => \Aeros\App\Middlewares\SessionMiddleware::class,
-            'BanBotsMiddleware' => \Aeros\App\Middlewares\BanBotsMiddleware::class,
-            'SanitizerMiddleware' => \Aeros\App\Middlewares\SanitizerMiddleware::class,
-            'VerifyCsrfTokenMiddleware' => \Aeros\App\Middlewares\VerifyCsrfTokenMiddleware::class,
+            'SessionMiddleware' => \App\Middlewares\SessionMiddleware::class,
+            'BanBotsMiddleware' => \App\Middlewares\BanBotsMiddleware::class,
+            'SanitizerMiddleware' => \App\Middlewares\SanitizerMiddleware::class,
+            'VerifyCsrfTokenMiddleware' => \App\Middlewares\VerifyCsrfTokenMiddleware::class,
         ],
 
         'web' => [
@@ -66,7 +66,7 @@ return [
         ],
 
         'api' => [
-            'CorsMiddleware' => \Aeros\App\Middlewares\CorsMiddleware::class,
+            'CorsMiddleware' => \App\Middlewares\CorsMiddleware::class,
         ],
 
         'auth' => [
@@ -74,7 +74,7 @@ return [
         ],
 
         // 'another' => [
-        //     'AnotherMiddleware' => \Aeros\App\Middlewares\AnotherMiddleware::class,
+        //     'AnotherMiddleware' => \App\Middlewares\AnotherMiddleware::class,
         //     ...
         // ],
     ],
@@ -97,16 +97,16 @@ return [
     | the application in general.
     |
     | Supported instances:
-    |    - \Aeros\App\Providers\ServiceProvider::class
+    |    - \App\Providers\ServiceProvider::class
     |    - \Aeros\Src\Classes\Worker::class
     |    - \Aeros\Src\Classes\Cron::class
     |    - \Aeros\Src\Classes\Job::class
     |    - \Aeros\Src\Classes\Observable::class
     */
     'warmup' => [
-        'GenerateAppKeyServiceProvider' => \Aeros\App\Providers\GenerateAppKeyServiceProvider::class,
-        'MimeTypeServiceProvider' => \Aeros\App\Providers\MimeTypeServiceProvider::class,
-        'CacheRoutesServiceProvider' => \Aeros\App\Providers\CacheRoutesServiceProvider::class,
-        'AppEventListernersServiceProvider' => \Aeros\App\Providers\AppEventListernersServiceProvider::class,
+        'GenerateAppKeyServiceProvider' => \App\Providers\GenerateAppKeyServiceProvider::class,
+        'MimeTypeServiceProvider' => \App\Providers\MimeTypeServiceProvider::class,
+        'CacheRoutesServiceProvider' => \App\Providers\CacheRoutesServiceProvider::class,
+        'AppEventListernersServiceProvider' => \App\Providers\AppEventListernersServiceProvider::class,
     ],
 ];

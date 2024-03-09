@@ -2,9 +2,6 @@
 
 namespace Aeros\Src\Classes;
 
-use Aeros\App\Models\User;
-use Aeros\App\Models\Role;
-
 class Controller
 {
     public function __construct()

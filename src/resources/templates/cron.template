@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Queues\Crons;
+namespace App\Queues\Crons;
 
 use Aeros\Src\Classes\Cron;
 
@@ -25,5 +25,10 @@ class {{classname}}Cron extends Cron
             ->then(function ($output) {
                 logger($output, app()->basedir . '/logs/cron.log');
             });
+    }
+
+    public function work()
+    {
+        
     }
 }

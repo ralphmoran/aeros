@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Controllers;
+namespace App\Controllers;
 
 use Aeros\Src\Classes\Controller;
 

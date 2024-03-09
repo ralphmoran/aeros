@@ -24,9 +24,9 @@ Route::get(":/admin/login/{userid}/{profile}", "AppController@profile");
 
 // Route::get("admin:/", "AppController")
 //     ->withMiddleware([
-//         \Aeros\App\Middlewares\BanBotsMiddleware::class,
-//         \Aeros\App\Middlewares\CorsMiddleware::class,
-//         \Aeros\App\Middlewares\SanitizerMiddleware::class
+//         \App\Middlewares\BanBotsMiddleware::class,
+//         \App\Middlewares\CorsMiddleware::class,
+//         \App\Middlewares\SanitizerMiddleware::class
 //     ]);
 
 // -- Example #3: Route with dynamic URL, controller name and method, also, subdomain

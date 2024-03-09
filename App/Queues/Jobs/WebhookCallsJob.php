@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Queues\Jobs;
+namespace App\Queues\Jobs;
 
 use Aeros\Src\Classes\Job;
 

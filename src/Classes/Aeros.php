@@ -23,7 +23,7 @@ final class Aeros
 
             require $path . '/' . $command;
 
-            $command = '\Aeros\App\Commands\\' . rtrim($command, '.php');
+            $command = '\App\Commands\\' . rtrim($command, '.php');
 
             app()->console->add(new $command());
         }

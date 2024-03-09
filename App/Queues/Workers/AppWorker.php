@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Queues\Workers;
+namespace App\Queues\Workers;
 
 use Aeros\Src\Classes\Worker;
 

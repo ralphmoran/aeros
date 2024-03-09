@@ -1,6 +1,6 @@
 <?php
 
-namespace Aeros\App\Middlewares;
+namespace App\Middlewares;
 
 use Aeros\Src\Classes\Request;
 use Aeros\Src\Classes\Response;
