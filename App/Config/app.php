@@ -55,9 +55,7 @@ return [
 
         // Run over any request
         'app' => [
-            'SessionMiddleware' => \App\Middlewares\SessionMiddleware::class,
             'BanBotsMiddleware' => \App\Middlewares\BanBotsMiddleware::class,
-            'SanitizerMiddleware' => \App\Middlewares\SanitizerMiddleware::class,
             'VerifyCsrfTokenMiddleware' => \App\Middlewares\VerifyCsrfTokenMiddleware::class,
         ],
 
@@ -97,11 +95,11 @@ return [
     | the application in general.
     |
     | Supported instances:
-    |    - \App\Providers\ServiceProvider::class
+    |    - \Aeros\Src\Classes\ServiceProvider::class
     |    - \Aeros\Src\Classes\Worker::class
     |    - \Aeros\Src\Classes\Cron::class
     |    - \Aeros\Src\Classes\Job::class
-    |    - \Aeros\Src\Classes\Observable::class
+    |    - \Aeros\Src\Classes\Observable::class (Events)
     */
     'warmup' => [
         'GenerateAppKeyServiceProvider' => \App\Providers\GenerateAppKeyServiceProvider::class,
