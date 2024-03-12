@@ -2,6 +2,7 @@
 
 namespace Aeros\Src\Classes;
 
+use App\Lib\Traits\Traits\Timestampable;
 use JsonSerializable;
 
 /**
@@ -11,6 +12,8 @@ use JsonSerializable;
  */
 abstract class Model implements JsonSerializable
 {
+    use Timestampable;
+
     const SELECT = 1;
     const INSERT = 2;
     const UPDATE = 4;
