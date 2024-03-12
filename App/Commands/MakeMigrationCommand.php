@@ -46,7 +46,6 @@ class MakeMigrationCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $migrations = $input->getArgument('migration');
-        $phinx = app()->basedir . '/../vendor/bin/phinx';
 
         // Confirm if App/Database/migrations dir exists
         if (! is_dir($migrationDir = app()->basedir . '/Database/migrations')) {
