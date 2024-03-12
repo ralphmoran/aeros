@@ -4,34 +4,35 @@ namespace App\Commands;
 
 use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrationMakeCommand extends Command
+class MakeMigrationCommand extends Command
 {
     /** @var string Command name */
-    protected static $defaultName = 'migration:make';
+    protected static $defaultName = 'make:migration';
 
     /**
      * Sets descriptions, options or arguments.
      * 
      * ```php
-     * $ php aeros migration:make
+     * $ php aeros make:migration
      * ```
      * @link https://symfony.com/doc/current/components/console.html
      * @return void
      */
     protected function configure()
     {
-        // This text will be displayed when: `$ php migration:make --help`
-        $this->setDescription('Aeros REPL - "migration:make" command.')
+        // This text will be displayed when: `$ php make:migration --help`
+        $this->setDescription('Aeros REPL - "make:migration" command.')
             ->setHelp('Commands help...');
         
         $this->addArgument('migration', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Argument migration (required)');
 
-        $this->addOption('seeder', null, InputOption::VALUE_OPTIONAL, 'Option "seeder", if provided, it creates the seeder');
+        $this->addOption('seeder', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Option "seeder", if provided, it creates the seeder');
 
     }
 
@@ -52,10 +53,6 @@ class MigrationMakeCommand extends Command
             mkdir($migrationDir);
         }
 
-        if (! is_dir($seedsDir = app()->basedir . '/Database/seeds')) {
-            mkdir($seedsDir);
-        }
-
         // Create migration
         foreach ($migrations as $migration) {
 
@@ -73,18 +70,16 @@ class MigrationMakeCommand extends Command
         }
 
         // If seeder is given
-        if ($seeder = $input->getOption('seeder')) {
-            $output->write(sprintf('==> Creating "<fg=yellow>%s</>" seeder... ', $seeder));
+        if ($seeders = $input->getOption('seeder')) {
 
-            $migrate = new Process([
-                $phinx, 
-                'seed:create',
-                $seeder
-            ]);
+            $this->getApplication()->doRun(
+                new ArrayInput([
+                    'command' => 'make:seed',
+                    'seeder' => $seeders
+                ]), 
+                $output
+            );
 
-            $migrate->mustRun();
-
-            $output->writeln('<fg=green;options=bold>Ok.</>');
         }
 
         return Command::SUCCESS;
