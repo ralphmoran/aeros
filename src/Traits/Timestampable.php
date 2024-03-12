@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Lib\Traits\Traits;
+namespace App\Src\Traits;
 
 /**
  * Trait Timestampable
