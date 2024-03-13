@@ -29,7 +29,7 @@ class MakeModelCommand extends Command
         $this->setDescription('Aeros REPL - "make:model" command.')
             ->setHelp('Commands help...');
 
-        $this->addArgument('name', InputArgument::REQUIRED, 'Argument name (required)');
+        $this->addArgument('name', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Argument name (required)');
     }
 
     /**
@@ -41,26 +41,29 @@ class MakeModelCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $classname = ucfirst(
-            preg_replace('/model$/i', '', $input->getArgument('name'))
-        );
+        foreach ($input->getArgument('name') as $classname) {
 
-        $output->write(
-            sprintf(
-                '==> Creating <fg=yellow>%s</> model... ', 
-                $classname
-            )
-        );
+            $classname = ucfirst(
+                preg_replace('/model$/i', '', $classname)
+            );
 
-        app()->file->createFromTemplate(
-            app()->basedir . '/Models/' . $classname . '.php', 
-            app()->basedir . '/../Src/resources/templates/model.template', 
-            [
-                'classname' => $classname
-            ]
-        );
+            $output->write(
+                sprintf(
+                    '==> Creating <fg=yellow>%s</> model... ', 
+                    $classname
+                )
+            );
 
-        $output->writeln('<fg=green;options=bold>OK.</>');
+            app()->file->createFromTemplate(
+                app()->basedir . '/Models/' . $classname . '.php', 
+                app()->basedir . '/../Src/resources/templates/model.template', 
+                [
+                    'classname' => $classname
+                ]
+            );
+
+            $output->writeln('<fg=green;options=bold>OK.</>');
+        }
 
         return Command::SUCCESS;
     }
