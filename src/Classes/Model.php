@@ -2,14 +2,12 @@
 
 namespace Aeros\Src\Classes;
 
-use JsonSerializable;
-
 /**
  * Base class for models.
  * 
  * @method static ?Model find(int|array $filter, ?array $columns = null) Finds only one record from current model.
  */
-abstract class Model implements JsonSerializable
+abstract class Model
 {
     const SELECT = 1;
     const INSERT = 2;
@@ -598,19 +596,6 @@ abstract class Model implements JsonSerializable
     public function getPrimaryKey()
     {
         return $this->primary;
-    }
-
-    /**
-     * Customizes the output when this object is printed with json_encode function.
-     *
-     * @return void
-     */
-    public function jsonSerialize()
-    {
-        return [
-            "class" => get_class($this),
-            "object" => (object) get_object_vars($this)
-        ];
     }
 
     /**

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Src\Traits;
+namespace Aeros\Src\Traits;
 
 /**
  * Trait Timestampable
  *
  * This trait provides functionality to manage timestamps for creation, updating, and soft deletion.
  *
- * @package App\Lib\Traits\Traits
+ * @package Aeros\Src\Traits
  */
 trait Timestampable
 {
