@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Models;
+
+use Aeros\Src\Classes\Model;
+
+class {{classname}} extends Model
+{
+    
+}
