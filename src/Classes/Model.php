@@ -427,8 +427,6 @@ abstract class Model
         foreach ($this->getFillableColumns() as $col) {
             if (isset($newValues[$col])) {
                 $this->onCommit[$col] = $newValues[$col];
-
-                continue;
             }
         }
     }
