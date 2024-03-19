@@ -430,13 +430,6 @@ abstract class Model
 
                 continue;
             }
-
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'ERROR[model.property] Value for property "%s" is missing', 
-                    $col
-                )
-            );
         }
     }
 
