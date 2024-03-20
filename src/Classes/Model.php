@@ -223,6 +223,12 @@ abstract class Model
                     $placeholders .= "{$keys[0]} = ? AND ";
                     $boundValues[] = $keys[1];
                 }
+
+                // {key} = {value} AND (format: ['column' => 'value'])
+                if (count($keys) == 1) {
+                    $placeholders .= implode(array_keys($keys)) . " = ? AND ";
+                    $boundValues[] = implode(array_values($keys));
+                }
             }
 
             $placeholders = rtrim($placeholders, " AND {$operator}");
