@@ -63,7 +63,7 @@ abstract class Model
      * Inserts multiple records at once.
      *
      * @param array $records
-     * @return Model
+     * @return mixed
      * @throws \InvalidArgumentException
      */
     private function createMany(array $records): mixed
