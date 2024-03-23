@@ -752,6 +752,92 @@ abstract class Model
     }
 
     /**
+     * Checks if the given model or array of models has a relationship with the 
+     * current instance.
+     *
+     * @param   Model|array $model  The model or array of models to check for 
+     *                              relationship.
+     * @return  bool                True if the relationship exists, 
+     *                              false otherwise.
+     * @throws  \TypeError          If the provided argument is not an instance 
+     *                              of Model.
+     */
+    private function has(array|Model $model)
+    {
+        if ($this->instantiated) {
+
+            if (is_array($model)) {
+
+                foreach ($model as $singleModel) {
+
+                    if (! ($singleModel instanceof Model)) {
+                        throw new \TypeError(
+                            sprintf(
+                                'ERROR[TypeError] Model "%s" is not an instance of Aeros/Src/Model class.', 
+                                $singleModel
+                            )
+                        );
+                    }
+
+                    $this->createHasRelationship($singleModel);
+                }
+
+                return true;
+            }
+
+            return $this->createHasRelationship($model);
+        }
+    }
+
+    /**
+     * Creates a relationship between the current instance and the provided model.
+     *
+     * @param   Model   $model  The model to create a relationship with.
+     * @return  bool            True if the relationship was successfully created, 
+     *                          false otherwise.
+     * @throws  \PDOException   If an error occurs while executing the database query.
+     */
+    private function createHasRelationship(Model $model) 
+    {
+        if ($this->instantiated) {
+
+            $pivot = $this->getPivotTableScheme(get_called_class(), get_class($model));
+
+            $data = [
+                $pivot['col1'] => $model->id,
+                $pivot['col2'] => $model->id,
+            ];
+
+            // Replace value for calledModel
+            $data[
+                strtolower(
+                    class_basename(get_called_class()) . '_' . $this->getPrimaryKey()
+                )
+            ] = $this->{$this->getPrimaryKey()};
+
+            $stm = db()->prepare(
+                        'INSERT IGNORE INTO ' . $pivot['name'] . ' (' . $pivot['col1'] . ', ' . $pivot['col2'] . 
+                        ') VALUES(:' . $pivot['col1']. ', :' . $pivot['col2'] . ')'
+                    )
+                ->execute($data);
+
+            // In case of error
+            if (! $stm) {
+                throw new \PDOException(
+                    sprintf(
+                        'ERROR[Query] It was not possible to create a new relationship for the "%s" table.', 
+                        $pivot['name']
+                    )
+                );
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Retrieve related model(s) based on the relationship type.
      *
      * @param   string  $relatedModel   The name of the related model.
