@@ -790,6 +790,21 @@ abstract class Model
     }
 
     /**
+     * Builds a belongsTo relationship. This method acts as same as the `has` method,
+     * it is used to simplify the creation of a relationship.
+     * 
+     * @param   array|Model $model
+     * @return  bool        True if the relationship exists, 
+     *                      false otherwise.
+     * @throws  \TypeError  If the provided argument is not an instance 
+     *                      of Model.
+     */
+    private function belongsTo(array|Model $model)
+    {
+        return $this->has($model);
+    }
+
+    /**
      * Creates a relationship between the current instance and the provided model.
      *
      * @param   Model   $model  The model to create a relationship with.
