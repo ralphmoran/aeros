@@ -757,12 +757,12 @@ abstract class Model
      *
      * @param   Model|array $model  The model or array of models to check for 
      *                              relationship.
-     * @return  bool                True if the relationship exists, 
+     * @return  bool|Model          True if the relationship exists, 
      *                              false otherwise.
      * @throws  \TypeError          If the provided argument is not an instance 
      *                              of Model.
      */
-    private function has(array|Model $model)
+    private function has(array|Model $model): bool|Model
     {
         if ($this->instantiated) {
 
@@ -782,7 +782,7 @@ abstract class Model
                     $this->createHasRelationship($singleModel);
                 }
 
-                return true;
+                return $this;
             }
 
             return $this->createHasRelationship($model);
@@ -794,12 +794,12 @@ abstract class Model
      * it is used to simplify the creation of a relationship.
      * 
      * @param   array|Model $model
-     * @return  bool        True if the relationship exists, 
+     * @return  bool|Model  True if the relationship exists, 
      *                      false otherwise.
      * @throws  \TypeError  If the provided argument is not an instance 
      *                      of Model.
      */
-    private function belongsTo(array|Model $model)
+    private function belongsTo(array|Model $model): bool|Model
     {
         return $this->has($model);
     }
@@ -808,11 +808,11 @@ abstract class Model
      * Creates a relationship between the current instance and the provided model.
      *
      * @param   Model   $model  The model to create a relationship with.
-     * @return  bool            True if the relationship was successfully created, 
+     * @return  bool|Model      True if the relationship was successfully created, 
      *                          false otherwise.
      * @throws  \PDOException   If an error occurs while executing the database query.
      */
-    private function createHasRelationship(Model $model) 
+    private function createHasRelationship(Model $model): bool|Model
     {
         if ($this->instantiated) {
 
@@ -846,7 +846,7 @@ abstract class Model
                 );
             }
 
-            return true;
+            return $this;
         }
 
         return false;
