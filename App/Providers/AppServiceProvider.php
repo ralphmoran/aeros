@@ -35,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         app()->singleton('worker', \App\Queues\Workers\AppWorker::class);
         app()->singleton('scheduler', \GO\Scheduler::class);
         app()->singleton('service', \App\Providers\ServiceAgentServiceProvider::class);
+        app()->singleton('debugger', \Aeros\Src\Classes\Debugger::class);
 
         // Register objects only for CLI
         if (isMode('cli')) {

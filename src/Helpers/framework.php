@@ -199,40 +199,7 @@ if (! function_exists('dd')) {
 			die(response(array_merge($position, $args)));
 		}
 
-		print_r(
-			response(
-				array_values(
-					array_filter(
-						array_map(
-							function ($point) {
-								if (! isset($point['file'])) {
-									return null;
-								}
-
-								$key = $point['function'] . ' => ' . ($point['file'] ?? '') . '#L:' . ($point['line'] ?? '');
-
-								unset($point['function'], $point['file'], $point['line']);
-
-								if (isset($point['args'])) {
-									foreach ($point['args'] as &$value) {
-										$value = is_object($value) ? $value : $value;
-									}
-								}
-
-								$index = [$key => $point];
-
-								return $index;
-							},
-							debug_backtrace()
-						)
-					)
-				),
-				200,
-				Aeros\Src\Classes\Response::JSON
-			)
-		);
-
-		exit;
+		app()->debugger->dd($args);
 	}
 }
 
