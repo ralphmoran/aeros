@@ -16,10 +16,16 @@ use Exception;
 final class Request
 {
     /** @var string $url */
-    public $url;
+    protected $url;
+
+    /** @var string $uri */
+    protected $uri;
+
+    /** @var string $query */
+    protected $query;
 
     /** @var string $method */
-    public $method = 'GET';
+    protected $method = 'GET';
 
     /** @var string|array $only $*/
     private $only = [];
@@ -28,12 +34,12 @@ final class Request
     private $except = [];
     
     /** @var array $headers */
-    public $headers = [
+    protected $headers = [
         "Content-Type:application/json"
     ];
 
     /** @var mixed $payload */
-    public $payload = [];
+    protected $payload = [];
 
     /** @var array $cookies */
     public $cookies = [];
@@ -65,13 +71,16 @@ final class Request
      */
     public function __construct()
     {
-        $this->url = $_SERVER['PHP_SELF'];
-        $this->payload = $this->getPayload();
-        $this->headers = getallheaders();
+        $this->url($_SERVER['PHP_SELF'])
+            ->uri()
+            ->setPayload($this->getPayload())
+            ->headers(getallheaders())
+            ->query()
+            ->method();
+
         $this->cookies = $_COOKIE;
         $this->queryParams = $_GET;
         $this->requestParams = $_POST;
-        $this->method = isMode('cli') ? 'cli' : $_SERVER['REQUEST_METHOD'];
     }
 
     /**
@@ -88,6 +97,64 @@ final class Request
     }
 
     /**
+     * Sets the target URI.
+     *
+     * @param string $uri
+     * @return Request
+     */
+    public function uri(string $uri = ''): Request
+    {
+        if (! empty($uri)) {
+            $this->uri = $uri;
+        }
+
+        if (! isMode('cli')) {
+            $this->uri = rtrim(str_replace( '?' . $_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']), '/');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the current URI.
+     *
+     * @return string
+     */
+    public function getURI(): string
+    {
+        return $this->uri;
+    }
+
+    /**
+     * Sets or updates the query string for the current request.
+     *
+     * @param string $query
+     * @return Request
+     */
+    public function query(string $query = ''): Request
+    {
+        if (! empty($query)) {
+            $this->query = $query;
+        }
+
+        if (! isMode('cli')) {
+            $this->query = $_SERVER['QUERY_STRING'];
+        }
+
+        return $this;
+    }
+
+    /**
+     * Returns the query string from request.
+     *
+     * @return string
+     */
+    public function getQuery(): string
+    {
+        return $this->query;
+    }
+
+    /**
      * Sets the HTTP verb
      *
      * @param string $method
@@ -95,9 +162,25 @@ final class Request
      */
     public function method(string $method = ''): Request
     {
-        $this->method = strtoupper($method) ?: 'GET';
+        if (! empty($method)) {
+            $this->method = strtoupper($method);
+        }
+
+        if (! isMode('cli')) {
+            $this->method = $_SERVER['REQUEST_METHOD'];
+        }
 
         return $this;
+    }
+
+    /**
+     * Gets the HTTP verb.
+     *
+     * @return string
+     */
+    public function getMethod(): string
+    {
+        return $this->method;
     }
 
     /**
@@ -111,6 +194,16 @@ final class Request
         $this->headers = $headers;
 
         return $this;
+    }
+
+    /**
+     * Gets the headers
+     *
+     * @return array
+     */
+    public function getHeaders(): array
+    {
+        return $this->headers;
     }
 
     /**
