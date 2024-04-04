@@ -71,7 +71,7 @@ final class Request
         $this->cookies = $_COOKIE;
         $this->queryParams = $_GET;
         $this->requestParams = $_POST;
-        $this->method = $_SERVER['REQUEST_METHOD'];
+        $this->method = isMode('cli') ? 'cli' : $_SERVER['REQUEST_METHOD'];
     }
 
     /**
