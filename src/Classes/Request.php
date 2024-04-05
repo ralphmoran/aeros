@@ -27,6 +27,12 @@ final class Request
     /** @var string $method */
     protected $method = 'GET';
 
+    /** @var string $subdomain */
+    protected $subdomain = '*';
+
+    /** @var string $domain */
+    protected $domain = '';
+
     /** @var string|array $only $*/
     private $only = [];
 
@@ -76,11 +82,102 @@ final class Request
             ->setPayload($this->getPayload())
             ->headers(getallheaders())
             ->query()
-            ->method();
+            ->method()
+            ->subdomain()
+            ->domain();
 
         $this->cookies = $_COOKIE;
         $this->queryParams = $_GET;
         $this->requestParams = $_POST;
+    }
+
+    /**
+     * Set or get the subdomain.
+     *
+     * If $subdomain is provided, sets the subdomain and returns the current 
+     * instance.
+     * If $subdomain is empty, retrieves the subdomain from the current request 
+     * if it exists.
+     *
+     * @param   string          $subdomain (optional) The subdomain to set.
+     * @return  $this|string    Returns the current instance if setting the 
+     *                          subdomain, or the subdomain string if retrieving.
+     */
+    public function subdomain(string $subdomain = '')
+    {
+        if (! empty($subdomain)) {
+            $this->subdomain = $subdomain;
+
+            return $this;
+        }
+
+        if (! isMode('cli')) {
+
+            $tld = explode('.', $_SERVER['HTTP_HOST']);
+
+            // There is subdomain
+            if (count($tld) > 2 && reset($tld) != 'www') {
+
+                $this->subdomain = $tld[0];
+
+                array_shift($tld);
+
+                $this->domain(implode('.', $tld));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get the current subdomain.
+     *
+     * @return  string|null     The current subdomain, or null if not set.
+     */
+    public function getSubdomain()
+    {
+        return $this->subdomain;
+    }
+
+    /**
+     * Set or get the domain.
+     *
+     * If $domain is provided, sets the domain and returns the current instance.
+     * If $domain is empty, retrieves the domain from the current request if it 
+     * exists.
+     *
+     * @param   string          $domain (optional) The domain to set.
+     * @return  $this|string    Returns the current instance if setting the 
+     *                          domain, or the domain string if retrieving.
+     */
+    public function domain(string $domain = '')
+    {
+        if (! empty($domain)) {
+            $this->domain = $domain;
+
+            return $this;
+        }
+
+        if (! isMode('cli')) {
+
+            $tld = explode('.', $_SERVER['HTTP_HOST']);
+
+            if (count($tld) == 2) {
+                $this->domain = implode('.', $tld);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get the current domain.
+     *
+     * @return  string|null     The current domain, or null if not set.
+     */
+    public function getDomain()
+    {
+        return $this->domain;
     }
 
     /**
@@ -106,6 +203,8 @@ final class Request
     {
         if (! empty($uri)) {
             $this->uri = $uri;
+
+            return $this;
         }
 
         if (! isMode('cli')) {
@@ -135,6 +234,8 @@ final class Request
     {
         if (! empty($query)) {
             $this->query = $query;
+
+            return $this;
         }
 
         if (! isMode('cli')) {
@@ -164,6 +265,8 @@ final class Request
     {
         if (! empty($method)) {
             $this->method = strtoupper($method);
+
+            return $this;
         }
 
         if (! isMode('cli')) {
