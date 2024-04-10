@@ -46,11 +46,11 @@ if (! function_exists('singularize')) {
 	 * Singularizes a word.
 	 *
 	 * @param string $word
-	 * @return string
+	 * @return array
 	 */
-	function singularize(string $word): string
+	function singularize(string $word): array
 	{
-		return implode('', (new \Symfony\Component\String\Inflector\EnglishInflector())->singularize($word));
+		return (new \Symfony\Component\String\Inflector\EnglishInflector())->singularize($word);
 	}
 }
 
