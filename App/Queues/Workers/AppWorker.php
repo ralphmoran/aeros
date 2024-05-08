@@ -32,7 +32,7 @@ class AppWorker extends Worker
         foreach ($workers as $w) {
             if (! $this->isWorker($w)) {
                 throw new \Exception(
-                    sprintf('ERROR[Worker] There was a problem validating worker \'%s\.', $w)
+                    sprintf('ERROR[Worker] There was a problem validating worker "%s".', $w)
                 );
             }
 
@@ -59,14 +59,28 @@ class AppWorker extends Worker
     /**
      * Initiates a worker infinite loop.
      *
-     * @param Worker|string $worker
-     * @return void
+     * @param   Worker|string   $worker
+     * @param   Callable|null   $job It can be any callable object or function
+     * @param   mixed           $args Mixed arguments to pass to the callable, if provided
+     * @param   integer         $sleep Sleep time
+     * @return  void
      */
-    public function startWorker(Worker|string $worker)
+    public function startWorker(Worker|string $worker, ?callable $job, mixed $args = null, int $sleep = 200)
     {
-        if (is_string($worker) && is_subclass_of($worker, Worker::class)) {
-            (new $worker)->start();
+        if (is_string($worker)) {
+
+            if (is_subclass_of($worker, Worker::class)) {
+                (new $worker)->start($job, $args, $sleep);
+
+                return;
+            }
+
+            throw new \Exception(
+                sprintf('ERROR[Worker] Worker "%s" is not valid.', $worker)
+            );
         }
+
+        $worker->start($job, $args, $sleep);
     }
 
     /**

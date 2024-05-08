@@ -4,17 +4,22 @@ namespace Aeros\Src\Classes;
 
 abstract class Worker
 {
+    /**
+     * This method will be called when the worker is started.
+     *
+     * @return void
+     */
     abstract public function handle();
 
     /**
      * Starts the worker in an infinite loop.
      *
-     * @param Callable|null $job
-     * @param mixed $args Mixed arguments to pass to the callable, if provided
-     * @param integer $sleep Sleep time
-     * @return void
+     * @param   Callable|null   $job
+     * @param   mixed           $args Mixed arguments to pass to the callable, if provided
+     * @param   integer         $sleep Sleep time in milliseconds
+     * @return  void
      */
-    public function start(?Callable $callable = null, mixed $args = null, int $sleep = 5) 
+    public function start(?Callable $callable = null, mixed $args = null, int $sleep = 200) 
     {
         // Only on CLI
         if (isMode('cli')) {
@@ -27,7 +32,7 @@ abstract class Worker
                     $callable($args);
                 }
 
-                sleep($sleep);
+                usleep($sleep);
             }
 
             return;
