@@ -65,7 +65,7 @@ class AppWorker extends Worker
      * @param   integer         $sleep Sleep time
      * @return  void
      */
-    public function startWorker(Worker|string $worker, ?callable $job, mixed $args = null, int $sleep = 200)
+    public function startWorker(Worker|string $worker, ?callable $job = null, mixed $args = null, int $sleep = 200)
     {
         if (is_string($worker)) {
 
