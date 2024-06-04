@@ -52,8 +52,14 @@ class Queue
      */
     public function pop(string $pipelineName = '*'): Job|bool
     {
+        $job = cache('redis')->lpop($pipelineName);
+
+        if (empty($job)) {
+            return false;
+        }
+
         // Return and remove a job from the pipeline, if there is any
-        return unserialize(cache('redis')->lpop($pipelineName));
+        return unserialize($job);
     }
 
     /**
