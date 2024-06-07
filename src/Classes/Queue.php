@@ -21,19 +21,33 @@ class Queue
     /**
      * Adds a Job or an array of jobs to a pipeline tail in the queue system.
      *
-     * @param array $jobs Array of Jobs
+     * @param array|string|Job $jobs One or an array of Jobs
      * @param string $pipelineName
      * @return boolean
      */
-    public function push(array $jobs, string $pipelineName = '*'): bool
+    public function push(array|string|Job $jobs, string $pipelineName = '*'): bool
     {
         $this->parsePipelineName($pipelineName);
+
+        // When is a natural Job
+        if ($jobs instanceof Job) {
+            cache('redis')->rpush($pipelineName, serialize($jobs));
+
+            return true;
+        }
+
+        $jobs = is_array($jobs) ? $jobs : [$jobs];
 
         // Adds jobs to a pipeline
         foreach ($jobs as $jobClass) {
 
-            if (class_exists($jobClass) && is_subclass_of($jobClass, Job::class)) {
+            if ($jobClass instanceof Job) {
+                cache('redis')->rpush($pipelineName, serialize($jobClass));
 
+                continue;
+            }
+
+            if (class_exists($jobClass) && is_subclass_of($jobClass, Job::class)) {
                 $jobObj = serialize(new $jobClass);
 
                 cache('redis')->rpush($pipelineName, $jobObj);
