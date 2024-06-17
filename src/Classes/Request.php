@@ -467,7 +467,7 @@ final class Request
             CURLOPT_CUSTOMREQUEST  => $this->method,
             CURLOPT_HTTPHEADER     => $this->headers,
             CURLOPT_URL            => $this->url,
-            CURLOPT_POSTFIELDS     => $this->getPayload(),
+            CURLOPT_POSTFIELDS     => $this->payload,
             CURLOPT_SSL_VERIFYPEER => $this->ssl_verifypeer,
         ];
     }
