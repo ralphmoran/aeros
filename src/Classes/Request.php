@@ -21,6 +21,9 @@ final class Request
     /** @var string $uri */
     protected $uri;
 
+    /** @var bool $ssl_verifypeer */
+    protected $ssl_verifypeer = true;
+
     /** @var string $query */
     protected $query;
 
@@ -222,6 +225,19 @@ final class Request
     public function getURI(): string
     {
         return $this->uri;
+    }
+
+    /**
+     * Sets the ssl_verifypeer parameter for the Curl request.
+     * 
+     * @param   bool    $ssl Activates or deactivates the SSL request.
+     * @return  Request
+     */
+    public function ssl(bool $ssl): Request
+    {
+        $this->ssl_verifypeer = $ssl;
+
+        return $this;
     }
 
     /**
@@ -452,6 +468,7 @@ final class Request
             CURLOPT_HTTPHEADER     => $this->headers,
             CURLOPT_URL            => $this->url,
             CURLOPT_POSTFIELDS     => $this->getPayload(),
+            CURLOPT_SSL_VERIFYPEER => $this->ssl_verifypeer,
         ];
     }
 
