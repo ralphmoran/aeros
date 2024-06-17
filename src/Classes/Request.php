@@ -473,11 +473,12 @@ final class Request
         curl_setopt_array($curl, $cURLOpts);
 
         $response = curl_exec($curl); 
+        $error = curl_error($curl);
 
         curl_close($curl);
 
         if (! $response) {
-            return curl_error($curl);
+            return $error;
         }
 
         return response($response);
