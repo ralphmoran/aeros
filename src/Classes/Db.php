@@ -228,15 +228,11 @@ class Db
 
             // Call it when there are no parameters
             if (! $reflectionMethod->getNumberOfParameters()) {
-                $result = $reflectionMethod->invoke($object);
+                return $reflectionMethod->invoke($object);
             }
 
             // Call it with parameters
-            if ($reflectionMethod->getNumberOfParameters()) {
-                $result = $reflectionMethod->invokeArgs($object, $arguments);
-            }
-
-            return $result;
+            return $reflectionMethod->invokeArgs($object, $arguments);
         }
 
         return null;
