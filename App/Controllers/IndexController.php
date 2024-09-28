@@ -359,6 +359,24 @@ class IndexController extends Controller
 
         // app()->email->send();
 
+        // dd(
+        //     request()
+        //     ->post('http://advlnx3.adventresources.com/mvc.php/Sale/econtract-validation-history/get-list')
+        //     ->cookies(
+        //         array(
+        //             "PHPSESSID" => $auth['data']['session_id']
+        //         )
+        //     )
+        //     ->setPayload(
+        //         array('deal_number' => 163891)
+        //     )
+        //     ->ssl(false)
+        //     ->send()
+        // );
+
+        // dd(request()->get('https://reqres.in/api/users/3')->ssl(false)->send());
+        // dd(request()->get('https://reqres.in/api/users/3')->send());
+
         return view('index');
     }
 

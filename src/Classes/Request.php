@@ -41,7 +41,7 @@ final class Request
 
     /** @var string|array $except */
     private $except = [];
-    
+
     /** @var array $headers */
     protected $headers = [
         "Content-Type:application/json"
@@ -82,10 +82,10 @@ final class Request
     {
         $this->url($_SERVER['PHP_SELF'])
             ->uri()
+            ->method()
             ->setPayload($this->getPayload())
             ->headers(getallheaders())
             ->query()
-            ->method()
             ->subdomain()
             ->domain();
 
@@ -339,10 +339,42 @@ final class Request
     }
 
     /**
+     * Set or get cookies.
+     *
+     * If an array of cookies is passed, it will replace the current cookies.
+     * If no cookies are passed, the current cookies will remain unchanged.
+     *
+     * @param   array   $cookies Optional. An array of cookies to set. Default 
+     *                          is an empty array.
+     * 
+     * @return  self    Returns the current instance to allow method chaining.
+     */
+    public function cookies(array $cookies = []): Request
+    {
+        if (! empty($cookies)) {
+            $this->cookies = $cookies;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Retrieve the current cookies.
+     *
+     * This method returns the current set of cookies stored in the object.
+     *
+     * @return array The current cookies stored in the object.
+     */
+    public function getCookies(): array
+    {
+        return $this->cookies;
+    }
+
+    /**
      * Sets ONLY the keys from the request that will be sent back.
      *
-     * @param string|array $keys
-     * @return Request
+     * @param   string|array    $keys
+     * @return  Request
      */
     public function only(string|array $keys): Request
     {
@@ -354,8 +386,8 @@ final class Request
     /**
      * Sets the the keys from the request that are not required.
      *
-     * @param string|array $keys
-     * @return Request
+     * @param   string|array    $keys
+     * @return  Request
      */
     public function except(string|array $keys): Request
     {
@@ -368,10 +400,11 @@ final class Request
      * Filters the ONLY and EXCEPT keys from request array, if there is no filter, 
      * it returns the original content from the request array.
      *
-     * @param array $keys
-     * @return array
+     * @param   array   $keys
+     * @return  array
      */
     private function filterKeys(array $content, array $keys): array
+
     {
         $onlyKeys = [];
 
@@ -402,6 +435,7 @@ final class Request
      * @return mixed
      */
     public function setOptions(mixed $opts, array $keys): mixed
+
     {
         // Return values from current request
         if (is_string($opts) && in_array(strtoupper($opts), $this->verbs)) {
@@ -443,17 +477,26 @@ final class Request
             );
         }
 
-        if (empty($this->getPayload()) && isset($this->curlOptions['payload'])) {
+        $payload = $this->getPayload();
+
+        if (empty($payload) && isset($this->curlOptions['payload'])) {
             $this->setPayload($this->curlOptions['payload']);
         }
 
         // Special format for GET and POST
-        if ($this->method == 'GET' && ! empty($this->getPayload())) {
-            $this->url($this->url . '?' . http_build_query($this->getPayload()));
+        if ($this->method == 'GET' && ! empty($payload)) {
+            $this->url($this->url . '?' . http_build_query($payload));
         }
-        
-        if ($this->method == 'POST' && ! empty($this->getPayload())) {
-            $this->setPayload(json_encode($this->getPayload()));
+
+        if ($this->method == 'POST' && ! empty($payload)) {
+            $this->setPayload($payload);
+        }
+
+        // Process cookies
+        $cookies = '';
+
+        foreach ($this->getCookies() as $k => $v) {
+            $cookies .= "$k=$v;";
         }
 
         return [
@@ -469,6 +512,7 @@ final class Request
             CURLOPT_URL            => $this->url,
             CURLOPT_POSTFIELDS     => $this->payload,
             CURLOPT_SSL_VERIFYPEER => $this->ssl_verifypeer,
+            CURLOPT_COOKIE         => $cookies,
         ];
     }
 
@@ -574,7 +618,7 @@ final class Request
         $from ??= $this->getHttpMethod();
         $from = strtoupper($from);
 
-        if ($from === $this->getHttpMethod()) {
+        if (in_array($from, $this->verbs, true)) {
 
             switch ($from) {
                 case 'GET':
@@ -596,19 +640,15 @@ final class Request
                     parse_str(file_get_contents('php://input'), $_DELETE);
                     return array_merge($_DELETE, $this->payload);
                     break;
-                default: [];
+                default: return [];
             }
 
-        }
-
-        if (in_array($from, $this->verbs, true)) {
-            return [];
         }
 
         throw new \BadMethodCallException(
             sprintf(
                 'ERROR[BadMethodCallException] HTTP method "%s" is invalid.', 
-                $this->getHttpMethod()
+                $this->getMethod()
             )
         );
     }
