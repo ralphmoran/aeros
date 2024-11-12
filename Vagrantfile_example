@@ -184,5 +184,20 @@ Vagrant.configure("2") do |config|
     # Clean up
     sudo apt autoclean && sudo apt autoremove
 
+    # Warmup
+    cd /var/www/html && php aeros run:warmup
+
   SHELL
+
+  # Warmup
+  config.trigger.after :up do |trigger|
+    trigger.info = "Running `run:warmup` command after up..."
+    trigger.run = { inline: "vagrant ssh -c 'cd /var/www/html && php aeros run:warmup'" }
+  end
+
+  config.trigger.after :reload do |trigger|
+    trigger.info = "Running `run:warmup` command..."
+    trigger.run = { inline: "vagrant ssh -c 'cd /var/www/html && php aeros run:warmup'" }
+  end
+
 end
