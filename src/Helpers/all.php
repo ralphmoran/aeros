@@ -6,7 +6,7 @@
 |
 */
 
-Dotenv\Dotenv::createImmutable(__DIR__ . '/../..')
+Dotenv\Dotenv::createImmutable(__DIR__ . '/../../../../..')
     ->load();
 
 /*

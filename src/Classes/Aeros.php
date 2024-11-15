@@ -16,7 +16,7 @@ final class Aeros
      */
     public function registerCommands()
     {
-        $path = dirname(dirname(__DIR__)) . '/app/commands';
+        $path = app()->basedir . '/commands';
 
         // Load all command classes from ./commands folder
         foreach (scan($path) as $command) {

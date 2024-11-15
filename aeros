@@ -1,0 +1,16 @@
+<?php
+
+/*
+|----------------------------------------------
+| Aeros REPL
+|----------------------------------------------
+|
+| It's a small REPL helper that runs commands on 
+| the command line.
+|
+*/
+
+require_once __DIR__ . '/src/aeros_autoload.php';
+
+app()->bootstrap()
+    ->aeros->registerCommands();
