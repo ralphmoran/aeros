@@ -1,12 +1,12 @@
 {
-    "name": "aeros/v1.1.1",
+    "name": "aeros/framework",
+    "description": "The most lightweight MVC framework for PHP development.",
     "type": "project",
     "autoload":{
         "files":[
             "src/Helpers/all.php"
         ],
         "psr-4": {
-            "App\\": "App",
             "Aeros\\Src\\": "src"
         }
     },
@@ -29,14 +29,15 @@
         "symfony/console": "^6.0",
         "peppeocchi/php-cron-scheduler": "^4.0",
         "guzzlehttp/guzzle": "^7.8",
-        "phpmailer/phpmailer": "^6.9" 
+        "phpmailer/phpmailer": "^6.9"
     },
     "require-dev": {
-        "robmorgan/phinx": "^0.13.4"
     },
-    "license": "Property",
-    "minimum-stability": "alpha",
-    "scripts": {},
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "scripts": {
+        "post-create-project-cmd": []
+    },
     "config": {
         "allow-plugins": {
             "php-http/discovery": true

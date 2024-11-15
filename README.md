@@ -12,8 +12,6 @@ Working on it
 
 # Setup
 
-- Run `vagrant up`. If required, authorize NFS configuration
-- Add .env file and update database section
+- Add it as a required dependency in `composer.json`
 - Run `composer install`
 - Run `composer cc && composer dump -o`
-- Run next command from within working directory `php aeros run:app`
