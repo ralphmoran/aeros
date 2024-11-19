@@ -16,16 +16,26 @@ final class Aeros
      */
     public function registerCommands()
     {
-        $path = app()->basedir . '/commands';
+        $pathCommands = [
+            [
+                'path' => app()->basedir . '/commands',
+                'namespace' => '\App\Commands\\'
+            ],
+            [
+                'path' => app()->basedir . '/../vendor/aeros/framework/src/Commands',
+                'namespace' => '\Aeros\Src\Commands\\'
+            ],
+        ];
 
-        // Load all command classes from ./commands folder
-        foreach (scan($path) as $command) {
+        foreach ($pathCommands as $pc) {
+            foreach (scan($pc['path']) as $command) {
 
-            require $path . '/' . $command;
+                require $pc['path'] . '/' . $command;
 
-            $command = '\App\Commands\\' . rtrim($command, '.php');
+                $command = $pc['namespace'] . rtrim($command, '.php');
 
-            app()->console->add(new $command());
+                app()->console->add(new $command());
+            }
         }
 
         app()->console->run();
