@@ -23,10 +23,10 @@
         "fzaninotto/faker": "^1.5",
         "pda/pheanstalk": "^4.0",
         "ramsey/uuid": "^4.7",
-        "symfony/process": "^6.0",
+        "symfony/process": "^6.0.19",
         "phpseclib/phpseclib": "^3.0",
-        "symfony/cache": "^6.0",
-        "symfony/console": "^6.0",
+        "symfony/cache": "^6.0.19",
+        "symfony/console": "^6.0.19",
         "peppeocchi/php-cron-scheduler": "^4.0",
         "guzzlehttp/guzzle": "^7.8",
         "phpmailer/phpmailer": "^6.9"
