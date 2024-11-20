@@ -98,7 +98,7 @@ class RunAppCommand extends Command
             )
         );
 
-        if (db()->ping() === false) {
+        if (db('none')->ping() === false) {
             $output->writeln('<bg=red;options=bold>Error</> There was a problem connecting to the DB server');
 
             return Command::FAILURE;
@@ -113,7 +113,7 @@ class RunAppCommand extends Command
         if (! file_exists(app()->basedir . '/../phinx.json')) {
             $output->writeln(
                 '==> <bg=red;options=bold>Error</> <fg=yellow>phinx.json</> file does not exist. ' .
-                'Running <fg=yellow>`php aeros run:database -c -d`</> command to create it...'
+                'Running <fg=yellow>`php aeros run:database -c -a`</> command to create it...'
             );
 
             $this->getApplication()->doRun(
