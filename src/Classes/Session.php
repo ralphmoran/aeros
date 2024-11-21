@@ -40,7 +40,6 @@ class Session
             session_name(strtolower($cookie['cookie_name']));
 
             $this->state = session_start(config('session.options'));
-            session_write_close();
         }
 
         return $this->state;
