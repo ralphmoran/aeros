@@ -31,7 +31,7 @@ class Queue
 
         // When is a natural Job
         if ($jobs instanceof Job) {
-            cache('redis')->rpush($pipelineName, serialize($jobs));
+            $this->pushJob($pipelineName, $jobs);
 
             return true;
         }
@@ -42,19 +42,43 @@ class Queue
         foreach ($jobs as $jobClass) {
 
             if ($jobClass instanceof Job) {
-                cache('redis')->rpush($pipelineName, serialize($jobClass));
+                $this->pushJob($pipelineName, $jobClass);
 
                 continue;
             }
 
             if (class_exists($jobClass) && is_subclass_of($jobClass, Job::class)) {
-                $jobObj = serialize(new $jobClass);
-
-                cache('redis')->rpush($pipelineName, $jobObj);
+                $this->pushJob($pipelineName, new $jobClass);
             }
         }
 
         return true;
+    }
+
+    /**
+     * Pushes a job to a pipeline.
+     *
+     * @param string $pipelineName
+     * @param Job $job
+     * @return bool
+     */
+    public function pushJob(string $pipelineName, Job $job): bool
+    {
+        $jobs = cache('redis')->lrange($pipelineName, 0, -1);
+
+        // If job already was completed, don't push it again
+        if (count($jobs) > 0) {
+            // Get the last part of the class name
+            $jobName = basename(str_replace('\\', '/', get_class($job)));
+
+            foreach ($jobs as $job) {
+                if (str_contains($job, $jobName)) {
+                    return false;
+                }
+            }
+        }
+
+        return cache('redis')->rpush($pipelineName, serialize($job));
     }
 
     /**
@@ -79,13 +103,47 @@ class Queue
     /**
      * Processes and execute all jobs from a pipeline.
      *
-     * @param string $pipelineName <''> Empty or no value it will process the default pipeline
+     * @param array|string $pipelineName <''> Empty or no value it will process the default pipeline
      *                              <'all'|'*'> it will process all pipelines
      * @return ?bool
      * @throws Exception
      */
-    public function processPipeline(string $pipelineName = '*'): ?bool
+    public function processPipeline(array|string $pipelineName = '*'): ?bool
     {
+        // Process all pipelines
+        if ($pipelineName == '*' || $pipelineName == 'all') {
+            $pipelineName = cache('redis')->keys('*');
+        }
+
+        // Handle array of pipeline names
+        if (is_array($pipelineName)) {
+
+            $success = true;
+
+            foreach ($pipelineName as $pipeline) {
+                if ($this->processSinglePipeline($pipeline) === false) {
+                    $success = false;
+                }
+            }
+
+            return $success;
+        }
+
+        // Handle single pipeline
+        return $this->processSinglePipeline($pipelineName);
+    }
+
+    /**
+     * Processes a single pipeline.
+     *
+     * @param string $pipelineName
+     * @return ?bool
+     * @throws Exception
+     */
+    private function processSinglePipeline(string $pipelineName): ?bool
+    {
+        $time = time();
+
         $this->parsePipelineName($pipelineName);
 
         // Locks pipeline, this is "in progress" state, 
@@ -102,9 +160,11 @@ class Queue
                 // Lock current job (in progress)
                 if ($this->setState($job->uuid, Queue::LOCKED_STATE)) {
 
+                    $jobName = get_class($job);
+
                     // If succeed...
                     if ($jobStatus = $job->doWork()) {
-                        $this->setState("{$pipelineName}:job:{$job->uuid}", Queue::COMPLETED_STATE);
+                        $this->setState("{$pipelineName}:job:{$jobName}:job_uuid:{$job->uuid}:at:" . $time, Queue::COMPLETED_STATE);
                     }
 
                     // If failed: put job back into the pipeline, delete lock state 
@@ -134,7 +194,7 @@ class Queue
      * @param string $state
      * @return array
      */
-    public function getJobStatus(string $state = Queue::COMPLETED_STATE, string $pipelineName = '*'): array
+    public function getJobStatus(string $pipelineName = '*', string $state = Queue::COMPLETED_STATE): array
     {
         $this->parsePipelineName($pipelineName);
 
@@ -176,10 +236,16 @@ class Queue
      */
     private function parsePipelineName(string &$pipelineName): void
     {
+        $appName = env('APP_NAME') . '_';
+
+        if (str_starts_with($pipelineName, $appName)) {
+            return;
+        }
+
         // Set pipeline name
         $pipelineName = ($pipelineName == 'all' || $pipelineName == '*') 
-                        ? env('APP_NAME') . '_' . $this::DEFAULT_PIPELINE 
-                        : env('APP_NAME') . '_' . $pipelineName;
+                        ? $appName . $this::DEFAULT_PIPELINE 
+                        : $appName . $pipelineName;
     }
 
     /**
