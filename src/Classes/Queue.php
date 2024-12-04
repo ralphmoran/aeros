@@ -29,26 +29,19 @@ class Queue
     {
         $this->parsePipelineName($pipelineName);
 
-        // When is a natural Job
-        if ($jobs instanceof Job) {
-            $this->pushJob($pipelineName, $jobs);
-
-            return true;
-        }
-
         $jobs = is_array($jobs) ? $jobs : [$jobs];
 
         // Adds jobs to a pipeline
-        foreach ($jobs as $jobClass) {
+        foreach ($jobs as $job) {
 
-            if ($jobClass instanceof Job) {
-                $this->pushJob($pipelineName, $jobClass);
+            if ($job instanceof Job) {
+                $this->pushJob($pipelineName, $job);
 
                 continue;
             }
 
-            if (class_exists($jobClass) && is_subclass_of($jobClass, Job::class)) {
-                $this->pushJob($pipelineName, new $jobClass);
+            if (class_exists($job) && is_subclass_of($job, Job::class)) {
+                $this->pushJob($pipelineName, new $job);
             }
         }
 
