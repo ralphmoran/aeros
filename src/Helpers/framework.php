@@ -195,8 +195,16 @@ if (! function_exists('dd')) {
 	{
 		// On terminal
 		if (isMode('cli')) {
-			$position = [debug_backtrace()[0]['file'] . ':' . debug_backtrace()[0]['line']];
-			die(response(array_merge($position, $args)));
+			$debug = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
+
+			die(
+				response(
+					array_merge(
+						[$debug[0]['file'] . ':' . $debug[0]['line']], 
+						$args
+					)
+				)
+			);
 		}
 
 		app()->debugger->dd($args);

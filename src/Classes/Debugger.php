@@ -23,7 +23,7 @@ class Debugger
      */
     public function dd(...$args)
     {
-        $backtrace = debug_backtrace();
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 2);
 
         unset($backtrace[0]);
 
