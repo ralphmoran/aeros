@@ -57,10 +57,18 @@ class Queue
      */
     public function pushJob(string $pipelineName, Job $job): bool
     {
-        $jobs = cache('redis')->lrange($pipelineName, 0, -1);
+        $start = 0;
+        $chunk = 1000;
+        $serializedJob = serialize($job);
 
-        // If job already was completed, don't push it again
-        if (count($jobs) > 0) {
+        while (true) {
+            // Get jobs from the pipeline
+            $jobs = cache('redis')->lrange($pipelineName, $start, $start + $chunk - 1);
+
+            if (empty($jobs)) {
+                break;
+            }
+
             // Get the last part of the class name
             $jobName = basename(str_replace('\\', '/', get_class($job)));
 
@@ -69,9 +77,11 @@ class Queue
                     return false;
                 }
             }
+
+            $start += $chunk;
         }
 
-        return cache('redis')->rpush($pipelineName, serialize($job));
+        return cache('redis')->rpush($pipelineName, $serializedJob);
     }
 
     /**
