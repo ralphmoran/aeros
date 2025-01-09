@@ -46,7 +46,6 @@ class RunCoroutineCommand extends Command
         // InputOption::VALUE_IS_ARRAY = 8; // The option accepts multiple values (e.g. --dir=/foo --dir=/bar).
         // InputOption::VALUE_NEGATABLE = 16; // The option may have either positive or negative value (e.g. --ansi or --no-ansi).
         $this->addOption('stop', 's', InputOption::VALUE_NONE, 'Option "stop" with alias "s"');
-        // $this->addOption('restart', 'r', InputOption::VALUE_NONE, 'Option "restart" with alias "r"');
         $this->addOption('workers', 'w', InputOption::VALUE_OPTIONAL, 'Option "workers" with alias "w"');
     }
 
@@ -66,15 +65,6 @@ class RunCoroutineCommand extends Command
         if ($input->getOption('stop')) {
 
             $this->stopWorkerPool($output);
-
-            return Command::SUCCESS;
-        }
-        
-        // It stops and restarts worker's pool
-        if ($input->getOption('restart')) {
-
-            $this->stopWorkerPool($output);
-            $this->startWorkerPool($workers, $output);
 
             return Command::SUCCESS;
         }
