@@ -95,12 +95,12 @@ class Queue
     {
         $job = cache('redis')->lpop($pipelineName);
 
-        if (empty($job)) {
+        if (empty($job) || is_array($job)) {
             return false;
         }
 
         // Return and remove a job from the pipeline, if there is any
-        return unserialize($job);
+        return @unserialize($job);
     }
 
     /**
@@ -108,32 +108,58 @@ class Queue
      *
      * @param array|string $pipelineName <''> Empty or no value it will process the default pipeline
      *                              <'all'|'*'> it will process all pipelines
-     * @return ?bool
+     * @return mixed
      * @throws Exception
      */
-    public function processPipeline(array|string $pipelineName = '*'): ?bool
+    public function processPipeline(array|string $pipelineName = '*'): mixed
     {
         // Process all pipelines
         if ($pipelineName == '*' || $pipelineName == 'all') {
-            $pipelineName = cache('redis')->keys('*');
+            $pipelineName = cache('redis')->keys(env('APP_NAME') . '_' . '*');
         }
 
         // Handle array of pipeline names
         if (is_array($pipelineName)) {
 
-            $success = true;
+            $jobStatus = [];
 
             foreach ($pipelineName as $pipeline) {
-                if ($this->processSinglePipeline($pipeline) === false) {
-                    $success = false;
+
+                $jobStatus[$pipeline] = true;
+
+                // Add a mechanism to check if the pipeline is locked
+                if ($this->isPipelineLocked($pipeline)) {   
+                    continue;
                 }
+
+                $jobStatus[$pipeline] = $this->processSinglePipeline($pipeline);
             }
 
-            return $success;
+            return $jobStatus;
+        }
+
+        // When working with coroutine, the pipeline name could be null
+        if (is_null($pipelineName)) {
+            return false;
+        }
+
+        if ($this->isPipelineLocked($pipelineName)) {   
+            return true;
         }
 
         // Handle single pipeline
         return $this->processSinglePipeline($pipelineName);
+    }
+
+    /**
+     * Checks if a pipeline is locked.
+     *
+     * @param string $pipelineName
+     * @return bool
+     */
+    private function isPipelineLocked(string $pipelineName): bool
+    {
+        return cache('redis')->get(Queue::LOCKED_STATE . ":{$pipelineName}") !== null;
     }
 
     /**
@@ -158,6 +184,11 @@ class Queue
 
                 if (! $job = $this->pop($pipelineName)) {
                     break;
+                }
+
+                // Check if the job is locked
+                if ($this->isJobLocked($job->uuid)) {
+                    continue;
                 }
 
                 // Lock current job (in progress)
@@ -191,6 +222,17 @@ class Queue
     }
 
     /**
+     * Checks if a job is locked.
+     *
+     * @param string $jobUuid
+     * @return bool
+     */
+    private function isJobLocked(string $jobUuid): bool
+    {
+        return cache('redis')->get(Queue::LOCKED_STATE . ":{$jobUuid}") !== null;
+    }
+
+    /**
      * Gets a list of job UUIDs and their timestamps.
      *
      * @param string $pipelineName
@@ -204,9 +246,12 @@ class Queue
         $jobStatus  = [];
 
         foreach (cache('redis')->keys($state . ":{$pipelineName}:*") as $job) {
+
+            $job = unserialize($job);
+
             $jobStatus[] = [
-                'uuid' => $job, 
-                'timestamp' => cache('redis')->get($job)
+                'uuid' => $job->uuid, 
+                'timestamp' => cache('redis')->get($job->at)
             ];
         }
 
@@ -241,7 +286,7 @@ class Queue
     {
         $appName = env('APP_NAME') . '_';
 
-        if (str_starts_with($pipelineName, $appName)) {
+        if (str_ends_with($pipelineName, $this::DEFAULT_PIPELINE)) {
             return;
         }
 

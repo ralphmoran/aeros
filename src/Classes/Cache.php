@@ -49,6 +49,7 @@ class Cache
                     [
                         'parameters' => [
                             'password' => env('REDIS_PASSWORD'),
+                            'read_write_timeout' => 1,
                         ]
                     ]
                 );
