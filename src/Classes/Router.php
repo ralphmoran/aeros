@@ -216,8 +216,8 @@ class Router
             $uriParts['parts'][] = '/';
         }
 
-        if (substr_count($_SERVER['SERVER_NAME'], '.') == 2) {
-            $uriParts['subdomain'] = explode('.', $_SERVER['SERVER_NAME'])[0];
+        if (substr_count($_SERVER['HTTP_HOST'], '.') == 2) {
+            $uriParts['subdomain'] = explode('.', $_SERVER['HTTP_HOST'])[0];
         }
 
         return $uriParts;
