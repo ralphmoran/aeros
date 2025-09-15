@@ -310,7 +310,13 @@ final class Request
      */
     public function headers(array $headers): Request
     {
-        $this->headers = $headers;
+        $normalized = [];
+
+        foreach ($headers as $k => $v) {
+            $normalized[] = is_int($k) ? $v : $k . ': ' . $v;
+        }
+
+        $this->headers = $normalized;
 
         return $this;
     }
@@ -488,8 +494,17 @@ final class Request
             $this->url($this->url . '?' . http_build_query($payload));
         }
 
-        if ($this->method == 'POST' && ! empty($payload)) {
-            $this->setPayload($payload);
+        if ($this->method != 'GET' && !empty($payload)) {
+
+            // e.g., form-encoded array
+            $this->payload = $payload;
+
+            if ($this->isJsonRequest() && is_array($payload)) {
+                $opts['CURLOPT_POSTFIELDS'] = json_encode(
+                    $payload,
+                    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+                );
+            }
         }
 
         // Process cookies
@@ -499,7 +514,7 @@ final class Request
             $cookies .= "$k=$v;";
         }
 
-        return [
+        $opts =  [
             CURLOPT_VERBOSE        => true,
             CURLOPT_FAILONERROR    => true,
             CURLOPT_RETURNTRANSFER => true,
@@ -510,10 +525,11 @@ final class Request
             CURLOPT_CUSTOMREQUEST  => $this->method,
             CURLOPT_HTTPHEADER     => $this->headers,
             CURLOPT_URL            => $this->url,
-            CURLOPT_POSTFIELDS     => $this->payload,
             CURLOPT_SSL_VERIFYPEER => $this->ssl_verifypeer,
             CURLOPT_COOKIE         => $cookies,
         ];
+
+        return $opts;
     }
 
     /**
@@ -703,5 +719,21 @@ final class Request
         }
 
         return true;
+    }
+
+    /**
+     * Verifies if the request is going to be JSON type.
+     *
+     * @return bool
+     */
+    private function isJsonRequest(): bool
+    {
+        foreach ($this->headers as $h) {
+            if (stripos($h, 'content-type:') === 0 && stripos($h, 'application/json') !== false) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
