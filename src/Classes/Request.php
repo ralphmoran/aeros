@@ -6,7 +6,7 @@ use Exception;
 
 /**
  * Request class handles incoming requests and makes outgoing requests.
- * 
+ *
  * @method public get(array $options)
  * @method public post(array $options)
  * @method public put(array $options)
@@ -72,9 +72,6 @@ final class Request
         'FILES'
     ];
 
-    /** @var int $api */
-    private static $api = 0;
-
     /**
      * Initializes request params
      */
@@ -83,7 +80,7 @@ final class Request
         $this->url($_SERVER['PHP_SELF'])
             ->uri()
             ->method()
-            ->setPayload($this->getPayload())
+            ->setPayload($this->getPayload(), true)
             ->headers(getallheaders())
             ->query()
             ->subdomain()
@@ -97,13 +94,13 @@ final class Request
     /**
      * Set or get the subdomain.
      *
-     * If $subdomain is provided, sets the subdomain and returns the current 
+     * If $subdomain is provided, sets the subdomain and returns the current
      * instance.
-     * If $subdomain is empty, retrieves the subdomain from the current request 
+     * If $subdomain is empty, retrieves the subdomain from the current request
      * if it exists.
      *
      * @param   string          $subdomain (optional) The subdomain to set.
-     * @return  $this|string    Returns the current instance if setting the 
+     * @return  $this|string    Returns the current instance if setting the
      *                          subdomain, or the subdomain string if retrieving.
      */
     public function subdomain(string $subdomain = '')
@@ -146,11 +143,11 @@ final class Request
      * Set or get the domain.
      *
      * If $domain is provided, sets the domain and returns the current instance.
-     * If $domain is empty, retrieves the domain from the current request if it 
+     * If $domain is empty, retrieves the domain from the current request if it
      * exists.
      *
      * @param   string          $domain (optional) The domain to set.
-     * @return  $this|string    Returns the current instance if setting the 
+     * @return  $this|string    Returns the current instance if setting the
      *                          domain, or the domain string if retrieving.
      */
     public function domain(string $domain = '')
@@ -211,7 +208,14 @@ final class Request
         }
 
         if (! isMode('cli')) {
-            $this->uri = rtrim(str_replace( '?' . $_SERVER['QUERY_STRING'], '', $_SERVER['REQUEST_URI']), '/');
+            $this->uri = rtrim(
+                str_replace(
+                    '?' . $_SERVER['QUERY_STRING'],
+                    '',
+                    $_SERVER['REQUEST_URI']
+                ),
+                '/'
+            );
         }
 
         return $this;
@@ -229,7 +233,7 @@ final class Request
 
     /**
      * Sets the ssl_verifypeer parameter for the Curl request.
-     * 
+     *
      * @param   bool    $ssl Activates or deactivates the SSL request.
      * @return  Request
      */
@@ -313,7 +317,14 @@ final class Request
         $normalized = [];
 
         foreach ($headers as $k => $v) {
-            $normalized[] = is_int($k) ? $v : $k . ': ' . $v;
+
+            $line = $k . ': ' . $v;
+
+            if (is_int($k)) {
+                $line = $v;
+            }
+
+            $normalized[] = $line;
         }
 
         $this->headers = $normalized;
@@ -334,11 +345,20 @@ final class Request
     /**
      * Sets the value for data
      *
-     * @param mixed $data
-     * @return Request
+     * @param   mixed   $data
+     * @param   bool    $merge If true, merges with existing payload. If false, replaces it.
+     * @return  Request
      */
-    public function setPayload(mixed $data): Request
+    public function setPayload(mixed $data, bool $merge = false): Request
     {
+        if ($merge) {
+            $this->payload = is_array($data)
+                ? array_merge( (array) $this->payload, $data)
+                : $data;
+
+            return $this;
+        }
+
         $this->payload = $data;
 
         return $this;
@@ -350,9 +370,9 @@ final class Request
      * If an array of cookies is passed, it will replace the current cookies.
      * If no cookies are passed, the current cookies will remain unchanged.
      *
-     * @param   array   $cookies Optional. An array of cookies to set. Default 
+     * @param   array   $cookies Optional. An array of cookies to set. Default
      *                          is an empty array.
-     * 
+     *
      * @return  self    Returns the current instance to allow method chaining.
      */
     public function cookies(array $cookies = []): Request
@@ -403,7 +423,7 @@ final class Request
     }
 
     /**
-     * Filters the ONLY and EXCEPT keys from request array, if there is no filter, 
+     * Filters the ONLY and EXCEPT keys from request array, if there is no filter,
      * it returns the original content from the request array.
      *
      * @param   array   $keys
@@ -441,11 +461,13 @@ final class Request
      * @return mixed
      */
     public function setOptions(mixed $opts, array $keys): mixed
-
     {
         // Return values from current request
         if (is_string($opts) && in_array(strtoupper($opts), $this->verbs)) {
-            return $this->filterKeys($this->getPayload($opts), $keys);
+            return $this->filterKeys(
+                $this->getPayload($opts),
+                $keys
+            );
         }
 
         // Sets options to make a request
@@ -494,19 +516,6 @@ final class Request
             $this->url($this->url . '?' . http_build_query($payload));
         }
 
-        if ($this->method != 'GET' && !empty($payload)) {
-
-            // e.g., form-encoded array
-            $this->payload = $payload;
-
-            if ($this->isJsonRequest() && is_array($payload)) {
-                $opts['CURLOPT_POSTFIELDS'] = json_encode(
-                    $payload,
-                    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                );
-            }
-        }
-
         // Process cookies
         $cookies = '';
 
@@ -514,7 +523,7 @@ final class Request
             $cookies .= "$k=$v;";
         }
 
-        $opts =  [
+        $opts = [
             CURLOPT_VERBOSE        => true,
             CURLOPT_FAILONERROR    => true,
             CURLOPT_RETURNTRANSFER => true,
@@ -529,12 +538,27 @@ final class Request
             CURLOPT_COOKIE         => $cookies,
         ];
 
+        if ($this->method == 'POST' && ! empty($payload)) {
+
+            $this->setPayload($payload); // e.g., form-encoded array
+
+            if ($this->isJson() && is_array($payload)) {
+                $this->setPayload(json_encode(
+                    $payload,
+                    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+                ));
+            }
+
+            $opts[CURLOPT_POST] = true;
+            $opts[CURLOPT_POSTFIELDS] = $this->payload;
+        }
+
         return $opts;
     }
 
     /**
-     * Sends or executes a cURL request. 
-     * 
+     * Sends or executes a cURL request.
+     *
      * The result will be in JSON format.
      *
      * @return string|boolean
@@ -545,11 +569,11 @@ final class Request
         // Validates before cURL init action
         $cURLOpts = $this->validateOpts();
 
-        $curl = curl_init(); 
+        $curl = curl_init();
 
         curl_setopt_array($curl, $cURLOpts);
 
-        $response = curl_exec($curl); 
+        $response = curl_exec($curl);
         $error = curl_error($curl);
 
         curl_close($curl);
@@ -601,7 +625,7 @@ final class Request
 
         throw new \BadMethodCallException(
             sprintf(
-                'ERROR[BadMethodCallException] HTTP method "%s" is invalid.', 
+                'ERROR[BadMethodCallException] HTTP method "%s" is invalid.',
                 $verb
             )
         );
@@ -624,10 +648,10 @@ final class Request
     /**
      * Retrieves the payload data based on the specified HTTP method.
      *
-     * @param   string|null     $from       The HTTP method to retrieve payload from. 
+     * @param   string|null     $from       The HTTP method to retrieve payload from.
      *                                      If null, retrieves based on the current HTTP method.
      * @return  array                       The payload data associated with the specified HTTP method.
-     * @throws  \BadMethodCallException     When the specified HTTP method is invalid.
+     * @throws  \BadMethodCallException|Exception     When the specified HTTP method is invalid.
      */
     public function getPayload(string $from = null)
     {
@@ -643,27 +667,54 @@ final class Request
                 case 'FILES':
                     return array_merge($_FILES, $this->payload);
                 case 'POST':
+
+                    if (empty($_POST) && !empty($this->readInputStream())) {
+
+                        $input = $this->readInputStream();
+
+                        if ($this->isJsonRequest()) {
+                            return array_merge(
+                                json_decode($input, true) ?? [],
+                                $this->payload
+                            );
+                        }
+
+                        parse_str($input, $_POST_INPUT);
+
+                        return array_merge(
+                            $_POST_INPUT,
+                            $this->payload
+                        );
+                    }
+
                     return array_merge($_POST, $this->payload);
+
                     break;
                 case 'PUT':
-                    parse_str(file_get_contents('php://input'), $_PUT);
+                    parse_str($this->readInputStream(), $_PUT);
+
                     return array_merge($_PUT, $this->payload);
+
                     break;
                 case 'PATCH':
-                    parse_str(file_get_contents('php://input'), $_PATCH);
+                    parse_str($this->readInputStream(), $_PATCH);
+
                     return array_merge($_PATCH, $this->payload);
+
+                    break;
                 case 'DELETE':
-                    parse_str(file_get_contents('php://input'), $_DELETE);
+                    parse_str($this->readInputStream(), $_DELETE);
+
                     return array_merge($_DELETE, $this->payload);
+
                     break;
                 default: return [];
             }
-
         }
 
         throw new \BadMethodCallException(
             sprintf(
-                'ERROR[BadMethodCallException] HTTP method "%s" is invalid.', 
+                'ERROR[BadMethodCallException] HTTP method "%s" is invalid.',
                 $this->getMethod()
             )
         );
@@ -722,11 +773,11 @@ final class Request
     }
 
     /**
-     * Verifies if the request is going to be JSON type.
+     * Validates if the current request is JSON type.
      *
-     * @return bool
+     * @return  bool
      */
-    private function isJsonRequest(): bool
+    public function isJson(): bool
     {
         foreach ($this->headers as $h) {
             if (stripos($h, 'content-type:') === 0 && stripos($h, 'application/json') !== false) {
@@ -735,5 +786,30 @@ final class Request
         }
 
         return false;
+    }
+
+    /**
+     * Safely reads input from php://input with size limits.
+     *
+     * @param   int         $maxSize Maximum allowed size in bytes (default: 10MB)
+     * @return  string      The input data
+     * @throws  Exception   If reading fails or exceeds size limit
+     */
+    private function readInputStream(int $maxSize = 10485760): string
+    {
+        $input = stream_get_contents(
+            fopen('php://input', 'r'),
+            $maxSize + 1
+        );
+
+        if ($input === false) {
+            throw new Exception("Failed to read input stream");
+        }
+
+        if (strlen($input) > $maxSize) {
+            throw new Exception("Input size exceeds maximum allowed limit of {$maxSize} bytes");
+        }
+
+        return $input;
     }
 }
