@@ -77,18 +77,18 @@ final class Request
      */
     public function __construct()
     {
+        // Sanitize superglobals before assignment
+        $this->cookies = $this->sanitizeInput($_COOKIE);
+        $this->queryParams = $this->sanitizeInput($_GET);
+        $this->requestParams = $this->sanitizeInput($_POST);
+
         $this->url($_SERVER['PHP_SELF'])
             ->uri()
             ->method()
-            ->setPayload($this->getPayload(), true)
             ->headers(getallheaders())
             ->query()
             ->subdomain()
             ->domain();
-
-        $this->cookies = $_COOKIE;
-        $this->queryParams = $_GET;
-        $this->requestParams = $_POST;
     }
 
     /**
@@ -411,22 +411,22 @@ final class Request
 
             switch ($from) {
                 case 'GET':
-                    return $_GET;
+                    return $this->queryParams;
                 case 'FILES':
                     return $_FILES;
                 case 'POST':
-                    if (empty($_POST) && ! empty($input = $this->readInputStream())) {
+                    if (empty($this->requestParams) && ! empty($input = $this->readInputStream())) {
 
                         if ($this->isJson()) {
-                            return json_decode($input, true) ?? [];
+                            return json_decode($input,true) ?? [];
                         }
 
                         parse_str($input, $_POST_INPUT);
 
-                        return $_POST_INPUT ?? [];
+                        return $this->sanitizeInput($_POST_INPUT ?? []);
                     }
 
-                    return $_POST;
+                    return $this->requestParams;
                 case 'PUT':
                     parse_str($this->readInputStream(), $_PUT);
 
@@ -518,6 +518,90 @@ final class Request
     }
 
     /**
+     * Sends or executes a cURL request.
+     *
+     * The result will be in JSON format.
+     *
+     * @return string|boolean
+     * @throws Exception|ValueError
+     */
+    public function send(): string|bool
+    {
+        // Validates before cURL init action
+        $cURLOpts = $this->validateOpts();
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, $cURLOpts);
+
+        $response = curl_exec($curl);
+        $error = curl_error($curl);
+
+        curl_close($curl);
+
+        if (! $response) {
+            return $error;
+        }
+
+        return response($response);
+    }
+
+    /**
+     * Retrieves the HTTP method of the current request.
+     *
+     * @return  string  The HTTP method (e.g., GET, POST, PUT, DELETE, PATCH).
+     */
+    public function getHttpMethod()
+    {
+        if (isMode('cli')) {
+            return 'GET';
+        }
+
+        return $_SERVER['REQUEST_METHOD'];
+    }
+
+    /**
+     * Validates if the current request is JSON type.
+     *
+     * @return  bool
+     */
+    public function isJson(): bool
+    {
+        foreach ($this->headers as $h) {
+            if (stripos($h, 'content-type:') === 0 && stripos($h, 'application/json') !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Sets all options for cURL call
+     *
+     * @param mixed $opts
+     * @param array $keys
+     * @return mixed
+     */
+    public function setOptions(mixed $opts, array $keys): mixed
+    {
+        // Return values from current request
+        if (is_string($opts) && in_array(strtoupper($opts), $this->verbs)) {
+            return $this->filterKeys(
+                $this->getPayload($opts),
+                $keys
+            );
+        }
+
+        // Sets options to make a request
+        if (is_array($opts) && ! empty($opts)) {
+            $this->curlOptions = $opts;
+        }
+
+        return $this;
+    }
+
+    /**
      * Filters the ONLY and EXCEPT keys from request array, if there is no filter,
      * it returns the original content from the request array.
      *
@@ -549,31 +633,6 @@ final class Request
     }
 
     /**
-     * Sets all options for cURL call
-     *
-     * @param mixed $opts
-     * @param array $keys
-     * @return mixed
-     */
-    public function setOptions(mixed $opts, array $keys): mixed
-    {
-        // Return values from current request
-        if (is_string($opts) && in_array(strtoupper($opts), $this->verbs)) {
-            return $this->filterKeys(
-                $this->getPayload($opts),
-                $keys
-            );
-        }
-
-        // Sets options to make a request
-        if (is_array($opts) && ! empty($opts)) {
-            $this->curlOptions = $opts;
-        }
-
-        return $this;
-    }
-
-    /**
      * Validate cURL options and sets basic curlOptions.
      *
      * @return bool|array
@@ -584,7 +643,6 @@ final class Request
         if (empty($this->url)) {
             if (! isset($this->curlOptions['url'])) {
                 throw new \ValueError("URL is empty or does not exist.");
-                return false;
             }
 
             $this->url($this->curlOptions['url']);
@@ -650,65 +708,6 @@ final class Request
     }
 
     /**
-     * Sends or executes a cURL request.
-     *
-     * The result will be in JSON format.
-     *
-     * @return string|boolean
-     * @throws Exception|ValueError
-     */
-    public function send(): string|bool
-    {
-        // Validates before cURL init action
-        $cURLOpts = $this->validateOpts();
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, $cURLOpts);
-
-        $response = curl_exec($curl);
-        $error = curl_error($curl);
-
-        curl_close($curl);
-
-        if (! $response) {
-            return $error;
-        }
-
-        return response($response);
-    }
-
-    /**
-     * Retrieves the HTTP method of the current request.
-     *
-     * @return  string  The HTTP method (e.g., GET, POST, PUT, DELETE, PATCH).
-     */
-    public function getHttpMethod()
-    {
-        if (isMode('cli')) {
-            return 'GET';
-        }
-
-        return $_SERVER['REQUEST_METHOD'];
-    }
-
-    /**
-     * Validates if the current request is JSON type.
-     *
-     * @return  bool
-     */
-    public function isJson(): bool
-    {
-        foreach ($this->headers as $h) {
-            if (stripos($h, 'content-type:') === 0 && stripos($h, 'application/json') !== false) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Safely reads input from php://input with size limits.
      *
      * @return  string      The input data
@@ -731,7 +730,30 @@ final class Request
             throw new Exception("Input size exceeds maximum allowed limit of {$maxSize} bytes");
         }
 
-        return $input;
+        return $this->sanitizeInput($input);
+    }
+
+    /**
+     * Sanitizes input data recursively.
+     *
+     * @param mixed $data
+     * @return mixed
+     */
+    private function sanitizeInput($data)
+    {
+        if (is_array($data)) {
+            return array_map([$this, 'sanitizeInput'], $data);
+        }
+
+        if (is_string($data)) {
+            // Remove null bytes
+            $data = str_replace("\0", '', $data);
+
+            // Trim whitespace
+            $data = trim($data);
+        }
+
+        return $data;
     }
 
     /**
