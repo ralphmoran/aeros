@@ -318,13 +318,10 @@ final class Request
 
         foreach ($headers as $k => $v) {
 
-            $line = $k . ': ' . $v;
+            $k = str_replace(["\r", "\n"], '', $k);
+            $v = str_replace(["\r", "\n"], '', $v);
 
-            if (is_int($k)) {
-                $line = $v;
-            }
-
-            $normalized[] = $line;
+            $normalized[] = is_int($k) ? $v : $k . ': ' . $v;
         }
 
         $this->headers = $normalized;
