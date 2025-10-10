@@ -809,4 +809,60 @@ final class Request
 
         return $input;
     }
+
+    /**
+     * Validates URL safety to prevent SSRF attacks.
+     * Can be disabled for trusted internal networks.
+     *
+     * @param string $url
+     * @return bool
+     * @throws ValueError
+     */
+    private function validateUrlSafety(string $url): bool
+    {
+        // Check if SSRF protection is enabled (default: true in production)
+        $ssrfProtection = config('security.ssrf_protection', isEnv('production'));
+
+        if (! $ssrfProtection) {
+            return true; // Skip validation for trusted environments
+        }
+
+        $parsed = parse_url($url);
+
+        if (! $parsed || ! isset($parsed['scheme']) || ! isset($parsed['host'])) {
+            throw new \ValueError("Invalid URL format");
+        }
+
+        // Only allow http and https
+        if (! in_array($parsed['scheme'], ['http', 'https'])) {
+            throw new \ValueError("Only HTTP and HTTPS protocols are allowed");
+        }
+
+        $host = $parsed['host'];
+
+        // Block common metadata endpoints (cloud services)
+        $blockedHosts = config('security.blocked_hosts', [
+            '169.254.169.254', // AWS/Azure/GCP metadata
+            'metadata.google.internal',
+            '100.100.100.200', // Alibaba Cloud
+        ]);
+
+        if (in_array(strtolower($host), $blockedHosts)) {
+            throw new \ValueError("Access to metadata endpoints is blocked");
+        }
+
+        // Check if host is an IP
+        if (filter_var($host, FILTER_VALIDATE_IP)) {
+            // Block only if configured (allow internal IPs by default)
+            $blockPrivateIps = config('security.block_private_ips', false);
+
+            if ($blockPrivateIps) {
+                if (! filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                    throw new \ValueError("Access to private IP ranges is blocked");
+                }
+            }
+        }
+
+        return true;
+    }
 }
