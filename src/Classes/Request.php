@@ -188,6 +188,12 @@ final class Request
      */
     public function url(string $url): Request
     {
+        $maxLength = config('security.max_url_length', 2048);
+
+        if (strlen($url) > $maxLength) {
+            throw new \ValueError("URL exceeds maximum length of {$maxLength} characters");
+        }
+
         $this->url = $url;
 
         return $this;
@@ -335,6 +341,12 @@ final class Request
      */
     public function headers(array $headers): Request
     {
+        $maxCount = config('security.max_header_count', 50);
+
+        if (count($headers) > $maxCount) {
+            throw new \ValueError("Too many headers. Maximum allowed: {$maxCount}");
+        }
+
         $normalized = [];
 
         foreach ($headers as $k => $v) {
@@ -453,6 +465,14 @@ final class Request
     public function cookies(array $cookies = []): Request
     {
         if (! empty($cookies)) {
+
+            $maxSize = config('security.max_cookie_size', 4096);
+            $size = strlen(serialize($cookies));
+
+            if ($size > $maxSize) {
+                throw new \ValueError("Cookies size exceeds maximum of {$maxSize} bytes");
+            }
+
             $this->cookies = $cookies;
         }
 
@@ -691,12 +711,13 @@ final class Request
     /**
      * Safely reads input from php://input with size limits.
      *
-     * @param   int         $maxSize Maximum allowed size in bytes (default: 10MB)
      * @return  string      The input data
      * @throws  Exception   If reading fails or exceeds size limit
      */
-    private function readInputStream(int $maxSize = 10485760): string
+    private function readInputStream(): string
     {
+        $maxSize = config('security.max_input_stream_size', 10485760);
+
         $input = stream_get_contents(
             fopen('php://input', 'r'),
             $maxSize + 1
