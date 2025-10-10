@@ -234,11 +234,32 @@ final class Request
     /**
      * Sets the ssl_verifypeer parameter for the Curl request.
      *
+     * WARNING: Disabling SSL verification is a security risk and should only
+     * be used in development environments.
+     *
      * @param   bool    $ssl Activates or deactivates the SSL request.
      * @return  Request
+     * @throws  \Exception
      */
     public function ssl(bool $ssl): Request
     {
+        // Only allow disabling SSL in non-production modes
+        if (! $ssl && isEnv('production')) {
+            throw new \Exception(
+                "SECURITY WARNING: SSL verification cannot be disabled in production. " .
+                "This would expose the application to Man-in-the-Middle attacks."
+            );
+        }
+
+        // Log warning even in development
+        if (! $ssl) {
+            logger(
+                "WARNING: SSL verification has been disabled. " .
+                "This should NEVER be used in production environments.",
+                app()->basedir . '/logs/security.log'
+            );
+        }
+
         $this->ssl_verifypeer = $ssl;
 
         return $this;
