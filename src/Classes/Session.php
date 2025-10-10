@@ -68,6 +68,16 @@ class Session
     }
 
     /**
+     * Closes the session and no more data is stored.
+     *
+     * @access  private
+     */
+    public function close()
+    {
+        session_write_close();
+    }
+
+    /**
      * Magic method to set session variables.
      *
      * @param   string  $name   The session variable name.
@@ -115,15 +125,5 @@ class Session
         unset($_SESSION[$name]);
 
         return true;
-    }
-
-    /**
-     * Closes the session and no more data is stored.
-     *
-     * @access  private
-     */
-    public function close()
-    {
-        session_write_close();
     }
 }

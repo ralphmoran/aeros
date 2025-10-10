@@ -3,6 +3,7 @@
 namespace Aeros\Src\Classes;
 
 use Exception;
+use ValueError;
 
 /**
  * Request class handles incoming requests and makes outgoing requests.
@@ -89,6 +90,11 @@ final class Request
             ->query()
             ->subdomain()
             ->domain();
+
+        // Auto-validate CSRF for state-changing requests
+        if (! isMode('cli')) {
+            $this->csrfValidation();
+        }
     }
 
     /**
@@ -191,7 +197,7 @@ final class Request
         $maxLength = config('security.max_url_length', 2048);
 
         if (strlen($url) > $maxLength) {
-            throw new \ValueError("URL exceeds maximum length of {$maxLength} characters");
+            throw new ValueError("URL exceeds maximum length of {$maxLength} characters");
         }
 
         $this->url = $url;
@@ -344,7 +350,7 @@ final class Request
         $maxCount = config('security.max_header_count', 50);
 
         if (count($headers) > $maxCount) {
-            throw new \ValueError("Too many headers. Maximum allowed: {$maxCount}");
+            throw new ValueError("Too many headers. Maximum allowed: {$maxCount}");
         }
 
         $normalized = [];
@@ -470,7 +476,7 @@ final class Request
             $size = strlen(serialize($cookies));
 
             if ($size > $maxSize) {
-                throw new \ValueError("Cookies size exceeds maximum of {$maxSize} bytes");
+                throw new ValueError("Cookies size exceeds maximum of {$maxSize} bytes");
             }
 
             $this->cookies = $cookies;
@@ -602,10 +608,112 @@ final class Request
     }
 
     /**
+     * Validates and filters payload against defined rules.
+     *
+     * @param   array   $filters Filter rules (same format as filter_var_array)
+     * @param   bool    $throwOnError If true, throws exception on validation failure
+     * @return  array   Filtered and validated payload
+     * @throws  ValueError|Exception When validation fails and $throwOnError is true
+     */
+    public function validate(array $filters, bool $throwOnError = true): array
+    {
+        $payload = $this->getPayload();
+
+        $filtered = filter_var_array($payload, $filters, true);
+
+        if ($throwOnError) {
+            $errors = [];
+
+            foreach ($filters as $key => $filter) {
+                // Check if validation failed (returns false for invalid data)
+                if (array_key_exists($key, $filtered) && $filtered[$key] === false) {
+                    $errors[$key] = "Validation failed for field: {$key}";
+                }
+
+                // Check for required fields that are null
+                if (array_key_exists($key, $filtered) && $filtered[$key] === null && isset($payload[$key])) {
+                    $errors[$key] = "Invalid value for field: {$key}";
+                }
+            }
+
+            if (! empty($errors)) {
+                throw new ValueError("Validation failed: " . json_encode($errors));
+            }
+        }
+
+        return $filtered;
+    }
+
+    /**
+     * Validates a single field from the payload.
+     *
+     * @param   string      $field Field name
+     * @param   int|array   $filter Filter constant or array with filter options
+     * @return  mixed       Filtered value or null if validation fails
+     * @throws  Exception
+     */
+    public function validateField(string $field, int|array $filter): mixed
+    {
+        $payload = $this->getPayload();
+
+        if (!isset($payload[$field])) {
+            return null;
+        }
+
+        return filter_var($payload[$field], $filter);
+    }
+
+    /**
+     * Gets validation rules helper - returns common filter patterns.
+     *
+     * @return  array
+     */
+    public static function validationRules(): array
+    {
+        return [
+            'email' => FILTER_VALIDATE_EMAIL,
+            'url' => FILTER_VALIDATE_URL,
+            'ip' => FILTER_VALIDATE_IP,
+            'int' => FILTER_VALIDATE_INT,
+            'float' => FILTER_VALIDATE_FLOAT,
+            'boolean' => FILTER_VALIDATE_BOOLEAN,
+            'string' => FILTER_SANITIZE_STRING,
+            'encoded' => FILTER_SANITIZE_ENCODED,
+            'special_chars' => FILTER_SANITIZE_SPECIAL_CHARS,
+        ];
+    }
+
+    /**
+     * Quick validation with predefined rules.
+     *
+     * @param   array   $rules ['field' => 'email', 'age' => 'int']
+     * @return  array   Validated data
+     * @throws  Exception
+     */
+    public function validateWith(array $rules): array
+    {
+        $filters = [];
+        $patterns = self::validationRules();
+
+        foreach ($rules as $field => $rule) {
+            if (is_string($rule) && isset($patterns[$rule])) {
+                $filters[$field] = $patterns[$rule];
+            }
+
+            if (is_array($rule) || is_int($rule)) {
+                $filters[$field] = $rule;
+            }
+        }
+
+        return $this->validate($filters);
+    }
+
+    /**
      * Filters the ONLY and EXCEPT keys from request array, if there is no filter,
      * it returns the original content from the request array.
      *
-     * @param   array   $keys
+     * @param array $content
+     * @param array $keys
      * @return  array
      */
     private function filterKeys(array $content, array $keys): array
@@ -642,7 +750,7 @@ final class Request
     {
         if (empty($this->url)) {
             if (! isset($this->curlOptions['url'])) {
-                throw new \ValueError("URL is empty or does not exist.");
+                throw new ValueError("URL is empty or does not exist.");
             }
 
             $this->url($this->curlOptions['url']);
@@ -776,12 +884,12 @@ final class Request
         $parsed = parse_url($url);
 
         if (! $parsed || ! isset($parsed['scheme']) || ! isset($parsed['host'])) {
-            throw new \ValueError("Invalid URL format");
+            throw new ValueError("Invalid URL format");
         }
 
         // Only allow http and https
         if (! in_array($parsed['scheme'], ['http', 'https'])) {
-            throw new \ValueError("Only HTTP and HTTPS protocols are allowed");
+            throw new ValueError("Only HTTP and HTTPS protocols are allowed");
         }
 
         $host = $parsed['host'];
@@ -794,7 +902,7 @@ final class Request
         ]);
 
         if (in_array(strtolower($host), $blockedHosts)) {
-            throw new \ValueError("Access to metadata endpoints is blocked");
+            throw new ValueError("Access to metadata endpoints is blocked");
         }
 
         // Check if host is an IP
@@ -804,12 +912,42 @@ final class Request
 
             if ($blockPrivateIps) {
                 if (! filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
-                    throw new \ValueError("Access to private IP ranges is blocked");
+                    throw new ValueError("Access to private IP ranges is blocked");
                 }
             }
         }
 
         return true;
+    }
+
+    /**
+     * Validates CSRF token for state-changing requests.
+     *
+     * @throws Exception
+     */
+    private function csrfValidation(): void
+    {
+        $csrfProtection = config('security.csrf_protection', true);
+
+        // Skip if disabled or GET request
+        if (! $csrfProtection || $this->method === 'GET') {
+            return;
+        }
+
+        // Skip for JSON API requests (use other auth like Bearer tokens)
+        if ($this->isJson()) {
+            return;
+        }
+
+        // Validate for POST/PUT/PATCH/DELETE
+        if (in_array($this->method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
+
+            $token = $this->getPayload()['csrf_token'] ?? request()->headers()['X-CSRF-TOKEN'] ?? null;
+
+            if (! app()->security->validateCsrfToken($token)) {
+                throw new \Exception("CSRF token validation failed", 403);
+            }
+        }
     }
 
     /**
@@ -877,11 +1015,7 @@ final class Request
      */
     public function __get($name)
     {
-        if (isset($this->payload[$name])) {
-            return $this->payload[$name];
-        }
-
-        return null;
+        return $this->payload[$name] ?? null;
     }
 
     /**

@@ -292,6 +292,20 @@ if (! function_exists('csrf')) {
 	}
 }
 
+if (! function_exists('validate')) {
+
+    /**
+     * Validates request data with filter rules.
+     *
+     * @param   array   $rules Validation rules
+     * @return  array   Validated data
+     */
+    function validate(array $rules): array
+    {
+        return request()->validateWith($rules);
+    }
+}
+
 if (! function_exists('worker')) {
 
 	/**
