@@ -517,7 +517,7 @@ final class Request
         $cookies = '';
 
         foreach ($this->getCookies() as $k => $v) {
-            $cookies .= "$k=$v;";
+            $cookies .= urlencode($k) . '=' . urlencode($v) . ';';
         }
 
         $opts = [
