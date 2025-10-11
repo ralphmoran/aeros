@@ -8,63 +8,63 @@ use ValueError;
 /**
  * Request class handles incoming requests and makes outgoing requests.
  *
- * @method public get(array $options)
- * @method public post(array $options)
- * @method public put(array $options)
- * @method public path(array $options)
- * @method public delete(array $options)
+ * @method \Aeros\Src\Classes\Request get(string|array $options)
+ * @method \Aeros\Src\Classes\Request post(string|array $options)
+ * @method \Aeros\Src\Classes\Request put(string|array $options)
+ * @method \Aeros\Src\Classes\Request path(string|array $options)
+ * @method \Aeros\Src\Classes\Request delete(string|array $options)
  */
 final class Request
 {
     /** @var string $url */
-    protected $url;
+    protected string $url;
 
     /** @var string $uri */
-    protected $uri;
+    protected string $uri;
 
     /** @var bool $ssl_verifypeer */
-    protected $ssl_verifypeer = true;
+    protected bool $ssl_verifypeer = true;
 
     /** @var string $query */
-    protected $query;
+    protected string $query;
 
     /** @var string $method */
-    protected $method = 'GET';
+    protected string $method = 'GET';
 
     /** @var string $subdomain */
-    protected $subdomain = '*';
+    protected string $subdomain = '*';
 
     /** @var string $domain */
-    protected $domain = '';
+    protected string $domain = '';
 
     /** @var string|array $only $*/
-    private $only = [];
+    private string|array $only = [];
 
     /** @var string|array $except */
-    private $except = [];
+    private string|array $except = [];
 
     /** @var array $headers */
-    protected $headers = [
+    protected array $headers = [
         "Content-Type:application/json"
     ];
 
     /** @var mixed $payload */
-    protected $payload = [];
+    protected mixed $payload = [];
 
     /** @var array $cookies */
-    public $cookies = [];
+    public mixed $cookies = [];
 
     /** @var array $queryParams */
-    public $queryParams = [];
+    public mixed $queryParams = [];
 
     /** @var array $requestParams */
-    public $requestParams = [];
+    public mixed $requestParams = [];
 
     /** @var array $curlOptions */
-    private $curlOptions = [];
+    private array $curlOptions = [];
 
     /** @var array $verbs */
-    private $verbs = [
+    private array $verbs = [
         'GET',
         'POST',
         'PUT',
@@ -75,6 +75,8 @@ final class Request
 
     /**
      * Initializes request params
+     *
+     * @throws Exception
      */
     public function __construct()
     {
@@ -106,10 +108,10 @@ final class Request
      * if it exists.
      *
      * @param   string          $subdomain (optional) The subdomain to set.
-     * @return  $this|string    Returns the current instance if setting the
+     * @return  Request|string    Returns the current instance if setting the
      *                          subdomain, or the subdomain string if retrieving.
      */
-    public function subdomain(string $subdomain = '')
+    public function subdomain(string $subdomain = ''): string|Request
     {
         if (! empty($subdomain)) {
             $this->subdomain = $subdomain;
@@ -140,7 +142,7 @@ final class Request
      *
      * @return  string|null     The current subdomain, or null if not set.
      */
-    public function getSubdomain()
+    public function getSubdomain(): ?string
     {
         return $this->subdomain;
     }
@@ -153,10 +155,10 @@ final class Request
      * exists.
      *
      * @param   string          $domain (optional) The domain to set.
-     * @return  $this|string    Returns the current instance if setting the
+     * @return  Request|string    Returns the current instance if setting the
      *                          domain, or the domain string if retrieving.
      */
-    public function domain(string $domain = '')
+    public function domain(string $domain = ''): string|Request
     {
         if (! empty($domain)) {
             $this->domain = $domain;
@@ -181,7 +183,7 @@ final class Request
      *
      * @return  string|null     The current domain, or null if not set.
      */
-    public function getDomain()
+    public function getDomain(): ?string
     {
         return $this->domain;
     }
@@ -408,7 +410,7 @@ final class Request
      * @return  array                       The payload data associated with the specified HTTP method.
      * @throws  \BadMethodCallException|Exception     When the specified HTTP method is invalid.
      */
-    public function getPayload(string $from = null)
+    public function getPayload(string $from = null): array
     {
         $from ??= $this->getHttpMethod();
         $from = strtoupper($from);
@@ -557,7 +559,7 @@ final class Request
      *
      * @return  string  The HTTP method (e.g., GET, POST, PUT, DELETE, PATCH).
      */
-    public function getHttpMethod()
+    public function getHttpMethod(): string
     {
         if (isMode('cli')) {
             return 'GET';
@@ -587,9 +589,10 @@ final class Request
      *
      * @param mixed $opts
      * @param array $keys
-     * @return mixed
+     * @return array|Request
+     * @throws Exception
      */
-    public function setOptions(mixed $opts, array $keys): mixed
+    public function setOptions(mixed $opts, array $keys): Request|array
     {
         // Return values from current request
         if (is_string($opts) && in_array(strtoupper($opts), $this->verbs)) {
@@ -844,10 +847,10 @@ final class Request
     /**
      * Sanitizes input data recursively.
      *
-     * @param mixed $data
-     * @return mixed
+     * @param   mixed   $data
+     * @return  mixed
      */
-    private function sanitizeInput($data)
+    private function sanitizeInput(mixed $data): mixed
     {
         if (is_array($data)) {
             return array_map([$this, 'sanitizeInput'], $data);
@@ -868,9 +871,9 @@ final class Request
      * Validates URL safety to prevent SSRF attacks.
      * Can be disabled for trusted internal networks.
      *
-     * @param string $url
-     * @return bool
-     * @throws ValueError
+     * @param   string  $url
+     * @return  bool
+     * @throws  ValueError
      */
     private function validateUrlSafety(string $url): bool
     {
@@ -923,7 +926,7 @@ final class Request
     /**
      * Validates CSRF token for state-changing requests.
      *
-     * @throws Exception
+     * @throws  Exception
      */
     private function csrfValidation(): void
     {
@@ -953,12 +956,11 @@ final class Request
     /**
      * Magic method to set the request method
      *
-     * @param string $verb
-     * @param array $url
-     * @return Request
-     * @throws BadMethodCallException
+     * @param   string  $verb
+     * @param   $args
+     * @return  Request
      */
-    public function __call($verb, $args): Request
+    public function __call(string $verb, $args): Request
     {
         if (isset($args[0]) && filter_var($args[0], FILTER_VALIDATE_URL)) {
             $args['url'] = $args[0];
@@ -1002,7 +1004,7 @@ final class Request
      * @param   string  $name   The session variable name.
      * @param   mixed   $value  The session variable value.
      */
-    public function __set($name, $value)
+    public function __set(string $name, mixed $value)
     {
         $this->payload[$name] = $value;
     }
@@ -1013,7 +1015,7 @@ final class Request
      * @param   string  $name   The session variable name.
      * @return  mixed|null  The session variable value if set, otherwise null.
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         return $this->payload[$name] ?? null;
     }
@@ -1024,7 +1026,7 @@ final class Request
      * @param   string  $name   The session variable name.
      * @return  bool    Returns true if the session variable is set, otherwise false.
      */
-    public function __isset($name)
+    public function __isset(string $name)
     {
         return isset($this->payload[$name]);
     }
@@ -1035,7 +1037,7 @@ final class Request
      * @param   string  $name   The session variable name.
      * @return  bool    Returns true on success.
      */
-    public function __unset($name)
+    public function __unset(string $name)
     {
         if (isset($this->payload[$name])) {
             unset($this->payload[$name]);

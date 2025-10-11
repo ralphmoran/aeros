@@ -4,6 +4,7 @@ namespace Aeros\Src\Classes;
 
 use Aeros\Src\Classes\Route;
 use Aeros\Src\Interfaces\MiddlewareInterface;
+use BadMethodCallException;
 
 /**
  * Router class manages static calls to HTTP methods, parses the registered routes and
@@ -18,13 +19,13 @@ use Aeros\Src\Interfaces\MiddlewareInterface;
 class Router
 {
     /** @var ?array */
-    private static $groupMiddlewares = null;
+    private static ?array $groupMiddlewares = null;
 
     /** @var array */
-    private $routes = [];
+    private array $routes = [];
 
     /** @var array */
-    private static $methods = [
+    private static array $methods = [
         'get',
         'post',
         'put',
@@ -36,15 +37,15 @@ class Router
     ];
 
     /** @var Route $currentRoute */
-    protected $currentRoute;
+    protected \Aeros\Src\Classes\Route $currentRoute;
 
     /**
      * Registers a new Route based on the static call of the requested method.
      *
      * @param string $requestedMethod
      * @param array $args
-     * @throws BadMethodCallException
      * @return void
+     * @throws BadMethodCallException|\Exception
      */
     public static function __callStatic(string $requestedMethod, array $args)
     {
@@ -55,7 +56,7 @@ class Router
             );
         }
 
-        throw new \BadMethodCallException(
+        throw new BadMethodCallException(
             sprintf(
                 "ERROR[request method] Unknown request method: 'Route::%s()'", 
                 $requestedMethod
@@ -88,8 +89,8 @@ class Router
     /**
      * Dispatches the content for the route (URI) and method (REQUEST_METHOD).
      *
-     * @throws Exception
      * @return mixed
+     * @throws \Exception
      */
     public function dispatch(): mixed
     {
@@ -120,19 +121,20 @@ class Router
      *
      * @return Route
      */
-    public function getCurrentRoute(): Route
+    public function getRoute(): Route
     {
         return $this->currentRoute;
     }
 
     /**
-     * Confirms if the URI and the REQUEST_METHOD matches any registred route.
+     * Confirms if the URI and the REQUEST_METHOD matches any registered route.
      *
      * @param string $method
      * @param string $uri
      * @return bool|Route
+     * @throws \Exception
      */
-    public function match($method, $uri): bool|Route
+    public function match(string $method, string $uri): bool|Route
     {
         // Returns URI parts and subdomain if there is any
         $currentUriParts = $this->getUriParts($uri);
@@ -173,7 +175,7 @@ class Router
                 continue;
             }
 
-            // Assings values to params for current route: 
+            // Assigns values to params for current route:
             // Example: `admin.domain.com/2233/internal` to `admin:/:userid/:profile`
             // $params = ['userid'=>223, 'profile'='internal']
             $params = [];
@@ -283,7 +285,9 @@ class Router
      * Returns current registered routes from Router.
      *
      * @param string $method
+     * @param string $subdomain
      * @return array
+     * @throws \Exception
      */
     public function getRoutes(string $method = '', string $subdomain = '*'): array
     {
@@ -309,8 +313,9 @@ class Router
      *
      * @param array $middlewares
      * @return void
+     * @throws \Exception
      */
-    public static function runMiddlewares(array $middlewares)
+    public static function runMiddlewares(array $middlewares): void
     {
         // Call middleware(s) for this route
         foreach ($middlewares as $middleware) {
@@ -332,10 +337,10 @@ class Router
      * Groups routes to run a list of middlewares on them.
      *
      * @param string|array $middlewares
-     * @param callable $callable
+     * @param callable $callback
      * @return void
      */
-    public static function group(string|array $middlewares, callable $callback)
+    public static function group(string|array $middlewares, callable $callback): void
     {
         // Parses $middlewares as string: 'auth,web,api'
         if (is_string($middlewares)) {
@@ -365,13 +370,14 @@ class Router
     /**
      * Load requested routes based on the current environment and URI.
      *
-     * This method is responsible for loading routes depending on the web or 
-     * CLI environment, handling subdomains, and validating requested routes by 
+     * This method is responsible for loading routes depending on the web or
+     * CLI environment, handling subdomains, and validating requested routes by
      * checking corresponding files.
      *
      * @return void
+     * @throws \Exception
      */
-    public static function loadRequestedRoutes()
+    public static function loadRequestedRoutes(): void
     {
         // Only on web
         if (! isMode('cli')) {
@@ -404,23 +410,24 @@ class Router
     /**
      * Load requested routes from a specified route file.
      *
-     * This method loads routes from the specified route file and caches them 
+     * This method loads routes from the specified route file and caches them
      * in production or staging environments.
-     * 
+     *
      * ```php
      * // To load the default 'web' routes:
      * Router::validateRequestedRoutesByFile();
      * ```
-     * 
+     *
      * ```php
      * // To load custom routes from a file named 'custom_routes.php':
      * Router::validateRequestedRoutesByFile('custom_routes');
      * ```
      *
-     * @param   string  $routeFile The name of the route file to load (default is 'web').
+     * @param string $routeFile The name of the route file to load (default is 'web').
      * @return  bool    True if routes were successfully loaded and cached, false otherwise.
+     * @throws \Exception
      */
-    public static function validateRequestedRoutesByFile(string $routeFile = 'web')
+    public static function validateRequestedRoutesByFile(string $routeFile = 'web'): bool
     {
         if (file_exists($routeFile = app()->basedir . '/routes/' . $routeFile . '.php')) {
             return (require $routeFile);
