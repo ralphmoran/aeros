@@ -306,6 +306,19 @@ if (! function_exists('validate')) {
     }
 }
 
+if (! function_exists('rateLimiter')) {
+
+    /**
+     * Returns the rate limiter instance.
+     *
+     * @return \Aeros\Src\Classes\RateLimiter
+     * @throws Exception
+     */
+    function rateLimiter(): \Aeros\Src\Classes\RateLimiter {
+        return app()->rateLimiter;
+    }
+}
+
 if (! function_exists('worker')) {
 
 	/**
