@@ -70,3 +70,82 @@ if (! function_exists('class_basename')) {
 		return end($parts);
 	}
 }
+
+if (! function_exists('truncate')) {
+
+    /**
+     * Truncate a string to a specified length and add a substitute string.
+     * The substitute is included in the total length.
+     *
+     * @param   string  $string The string to truncate
+     * @param   int     $length Maximum length of the resulting string
+     * @param   string  $substitute The string to append (default: '...')
+     * @return  string  The truncated string
+     */
+    function truncate(string $string, int $length = 30, string $substitute = '...'): string
+    {
+        if (mb_strlen($string, 'UTF-8') <= $length) {
+            return $string;
+        }
+
+        $substituteLength = mb_strlen($substitute, 'UTF-8');
+
+        if ($substituteLength >= $length) {
+            return mb_substr($string, 0, $length, 'UTF-8');
+        }
+
+        return mb_substr(
+            $string,
+            0,
+            $length - $substituteLength,
+            'UTF-8'
+        ) . $substitute;
+    }
+}
+
+if (! function_exists('truncateAtWord')) {
+
+    /**
+     * Truncate a string at the last complete word within the specified length.
+     * The substitute is included in the total length.
+     *
+     * @param   string  $string The string to truncate
+     * @param   int     $length Maximum length of the resulting string
+     * @param   string  $substitute The string to append (default: '...')
+     * @return  string  The truncated string
+     */
+    function truncateAtWord(string $string, int $length = 30, string $substitute = '...'): string
+    {
+        if (mb_strlen($string, 'UTF-8') <= $length) {
+            return $string;
+        }
+
+        $substituteLength = mb_strlen($substitute, 'UTF-8');
+
+        if ($substituteLength >= $length) {
+            return mb_substr($string, 0, $length, 'UTF-8');
+        }
+
+        $maxStringLength = $length - $substituteLength;
+
+        $truncated = mb_substr(
+            $string,
+            0,
+            $maxStringLength,
+            'UTF-8'
+        );
+
+        $lastSpace = mb_strrpos($truncated, ' ', 0, 'UTF-8');
+
+        if ($lastSpace === false || $lastSpace === 0) {
+            return $truncated . $substitute;
+        }
+
+        return mb_substr(
+            $truncated,
+            0,
+            $lastSpace,
+            'UTF-8'
+        ) . $substitute;
+    }
+}
