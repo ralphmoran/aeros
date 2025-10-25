@@ -98,7 +98,7 @@ class RunAppCommand extends Command
             )
         );
 
-        if (db('none')->ping() === false) {
+        if (db()->ping() === false) {
             $output->writeln('<bg=red;options=bold>Error</> There was a problem connecting to the DB server');
 
             return Command::FAILURE;
