@@ -10,8 +10,8 @@ namespace Aeros\Src\Classes;
 
 /**
  * Wrapper class for PDO library.
- * 
- * 
+ *
+ *
  */
 class Db
 {
@@ -23,7 +23,7 @@ class Db
 
     /** @var \PDO|null */
     private $reflectionPDO = null;
-    
+
     /** @var \PDOStatement|null */
     private $reflectionPDOStatement = null;
 
@@ -67,7 +67,7 @@ class Db
         if (! is_null($connection) && ! in_array($connection, array_keys(config('db.connections')))) {
             throw new \PDOException(
                 sprintf(
-                    'ERROR[DB connection] DB connection "%s" not found.', 
+                    'ERROR[DB connection] DB connection "%s" not found.',
                     $connection
                 )
             );
@@ -138,9 +138,9 @@ class Db
 
         // Process PDO
         $result = $this->processReflection(
-            $this->reflectionPDO, 
-            $this->activeDBConnections[$this->connectionName], 
-            $method, 
+            $this->reflectionPDO,
+            $this->activeDBConnections[$this->connectionName],
+            $method,
             $arguments
         );
 
@@ -159,9 +159,9 @@ class Db
 
         // Process PDOStatement
         $result = $this->processReflection(
-            $this->reflectionPDOStatement, 
-            $this->stm, 
-            $method, 
+            $this->reflectionPDOStatement,
+            $this->stm,
+            $method,
             $arguments
         );
 
@@ -175,7 +175,7 @@ class Db
 
         throw new \BadMethodCallException(
             sprintf(
-                'ERROR[BadMethodCallException] Method "%s" does not exist.', 
+                'ERROR[BadMethodCallException] Method "%s" does not exist.',
                 $method
             )
         );
