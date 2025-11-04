@@ -189,17 +189,36 @@ class Db
      */
     private function resolveDbObject(array $dbSetup): \PDO
     {
-        $dns = $dbSetup['driver'] . ":host=" . $dbSetup['server'] . ":" . $dbSetup['port'] .  ";dbname=" . $dbSetup['database'];
+        $driver = $dbSetup['driver'];
 
-        // Exception for sqlite
-        if ($dbSetup['driver'] == 'sqlite') {
-            if (strtolower(pathinfo($dbSetup['database'])['extension']) !== 'sql') {
-                throw new \InvalidArgumentException(
-                    sprintf('ERROR[InvalidArgumentException] Database file name "%s" is not valid.', $dbSetup['database'])
+        // Build DSN based on driver
+        switch ($driver) {
+            case 'mysql':
+            case 'pgsql':
+                $dns = sprintf(
+                    "%s:host=%s;port=%s;dbname=%s",
+                    $driver,
+                    $dbSetup['server'],
+                    $dbSetup['port'],
+                    $dbSetup['database']
                 );
-            }
+                break;
 
-            $dns = "sqlite:" . $dbSetup['server'] . "/" . $dbSetup['database'];
+            case 'sqlsrv':
+                $dns = sprintf(
+                    "%s:Server=%s,%s;Database=%s",
+                    $driver,
+                    $dbSetup['server'],
+                    $dbSetup['port'],
+                    $dbSetup['database']
+                );
+                break;
+
+            case 'sqlite':
+                $dns = $this->resolveSqliteDsn($dbSetup);
+                break;
+
+            default: throw new \InvalidArgumentException("Unsupported driver: {$driver}");
         }
 
         // Resolve PDO
@@ -209,6 +228,23 @@ class Db
             $dbSetup['password'],
             $this->connFlags
         );
+    }
+
+    /**
+     * Resolves the DNS connection for SQLite.
+     *
+     * @param array $dbSetup
+     * @return string
+     */
+    private function resolveSqliteDsn(array $dbSetup): string
+    {
+        if (strtolower(pathinfo($dbSetup['database'])['extension']) !== 'sql') {
+            throw new \InvalidArgumentException(
+                sprintf('ERROR[InvalidArgumentException] Database file name "%s" is not valid.', $dbSetup['database'])
+            );
+        }
+
+        return "sqlite:" . $dbSetup['server'] . "/" . $dbSetup['database'];
     }
 
     /**
