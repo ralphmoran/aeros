@@ -245,20 +245,26 @@ class RunWorkerCommand extends Command
 
             // Reread
             $reread = new Process([
-                '/usr/bin/sudo', 
-                '/usr/bin/supervisorctl', 
-                'reread'
+                'supervisorctl',
+                '-s', env('SUPERVISOR_URL'),
+                '-u', env('SUPERVISOR_USER'),
+                '-p', env('SUPERVISOR_PASS'),
+                'reread',
             ]);
 
+            $reread->setTimeout(30);
             $reread->mustRun();
 
             // Update
             $update = new Process([
-                '/usr/bin/sudo', 
-                '/usr/bin/supervisorctl', 
-                'update'
+                'supervisorctl',
+                '-s', env('SUPERVISOR_URL'),
+                '-u', env('SUPERVISOR_USER'),
+                '-p', env('SUPERVISOR_PASS'),
+                'update',
             ]);
 
+            $update->setTimeout(30);
             $update->mustRun();
         }
 
@@ -269,14 +275,16 @@ class RunWorkerCommand extends Command
 
         foreach ($workers as $worker) {
             $workerProcess = new Process([
-                '/usr/bin/sudo', 
-                '/usr/bin/supervisorctl', 
+                'supervisorctl',
+                '-s', env('SUPERVISOR_URL'),
+                '-u', env('SUPERVISOR_USER'),
+                '-p', env('SUPERVISOR_PASS'),
                 $action,
                 $worker
             ]);
-    
+
             $workerProcess->mustRun();
-    
+
             $status[] = $workerProcess->getOutput();
         }
 

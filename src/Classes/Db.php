@@ -122,6 +122,17 @@ class Db
     }
 
     /**
+     * Returns a specific Db connection or the default one.
+     *
+     * @param string|null $connection
+     * @return \PDO
+     */
+    public function getDBConnection(string $connection = null): \PDO
+    {
+        return $this->activeDBConnections[$connection ?? $this->connectionName];
+    }
+
+    /**
      * Makes mathod calls to PDO connection.
      *
      * @param string $method

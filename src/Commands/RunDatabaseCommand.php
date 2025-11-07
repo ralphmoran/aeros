@@ -120,23 +120,68 @@ class RunDatabaseCommand extends Command
      *
      * @return void
      */
-    private function setupDbByName(string $database = 'aeros_db', string $env = 'development', OutputInterface $output) 
+    private function setupDbByName(string $database = 'aeros_db', string $env = 'development', OutputInterface $output)
     {
         // Testing DB connection
         $defaultDBSetup = config('db.connections')[implode(config('db.default'))];
 
-        // Create DB
-        if (db('none')->exec("CREATE DATABASE IF NOT EXISTS `$database`;") === false) {
-            print_r(db('none')->errorInfo(), true);
+        // Get the driver name from PDO
+        $driver = db()->getDBConnection()->getAttribute(\PDO::ATTR_DRIVER_NAME);
 
-            return Command::FAILURE;
+        // Create database with driver-specific syntax
+        try {
+            switch ($driver) {
+                case 'pgsql': // PostgreSQL
+                    $this->createPostgresDatabase($database, $output);
+                    break;
+
+                case 'mysql': // MySQL/MariaDB
+                    $identifier = "`$database`";
+                    $sql = "CREATE DATABASE IF NOT EXISTS $identifier";
+                    db()->exec($sql);
+                    break;
+
+                case 'sqlite': // SQLite
+                    // SQLite databases are files, no CREATE DATABASE needed
+                    // The file is created when you connect to it
+                    $output->writeln("<fg=yellow>SQLite: Database file will be created on first connection</>");
+                    break;
+
+                case 'sqlsrv': // Microsoft SQL Server
+                case 'dblib': // FreeTDS
+                    $identifier = "[$database]";
+                    $sql = "IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'$database') CREATE DATABASE $identifier";
+                    db()->exec($sql);
+                    break;
+
+                default:
+                    $output->writeln("<bg=red>Unsupported database driver: $driver</>");
+                    return Command::FAILURE;
+            }
+
+            $output->writeln(sprintf("<fg=green>✓</> Database operation completed for: <fg=cyan>%s</> (driver: %s)", $database, $driver));
+
+        } catch (\PDOException $e) {
+            // Check if error is "database already exists"
+            if ($this->isDatabaseExistsError($e, $driver)) {
+                $output->writeln(sprintf("<fg=yellow>!</> Database already exists: <fg=cyan>%s</>", $database));
+            } else {
+                $output->writeln(
+                    sprintf(
+                        "<bg=red>Error creating database '%s':</> %s",
+                        $database,
+                        $e->getMessage()
+                    )
+                );
+                return Command::FAILURE;
+            }
         }
 
         // Updating env and phinx files
         $phinxKey = strtolower($env);
 
         if (! updateEnvVariable(['DB_DATABASE' => $database])) {
-            $output->writeln(sprintf("<bg=red>Error creating: %s</> ", $database));
+            $output->writeln(sprintf("<bg=red>Error updating .env for: %s</> ", $database));
             return;
         }
 
@@ -150,12 +195,59 @@ class RunDatabaseCommand extends Command
         }
 
         if (! updateJsonNode(['environments.' . $phinxKey . '.name' => $database], app()->basedir . '/../phinx.json')) {
-            $output->writeln(sprintf("<bg=red>Error creating: %s</> ", $database));
+            $output->writeln(sprintf("<bg=red>Error updating phinx.json for: %s</> ", $database));
             return;
         }
 
         $output->writeln(
-            sprintf("Database created: <fg=green;options=bold>%s</> ", $database)
+            sprintf("Database configured: <fg=green;options=bold>%s</> ", $database)
         );
+    }
+
+    /**
+     * Creates a PostgreSQL database (handles lack of IF NOT EXISTS support)
+     *
+     * @param string          $database The database name
+     * @param OutputInterface $output   The output interface
+     * @return void
+     * @throws \PDOException
+     */
+    private function createPostgresDatabase(string $database, OutputInterface $output): void
+    {
+        // PostgreSQL doesn't support IF NOT EXISTS in older versions
+        // First check if database exists
+        $stmt = db()->prepare("SELECT 1 FROM pg_database WHERE datname = :database")
+            ->execute(['database' => $database]);
+
+        if ($stmt->fetchColumn()) {
+            $output->writeln(sprintf("<fg=yellow>!</> Database already exists: <fg=cyan>%s</>", $database));
+            return;
+        }
+
+        // Use double quotes for identifiers in PostgreSQL
+        $identifier = '"' . str_replace('"', '""', $database) . '"';
+        db()->exec(
+            "CREATE DATABASE $identifier"
+        );
+    }
+
+    /**
+     * Checks if PDO exception is a "database already exists" error
+     *
+     * @param \PDOException $e      The exception
+     * @param string        $driver The database driver
+     * @return bool
+     */
+    private function isDatabaseExistsError(\PDOException $e, string $driver): bool
+    {
+        $errorCode = $e->getCode();
+        $errorMessage = strtolower($e->getMessage());
+
+        return match($driver) {
+            'pgsql' => $errorCode === '42P04' || str_contains($errorMessage, 'already exists'),
+            'mysql' => $errorCode === '1007' || str_contains($errorMessage, 'database exists'),
+            'sqlsrv', 'dblib' => str_contains($errorMessage, 'already exists'),
+            default => false,
+        };
     }
 }

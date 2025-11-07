@@ -6,8 +6,7 @@
 |
 */
 
-Dotenv\Dotenv::createImmutable(__DIR__ . '/../../../../..')
-    ->load();
+Dotenv\Dotenv::createImmutable(__DIR__ . '/../../../../..', ['.env', '.env.local'])->safeLoad();
 
 /*
 |----------------------------------------------
