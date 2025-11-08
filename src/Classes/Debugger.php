@@ -39,20 +39,20 @@ class Debugger
         // Frame 0: Debugger::dd()
         // Frame 1: framework.php dd()
         // Frame 2: ACTUAL CALLER
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 4);
+        $trace = debug_backtrace();
         $caller = $trace[2] ?? $trace[1] ?? $trace[0] ?? [];
 
         // ANSI color codes
         $colors = [
-            'reset' => "\033[0m",
-            'bold' => "\033[1m",
-            'dim' => "\033[2m",
-            'cyan' => "\033[36m",
-            'yellow' => "\033[33m",
-            'green' => "\033[32m",
-            'red' => "\033[31m",
-            'blue' => "\033[34m",
-            'magenta' => "\033[35m",
+                'reset' => "\033[0m",
+                'bold' => "\033[1m",
+                'dim' => "\033[2m",
+                'cyan' => "\033[36m",
+                'yellow' => "\033[33m",
+                'green' => "\033[32m",
+                'red' => "\033[31m",
+                'blue' => "\033[34m",
+                'magenta' => "\033[35m",
         ];
 
         // Header
@@ -151,7 +151,7 @@ class Debugger
         // Frame 0: Debugger::dd()
         // Frame 1: framework.php dd()
         // Frame 2: ACTUAL CALLER
-        $trace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 4);
+        $trace = debug_backtrace();
         $caller = $trace[2] ?? $trace[1] ?? [];
 
         // Get file and line information
@@ -741,8 +741,18 @@ class Debugger
                                                 </div>
 
                                                 <?php if (isset($frame['args']) && count($frame['args']) > 0): ?>
-                                                    <div class="dd-trace-args-summary">
-                                                        Arguments: <?= $this->getArgsTypeSummary($frame['args']) ?>
+                                                    <div class="dd-trace-info-row">
+                                                        <span class="dd-trace-info-label">📦 Arguments:</span>
+                                                        <div class="dd-trace-info-value">
+                                                            <?php foreach ($frame['args'] as $argIndex => $argValue): ?>
+                                                                <div style="margin-bottom: 0.5rem;">
+                                                                    <strong>[<?= $argIndex ?>]</strong>
+                                                                    <div style="margin-left: 1rem;">
+                                                                        <?php $this->dumpVar($argValue, 0); ?>
+                                                                    </div>
+                                                                </div>
+                                                            <?php endforeach; ?>
+                                                        </div>
                                                     </div>
                                                 <?php endif; ?>
                                             </div>
