@@ -66,8 +66,6 @@ class MakeMigrationCommand extends Command
             $migrate->mustRun();
 
             $output->writeln('<fg=green;options=bold>Ok.</>');
-
-            sleep(1);
         }
 
         // If seeder is given
