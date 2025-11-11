@@ -24,7 +24,7 @@ class Cache
         if (! is_null($connection) && ! in_array($connection, array_keys(config('cache.connections')))) {
             throw new \Exception(
                 sprintf(
-                    'ERROR[Cache connection] Cache connection "%s" not found.', 
+                    'ERROR[Cache connection] Cache connection "%s" not found.',
                     $connection
                 )
             );
@@ -44,12 +44,18 @@ class Cache
 
                 break;
             case 'redis':
+                // Determine timeout based on connection name
+                // For queue operations, use infinite timeout to support blocking operations
+                $timeout = (str_contains($this->index, 'queue') || $connection === 'queue')
+                    ? 0  // Infinite timeout for blocking operations (BLPOP)
+                    : 1; // 1 second for regular cache operations
+
                 $this->objects[$this->index] = new \Predis\Client(
-                    env('REDIS_PROTOCOL') . '://' . env('REDIS_HOST') . ':' . env('REDIS_PORT'), 
+                    env('REDIS_PROTOCOL') . '://' . env('REDIS_HOST') . ':' . env('REDIS_PORT'),
                     [
                         'parameters' => [
                             'password' => env('REDIS_PASSWORD'),
-                            'read_write_timeout' => 1,
+                            'read_write_timeout' => $timeout,
                         ]
                     ]
                 );

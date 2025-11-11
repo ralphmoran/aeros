@@ -18,6 +18,101 @@ class Queue
     /** @var string */
     const FAILED_STATE = 'failed';
 
+    /** @var int */
+    const DEFAULT_BLOCK_TIMEOUT = 5; // seconds
+
+    /**
+     * Blocking pop - waits for a job without polling.
+     * This is THE solution for real-time queue processing.
+     *
+     * @param string|array $pipelineName
+     * @param int $timeout Seconds to wait (0 = infinite)
+     * @return Job|bool
+     */
+    public function blockingPop(string|array $pipelineName = '*', int $timeout = self::DEFAULT_BLOCK_TIMEOUT): Job|bool
+    {
+        if ($pipelineName === '*' || $pipelineName === 'all') {
+            $pipelineName = [env('APP_NAME') . '_' . self::DEFAULT_PIPELINE];
+        }
+
+        if (is_string($pipelineName)) {
+            $this->parsePipelineName($pipelineName);
+            $pipelineName = [$pipelineName];
+        }
+
+        // Use 'queue' connection instead of 'redis'
+        $result = cache('queue')->blpop($pipelineName, $timeout);
+
+        if (empty($result) || ! is_array($result) || count($result) !== 2) {
+            return false;
+        }
+
+        // $result[0] = pipeline name, $result[1] = job
+        $job = @unserialize($result[1]);
+
+        return $job instanceof Job ? $job : false;
+    }
+
+    /**
+     * Process pipeline using blocking pop (recommended for workers).
+     *
+     * @param string|array $pipelineName
+     * @param int $timeout Block timeout in seconds
+     * @return mixed
+     */
+    public function processPipelineBlocking(string|array $pipelineName = '*', int $timeout = self::DEFAULT_BLOCK_TIMEOUT): mixed
+    {
+        $job = $this->blockingPop($pipelineName, $timeout);
+
+        if (! $job) {
+            return false;
+        }
+
+        // Check if job is locked
+        if ($this->isJobLocked($job->uuid)) {
+            // Put it back at the end
+            cache('queue')->rpush(env('APP_NAME') . '_' . self::DEFAULT_PIPELINE, serialize($job));
+            return false;
+        }
+
+        // Lock the job
+        if (! $this->setState($job->uuid, self::LOCKED_STATE)) {
+            // Put it back if we can't lock it
+            cache('queue')->rpush(env('APP_NAME') . '_' . self::DEFAULT_PIPELINE, serialize($job));
+            return false;
+        }
+
+        $time = time();
+        $jobName = get_class($job);
+        $pipelineName = env('APP_NAME') . '_' . self::DEFAULT_PIPELINE;
+
+        try {
+            // Execute the job
+            if ($jobStatus = $job->doWork()) {
+                $this->setState(
+                    "{$pipelineName}:job:{$jobName}:job_uuid:{$job->uuid}:at:{$time}",
+                    self::COMPLETED_STATE
+                );
+
+                return true;
+            }
+
+            // Job failed - put it back in the queue
+            cache('queue')->rpush($pipelineName, serialize($job));
+
+            $this->setState(
+                "{$pipelineName}:job:{$job->uuid}",
+                self::FAILED_STATE
+            );
+
+            return false;
+
+        } finally {
+            // Always unlock the job
+            $this->delState($job->uuid, self::LOCKED_STATE);
+        }
+    }
+
     /**
      * Adds a Job or an array of jobs to a pipeline tail in the queue system.
      *
@@ -63,7 +158,7 @@ class Queue
 
         while (true) {
             // Get jobs from the pipeline
-            $jobs = cache('redis')->lrange($pipelineName, $start, $start + $chunk - 1);
+            $jobs = cache('queue')->lrange($pipelineName, $start, $start + $chunk - 1);
 
             if (empty($jobs)) {
                 break;
@@ -81,7 +176,7 @@ class Queue
             $start += $chunk;
         }
 
-        return cache('redis')->rpush($pipelineName, $serializedJob);
+        return cache('queue')->rpush($pipelineName, $serializedJob);
     }
 
     /**
@@ -93,7 +188,7 @@ class Queue
      */
     public function pop(string $pipelineName = '*'): Job|bool
     {
-        $job = cache('redis')->lpop($pipelineName);
+        $job = cache('queue')->lpop($pipelineName);
 
         if (empty($job) || is_array($job)) {
             return false;
@@ -106,6 +201,9 @@ class Queue
     /**
      * Processes and execute all jobs from a pipeline.
      *
+     * NOTE: This method uses polling and should be avoided for workers.
+     * Use processPipelineBlocking() instead for better performance.
+     *
      * @param array|string $pipelineName <''> Empty or no value it will process the default pipeline
      *                              <'all'|'*'> it will process all pipelines
      * @return mixed
@@ -115,7 +213,7 @@ class Queue
     {
         // Process all pipelines
         if ($pipelineName == '*' || $pipelineName == 'all') {
-            $pipelineName = cache('redis')->keys(env('APP_NAME') . '_' . '*');
+            $pipelineName = cache('queue')->keys(env('APP_NAME') . '_' . '*');
         }
 
         // Handle array of pipeline names
@@ -128,7 +226,7 @@ class Queue
                 $jobStatus[$pipeline] = true;
 
                 // Add a mechanism to check if the pipeline is locked
-                if ($this->isPipelineLocked($pipeline)) {   
+                if ($this->isPipelineLocked($pipeline)) {
                     continue;
                 }
 
@@ -143,7 +241,7 @@ class Queue
             return false;
         }
 
-        if ($this->isPipelineLocked($pipelineName)) {   
+        if ($this->isPipelineLocked($pipelineName)) {
             return true;
         }
 
@@ -159,7 +257,7 @@ class Queue
      */
     private function isPipelineLocked(string $pipelineName): bool
     {
-        return cache('redis')->get(Queue::LOCKED_STATE . ":{$pipelineName}") !== null;
+        return cache('queue')->get(Queue::LOCKED_STATE . ":{$pipelineName}") !== null;
     }
 
     /**
@@ -175,7 +273,7 @@ class Queue
 
         $this->parsePipelineName($pipelineName);
 
-        // Locks pipeline, this is "in progress" state, 
+        // Locks pipeline, this is "in progress" state,
         // this will avoid other workers take over it
         if ($this->setState($pipelineName, Queue::LOCKED_STATE)) {
 
@@ -198,14 +296,20 @@ class Queue
 
                     // If succeed...
                     if ($jobStatus = $job->doWork()) {
-                        $this->setState("{$pipelineName}:job:{$jobName}:job_uuid:{$job->uuid}:at:" . $time, Queue::COMPLETED_STATE);
+                        $this->setState(
+                            "{$pipelineName}:job:{$jobName}:job_uuid:{$job->uuid}:at:" . $time,
+                            Queue::COMPLETED_STATE
+                        );
                     }
 
-                    // If failed: put job back into the pipeline, delete lock state 
+                    // If failed: put job back into the pipeline, delete lock state
                     // and makes it available for worker
                     if (! $jobStatus) {
-                        cache('redis')->rpush($pipelineName, $job);
-                        $this->setState("{$pipelineName}:job:{$job->uuid}", Queue::FAILED_STATE);
+                        cache('queue')->rpush($pipelineName, $job);
+                        $this->setState(
+                            "{$pipelineName}:job:{$job->uuid}",
+                            Queue::FAILED_STATE
+                        );
                     }
 
                     // Delete lock state from job. Applies to both states
@@ -229,7 +333,7 @@ class Queue
      */
     private function isJobLocked(string $jobUuid): bool
     {
-        return cache('redis')->get(Queue::LOCKED_STATE . ":{$jobUuid}") !== null;
+        return cache('queue')->get(Queue::LOCKED_STATE . ":{$jobUuid}") !== null;
     }
 
     /**
@@ -245,13 +349,13 @@ class Queue
 
         $jobStatus  = [];
 
-        foreach (cache('redis')->keys($state . ":{$pipelineName}:*") as $job) {
+        foreach (cache('queue')->keys($state . ":{$pipelineName}:*") as $job) {
 
             $job = unserialize($job);
 
             $jobStatus[] = [
-                'uuid' => $job->uuid, 
-                'timestamp' => cache('redis')->get($job->at)
+                'uuid' => $job->uuid,
+                'timestamp' => cache('queue')->get($job->at)
             ];
         }
 
@@ -269,8 +373,8 @@ class Queue
     {
         $this->parsePipelineName($pipelineName);
 
-        foreach ($jobs = cache('redis')->keys($state . ":{$pipelineName}:*") as $job) {
-            cache('redis')->del($job);
+        foreach ($jobs = cache('queue')->keys($state . ":{$pipelineName}:*") as $job) {
+            cache('queue')->del($job);
         }
 
         return count($jobs);
@@ -291,17 +395,17 @@ class Queue
         }
 
         // Set pipeline name
-        $pipelineName = ($pipelineName == 'all' || $pipelineName == '*') 
-                        ? $appName . $this::DEFAULT_PIPELINE 
-                        : $appName . $pipelineName;
+        $pipelineName = ($pipelineName == 'all' || $pipelineName == '*')
+            ? $appName . $this::DEFAULT_PIPELINE
+            : $appName . $pipelineName;
     }
 
     /**
-     * Sets the job state, this could be "Locking" a pipeline to prevent other workers 
+     * Sets the job state, this could be "Locking" a pipeline to prevent other workers
      * to process it, "completed" or "failed".
      *
      * @param string $pipelineName
-     * @param string $state 
+     * @param string $state
      * @param integer $lockTime
      * @return mixed
      */
@@ -309,11 +413,11 @@ class Queue
     {
         switch ($state) {
             case Queue::LOCKED_STATE:
-                return cache('redis')->set($state . ":{$pipelineName}", time(), 'ex', $lockTime, 'nx');
+                return cache('queue')->set($state . ":{$pipelineName}", time(), 'ex', $lockTime, 'nx');
                 break;
             case Queue::COMPLETED_STATE:
             case Queue::FAILED_STATE:
-                return cache('redis')->set($state . ":{$pipelineName}", time());
+                return cache('queue')->set($state . ":{$pipelineName}", time());
                 break;
         }
     }
@@ -327,6 +431,6 @@ class Queue
      */
     private function delState(string $pipelineName, string $state = Queue::LOCKED_STATE): mixed
     {
-        return cache('redis')->del($state . ":{$pipelineName}");
+        return cache('queue')->del($state . ":{$pipelineName}");
     }
 }

@@ -14,12 +14,15 @@ abstract class Worker
     /**
      * Starts the worker in an infinite loop.
      *
+     * When using blocking operations (BLPOP), sleep is not needed
+     * as Redis handles the waiting efficiently.
+     *
      * @param   Callable|null   $job
      * @param   mixed           $args Mixed arguments to pass to the callable, if provided
-     * @param   integer         $sleep Sleep time in milliseconds
+     * @param   integer         $sleep Sleep time in microseconds (ignored when using blocking ops)
      * @return  void
      */
-    public function start(?Callable $callable = null, mixed $args = null, int $sleep = 200) 
+    public function start(?Callable $callable = null, mixed $args = null, int $sleep = 0)
     {
         // Only on CLI
         if (isMode('cli')) {
@@ -32,7 +35,11 @@ abstract class Worker
                     $callable($args);
                 }
 
-                usleep($sleep);
+                // Only sleep if specified and > 0
+                // When using blocking operations, this is unnecessary
+                if ($sleep > 0) {
+                    usleep($sleep);
+                }
             }
 
             return;
