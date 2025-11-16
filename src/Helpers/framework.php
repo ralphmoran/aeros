@@ -429,7 +429,7 @@ if (! function_exists('updateEnv')) {
 	 */
 	function updateEnvVariable(array $newEnvValues): bool|int {
 
-		$envFile = app()->basedir . '/../.env';
+		$envFile = app()->basedir . '/../.env.local';
 		$envBody = file_get_contents($envFile);
 
 		foreach ($newEnvValues as $key => $value) {
