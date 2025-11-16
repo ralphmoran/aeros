@@ -200,23 +200,23 @@ class Debugger
                 :root {
                     --aeros-primary: #00a6fb;
                     --aeros-secondary: #0582ca;
-                    --aeros-dark: #003554;
-                    --bg-main: #0f0f0f;
-                    --bg-card: #1a1a1a;
-                    --bg-code: #0d0d0d;
+                    --bg-main: #0a0a0a;
+                    --bg-card: #141414;
+                    --bg-code: #0f0f0f;
+                    --bg-hover: #1a1a1a;
                     --border: #2a2a2a;
                     --border-light: #333;
                     --text-primary: #e8e8e8;
-                    --text-secondary: #b4b4b4;
-                    --text-dim: #808080;
-                    --syntax-type: #34d399;
-                    --syntax-string: #fbbf24;
-                    --syntax-number: #f472b6;
-                    --syntax-bool: #60a5fa;
-                    --syntax-null: #6b7280;
-                    --syntax-key: #60a5fa;
-                    --syntax-class: #34d399;
-                    --syntax-function: #fbbf24;
+                    --text-secondary: #a8a8a8;
+                    --text-dim: #707070;
+
+                    --type-string: #50fa7b;
+                    --type-number: #ff79c6;
+                    --type-bool: #8be9fd;
+                    --type-null: #6c6c6c;
+                    --type-array: #bd93f9;
+                    --type-object: #ffb86c;
+                    --type-key: #f1fa8c;
                 }
 
                 * {
@@ -226,129 +226,100 @@ class Debugger
                 }
 
                 body {
-                    font-family: "JetBrains Mono", "Fira Code", "SF Mono", "Cascadia Code", Monaco, "Courier New", monospace;
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "SF Pro Display", Roboto, "Helvetica Neue", Arial, sans-serif;
                     background: var(--bg-main);
-                    background-image:
-                            radial-gradient(circle at 20% 80%, rgba(0, 166, 251, 0.1) 0%, transparent 50%),
-                            radial-gradient(circle at 80% 20%, rgba(5, 130, 202, 0.08) 0%, transparent 50%);
                     color: var(--text-primary);
-                    padding: 2rem;
+                    padding: 2.5rem;
                     min-height: 100vh;
-                    line-height: 1.6;
+                    line-height: 1.7;
+                    font-size: 15px;
+                    -webkit-font-smoothing: antialiased;
                 }
 
                 .dd-wrapper {
                     max-width: 1400px;
                     margin: 0 auto;
-                    animation: slideIn 0.3s ease;
-                }
-
-                @keyframes slideIn {
-                    from { opacity: 0; transform: translateY(-20px); }
-                    to { opacity: 1; transform: translateY(0); }
                 }
 
                 .dd-container {
                     background: var(--bg-card);
-                    border-radius: 12px;
+                    border-radius: 16px;
                     overflow: hidden;
-                    box-shadow:
-                            0 20px 60px rgba(0, 0, 0, 0.5),
-                            0 0 0 1px rgba(255, 255, 255, 0.05),
-                            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+                    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
                     margin-bottom: 2rem;
-                    transition: transform 0.2s ease;
-                }
-
-                .dd-container:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6),
-                    0 0 0 1px rgba(255, 255, 255, 0.15);
                 }
 
                 .dd-header {
                     background: linear-gradient(135deg, var(--aeros-primary) 0%, var(--aeros-secondary) 100%);
                     color: white;
-                    padding: 1rem 1.5rem;
+                    padding: 1.5rem 2rem;
                     font-weight: 600;
-                    font-size: 0.875rem;
+                    font-size: 0.95rem;
                     text-transform: uppercase;
                     letter-spacing: 1px;
                     display: flex;
                     align-items: center;
-                    gap: 0.75rem;
-                    position: relative;
-                    overflow: hidden;
+                    gap: 0.875rem;
                 }
 
                 .dd-header::before {
                     content: "🐛";
-                    font-size: 1.2rem;
-                    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-                }
-
-                .dd-header::after {
-                    content: "AEROS FRAMEWORK";
-                    position: absolute;
-                    right: 1.5rem;
-                    opacity: 0.3;
-                    font-size: 0.75rem;
-                    font-weight: 400;
+                    font-size: 1.5rem;
                 }
 
                 .dd-context {
-                    background: linear-gradient(135deg, rgba(0, 166, 251, 0.1) 0%, rgba(5, 130, 202, 0.05) 100%);
+                    background: var(--bg-hover);
                     border-left: 4px solid var(--aeros-primary);
-                    border-bottom: 1px solid var(--border);
-                    padding: 1.25rem 1.5rem;
+                    padding: 1.5rem 2rem;
                     display: flex;
                     flex-direction: column;
-                    gap: 0.5rem;
+                    gap: 0.75rem;
+                    border-bottom: 1px solid var(--border);
                 }
 
                 .dd-context-file {
                     color: var(--text-primary);
                     font-size: 1rem;
-                    font-weight: 600;
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
+                    font-weight: 500;
+                    font-family: 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+                    letter-spacing: -0.2px;
                 }
 
                 .dd-context-file::before {
-                    content: "📁";
-                    opacity: 0.8;
+                    content: "📍 ";
+                    margin-right: 0.625rem;
                 }
 
                 .dd-context-location {
                     color: var(--text-secondary);
-                    font-size: 0.875rem;
-                    padding-left: 1.75rem;
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
+                    font-size: 0.9rem;
+                    padding-left: 2.25rem;
+                    font-family: 'SF Mono', Consolas, monospace;
+                    letter-spacing: -0.2px;
                 }
 
                 .dd-context-location::before {
-                    content: "➤";
+                    content: "→ ";
                     color: var(--aeros-primary);
+                    margin-right: 0.375rem;
                 }
 
                 .dd-content {
-                    padding: 1.5rem;
+                    padding: 2rem;
                 }
 
                 .dd-arg-header {
                     color: var(--text-dim);
                     font-size: 0.75rem;
                     text-transform: uppercase;
-                    letter-spacing: 1px;
-                    margin: 1.5rem 0 0.75rem 0;
-                    padding: 0.5rem 0;
-                    border-bottom: 1px solid var(--border);
+                    letter-spacing: 1.5px;
+                    font-weight: 600;
+                    margin: 2.5rem 0 1.25rem 0;
+                    padding: 0.75rem 0;
+                    border-bottom: 2px solid var(--border);
                     display: flex;
                     align-items: center;
-                    gap: 0.5rem;
+                    gap: 0.875rem;
                 }
 
                 .dd-arg-header:first-child {
@@ -358,36 +329,36 @@ class Debugger
                 .dd-arg-badge {
                     background: var(--aeros-primary);
                     color: white;
-                    padding: 0.125rem 0.5rem;
-                    border-radius: 12px;
-                    font-size: 0.7rem;
-                    font-weight: 600;
+                    padding: 0.375rem 0.875rem;
+                    border-radius: 24px;
+                    font-size: 0.8125rem;
+                    font-weight: 700;
+                    letter-spacing: 0.3px;
                 }
 
                 .dd-dump {
                     background: var(--bg-code);
                     border: 1px solid var(--border);
-                    border-radius: 8px;
-                    padding: 1rem;
+                    border-radius: 12px;
+                    padding: 1.75rem;
                     overflow-x: auto;
-                    white-space: pre-wrap;
-                    word-wrap: break-word;
-                    font-size: 0.875rem;
-                    position: relative;
-                    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+                    font-size: 0.9375rem;
+                    font-family: 'SF Mono', Consolas, monospace;
+                    line-height: 1.9;
+                    letter-spacing: -0.2px;
                 }
 
                 .dd-dump-scroll {
-                    max-height: 800px;
+                    max-height: 600px;
                     overflow-y: auto;
                     background: var(--bg-code);
                     border: 1px solid var(--border);
-                    border-radius: 8px;
-                    padding: 1rem;
-                    white-space: pre-wrap;
-                    word-wrap: break-word;
-                    font-size: 12px;
-                    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+                    border-radius: 12px;
+                    padding: 1.75rem;
+                    font-size: 0.9375rem;
+                    font-family: 'SF Mono', Consolas, monospace;
+                    line-height: 1.9;
+                    letter-spacing: -0.2px;
                 }
 
                 .dd-dump::-webkit-scrollbar,
@@ -399,127 +370,249 @@ class Debugger
                 .dd-dump::-webkit-scrollbar-track,
                 .dd-dump-scroll::-webkit-scrollbar-track {
                     background: var(--bg-card);
-                    border-radius: 6px;
+                    border-radius: 8px;
                 }
 
                 .dd-dump::-webkit-scrollbar-thumb,
                 .dd-dump-scroll::-webkit-scrollbar-thumb {
-                    background: linear-gradient(180deg, var(--aeros-primary), var(--aeros-secondary));
-                    border-radius: 6px;
-                    border: 2px solid var(--bg-card);
+                    background: var(--border);
+                    border-radius: 8px;
                 }
 
                 .dd-line-indicator {
                     color: var(--text-dim);
-                    font-size: 0.75rem;
-                    margin-top: 0.5rem;
-                    display: flex;
-                    align-items: center;
-                    gap: 0.25rem;
+                    font-size: 0.8125rem;
+                    margin-top: 1rem;
+                    font-style: italic;
                 }
 
-                .dd-line-indicator::before {
-                    content: "ℹ";
-                    color: var(--aeros-primary);
-                }
-
-                /* Stack Trace Section */
+                /* Stack Trace - Timeline Style */
                 .dd-backtrace {
-                    margin-top: 1.5rem;
-                    border-top: 1px solid var(--border);
-                    padding-top: 1.5rem;
+                    margin-top: 3rem;
+                    border-top: 2px solid var(--border);
+                    padding-top: 2.5rem;
                 }
 
                 .dd-backtrace-header {
-                    background: linear-gradient(135deg, #2d2d30 0%, #242424 100%);
-                    padding: 0.875rem 1.25rem;
-                    border-radius: 8px 8px 0 0;
+                    background: var(--bg-hover);
+                    padding: 1.25rem 2rem;
+                    border-radius: 12px;
                     font-weight: 600;
-                    color: #dcdcaa;
-                    border: 1px solid #3e3e42;
-                    border-bottom: none;
+                    color: var(--text-primary);
                     font-size: 0.875rem;
                     text-transform: uppercase;
-                    letter-spacing: 0.5px;
+                    letter-spacing: 1.2px;
                     display: flex;
                     align-items: center;
                     justify-content: space-between;
+                    margin-bottom: 2rem;
                 }
 
                 .dd-backtrace-content {
-                    background: #1e1e1e;
-                    border: 1px solid #3e3e42;
-                    border-radius: 0 0 8px 8px;
-                    overflow: hidden;
+                    background: transparent;
+                    position: relative;
+                    padding-left: 3rem;
+                }
+
+                /* Timeline vertical line */
+                .dd-backtrace-content::before {
+                    content: '';
+                    position: absolute;
+                    left: 1.5rem;
+                    top: 1rem;
+                    bottom: 1rem;
+                    width: 2px;
+                    background: linear-gradient(180deg, var(--aeros-primary) 0%, var(--border) 100%);
                 }
 
                 .dd-backtrace-scroll {
-                    max-height: 500px;
+                    max-height: 700px;
                     overflow-y: auto;
                 }
 
                 .dd-backtrace-scroll::-webkit-scrollbar {
-                    width: 10px;
+                    width: 12px;
                 }
 
                 .dd-backtrace-scroll::-webkit-scrollbar-track {
-                    background: #252526;
+                    background: var(--bg-code);
                 }
 
                 .dd-backtrace-scroll::-webkit-scrollbar-thumb {
-                    background: var(--aeros-primary);
-                    border-radius: 5px;
+                    background: var(--border);
+                    border-radius: 8px;
                 }
 
-                /* Collapsible trace items using <details> */
+                /* Timeline items */
                 .dd-trace-details {
-                    border-bottom: 1px solid var(--border-light);
+                    position: relative;
+                    margin-bottom: 0.5rem;
+                    transition: all 0.2s ease;
                 }
 
                 .dd-trace-details:last-child {
-                    border-bottom: none;
+                    margin-bottom: 0;
+                }
+
+                /* Timeline dot */
+                .dd-trace-details::before {
+                    content: '';
+                    position: absolute;
+                    left: -2.375rem;
+                    top: 1.75rem;
+                    width: 12px;
+                    height: 12px;
+                    background: var(--aeros-primary);
+                    border: 3px solid var(--bg-card);
+                    border-radius: 50%;
+                    z-index: 2;
+                    transition: all 0.2s ease;
+                }
+
+                .dd-trace-details[open]::before {
+                    background: var(--aeros-secondary);
+                    transform: scale(1.2);
+                    box-shadow: 0 0 0 4px rgba(0, 166, 251, 0.2);
                 }
 
                 .dd-trace-summary {
-                    padding: 0.875rem 1.25rem;
+                    padding: 1.25rem 1.75rem;
                     cursor: pointer;
                     list-style: none;
                     user-select: none;
-                    transition: all 0.2s ease;
                     display: flex;
                     align-items: flex-start;
-                    gap: 0.75rem;
-                    background: transparent;
+                    gap: 1.25rem;
+                    background: var(--bg-card);
+                    border: 1px solid var(--border);
+                    border-radius: 12px;
+                    transition: all 0.2s ease;
                 }
 
-                .dd-trace-summary::-webkit-details-marker {
-                    display: none;
-                }
-
+                .dd-trace-summary::-webkit-details-marker,
                 .dd-trace-summary::marker {
                     display: none;
                 }
 
                 .dd-trace-summary:hover {
-                    background: rgba(0, 166, 251, 0.05);
+                    background: var(--bg-hover);
+                    border-color: var(--aeros-primary);
+                    transform: translateX(4px);
                 }
 
                 .dd-trace-summary::before {
-                    content: "▶";
-                    color: var(--aeros-primary);
-                    font-size: 0.75rem;
+                    content: "›";
+                    color: var(--text-dim);
+                    font-size: 1.5rem;
+                    font-weight: 600;
                     transition: transform 0.2s ease;
                     display: inline-block;
-                    width: 1rem;
+                    width: 1.25rem;
                     flex-shrink: 0;
-                    margin-top: 0.125rem;
+                    margin-top: -0.125rem;
                 }
 
                 .dd-trace-details[open] .dd-trace-summary::before {
                     transform: rotate(90deg);
+                    color: var(--aeros-primary);
                 }
 
-                /* Collapsible arrays and objects within dumps */
+                .dd-trace-summary-content {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.625rem;
+                }
+
+                .dd-trace-main-line {
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    flex-wrap: wrap;
+                }
+
+                .dd-trace-number {
+                    background: var(--bg-hover);
+                    color: var(--aeros-primary);
+                    font-weight: 700;
+                    font-size: 0.8125rem;
+                    padding: 0.375rem 0.75rem;
+                    border-radius: 8px;
+                    font-family: 'SF Mono', monospace;
+                    letter-spacing: 0.5px;
+                }
+
+                .dd-trace-function {
+                    color: var(--text-primary);
+                    font-weight: 600;
+                    font-size: 0.9375rem;
+                    font-family: 'SF Mono', Consolas, monospace;
+                    letter-spacing: -0.3px;
+                }
+
+                .dd-trace-class {
+                    color: var(--type-object);
+                    font-weight: 500;
+                    font-family: 'SF Mono', monospace;
+                    letter-spacing: -0.3px;
+                }
+
+                .dd-trace-file {
+                    color: var(--text-secondary);
+                    font-size: 0.875rem;
+                    font-family: 'SF Mono', monospace;
+                    letter-spacing: -0.2px;
+                }
+
+                .dd-trace-line {
+                    color: var(--type-number);
+                    font-weight: 600;
+                }
+
+                .dd-trace-args-summary {
+                    color: var(--text-dim);
+                    font-size: 0.8125rem;
+                    font-style: italic;
+                    letter-spacing: -0.2px;
+                }
+
+                .dd-trace-body {
+                    padding: 1.75rem 2rem;
+                    margin-top: 0.5rem;
+                    background: var(--bg-code);
+                    border: 1px solid var(--border);
+                    border-radius: 12px;
+                    margin-left: 0.25rem;
+                }
+
+                .dd-trace-info-row {
+                    display: grid;
+                    grid-template-columns: 140px 1fr;
+                    gap: 1.5rem;
+                    margin-bottom: 1.25rem;
+                    font-size: 0.9rem;
+                }
+
+                .dd-trace-info-row:last-child {
+                    margin-bottom: 0;
+                }
+
+                .dd-trace-info-label {
+                    color: var(--text-dim);
+                    font-weight: 600;
+                    font-size: 0.8125rem;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                }
+
+                .dd-trace-info-value {
+                    color: var(--text-primary);
+                    font-family: 'SF Mono', Consolas, monospace;
+                    letter-spacing: -0.3px;
+                    line-height: 1.6;
+                }
+
+                /* Collapsible arrays and objects */
                 .dd-collapse-details {
                     display: inline;
                 }
@@ -529,139 +622,94 @@ class Debugger
                     list-style: none;
                     user-select: none;
                     display: inline;
-                    position: relative;
+                    transition: opacity 0.15s ease;
                 }
 
-                .dd-collapse-summary::-webkit-details-marker {
-                    display: none;
-                }
-
+                .dd-collapse-summary::-webkit-details-marker,
                 .dd-collapse-summary::marker {
                     display: none;
                 }
 
                 .dd-collapse-summary::before {
-                    content: "▼ ";
-                    color: var(--aeros-primary);
-                    font-size: 0.75rem;
-                    transition: transform 0.15s ease;
+                    content: "▾ ";
+                    color: var(--text-dim);
+                    font-size: 0.875rem;
                     display: inline-block;
                     margin-right: 0.25rem;
                 }
 
                 .dd-collapse-details:not([open]) .dd-collapse-summary::before {
-                    content: "▶ ";
+                    content: "▸ ";
                 }
 
                 .dd-collapse-summary:hover {
-                    opacity: 0.8;
+                    opacity: 0.7;
                 }
 
                 .dd-collapse-content {
                     display: inline;
                 }
 
-                .dd-trace-summary-content {
-                    flex: 1;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 0.25rem;
+                /* Type styling */
+                .dd-type {
+                    color: var(--text-secondary);
+                    font-weight: 600;
+                    font-size: 0.8125rem;
+                    text-transform: lowercase;
+                    letter-spacing: 0.3px;
                 }
 
-                .dd-trace-main-line {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    flex-wrap: wrap;
+                .dd-string {
+                    color: var(--type-string);
+                    font-weight: 500;
                 }
 
-                .dd-trace-number {
-                    color: var(--aeros-primary);
+                .dd-number {
+                    color: var(--type-number);
+                    font-weight: 600;
+                }
+
+                .dd-bool {
+                    color: var(--type-bool);
                     font-weight: 700;
-                    font-size: 0.8125rem;
+                    text-transform: lowercase;
                 }
 
-                .dd-trace-function {
-                    color: var(--syntax-function);
-                    font-weight: 600;
-                }
-
-                .dd-trace-class {
-                    color: var(--syntax-class);
-                }
-
-                .dd-trace-file {
-                    color: var(--text-secondary);
-                    font-size: 0.75rem;
-                    opacity: 0.9;
-                }
-
-                .dd-trace-line {
-                    color: var(--syntax-number);
-                    font-weight: 600;
-                }
-
-                .dd-trace-args-summary {
-                    color: var(--text-dim);
-                    font-size: 0.6875rem;
+                .dd-null {
+                    color: var(--type-null);
                     font-style: italic;
+                    opacity: 0.8;
                 }
 
-                /* Trace body (collapsible content) */
-                .dd-trace-body {
-                    padding: 1rem 1.25rem 1rem 2.75rem;
-                    background: rgba(0, 0, 0, 0.3);
-                    border-top: 1px solid var(--border-light);
-                    animation: slideDown 0.2s ease;
+                .dd-array {
+                    color: var(--type-array);
+                    font-weight: 700;
                 }
 
-                @keyframes slideDown {
-                    from {
-                        opacity: 0;
-                        transform: translateY(-10px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-
-                .dd-trace-info-row {
-                    display: flex;
-                    gap: 1rem;
-                    margin-bottom: 0.5rem;
-                    font-size: 0.8125rem;
-                }
-
-                .dd-trace-info-label {
-                    color: var(--text-dim);
-                    min-width: 5rem;
+                .dd-object {
+                    color: var(--type-object);
                     font-weight: 600;
                 }
 
-                .dd-trace-info-value {
-                    color: var(--text-secondary);
-                    word-break: break-all;
-                    flex: 1;
+                .dd-key {
+                    color: var(--type-key);
+                    font-weight: 500;
                 }
 
-                /* Syntax highlighting */
-                .dd-type { color: var(--syntax-type); font-weight: 600; }
-                .dd-string { color: var(--syntax-string); }
-                .dd-number { color: var(--syntax-number); }
-                .dd-bool { color: var(--syntax-bool); font-weight: 600; }
-                .dd-null { color: var(--syntax-null); font-style: italic; }
-                .dd-array { color: #a78bfa; font-weight: 600; }
-                .dd-object { color: var(--syntax-class); font-weight: 600; }
-                .dd-key { color: var(--syntax-key); }
-                .dd-arrow { color: var(--text-dim); margin: 0 0.25rem; }
+                .dd-arrow {
+                    color: var(--text-dim);
+                    margin: 0 0.5rem;
+                    font-weight: 400;
+                }
 
                 /* Responsive */
                 @media (max-width: 768px) {
-                    body { padding: 1rem; }
-                    .dd-header::after { display: none; }
-                    .dd-context-file, .dd-context-location { font-size: 0.8rem; }
-                    .dd-trace-body { padding-left: 1.5rem; }
+                    body { padding: 1.5rem; }
+                    .dd-content { padding: 1.5rem; }
+                    .dd-backtrace-content { padding-left: 2rem; }
+                    .dd-trace-details::before { left: -1.5rem; }
+                    .dd-trace-body { padding: 1.25rem 1.5rem; }
+                    .dd-trace-info-row { grid-template-columns: 1fr; gap: 0.5rem; }
                 }
             </style>
         </head>
