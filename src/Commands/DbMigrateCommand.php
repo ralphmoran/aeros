@@ -5,7 +5,6 @@ namespace Aeros\Src\Commands;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -16,7 +15,7 @@ class DbMigrateCommand extends Command
 
     /**
      * Sets descriptions, options or arguments.
-     * 
+     *
      * ```php
      * $ php aeros db:migrate
      * ```
@@ -59,7 +58,7 @@ class DbMigrateCommand extends Command
         $output->write('==> Migrating all... ');
 
         $opts = [
-            $phinx, 
+            $phinx,
             'migrate'
         ];
 
@@ -78,7 +77,7 @@ class DbMigrateCommand extends Command
             $output->write('==> Seeding database... ');
 
             $seeding = new Process([
-                $phinx, 
+                $phinx,
                 'seed:run'
             ]);
 

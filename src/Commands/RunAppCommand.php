@@ -6,7 +6,6 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -17,7 +16,7 @@ class RunAppCommand extends Command
 
     /**
      * Sets descriptions, options or arguments.
-     * 
+     *
      * ```php
      * $ php aeros run:app
      * ```
@@ -30,23 +29,23 @@ class RunAppCommand extends Command
         $this->setDescription('Runs the application. It warms up and caches the app, if option "-p" is provided.');
 
         $this->addOption(
-            'production', 
-            'p', 
-            InputOption::VALUE_NONE, 
+            'production',
+            'p',
+            InputOption::VALUE_NONE,
             'Option "production", alias "p". If provided, it changes environtment to production.'
         );
 
         $this->addOption(
-            'staging', 
-            's', 
-            InputOption::VALUE_NONE, 
+            'staging',
+            's',
+            InputOption::VALUE_NONE,
             'Option "staging", alias "s". If provided, it changes environtment to staging.'
         );
 
         $this->addOption(
-            'development', 
-            'd', 
-            InputOption::VALUE_NONE, 
+            'development',
+            'd',
+            InputOption::VALUE_NONE,
             'Option "development", alias "d". If provided, it changes environtment to development.'
         );
     }
@@ -93,7 +92,7 @@ class RunAppCommand extends Command
         // DB checking
         $output->write(
             sprintf(
-                '==> Checking default <fg=yellow>%s</> DB connection status... ', 
+                '==> Checking default <fg=yellow>%s</> DB connection status... ',
                 implode(config('db.default'))
             )
         );
@@ -120,14 +119,16 @@ class RunAppCommand extends Command
                 new ArrayInput([
                     'command' => 'run:database',
                     '-c' => true,
-                    '-a' => true
-                ]), 
+                    '-a' => true,
+                    '-e' => true
+
+                ]),
                 $output
             );
         }
 
         $migrations = new Process([
-            './vendor/bin/phinx', 
+            './vendor/bin/phinx',
             'migrate'
         ]);
 
@@ -141,7 +142,7 @@ class RunAppCommand extends Command
 
         $output->write(
             sprintf(
-                '==> Checking default <fg=yellow>%s</> cache connection status... ', 
+                '==> Checking default <fg=yellow>%s</> cache connection status... ',
                 $defaultCacheConn
             )
         );
@@ -151,11 +152,11 @@ class RunAppCommand extends Command
         switch ($defaultCacheConn) {
             case 'memcached':
                 $cacheStatus = (cache()->getStats() !== false) ?: false;
-            break;
+                break;
 
             case 'redis':
                 $cacheStatus = (cache()->ping() == 'PONG') ?: false;
-            break;
+                break;
         }
 
         if (! $cacheStatus) {
@@ -175,7 +176,7 @@ class RunAppCommand extends Command
         $this->getApplication()->doRun(
             new ArrayInput([
                 'command' => 'run:warmup'
-            ]), 
+            ]),
             $output
         );
 
@@ -187,7 +188,7 @@ class RunAppCommand extends Command
             new ArrayInput([
                 'command' => 'run:worker',
                 '--all' => true,
-            ]), 
+            ]),
             $output
         );
 

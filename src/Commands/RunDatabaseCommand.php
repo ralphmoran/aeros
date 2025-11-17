@@ -3,11 +3,13 @@
 namespace Aeros\Src\Commands;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
 class RunDatabaseCommand extends Command
 {
@@ -16,7 +18,7 @@ class RunDatabaseCommand extends Command
 
     /**
      * Sets descriptions, options or arguments.
-     * 
+     *
      * ```php
      * $ php aeros run:database
      * ```
@@ -25,44 +27,44 @@ class RunDatabaseCommand extends Command
      */
     protected function configure()
     {
-        // Adding command description. 
+        // Adding command description.
         // This text will be displayed when: `$ php run:database --help`
         $this->setDescription('Aeros REPL - "run:database" command.')
             ->setHelp('Commands help...');
 
         $this->addOption(
-            'create', 
-            'c', 
+            'create',
+            'c',
             InputOption::VALUE_NONE, 'Option "create" with alias "c", if provided, the database will be generated'
         );
 
         $this->addOption(
-            'seed', 
-            null, 
+            'seed',
+            'e',
             InputOption::VALUE_NONE, 'Option "seed", if provided, all seeds will be generated'
         );
 
         $this->addOption(
-            'development', 
-            'd', 
+            'development',
+            'd',
             InputOption::VALUE_OPTIONAL, 'Option "development" with alias "d", if provided, it will create development DB'
         );
-        
+
         $this->addOption(
-            'staging', 
-            's', 
+            'staging',
+            's',
             InputOption::VALUE_OPTIONAL, 'Option "staging" with alias "s", if provided, it will create Staging DB'
         );
 
         $this->addOption(
-            'production', 
-            'p', 
+            'production',
+            'p',
             InputOption::VALUE_OPTIONAL, 'Option "production" with alias "p", if provided, it will create Production DB'
         );
-        
+
         $this->addOption(
-            'all', 
-            'a', 
+            'all',
+            'a',
             InputOption::VALUE_NONE, 'Option "all" with alias "a", if provided, it will create all env DBs'
         );
     }
@@ -106,6 +108,17 @@ class RunDatabaseCommand extends Command
             $output->writeln('<bg=red>Error: No database name was provided</>');
 
             return Command::FAILURE;
+        }
+
+        if ($input->getOption('seed') && $input->getOption('all')) {
+            $seeders = new Process([
+                './vendor/bin/phinx',
+                'seed:run'
+            ]);
+
+            $seeders->mustRun();
+            $output->write('<fg=green>'. $seeders->getOutput() . '</>');
+            $output->writeln('... <fg=green;options=bold>OK.</>');
         }
 
         return Command::SUCCESS;

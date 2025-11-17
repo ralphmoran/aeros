@@ -17,7 +17,7 @@ class MakeMigrationCommand extends Command
 
     /**
      * Sets descriptions, options or arguments.
-     * 
+     *
      * ```php
      * $ php aeros make:migration
      * ```
@@ -29,7 +29,7 @@ class MakeMigrationCommand extends Command
         // This text will be displayed when: `$ php make:migration --help`
         $this->setDescription('Aeros REPL - "make:migration" command.')
             ->setHelp('Commands help...');
-        
+
         $this->addArgument('migration', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Argument migration (required)');
 
         $this->addOption('seeder', null, InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'Option "seeder", if provided, it creates the seeder');
@@ -58,7 +58,7 @@ class MakeMigrationCommand extends Command
             $output->write(sprintf('==> Creating "<fg=yellow>%s</>" migration... ', $migration));
 
             $migrate = new Process([
-                app()->basedir . '/../vendor/bin/phinx', 
+                app()->basedir . '/../vendor/bin/phinx',
                 'create',
                 $migration
             ]);
@@ -77,7 +77,7 @@ class MakeMigrationCommand extends Command
                 new ArrayInput([
                     'command' => 'make:seed',
                     'seeder' => $seeders
-                ]), 
+                ]),
                 $output
             );
 

@@ -31,23 +31,22 @@ trait HasRelationships
     protected array $withRelations = [];
 
     /**
-     * Eager load relationships.
+     * Static wrapper for with() to enable: User::with('plans')->find(1)
      *
-     * Usage:
-     *   User::with('posts')->get();
-     *   User::with(['posts', 'comments'])->find(1);
-     *
-     * @param string|array $relations Relationship names
-     * @return self
+     * @param string|array $relations
+     * @return static
      */
-    public function with(string|array $relations): self
+    public static function with(string|array $relations): static
     {
-        $this->withRelations = array_merge(
-            $this->withRelations,
+        $instance = new static();
+
+        // Directly set the property instead of calling the trait method
+        $instance->withRelations = array_merge(
+            $instance->withRelations ?? [],
             is_array($relations) ? $relations : [$relations]
         );
 
-        return $this;
+        return $instance;
     }
 
     /**
@@ -83,52 +82,31 @@ trait HasRelationships
      */
     protected function eagerLoadRelation(array $models, string $relation): array
     {
-        // Get the relationship method name (e.g., 'posts' becomes 'hasMany')
-        $method = $this->getRelationshipMethod($relation);
-
-        if (!$method) {
-            $this->logError("Relationship '{$relation}' not found in model " . get_class($this));
-            return $models;
-        }
-
-        // Get relationship type and related model
-        $relationshipInfo = $this->getRelationshipInfo($relation, $method);
-
-        if (!$relationshipInfo) {
-            return $models;
-        }
-
-        // Extract foreign keys from models
-        $foreignKeys = array_unique(array_filter(array_map(
-            fn($model) => $model->{$this->getPrimaryKey()} ?? null,
-            $models
-        )));
-
-        if (empty($foreignKeys)) {
-            return $models;
-        }
-
-        // Load all related records at once
-        $relatedModels = $this->fetchRelatedModels(
-            $relationshipInfo['related_model'],
-            $relationshipInfo['foreign_key'],
-            $foreignKeys,
-            $relationshipInfo['type']
-        );
-
-        // Attach related models to parent models
         foreach ($models as &$model) {
-            $modelKey = $model->{$this->getPrimaryKey()} ?? null;
 
-            if ($relationshipInfo['type'] === 'hasOne') {
-                $model->$relation = $relatedModels[$modelKey][0] ?? null;
-            } else {
-                $model->$relation = $relatedModels[$modelKey] ?? [];
+            // Check if relationship method exists
+            if (! method_exists($model, $relation)) {
+                throw new \BadMethodCallException(
+                    sprintf(
+                        'Relationship method "%s" does not exist on model "%s". Check for typos in with().',
+                        $relation,
+                        get_class($model)
+                    )
+                );
             }
 
-            // Track as eager loaded
-            if (is_object($model)) {
-                $model->eagerLoaded[$relation] = true;
+            // Call the relationship method and execute
+            $relationshipObject = $model->$relation();
+
+            // Get results based on relationship type
+            if (method_exists($relationshipObject, 'get')) {
+                $model->$relation = $relationshipObject->get();
+
+                continue;
+            }
+
+            if (method_exists($relationshipObject, 'first')) {
+                $model->$relation = $relationshipObject->first();
             }
         }
 
@@ -171,11 +149,13 @@ trait HasRelationships
 
             // Group related IDs by parent ID
             $groupedIds = [];
+
             foreach ($pivotResults as $row) {
+
                 $parentId = $row[$parentColumn];
                 $relatedId = $row[$relatedColumn];
 
-                if (!isset($groupedIds[$parentId])) {
+                if (! isset($groupedIds[$parentId])) {
                     $groupedIds[$parentId] = [];
                 }
 
@@ -184,6 +164,7 @@ trait HasRelationships
 
             // Fetch all related models
             $allRelatedIds = [];
+
             foreach ($groupedIds as $ids) {
                 $allRelatedIds = array_merge($allRelatedIds, $ids);
             }
@@ -196,6 +177,7 @@ trait HasRelationships
 
             // Build filter for find method
             $filters = [];
+
             foreach ($allRelatedIds as $id) {
                 $filters[] = [$relatedPrimary, '=', $id, 'OR'];
             }
@@ -205,14 +187,18 @@ trait HasRelationships
 
             // Index by ID for easy lookup
             $indexedRelated = [];
+
             foreach ($relatedInstances as $instance) {
                 $indexedRelated[$instance->{$relatedPrimary}] = $instance;
             }
 
             // Group by parent key
             $grouped = [];
+
             foreach ($groupedIds as $parentId => $relatedIds) {
+
                 $grouped[$parentId] = [];
+
                 foreach ($relatedIds as $relatedId) {
                     if (isset($indexedRelated[$relatedId])) {
                         $grouped[$parentId][] = $indexedRelated[$relatedId];
@@ -223,7 +209,7 @@ trait HasRelationships
             return $grouped;
 
         } catch (\Exception $e) {
-            $this->logError("Failed to fetch related models: " . $e->getMessage());
+            logger("Failed to fetch related models: " . $e->getMessage());
             return [];
         }
     }
@@ -276,7 +262,7 @@ trait HasRelationships
         $relatedModelName = ucfirst(singularize($relation)[0] ?? $relation);
         $relatedModelClass = 'App\\Models\\' . $relatedModelName;
 
-        if (!class_exists($relatedModelClass)) {
+        if (! class_exists($relatedModelClass)) {
             return null;
         }
 
@@ -328,7 +314,7 @@ trait HasRelationships
      */
     public function load(string $relation): self
     {
-        if (!$this->relationLoaded($relation)) {
+        if (! $this->relationLoaded($relation)) {
             $this->withRelations = [$relation];
             $this->loadRelationships([$this]);
         }

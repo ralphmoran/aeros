@@ -17,7 +17,7 @@ class MakeSeedCommand extends Command
 
     /**
      * Sets descriptions, options or arguments.
-     * 
+     *
      * ```php
      * $ php aeros make:seed
      * ```
@@ -52,7 +52,7 @@ class MakeSeedCommand extends Command
             $output->write(sprintf('==> Creating "<fg=yellow>%s</>" seeder... ', $seeder));
 
             $migrate = new Process([
-                app()->basedir . '/../vendor/bin/phinx', 
+                app()->basedir . '/../vendor/bin/phinx',
                 'seed:create',
                 $seeder
             ]);

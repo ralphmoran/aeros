@@ -2,13 +2,22 @@
 
 namespace Aeros\Src\Classes;
 
+use Aeros\Src\Classes\Relationships\HasOne;
+use Aeros\Src\Classes\Relationships\HasMany;
+use Aeros\Src\Classes\Relationships\BelongsTo;
+use Aeros\Src\Classes\Relationships\BelongsToMany;
+use Aeros\Src\Classes\Relationships\HasManyThrough;
+use Aeros\Src\Traits\HasRelationships;
+
 /**
- * Base class for models.
- * 
+ * Base class for models
+ *
  * @method static ?Model find(int|array $filter, ?array $columns = null) Finds only one record from current model.
  */
 abstract class Model
 {
+    use HasRelationships;
+
     const SELECT = 1;
     const INSERT = 2;
     const UPDATE = 4;
@@ -75,19 +84,19 @@ abstract class Model
             $cols = implode(',', $keys);
 
             $placeholders = rtrim(
-                implode('', 
+                implode('',
                     array_map(
-                        fn ($k): string => ':' . $k . ', ', 
+                        fn ($k): string => ':' . $k . ', ',
                         $keys
                     )
-                ), 
+                ),
                 ', '
             );
 
             $stm = db()->prepare("INSERT INTO {$this->getTableNameFromModel()} ({$cols}) VALUES ({$placeholders})");
 
             db()->beginTransaction();
-            
+
             foreach ($records as $record) {
                 $stm->execute($record);
                 $lastInderIds[] = $stm->lastInsertId();
@@ -171,7 +180,7 @@ abstract class Model
         if ($this->instantiated) {
             throw new \BadMethodCallException(
                 sprintf(
-                    'ERROR[BadMethodCallException] Method "%s" is not allowed on independent objects of type %s', 
+                    'ERROR[BadMethodCallException] Method "%s" is not allowed on independent objects of type %s',
                     __METHOD__,
                     get_class($this)
                 )
@@ -191,7 +200,15 @@ abstract class Model
 
             // If found any record, the associative array will be processed as properties.
             if ($found) {
-                return $this->transformRecordToModel($found, get_class($this));
+                $model = $this->transformRecordToModel($found, get_class($this));
+
+                // Load eager relationships if any
+                if (!empty($this->withRelations)) {
+                    $models = $this->loadRelationships([$model]);
+                    return $models[0] ?? $model;
+                }
+
+                return $model;
             }
 
             return null;
@@ -241,15 +258,21 @@ abstract class Model
             // stored and returned in an array.
             if ($founds) {
 
-                if (count($founds) == 1) {
-                    return $this->transformRecordToModel($founds[0], get_class($this));
+                $models = [];
+                foreach ($founds as $record) {
+                    $models[] = $this->transformRecordToModel($record, get_class($this));
                 }
 
-                foreach ($founds as $index => $record) {
-                    $founds[$index] = $this->transformRecordToModel($record, get_class($this));
+                // Load eager relationships if any
+                if (!empty($this->withRelations)) {
+                    $models = $this->loadRelationships($models);
                 }
 
-                return $founds;
+                if (count($models) == 1) {
+                    return $models[0];
+                }
+
+                return $models;
             }
 
             return null;
@@ -277,12 +300,12 @@ abstract class Model
                     $cols = implode(', ', array_keys($this->onCommit));
 
                     $placeholders = rtrim(
-                        implode('', 
+                        implode('',
                             array_map(
-                                fn ($k): string => ':' . $k . ', ', 
+                                fn ($k): string => ':' . $k . ', ',
                                 array_keys($this->onCommit)
                             )
-                        ), 
+                        ),
                         ', '
                     );
 
@@ -315,12 +338,12 @@ abstract class Model
                     $boundValues = $this->onCommit + [$this->primary => $this->properties[$this->primary]];
 
                     $cols = rtrim(
-                        implode('', 
+                        implode('',
                             array_map(
-                                fn ($colname): string => $colname . " = :{$colname}, ", 
+                                fn ($colname): string => $colname . " = :{$colname}, ",
                                 array_keys($this->onCommit)
                             )
-                        ), 
+                        ),
                         ', '
                     );
                 }
@@ -373,11 +396,356 @@ abstract class Model
 
                 break;
 
-            // Reset global flags
-            $this->where = [];
+                // Reset global flags
+                $this->where = [];
 
-            return false;
+                return false;
         }
+    }
+
+    /**
+     * Define a "has one" relationship using direct foreign key.
+     *
+     * Returns a HasOne relationship instance for method chaining.
+     *
+     * Example:
+     *   class User extends Model {
+     *       public function clientSettings() {
+     *           return $this->hasOne(ClientSettings::class);
+     *       }
+     *   }
+     *
+     *   Usage:
+     *   $settings = $user->clientSettings()->first();
+     *   $settings = $user->clientSettings()->where('active', true)->first();
+     *
+     * @param string $relatedModel The related model class name
+     * @param string|null $foreignKey Foreign key on related table (auto-detected if null)
+     * @param string|null $localKey Local key on parent table (auto-detected if null)
+     * @param string|null $pivotTable Local key on parent table (auto-detected if null)
+     * @return HasOne
+     */
+    protected function hasOne(
+        string $relatedModel,
+        ?string $foreignKey = null,
+        ?string $localKey = null,
+        ?string $pivotTable = null
+    ): HasOne {
+        $related = new $relatedModel();
+
+        $foreignKey = $foreignKey ?? (strtolower(class_basename(get_class($this))) . '_' . $this->getPrimaryKey());
+        $localKey = $localKey ?? $this->getPrimaryKey();
+
+        return new HasOne($this, $related, $foreignKey, $localKey, $pivotTable);
+    }
+
+    /**
+     * Define a "has many" relationship using direct foreign key.
+     *
+     * Returns a HasMany relationship instance for method chaining.
+     *
+     * Example:
+     *   class User extends Model {
+     *       public function plans() {
+     *           return $this->hasMany(Plan::class);
+     *       }
+     *   }
+     *
+     *   Usage:
+     *   $plans = $user->plans()->get();
+     *   $activePlans = $user->plans()->where('status', 'active')->get();
+     *
+     * @param string $relatedModel The related model class name
+     * @param string|null $foreignKey Foreign key on related table (auto-detected if null)
+     * @param string|null $localKey Local key on parent table (auto-detected if null)
+     * @param string|null $pivotTable Local key on parent table (auto-detected if null)
+     * @return HasMany
+     */
+    protected function hasMany(
+        string $relatedModel,
+        ?string $foreignKey = null,
+        ?string $localKey = null,
+        ?string $pivotTable = null
+    ): HasMany {
+        $related = new $relatedModel();
+
+        $foreignKey = $foreignKey ?? (strtolower(class_basename(get_class($this))) . '_' . $this->getPrimaryKey());
+        $localKey = $localKey ?? $this->getPrimaryKey();
+
+        return new HasMany($this, $related, $foreignKey, $localKey, $pivotTable);
+    }
+
+    /**
+     * Define a "belongs to" (inverse) relationship using direct foreign key.
+     *
+     * Returns a BelongsTo relationship instance for method chaining.
+     *
+     * Example:
+     *   class Plan extends Model {
+     *       public function user() {
+     *           return $this->belongsTo(User::class);
+     *       }
+     *   }
+     *
+     *   Usage:
+     *   $user = $plan->user()->first();
+     *
+     * @param string $relatedModel The related model class name
+     * @param string|null $foreignKey Foreign key on parent table (auto-detected if null)
+     * @param string|null $ownerKey Owner key on related table (auto-detected if null)
+     * @param string|null $pivotTable Owner key on related table (auto-detected if null)
+     * @return BelongsTo
+     */
+    protected function belongsTo(
+        string $relatedModel,
+        ?string $foreignKey = null,
+        ?string $ownerKey = null,
+        ?string $pivotTable = null  // ← ADD THIS
+    ): BelongsTo {
+        $related = new $relatedModel();
+
+        $foreignKey = $foreignKey ?? (strtolower(class_basename($relatedModel)) . '_' . $related->getPrimaryKey());
+        $ownerKey = $ownerKey ?? $related->getPrimaryKey();
+
+        return new BelongsTo($this, $related, $foreignKey, $ownerKey, $pivotTable);
+    }
+
+    /**
+     * Define a "belongs to many" relationship using a pivot table.
+     *
+     * Returns a BelongsToMany relationship instance for method chaining.
+     *
+     * Example:
+     *   class User extends Model {
+     *       public function roles() {
+     *           return $this->belongsToMany(Role::class);
+     *       }
+     *   }
+     *
+     *   Usage:
+     *   $roles = $user->roles()->get();
+     *   $activeRoles = $user->roles()->where('active', true)->get();
+     *   $user->roles()->attach([1, 2, 3]);
+     *   $user->roles()->detach([2]);
+     *   $user->roles()->sync([1, 3, 4]);
+     *
+     * @param string $relatedModel The related model class name
+     * @param string|null $pivotTable Pivot table name (auto-detected if null)
+     * @param string|null $foreignPivotKey Foreign pivot key (auto-detected if null)
+     * @param string|null $relatedPivotKey Related pivot key (auto-detected if null)
+     * @param string|null $localKey Local key on parent table (auto-detected if null)
+     * @param string|null $relatedKey Related key on related table (auto-detected if null)
+     * @return BelongsToMany
+     */
+    protected function belongsToMany(
+        string $relatedModel,
+        ?string $pivotTable = null,
+        ?string $foreignPivotKey = null,
+        ?string $relatedPivotKey = null,
+        ?string $localKey = null,
+        ?string $relatedKey = null
+    ): BelongsToMany {
+        $related = new $relatedModel();
+
+        return new BelongsToMany(
+            $this,
+            $related,
+            $pivotTable,
+            $foreignPivotKey,
+            $relatedPivotKey,
+            $localKey,
+            $relatedKey
+        );
+    }
+
+    /**
+     * Define a "has many through" relationship through an intermediate model.
+     *
+     * Returns a HasManyThrough relationship instance for method chaining.
+     *
+     * Example:
+     *   class Country extends Model {
+     *       public function posts() {
+     *           return $this->hasManyThrough(Post::class, User::class);
+     *       }
+     *   }
+     *
+     *   Usage:
+     *   $posts = $country->posts()->get();
+     *
+     * @param string $relatedModel The related model class name
+     * @param string $throughModel The intermediate model class name
+     * @param string|null $firstKey First foreign key (auto-detected if null)
+     * @param string|null $secondKey Second foreign key (auto-detected if null)
+     * @param string|null $localKey Local key on parent table (auto-detected if null)
+     * @param string|null $secondLocalKey Local key on intermediate table (auto-detected if null)
+     * @return HasManyThrough
+     */
+    protected function hasManyThrough(
+        string $relatedModel,
+        string $throughModel,
+        ?string $firstKey = null,
+        ?string $secondKey = null,
+        ?string $localKey = null,
+        ?string $secondLocalKey = null
+    ): HasManyThrough {
+        $related = new $relatedModel();
+        $through = new $throughModel();
+
+        return new HasManyThrough(
+            $this,
+            $related,
+            $through,
+            $firstKey,
+            $secondKey,
+            $localKey,
+            $secondLocalKey
+        );
+    }
+
+    // ===================================================================
+    // DEPRECATED OLD RELATIONSHIP METHODS (Kept for backwards compatibility)
+    // ===================================================================
+
+    /**
+     * @deprecated Use new hasOne() method that returns Relationship objects
+     */
+    private function hasOne_old(string $relatedModel)
+    {
+        return $this->getHasRelationship($relatedModel);
+    }
+
+    /**
+     * @deprecated Use new hasMany() method that returns Relationship objects
+     */
+    private function hasMany_old(string $relatedModel)
+    {
+        return $this->getHasRelationship($relatedModel, true);
+    }
+
+    /**
+     * @deprecated This method will be removed. Use attach/detach on belongsToMany relationships.
+     */
+    private function has(array|Model $model): bool|Model
+    {
+        if ($this->instantiated) {
+
+            if (is_array($model)) {
+
+                foreach ($model as $singleModel) {
+
+                    if (! ($singleModel instanceof Model)) {
+                        throw new \TypeError(
+                            sprintf(
+                                'ERROR[TypeError] Model "%s" is not an instance of Aeros/Src/Model class.',
+                                $singleModel
+                            )
+                        );
+                    }
+
+                    $this->createHasRelationship($singleModel);
+                }
+
+                return $this;
+            }
+
+            return $this->createHasRelationship($model);
+        }
+    }
+
+    /**
+     * @deprecated Use new belongsTo() method that returns Relationship objects
+     */
+    private function belongsTo_old(array|Model $model): bool|Model
+    {
+        return $this->has($model);
+    }
+
+    /**
+     * @deprecated
+     */
+    private function createHasRelationship(Model $model): bool|Model
+    {
+        if ($this->instantiated) {
+
+            $pivot = $this->getPivotTableScheme(get_called_class(), get_class($model));
+
+            $data = [
+                $pivot['col1'] => $model->id,
+                $pivot['col2'] => $model->id,
+            ];
+
+            // Replace value for calledModel
+            $data[
+            strtolower(
+                class_basename(get_called_class()) . '_' . $this->getPrimaryKey()
+            )
+            ] = $this->{$this->getPrimaryKey()};
+
+            $stm = db()->prepare(
+                'INSERT IGNORE INTO ' . $pivot['name'] . ' (' . $pivot['col1'] . ', ' . $pivot['col2'] .
+                ') VALUES(:' . $pivot['col1']. ', :' . $pivot['col2'] . ')'
+            )
+                ->execute($data);
+
+            // In case of error
+            if (! $stm) {
+                throw new \PDOException(
+                    sprintf(
+                        'ERROR[Query] It was not possible to create a new relationship for the "%s" table.',
+                        $pivot['name']
+                    )
+                );
+            }
+
+            return $this;
+        }
+
+        return false;
+    }
+
+    /**
+     * @deprecated
+     */
+    private function getHasRelationship(string $relatedModel, bool $hasMany = false)
+    {
+        $calledModel = get_called_class();
+
+        $pivotTableScheme = self::getPivotTableScheme(
+            $calledModel,
+            $relatedModel
+        );
+
+        $relatedModel_primary = (new $relatedModel)->getPrimaryKey();
+        $relatedModel_column = strtolower(class_basename($relatedModel)) . '_' . $relatedModel_primary;
+
+        $has = db()
+            ->prepare(
+                "SELECT {$relatedModel_column} FROM {$pivotTableScheme['name']} WHERE "
+                . strtolower(class_basename($calledModel)) . '_' . $this->primary
+                . " = ? ORDER BY id DESC "
+                . ((! $hasMany) ? "LIMIT 1" : "")
+            )
+            ->execute([$this->id]);
+
+        // hasOne relationship
+        if (! $hasMany) {
+            $has = $has->fetch();
+
+            return (new $relatedModel)->find($has[$relatedModel_column]);
+        }
+
+        // hasMany relationship
+        if ($hasMany) {
+
+            foreach($has->fetchAll() as $key => $value) {
+                $filters[] = [$relatedModel_primary, '=', $value[$relatedModel_column], 'OR'];
+            }
+
+            return (new $relatedModel)->find($filters);
+        }
+
+        return null;
     }
 
     /**
@@ -402,7 +770,7 @@ abstract class Model
         if (in_array($this->primary, array_keys($newValues))) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'ERROR[model.property] Primary key "%s" cannot be updated', 
+                    'ERROR[model.property] Primary key "%s" cannot be updated',
                     $this->primary
                 )
             );
@@ -414,7 +782,7 @@ abstract class Model
             // Not mapped properties
             $unknowns = implode(', ', array_values(
                 array_diff(
-                    array_keys($newValues), 
+                    array_keys($newValues),
                     array_keys($this->properties)
                 )
             ));
@@ -422,7 +790,7 @@ abstract class Model
             if ($unknowns) {
                 throw new \InvalidArgumentException(
                     sprintf(
-                        'ERROR[model.property] Properties "%s" are not mapped to any column', 
+                        'ERROR[model.property] Properties "%s" are not mapped to any column',
                         $unknowns
                     )
                 );
@@ -442,7 +810,7 @@ abstract class Model
      *
      * @return void
      */
-    private function setPropertiesFromModel() 
+    private function setPropertiesFromModel()
     {
         $stm = db()->query("SELECT * FROM {$this->getTableNameFromModel()}");
 
@@ -472,7 +840,7 @@ abstract class Model
             if (count($keys) > 4) {
                 throw new \InvalidArgumentException(
                     sprintf(
-                        'ERROR[model.property] Too many arguments. 3 or 2 areguments are required for column "%s"', 
+                        'ERROR[model.property] Too many arguments. 3 or 2 areguments are required for column "%s"',
                         $keys[0]
                     )
                 );
@@ -505,7 +873,7 @@ abstract class Model
 
             throw new \InvalidArgumentException(
                 sprintf(
-                    'ERROR[model.property] Missing value for column "%s"', 
+                    'ERROR[model.property] Missing value for column "%s"',
                     $keys[0]
                 )
             );
@@ -515,13 +883,13 @@ abstract class Model
     }
 
     /**
-     * Transforms a record into a new model.
+     * Transforms a record into a new model (NOW PUBLIC for Relationship classes).
      *
      * @param array $record
      * @param string $class
      * @return Model
      */
-    private function transformRecordToModel(array $record, string $class): Model
+    public function transformRecordToModel(array $record, string $class): Model
     {
         if (! class_exists($class)) {
             throw new \Exception(
@@ -541,11 +909,11 @@ abstract class Model
     }
 
     /**
-     * Returns the DB table linked to current model.
+     * Returns the DB table linked to current model (NOW PUBLIC for Relationship classes).
      *
      * @return ?string
      */
-    private function getTableNameFromModel(): ?string
+    public function getTableNameFromModel(): ?string
     {
         if (! is_null($this->table)) {
             return $this->table;
@@ -561,7 +929,7 @@ abstract class Model
     }
 
     /**
-     * Prepares a query string from an array of keys. 
+     * Prepares a query string from an array of keys.
      * It concatenates a logic operator.
      *
      * @param array $keys
@@ -588,11 +956,24 @@ abstract class Model
     /**
      * Returns the primary key that model uses.
      *
-     * @return void
+     * @return string
      */
-    public function getPrimaryKey()
+    public function getPrimaryKey(): string
     {
         return $this->primary;
+    }
+
+    /**
+     * Clear cached relationship data.
+     *
+     * @param string $relationName
+     * @return void
+     */
+    public function clearRelationCache(string $relationName): void
+    {
+        if (isset($this->properties[$relationName])) {
+            unset($this->properties[$relationName]);
+        }
     }
 
     /**
@@ -605,11 +986,17 @@ abstract class Model
      */
     public function __set($property, $value)
     {
+        // Allow setting relationships (don't validate as columns)
+        if (method_exists($this, $property)) {
+            $this->properties[$property] = $value;
+            return;
+        }
+
         // Guarded properties
         if ($this->instantiated && in_array($property, array_diff($this->guarded, $this->fillable))) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'ERROR[model.property] Property "%s" is guarded from any update', 
+                    'ERROR[model.property] Property "%s" is guarded from any update',
                     $property
                 )
             );
@@ -619,29 +1006,29 @@ abstract class Model
         if ($this->instantiated && $property == $this->primary) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'ERROR[model.property] Primary key "%s" cannot be updated', 
+                    'ERROR[model.property] Primary key "%s" cannot be updated',
                     $property
                 )
             );
         }
 
-        // Chek if requested property exists
-        if ($this->instantiated && ! in_array($property, array_keys($this->properties))) {
+        // Check if requested property exists
+        if ($this->instantiated && ! in_array($property, array_keys($this->properties)) && !method_exists($this, $property)) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'ERROR[model.property] Property "%s" is not mapped to any column on "%s" table', 
+                    'ERROR[model.property] Property "%s" is not mapped to any column on "%s" table',
                     $property,
                     $this->getTableNameFromModel()
                 )
             );
         }
 
-        // First time asigning property values
+        // First time assigning property values
         if (! $this->instantiated) {
             $this->properties[$property] = $value;
         }
 
-        // After instatiation, store this value for commit if requested 
+        // After instantiation, store this value for commit if requested
         if ($this->instantiated) {
             $this->onCommit[$property] = $value;
             $this->crudAction = Model::UPDATE;
@@ -657,19 +1044,38 @@ abstract class Model
      */
     public function __get(string $property): mixed
     {
+        // Check if property exists in properties first (eager loaded data)
+        if (array_key_exists($property, $this->properties)) {
+            return $this->properties[$property];
+        }
+
+        // Check if the property was previously updated
+        if (in_array($property, array_keys($this->onCommit))) {
+            return $this->onCommit[$property];
+        }
+
+        // Check if it's a relationship method (lazy load)
+        if (method_exists($this, $property)) {
+            $relation = $this->$property();
+
+            if (is_object($relation) && method_exists($relation, 'get')) {
+                return $relation->get();
+            }
+            if (is_object($relation) && method_exists($relation, 'first')) {
+                return $relation->first();
+            }
+
+            return $relation;
+        }
+
         if (! isset($this->$property) && ! in_array($property, array_keys($this->properties))) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'ERROR[model.property] Property "%s" is not mapped to any column on "%s" table', 
+                    'ERROR[model.property] Property "%s" is not mapped to any column on "%s" table',
                     $property,
                     $this->getTableNameFromModel()
                 )
             );
-        }
-
-        // Check if the property was previously updated, if so, return it
-        if (in_array($property, array_keys($this->onCommit))) {
-            return $this->onCommit[$property];
         }
 
         if (isset($this->$property) && ! in_array($property, array_keys($this->properties))) {
@@ -693,7 +1099,7 @@ abstract class Model
         if (! in_array($method, get_class_methods($class))) {
             throw new \BadMethodCallException(
                 sprintf(
-                    'ERROR[method] Method "%s" does not exist in model "%s"', 
+                    'ERROR[method] Method "%s" does not exist in model "%s"',
                     $method,
                     $class
                 )
@@ -715,7 +1121,7 @@ abstract class Model
         if (! in_array($method, get_class_methods(get_called_class()))) {
             throw new \BadMethodCallException(
                 sprintf(
-                    'ERROR[method] Method "%s" does not exist in model "%s"', 
+                    'ERROR[method] Method "%s" does not exist in model "%s"',
                     $method,
                     get_called_class()
                 )
@@ -726,221 +1132,40 @@ abstract class Model
     }
 
     /**
-     * Define a "has one" relationship.
-     * 
-     * If found, it will return the last record inserted from $relatedModel.
-     *
-     * @param   string  $relatedModel   The related model class name
-     * @return  mixed   The related model instance
-     */
-    private function hasOne(string $relatedModel)
-    {
-        return $this->getHasRelationship($relatedModel);
-    }
-
-    /**
-     * Define a "has many" relationship.
-     * 
-     * If found, it will return all the records inserted from $relatedModel.
-     *
-     * @param   string  $relatedModel   The related model class name
-     * @return  mixed   The related model instances
-     */
-    private function hasMany(string $relatedModel)
-    {
-        return $this->getHasRelationship($relatedModel, true);
-    }
-
-    /**
-     * Checks if the given model or array of models has a relationship with the 
-     * current instance.
-     *
-     * @param   Model|array $model  The model or array of models to check for 
-     *                              relationship.
-     * @return  bool|Model          True if the relationship exists, 
-     *                              false otherwise.
-     * @throws  \TypeError          If the provided argument is not an instance 
-     *                              of Model.
-     */
-    private function has(array|Model $model): bool|Model
-    {
-        if ($this->instantiated) {
-
-            if (is_array($model)) {
-
-                foreach ($model as $singleModel) {
-
-                    if (! ($singleModel instanceof Model)) {
-                        throw new \TypeError(
-                            sprintf(
-                                'ERROR[TypeError] Model "%s" is not an instance of Aeros/Src/Model class.', 
-                                $singleModel
-                            )
-                        );
-                    }
-
-                    $this->createHasRelationship($singleModel);
-                }
-
-                return $this;
-            }
-
-            return $this->createHasRelationship($model);
-        }
-    }
-
-    /**
-     * Builds a belongsTo relationship. This method acts as same as the `has` method,
-     * it is used to simplify the creation of a relationship.
-     * 
-     * @param   array|Model $model
-     * @return  bool|Model  True if the relationship exists, 
-     *                      false otherwise.
-     * @throws  \TypeError  If the provided argument is not an instance 
-     *                      of Model.
-     */
-    private function belongsTo(array|Model $model): bool|Model
-    {
-        return $this->has($model);
-    }
-
-    /**
-     * Creates a relationship between the current instance and the provided model.
-     *
-     * @param   Model   $model  The model to create a relationship with.
-     * @return  bool|Model      True if the relationship was successfully created, 
-     *                          false otherwise.
-     * @throws  \PDOException   If an error occurs while executing the database query.
-     */
-    private function createHasRelationship(Model $model): bool|Model
-    {
-        if ($this->instantiated) {
-
-            $pivot = $this->getPivotTableScheme(get_called_class(), get_class($model));
-
-            $data = [
-                $pivot['col1'] => $model->id,
-                $pivot['col2'] => $model->id,
-            ];
-
-            // Replace value for calledModel
-            $data[
-                strtolower(
-                    class_basename(get_called_class()) . '_' . $this->getPrimaryKey()
-                )
-            ] = $this->{$this->getPrimaryKey()};
-
-            $stm = db()->prepare(
-                        'INSERT IGNORE INTO ' . $pivot['name'] . ' (' . $pivot['col1'] . ', ' . $pivot['col2'] . 
-                        ') VALUES(:' . $pivot['col1']. ', :' . $pivot['col2'] . ')'
-                    )
-                ->execute($data);
-
-            // In case of error
-            if (! $stm) {
-                throw new \PDOException(
-                    sprintf(
-                        'ERROR[Query] It was not possible to create a new relationship for the "%s" table.', 
-                        $pivot['name']
-                    )
-                );
-            }
-
-            return $this;
-        }
-
-        return false;
-    }
-
-    /**
-     * Retrieve related model(s) based on the relationship type.
-     *
-     * @param   string  $relatedModel   The name of the related model.
-     * @param   bool    $hasMany        Indicates whether the relationship is hasMany (default: false).
-     *
-     * @return  mixed   Returns the related model or models based on the relationship type.
-     */
-    private function getHasRelationship(string $relatedModel, bool $hasMany = false)
-    {
-        $calledModel = get_called_class();
-
-        $pivotTableScheme = self::getPivotTableScheme(
-            $calledModel, 
-            $relatedModel
-        );
-
-        $relatedModel_primary = (new $relatedModel)->getPrimaryKey();
-        $relatedModel_column = strtolower(class_basename($relatedModel)) . '_' . $relatedModel_primary;
-
-        $has = db()
-            ->prepare(
-                "SELECT {$relatedModel_column} FROM {$pivotTableScheme['name']} WHERE " 
-                . strtolower(class_basename($calledModel)) . '_' . $this->primary 
-                . " = ? ORDER BY id DESC " 
-                . ((! $hasMany) ? "LIMIT 1" : "")
-            )
-            ->execute([$this->id]);
-
-        // hasOne relationship
-        if (! $hasMany) {
-            $has = $has->fetch();
-
-            return (new $relatedModel)->find($has[$relatedModel_column]);
-        }
-
-        // hasMany relationship
-        if ($hasMany) {
-
-            foreach($has->fetchAll() as $key => $value) {
-                $filters[] = [$relatedModel_primary, '=', $value[$relatedModel_column], 'OR'];
-            }
-
-            return (new $relatedModel)->find($filters);
-        }
-
-        return null;
-    }
-
-    /**
      * Get the pivot table scheme from two given models.
      *
-     * @param   string  $calledModel    The class name of the called model.
-     * @param   string  $relatedModel   The class name of the related model.
-     *
-     * @return  array|false     An array containing the pivot table scheme with the following keys:
-     *                     - 'name': The name of the pivot table.
-     *                     - 'col1': The column name for the first model's primary key in the pivot table.
-     *                     - 'col2': The column name for the second model's primary key in the pivot table.
-     *                     Returns false if the comparison between models fails.
+     * @param string $calledModel The class name of the called model.
+     * @param string $relatedModel The class name of the related model.
+     * @return array|false
      */
-    public static function getPivotTableScheme(string $calledModel, string $relatedModel) 
+    public static function getPivotTableScheme(string $calledModel, string $relatedModel)
     {
         $calledModelClass = new $calledModel();
         $relatedModelClass = new $relatedModel();
 
-        $relatedModel = strtolower(
-            class_basename($relatedModel)
-        );
+        // Use class basename and ensure singular form
+        $relatedModelName = strtolower(class_basename($relatedModel));
+        $calledModelName = strtolower(class_basename($calledModel));
 
-        $calledModel = strtolower(
-            class_basename($calledModel)
-        );
+        // Ensure singular (remove trailing 's' if exists for common cases)
+        $relatedModelName = rtrim($relatedModelName, 's');
+        $calledModelName = rtrim($calledModelName, 's');
 
-        $result = strcmp($calledModel, $relatedModel);
+        $result = strcmp($calledModelName, $relatedModelName);
 
         if ($result < 0) {
-            return [ 
-                'name' => $calledModel . '_' . $relatedModel,
-                'col1' => $calledModel . '_' . $calledModelClass->getPrimaryKey(),
-                'col2' => $relatedModel . '_' . $relatedModelClass->getPrimaryKey(),
+            return [
+                'name' => $calledModelName . '_' . $relatedModelName,
+                'col1' => $calledModelName . '_' . $calledModelClass->getPrimaryKey(),
+                'col2' => $relatedModelName . '_' . $relatedModelClass->getPrimaryKey(),
             ];
         }
 
         if ($result > 0) {
-            return [ 
-                'name' => $relatedModel . '_' . $calledModel,
-                'col1' => $relatedModel . '_' . $relatedModelClass->getPrimaryKey(),
-                'col2' => $calledModel . '_' . $calledModelClass->getPrimaryKey(),
+            return [
+                'name' => $relatedModelName . '_' . $calledModelName,
+                'col1' => $relatedModelName . '_' . $relatedModelClass->getPrimaryKey(),
+                'col2' => $calledModelName . '_' . $calledModelClass->getPrimaryKey(),
             ];
         }
 
