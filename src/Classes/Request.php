@@ -1017,7 +1017,7 @@ final class Request
      */
     public function __get(string $name)
     {
-        return $this->payload[$name] ?? null;
+        return $this->getPayload()[$name] ?? null;
     }
 
     /**
@@ -1028,7 +1028,7 @@ final class Request
      */
     public function __isset(string $name)
     {
-        return isset($this->payload[$name]);
+        return isset($this->getPayload()[$name]);
     }
 
     /**
