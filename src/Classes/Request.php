@@ -358,11 +358,17 @@ final class Request
         $normalized = [];
 
         foreach ($headers as $k => $v) {
-
             $k = str_replace(["\r", "\n"], '', $k);
             $v = str_replace(["\r", "\n"], '', $v);
 
-            $normalized[] = is_int($k) ? $v : $k . ': ' . $v;
+            // Use is_numeric to catch both int and string numeric keys
+            // Also check if value already contains ": " to avoid double formatting
+            if (is_numeric($k) || str_contains($v, ': ')) {
+                $normalized[] = $v;
+                continue;
+            }
+
+            $normalized[] = $k . ': ' . $v;
         }
 
         $this->headers = $normalized;
@@ -773,18 +779,7 @@ final class Request
             $this->setPayload($this->curlOptions['payload']);
         }
 
-        // Special format for GET and POST
-        if ($this->method == 'GET' && ! empty($this->payload)) {
-            $this->url($this->url . '?' . http_build_query($this->payload));
-        }
-
-        // Process cookies
-        $cookies = '';
-
-        foreach ($this->getCookies() as $k => $v) {
-            $cookies .= urlencode($k) . '=' . urlencode($v) . ';';
-        }
-
+        // Build base options first
         $opts = [
             CURLOPT_VERBOSE        => true,
             CURLOPT_FAILONERROR    => true,
@@ -792,27 +787,49 @@ final class Request
             CURLOPT_HTTP_VERSION   => CURL_HTTP_VERSION_1_1,
             CURLOPT_MAXREDIRS      => 3,
             CURLOPT_TIMEOUT        => 15,
-            CURLOPT_POST           => true,
             CURLOPT_CUSTOMREQUEST  => $this->method,
             CURLOPT_HTTPHEADER     => $this->headers,
             CURLOPT_URL            => $this->url,
             CURLOPT_SSL_VERIFYPEER => $this->ssl_verifypeer,
-            CURLOPT_COOKIE         => $cookies,
         ];
 
-        if ($this->method == 'POST' && ! empty($this->payload)) {
+        // Handle cookies
+        if (! empty($this->cookies)) {
+            $cookies = '';
 
-            $this->setPayload($this->payload); // e.g., form-encoded array
-
-            if ($this->isJson() && is_array($this->payload)) {
-                $this->setPayload(json_encode(
-                    $this->payload,
-                    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-                ));
+            foreach ($this->getCookies() as $k => $v) {
+                $cookies .= urlencode($k) . '=' . urlencode($v) . ';';
             }
 
-            $opts[CURLOPT_POST] = true;
-            $opts[CURLOPT_POSTFIELDS] = $this->payload;
+            $opts[CURLOPT_COOKIE] = rtrim($cookies, ';');
+        }
+
+        // Handle GET with query parameters
+        if ($this->method == 'GET' && ! empty($this->payload)) {
+            $separator = parse_url($this->url, PHP_URL_QUERY) ? '&' : '?';
+            $opts[CURLOPT_URL] = $this->url . $separator . http_build_query($this->payload);
+        }
+
+        // Handle POST/PUT/PATCH/DELETE with payload
+        if ($this->method != 'GET' && ! empty($this->payload)) {
+            if ($this->isJson() && is_array($this->payload)) {
+                // JSON payload
+                $opts[CURLOPT_POSTFIELDS] = json_encode(
+                    $this->payload,
+                    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+                );
+            } else if (is_array($this->payload)) {
+                // Form-encoded payload
+                $opts[CURLOPT_POSTFIELDS] = http_build_query($this->payload);
+            } else {
+                // Raw string payload
+                $opts[CURLOPT_POSTFIELDS] = $this->payload;
+            }
+
+            // Set POST flag for POST requests specifically
+            if ($this->method == 'POST') {
+                $opts[CURLOPT_POST] = true;
+            }
         }
 
         return $opts;
