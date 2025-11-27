@@ -365,10 +365,9 @@ final class Request
             // Also check if value already contains ": " to avoid double formatting
             if (is_numeric($k) || str_contains($v, ': ')) {
                 $normalized[] = $v;
-                continue;
+            } else {
+                $normalized[] = $k . ': ' . $v;
             }
-
-            $normalized[] = $k . ': ' . $v;
         }
 
         $this->headers = $normalized;
@@ -423,12 +422,15 @@ final class Request
 
         if (in_array($from, $this->verbs, true)) {
 
+
+
             switch ($from) {
                 case 'GET':
                     return $this->queryParams;
                 case 'FILES':
                     return $_FILES;
                 case 'POST':
+
                     if (empty($this->requestParams) && ! empty($input = $this->readInputStream())) {
 
                         if ($this->isJson()) {
@@ -438,6 +440,11 @@ final class Request
                         parse_str($input, $_POST_INPUT);
 
                         return $this->sanitizeInput($_POST_INPUT ?? []);
+                    }
+
+                    // Merge FILES with POST for multipart/form-data
+                    if (! empty($_FILES)) {
+                        return array_merge($this->requestParams, $_FILES);
                     }
 
                     return $this->requestParams;
@@ -794,24 +801,22 @@ final class Request
         ];
 
         // Handle cookies
-        if (! empty($this->cookies)) {
+        if (!empty($this->cookies)) {
             $cookies = '';
-
             foreach ($this->getCookies() as $k => $v) {
                 $cookies .= urlencode($k) . '=' . urlencode($v) . ';';
             }
-
             $opts[CURLOPT_COOKIE] = rtrim($cookies, ';');
         }
 
         // Handle GET with query parameters
-        if ($this->method == 'GET' && ! empty($this->payload)) {
+        if ($this->method == 'GET' && !empty($this->payload)) {
             $separator = parse_url($this->url, PHP_URL_QUERY) ? '&' : '?';
             $opts[CURLOPT_URL] = $this->url . $separator . http_build_query($this->payload);
         }
 
         // Handle POST/PUT/PATCH/DELETE with payload
-        if ($this->method != 'GET' && ! empty($this->payload)) {
+        if ($this->method != 'GET' && !empty($this->payload)) {
             if ($this->isJson() && is_array($this->payload)) {
                 // JSON payload
                 $opts[CURLOPT_POSTFIELDS] = json_encode(
@@ -962,12 +967,28 @@ final class Request
         // Validate for POST/PUT/PATCH/DELETE
         if (in_array($this->method, ['POST', 'PUT', 'PATCH', 'DELETE'])) {
 
-            $token = $this->getPayload()['csrf_token'] ?? request()->headers()['X-CSRF-TOKEN'] ?? null;
+            $token = $this->getPayload()['csrf_token'] ?? $this->getHeaderValue('X-CSRF-TOKEN');
 
             if (! app()->security->validateCsrfToken($token)) {
                 throw new \Exception("CSRF token validation failed", 403);
             }
         }
+    }
+
+    /**
+     * Gets a specific header value by name.
+     *
+     * @param string $name Header name (case-insensitive)
+     * @return string|null
+     */
+    public function getHeaderValue(string $name): ?string
+    {
+        foreach ($this->headers as $header) {
+            if (stripos($header, $name . ':') === 0) {
+                return trim(substr($header, strlen($name) + 1));
+            }
+        }
+        return null;
     }
 
     /**
