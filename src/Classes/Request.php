@@ -95,7 +95,7 @@ final class Request
 
         // Auto-validate CSRF for state-changing requests
         if (! isMode('cli')) {
-            $this->csrfValidation();
+            // $this->csrfValidation();
         }
     }
 
