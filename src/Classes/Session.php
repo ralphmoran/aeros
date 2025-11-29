@@ -4,7 +4,7 @@ namespace Aeros\Src\Classes;
 
 /**
  * Class Session
- * 
+ *
  * @package Aeros\Src\Classes
  */
 class Session
@@ -25,17 +25,14 @@ class Session
 
             $cookie = config('session.cookie');
 
-            session_set_cookie_params(
-                $cookie['lifetime'],
-                $cookie['path'],
-                $cookie['domain'],
-                $cookie['secure'],
-                $cookie['httponly']
-            );
-
-            if (! empty($samesite = $cookie['samesite'])) {
-                ini_set('session.cookie_samesite', $samesite);
-            }
+            session_set_cookie_params([
+                'lifetime' => $cookie['lifetime'],
+                'path'     => $cookie['path'],
+                'domain'   => $cookie['domain'],
+                'secure'   => $cookie['secure'],
+                'httponly' => $cookie['httponly'],
+                'samesite' => $cookie['samesite'] ?? 'Lax',
+            ]);
 
             session_name(strtolower($cookie['cookie_name']));
 
