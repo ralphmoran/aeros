@@ -125,7 +125,6 @@ final class Response
      */
     public function sendHeaders()
     {
-        header_remove();
         $this->assignHeadersToResponse();
         http_response_code($this->code);
     }
