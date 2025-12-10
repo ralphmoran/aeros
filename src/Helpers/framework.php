@@ -546,3 +546,27 @@ if (! function_exists('cookie')) {
         }
     }
 }
+
+if (! function_exists('store')) {
+
+    /**
+     * Returns an array of status, names, paths, sizes, mimes,
+     * extensions, errors, and orginal names when a set of file(s)
+     * is/are uploaded successfully.
+     *
+     * @param   array       $uploadedFiles The $_FILES array element (e.g., $_FILES['document'])
+     * @param   string|null $directory Target directory (null = use config default)
+     * @param   array       $options Override options: ['name' => 'custom.jpg', 'overwrite' => false]
+     * @return  array       File information ['path' => '', 'name' => '', 'size' => 0, 'mime' => '']
+     * @throws  \Exception
+     */
+    function store(array $uploadedFiles, ?string $directory = null, array $options = []): array {
+
+        // Multiple files to upload
+        if (array_is_list($uploadedFiles)) {
+            return app()->file->storeMultiple($uploadedFiles, $directory, $options);
+        }
+
+        return app()->file->store($uploadedFiles, $directory, $options);
+    }
+}

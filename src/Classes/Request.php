@@ -422,8 +422,6 @@ final class Request
 
         if (in_array($from, $this->verbs, true)) {
 
-
-
             switch ($from) {
                 case 'GET':
                     return $this->queryParams;
