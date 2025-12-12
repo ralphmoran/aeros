@@ -561,12 +561,10 @@ if (! function_exists('store')) {
      * @throws  \Exception
      */
     function store(array $uploadedFiles, ?string $directory = null, array $options = []): array {
-
-        // Multiple files to upload
-        if (array_is_list($uploadedFiles)) {
-            return app()->file->storeMultiple($uploadedFiles, $directory, $options);
-        }
-
-        return app()->file->store($uploadedFiles, $directory, $options);
+        return app()->file->storeMultiple(
+            array_is_list($uploadedFiles) ? $uploadedFiles : [$uploadedFiles],
+            $directory,
+            $options
+        );
     }
 }

@@ -21,10 +21,8 @@ class File
         // Ensure directory exists
         $directory = dirname($filename);
 
-        if (! is_dir($directory)) {
-            if (! mkdir($directory, 0755, true)) {
-                throw new \Exception("Failed to create directory: {$directory}");
-            }
+        if (! is_dir($directory) &&! mkdir($directory, 0755, true)) {
+            throw new \Exception("Failed to create directory: {$directory}");
         }
 
         return file_put_contents($filename, $content, $append);
@@ -65,7 +63,6 @@ class File
      * @param string $template
      * @param array $tokens
      * @return integer|false
-     * @throws \Exception
      */
     public static function createFromTemplate(string $filename, string $template, array $tokens): int|false
     {
@@ -157,6 +154,7 @@ class File
         } else {
             // Path exists - check if it's a symlink
             if (is_link($path)) {
+
                 // Get symlink target and resolve it
                 $symlinkTarget = readlink($path);
 
@@ -173,6 +171,7 @@ class File
 
                 // Check if symlink target is within allowed paths
                 $isAllowed = false;
+
                 foreach ($allowedPaths as $allowedPath) {
                     if (strpos($resolvedTarget, $allowedPath) === 0) {
                         $isAllowed = true;
@@ -180,7 +179,7 @@ class File
                     }
                 }
 
-                if (!$isAllowed) {
+                if (! $isAllowed) {
                     throw new \Exception("Access denied: symlink points outside allowed directories");
                 }
 
@@ -191,6 +190,7 @@ class File
 
         // Verify path is within allowed directories
         $isAllowed = false;
+
         foreach ($allowedPaths as $allowedPath) {
             if (strpos($realPath, $allowedPath) === 0) {
                 $isAllowed = true;
@@ -198,7 +198,7 @@ class File
             }
         }
 
-        if (!$isAllowed) {
+        if (! $isAllowed) {
             throw new \Exception("Access denied: path outside allowed directories");
         }
 
@@ -299,10 +299,8 @@ class File
         // Ensure destination directory exists
         $directory = dirname($to);
 
-        if (! is_dir($directory)) {
-            if (! mkdir($directory, 0755, true)) {
-                throw new \Exception("Failed to create directory: {$directory}");
-            }
+        if (! is_dir($directory) && ! mkdir($directory, 0755, true)) {
+            throw new \Exception("Failed to create directory: {$directory}");
         }
 
         // Check if destination already exists
@@ -337,10 +335,8 @@ class File
         // Ensure destination directory exists
         $directory = dirname($to);
 
-        if (! is_dir($directory)) {
-            if (! mkdir($directory, 0755, true)) {
-                throw new \Exception("Failed to create directory: {$directory}");
-            }
+        if (! is_dir($directory) && ! mkdir($directory, 0755, true)) {
+            throw new \Exception("Failed to create directory: {$directory}");
         }
 
         return copy($from, $to);
@@ -522,33 +518,20 @@ class File
             throw new \Exception("File type not allowed: {$actualMimeType}");
         }
 
-        // Sanitize original filename
         $sanitizedName = static::sanitizeFilename($originalName);
 
-        // Get file extension from sanitized name
         $extension = static::extension($sanitizedName);
 
-        // Security: Validate extension matches MIME type
         static::validateMimeExtension($actualMimeType, $extension);
 
-        // Security: Detect double extensions (e.g., file.php.jpg)
-        if (substr_count($sanitizedName, '.') > 1) {
-            throw new \Exception("Multiple extensions detected in filename");
-        }
-
-        // Determine target directory
         if ($directory === null) {
             $directory = $fileConfig['upload_path'] ?? app()->basedir . '/storage/uploads';
         }
 
-        // Ensure directory exists
-        if (! is_dir($directory)) {
-            if (!mkdir($directory, 0755, true)) {
-                throw new \Exception("Failed to create upload directory: {$directory}");
-            }
+        if (! is_dir($directory) && !mkdir($directory, 0755, true)) {
+            throw new \Exception("Failed to create upload directory: {$directory}");
         }
 
-        // Validate directory path
         $directory = static::validatePath($directory);
 
         // Determine final filename based on naming strategy
@@ -856,47 +839,43 @@ class File
             config('storage.files.max_size')
         );
 
+        if ($fileSize > $maxImageSize) {
+            throw new \Exception("Image file too large for validation: " . static::formatBytes($fileSize));
+        }
+
         // Validate actual image format using GD (prevents corrupted/fake images)
         // This also ensures image can be safely processed
         switch ($mimeType) {
             case 'image/jpeg':
-                // Check file size before loading into memory (prevent DoS)
-                if ($fileSize > $maxImageSize) {
-                    throw new \Exception("Image file too large for validation: " . static::formatBytes($fileSize));
-                }
-
                 $image = @imagecreatefromjpeg($path);
 
                 break;
 
             case 'image/png':
-                if ($fileSize > $maxImageSize) {
-                    throw new \Exception("Image file too large for validation: " . static::formatBytes($fileSize));
-                }
-
                 $image = @imagecreatefrompng($path);
 
                 break;
 
             case 'image/gif':
-                if ($fileSize > $maxImageSize) {
-                    throw new \Exception("Image file too large for validation: " . static::formatBytes($fileSize));
-                }
-
                 $image = @imagecreatefromgif($path);
 
                 break;
 
             case 'image/webp':
-                if ($fileSize > $maxImageSize) {
-                    throw new \Exception("Image file too large for validation: " . static::formatBytes($fileSize));
-                }
-
                 $image = @imagecreatefromwebp($path);
 
                 break;
 
+            case 'image/svg+xml':
+                static::validateSvgSecurity($path);
+                return; // SVG validated, no GD check needed
+
             default:
+
+                if (! is_readable($path)) {
+                    throw new \Exception("Image file is not readable");
+                }
+
                 return; // Skip GD validation for other image types
         }
 
@@ -905,5 +884,55 @@ class File
         }
 
         imagedestroy($image);
+    }
+
+    /**
+     * Validate SVG file for security threats
+     * SVG files can contain JavaScript, XXE, and malicious event handlers
+     *
+     * @param string $path Path to SVG file
+     * @return void
+     * @throws \Exception
+     */
+    private static function validateSvgSecurity(string $path): void
+    {
+        $content = file_get_contents($path);
+
+        if ($content === false) {
+            throw new \Exception("Failed to read SVG file");
+        }
+
+        $patterns = [
+            ['type' => 'string', 'pattern' => '<script', 'message' => 'Script tags'],
+            ['type' => 'string', 'pattern' => 'javascript:', 'message' => 'JavaScript protocol'],
+            ['type' => 'string', 'pattern' => '<iframe', 'message' => 'iframes'],
+            ['type' => 'string', 'pattern' => '<embed', 'message' => 'Embedded content'],
+            ['type' => 'string', 'pattern' => '<object', 'message' => 'Object tags'],
+            ['type' => 'string', 'pattern' => '<!ENTITY', 'message' => 'XML entities'],
+            ['type' => 'string', 'pattern' => '<!DOCTYPE', 'message' => 'DOCTYPE declarations'],
+            ['type' => 'string', 'pattern' => 'xlink:href', 'message' => 'External references'],
+            ['type' => 'regex', 'pattern' => '/on\w+\s*=/i', 'message' => 'Event handlers'],
+        ];
+
+        foreach ($patterns as $config) {
+            $found = $config['type'] === 'regex'
+                ? preg_match($config['pattern'], $content)
+                : stripos($content, $config['pattern']) !== false;
+
+            if (! $found) {
+                continue;
+            }
+
+            throw new \Exception("Security violation: {$config['message']} detected in SVG");
+        }
+
+        // Validate XML structure
+        libxml_use_internal_errors(true);
+
+        if (simplexml_load_string($content) === false) {
+            throw new \Exception("Invalid SVG: malformed XML structure");
+        }
+
+        libxml_clear_errors();
     }
 }
