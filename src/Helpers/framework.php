@@ -568,3 +568,16 @@ if (! function_exists('store')) {
         );
     }
 }
+
+if (! function_exists('cors')) {
+
+    /**
+     * Whitelists domains and subdomains.
+     *
+     * @return \App\Providers\CorsWhitelistServiceProvider
+     * @throws Exception
+     */
+    function cors(): \App\Providers\CorsWhitelistServiceProvider {
+        return app()->cors;
+    }
+}
